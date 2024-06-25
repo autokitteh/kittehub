@@ -1,17 +1,14 @@
 version: v1
 
 project:
-  name: jira_google_cal_sample
+  name: jira_to_calendar_sync
   connections:
     - name: my_jira
       integration: jira
-    - name: my_http
-      integration: http
+    - name: my_googlecalendar
+      integration: googlecalendar
   triggers:
-      - name: http_get
-        connection: my_http
-        # More HTTP methods are supported as event types:
-        # head, put, delete, options, and patch.
-        event_type: get
-        # Triggered by GET request to http://localhost:9980/http/http_sample/get
-        call: program.py:on_http_get
+    - name: jira_issue_created
+      connection: my_jira
+      event_type: issue_created
+      call: program.py:on_jira_issue_created
