@@ -1,0 +1,17 @@
+version: v1
+
+project:
+  name: jira_google_cal_sample
+  connections:
+    - name: my_jira
+      integration: jira
+    - name: my_http
+      integration: http
+  triggers:
+      - name: http_get
+        connection: my_http
+        # More HTTP methods are supported as event types:
+        # head, put, delete, options, and patch.
+        event_type: get
+        # Triggered by GET request to http://localhost:9980/http/http_sample/get
+        call: program.py:on_http_get
