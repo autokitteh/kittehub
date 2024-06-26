@@ -24,8 +24,7 @@ JIRA_CONNECTION_NAME = "my_jira"
 
 def on_jira_issue_created(event):
     """Workflow's entry-point, triggered by an incoming Jira event."""
-    issue = event.data.issue
-    details = _extract_issue_details(issue)
+    details = _extract_issue_details(event.data.issue)
     cal = google_calendar_client(CALENDAR_CONNECTION_NAME)
     _create_calendar_event(cal, details)
 
