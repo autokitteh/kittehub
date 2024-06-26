@@ -1,13 +1,14 @@
 """
-Code Review Request:
+This program listens for Jira events and creates a Google Calendar event.
 
-Scenario: 
-    A developer completes a feature and needs a code review.
-Workflow: 
-    The developer creates a new Jira ticket for the code review. 
-    AutoKitteh automatically generates a Google Calendar event with a 
-    deadline for the review completion, ensuring that the review happens
-    promptly.
+Scenario:
+    Before completing a feature, a developer is blocked and needs to discuss
+    something with the team.
+
+Workflow:
+    The developer creates a new Jira ticket for the discussion. AutoKitteh
+    automatically generates a Google Calendar event with a deadline for the
+    completion, ensuring that the review happens promptly.
 """
 
 from datetime import datetime, timedelta
@@ -16,11 +17,15 @@ import os
 import autokitteh
 from autokitteh.google import google_calendar_client
 
+
 CALENDAR_CONNECTION_NAME = "my_googlecalendar"
 JIRA_CONNECTION_NAME = "my_jira"
 
 
 def on_jira_issue_created(event):
+    """This function is triggered by an incoming Jira event.
+    It triggers the AutoKitteh workflow to create a Google Calendar event
+    """
     issue = event.data.issue
     details = _extract_issue_details(issue)
     cal = google_calendar_client(CALENDAR_CONNECTION_NAME)
@@ -29,16 +34,11 @@ def on_jira_issue_created(event):
 
 def _extract_issue_details(issue):
     base_url = os.getenv(JIRA_CONNECTION_NAME + "__BaseURL")
-    issue_key = issue.key
+    desc = f"Link to Jira Issue: {base_url}/browse/{issue.key}\n\n"
     issue_details = {
-        # TODO: add "assignee"
-        "description": (
-            f"Link to Jira Issue: {base_url}/browse/{issue_key}\n\n"
-            + issue["fields"]["description"]
-        ),
-        "duedate": issue["fields"]["duedate"],
-        # TODO: add "reporter"
-        "summary": issue["fields"]["summary"],
+        "description": desc + issue.fields.description,
+        "duedate": issue.fields.duedate,
+        "summary": issue.fields.summary,
     }
     return issue_details
 
@@ -60,15 +60,11 @@ def _create_calendar_event(cal, issue_details):
             "timeZone": "America/Los_Angeles",
         },
         "attendees": [
-            {"email": "lpage@example.com"},
-            {"email": "sbrin@example.com"},
+            {"email": "auto@example.com"},
+            {"email": "kitteh@example.com"},
         ],
         "reminders": {
-            "useDefault": False,
-            "overrides": [
-                {"method": "email", "minutes": 24 * 60},
-                {"method": "popup", "minutes": 10},
-            ],
+            "useDefault": True,
         },
     }
 
