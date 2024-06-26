@@ -5,7 +5,7 @@ project:
   connections:
     - name: my_jira
       integration: jira
-    - name: my_googlecalendar
+    - name: my_google_calendar
       integration: googlecalendar
   triggers:
     - name: jira_issue_created
