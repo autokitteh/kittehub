@@ -1,0 +1,14 @@
+version: v1
+
+project:
+  name: jira_to_google_calendar
+  connections:
+    - name: my_jira
+      integration: jira
+    - name: my_google_calendar
+      integration: googlecalendar
+  triggers:
+    - name: jira_issue_created
+      connection: my_jira
+      event_type: issue_created
+      call: program.py:on_jira_issue_created
