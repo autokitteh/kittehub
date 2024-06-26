@@ -23,9 +23,7 @@ JIRA_CONNECTION_NAME = "my_jira"
 
 
 def on_jira_issue_created(event):
-    """This function is triggered by an incoming Jira event.
-    It triggers the AutoKitteh workflow to create a Google Calendar event
-    """
+    """Workflow's entry-point, triggered by an incoming Jira event."""
     issue = event.data.issue
     details = _extract_issue_details(issue)
     cal = google_calendar_client(CALENDAR_CONNECTION_NAME)
