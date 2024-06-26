@@ -1,7 +1,7 @@
 version: v1
 
 project:
-  name: jira_to_calendar_sync
+  name: jira_to_google_calendar
   connections:
     - name: my_jira
       integration: jira
