@@ -11,26 +11,32 @@ Workflow:
 """
 
 from datetime import datetime, timedelta
+import os
 
 import autokitteh
 from autokitteh.google import google_calendar_client
 
+CALENDAR_CONNECTION_NAME = "my_googlecalendar"
+JIRA_CONNECTION_NAME = "my_jira"
 
-def on_jira_issue_created(data):
-    issue = data["data"]["issue"]
-    issue_details = _extract_issue_details(issue)
-    cal = google_calendar_client("my_googlecalendar")
-    _create_calendar_event(cal, issue_details)
+
+def on_jira_issue_created(event):
+    issue = event.data.issue
+    details = _extract_issue_details(issue)
+    cal = google_calendar_client(CALENDAR_CONNECTION_NAME)
+    _create_calendar_event(cal, details)
 
 
 def _extract_issue_details(issue):
-    jira_domain = "https://autokitteh.atlassian.net"
-    issue_key = issue["key"]
+    base_url = os.getenv(JIRA_CONNECTION_NAME + "__BaseURL")
+    issue_key = issue.key
     issue_details = {
         # TODO: add "assignee"
-        "description": issue["fields"]["description"],
+        "description": (
+            f"Link to Jira Issue: {base_url}/browse/{issue_key}\n\n"
+            + issue["fields"]["description"]
+        ),
         "duedate": issue["fields"]["duedate"],
-        "link": f"{jira_domain}/browse/{issue_key}",
         # TODO: add "reporter"
         "summary": issue["fields"]["summary"],
     }
@@ -39,35 +45,18 @@ def _extract_issue_details(issue):
 
 @autokitteh.activity
 def _create_calendar_event(cal, issue_details):
-    now = datetime.now()
-    # start_time = now.isoformat()
-    # end_time = (now + timedelta(hours=2, minutes=30)).isoformat()
-    # Calculate start time (2 hours from now)
-    start_time = now.replace(hour=(now.hour + 2) % 24)
-
-    # Calculate end time (30 minutes after start time)
-    end_minute = start_time.minute + 30
-    end_hour = start_time.hour
-
-    if end_minute >= 60:
-        end_minute -= 60
-        end_hour = (end_hour + 1) % 24
-
-    end_time = start_time.replace(hour=end_hour, minute=end_minute)
-
-    start_time_iso = start_time.isoformat()
-    end_time_iso = end_time.isoformat()
+    start_time = datetime.now()
+    end_time = start_time + timedelta(minutes=30)
 
     event = {
-        "summary": "Google I/O 2015",
-        "location": "800 Howard St., San Francisco, CA 94103",
-        "description": "A chance to hear more about Google's developer products.",
+        "summary": issue_details["summary"],
+        "description": issue_details["description"],
         "start": {
-            "dateTime": start_time_iso,
+            "dateTime": start_time.isoformat(),
             "timeZone": "America/Los_Angeles",
         },
         "end": {
-            "dateTime": end_time_iso,
+            "dateTime": end_time.isoformat(),
             "timeZone": "America/Los_Angeles",
         },
         "attendees": [
