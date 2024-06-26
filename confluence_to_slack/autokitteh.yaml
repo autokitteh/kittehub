@@ -1,0 +1,12 @@
+version: v1
+
+project:
+  name: confluence_to_slack
+  connections:
+    - name: my_slack
+      integration: slack
+  # triggers:
+  #   - name: confluence_page_created
+  #     connection: my_jira
+  #     event_type: issue_created
+  #     call: program.py:on_confluence_page_created
