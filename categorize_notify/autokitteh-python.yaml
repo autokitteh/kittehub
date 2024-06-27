@@ -22,5 +22,5 @@ project:
     - name: http_get
       connection: my_http
       event_type: get
-      # Triggered by GET request to http://localhost:9980/http/gmail_chat_gpt_slack/
+      # Triggered by GET request to http://localhost:9980/http/categorize_notify/
       call: program.py:on_http_get
