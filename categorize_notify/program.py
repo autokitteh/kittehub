@@ -19,8 +19,9 @@ from openai import OpenAI
 
 GMAIL_CONNECTION_NAME = "my_gmail"
 OPENAI_CONNECTION_NAME = "my_chatgpt"
-SLACK_CHANNELS = ["demos", "engineering", "ui"]
 SLACK_CONNECTION_NAME = "my_slack"
+
+SLACK_CHANNELS = ["demos", "engineering", "ui"]
 
 
 def on_http_get(data):
