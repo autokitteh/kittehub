@@ -24,7 +24,7 @@ SLACK_CONNECTION_NAME = "my_slack"
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
 
 
-def on_http_get(data):
+def on_http_get(event):
     total_messages = None
     while True:
         total_messages = _poll_inbox(total_messages)
