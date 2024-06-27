@@ -2,9 +2,6 @@
 # an AutoKitteh sample project that demonstrates integration with 
 # Gmail, ChatGPT, and Slack.
 #
-# Before applying this file, set the "OPEN_API_KEY" value in the
-# project's "vars" section.
-#
 # After applying this file, initialize this AutoKitteh project's
 # ChatGPT, Gmail, and Slack connections.
 
