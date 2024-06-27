@@ -35,7 +35,7 @@ def on_http_get(event):
 def _poll_inbox(prev_total_messages: int):
     gmail = google.gmail_client(GMAIL_CONNECTION_NAME).users()
     # TODO: fix: If user deletes emails before the next poll then new email messages will be missed.
-    curr_total_messages = _get_message_count(gmail)
+    curr_total_messages = gmail.getProfile(userId="me").execute()["messagesTotal"]
     if prev_total_messages and curr_total_messages > prev_total_messages:
         new_email_count = curr_total_messages - prev_total_messages
         message_ids = _get_latest_message_ids(gmail, new_email_count)
@@ -55,44 +55,26 @@ def _process_email(gmail, message_id: str):
             client.chat_postMessage(channel=channel, text=email_content)
 
         # Add label to email
-        label_id = _get_label_id(gmail, channel)
-        if not label_id:
-            created_label = _create_label(gmail, channel)
-            label_id = created_label["id"]
+        label_id = _get_label_id(gmail, channel) or _create_label(gmail, channel)
         body = {"addLabelIds": [label_id]}
         gmail.messages().modify(userId="me", id=message_id, body=body).execute()
 
 
 def _get_latest_message_ids(gmail, new_email_count: int):
-    """Get the latest email message_id from the user's inbox.
-    Args:
-        gmail: An authorized Gmail API service instance.
-        new_email_count: The number of new email messages to retrieve.
-    Returns: A list of email message_id strings.
-    """
     results = gmail.messages().list(userId="me", maxResults=new_email_count).execute()
-
     return [msg["id"] for msg in results.get("messages", [])]
 
 
 def _parse_email(message: dict):
-    """Parse provided email.
-    Args:
-        message: The email message to parse
-    Returns: The email body as a string.
-    """
     payload = message["payload"]
     for part in payload.get("parts", []):
         if part["mimeType"] == "text/plain":
             return base64.urlsafe_b64decode(part["body"]["data"]).decode("utf-8")
 
 
-def _create_label(gmail, label_name: str) -> dict:
+def _create_label(gmail, label_name: str) -> str:
     """Create a new label in the user's gmail account.
-    Args:
-        gmail: An authorized Gmail API service instance.
-        label_name: The name of the label to be created.
-    Returns: The created label as a dictionary.
+
     https://developers.google.com/gmail/api/reference/rest/v1/users.labels#Label
     """
     label = {
@@ -102,15 +84,10 @@ def _create_label(gmail, label_name: str) -> dict:
     }
     created_label = gmail.labels().create(userId="me", body=label).execute()
     print(f"Label created: {created_label['name']}")
-    return created_label
+    return created_label["id"]
 
 
 def _get_label_id(gmail, label_name: str) -> str:
-    """Get the label_id for a label with the provided name if it exists.
-    Args:
-        gmail: An authorized Gmail API service instance.
-        label_name: The name of the label to retrieve the id for.
-    """
     labels_response = gmail.labels().list(userId="me").execute()
     labels = labels_response.get("labels", [])
     for label in labels:
@@ -119,20 +96,12 @@ def _get_label_id(gmail, label_name: str) -> str:
     return None
 
 
-def _get_message_count(gmail) -> int:
-    """Returns The total number of messages in the user's inbox."""
-    profile = gmail.getProfile(userId="me").execute()
-    return profile["messagesTotal"]
-
-
 @autokitteh.activity
 def _categorize_email(email_content: str, channels: list[str]) -> str:
     """Prompt ChatGPT to categorize an email based on its content.
-    Args:
-        email_content: The content of the email as a string.
-        channels: A list of channel names as strings.
+
     Returns:
-        The name of the Slasck channel to send a message to as a string.
+        The name of the Slack channel to send a message to as a string.
         If the channel is not in the provided list, returns None.
     """
     client = _openai_client()
