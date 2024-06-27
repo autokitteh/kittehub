@@ -34,7 +34,7 @@ def _extract_issue_details(issue):
     issue_details = autokitteh.AttrDict(
         {
             "description": desc + issue.fields.description,
-            "duedate": issue.fields.duedate,
+            "duedate": issue.fields.duedate + " 09:00",
             "summary": issue.fields.summary,
         }
     )
@@ -43,7 +43,7 @@ def _extract_issue_details(issue):
 
 @autokitteh.activity
 def _create_calendar_event(issue_details):
-    start_time = datetime.now()
+    start_time = datetime.strptime(issue_details.duedate, "%Y-%m-%d %H:%M")
     end_time = start_time + timedelta(minutes=30)
 
     event = {
