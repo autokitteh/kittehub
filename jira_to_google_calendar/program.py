@@ -43,7 +43,7 @@ def _extract_issue_details(issue):
 
 @autokitteh.activity
 def _create_calendar_event(issue_details):
-    start_time = datetime.now()
+    start_time = datetime.strptime(issue_details.duedate, "%Y-%m-%d")
     end_time = start_time + timedelta(minutes=30)
 
     event = {
