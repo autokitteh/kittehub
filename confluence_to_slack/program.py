@@ -18,7 +18,7 @@ AK_SLACK_CONNECTION = "my_slack"
 
 CONFLUENCE_LABEL = ""  # TODO: Replace with your Confluence label name
 SLACK_CHANNEL = ""  # TODO: Replace with your Slack channel name or ID
-SNIPPET_COUNT = 150
+SNIPPET_LENGTH = 150
 
 
 def on_confluence_page_created(event):
