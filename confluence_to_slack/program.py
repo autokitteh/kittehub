@@ -1,10 +1,11 @@
 """A real-life workflow that integrates Confluence and Slack.
 
 Workflow:
-    1. Trigger: Detect a new page creation in Confluence space (specified
-    in the autokitteh.yaml).
-    2. Filter: Check if the page has the specified label.
-    3. Notify: Send a message to a Slack channel with a snippet of the page.
+    1. Trigger: a new page is created in Confluence
+    2. Static filter: the page is in a specific Confluence space
+       (specified in the "autokitteh.yaml" manifest file)
+    3. Runtime filter: check if the page has a specific label
+    4. Notify: send a message to a Slack channel with a snippet of the page
 """
 
 import autokitteh
