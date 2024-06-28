@@ -32,7 +32,7 @@ def on_confluence_page_created(event):
     if not any(label["name"] == CONFLUENCE_LABEL for label in labels):
         return
 
-    # get the page body
+    # Read the page body.
     res = confluence.get_page_by_id(page_id, expand="body.view, include-labels")
     html_body = res["body"]["view"]["value"]
 
