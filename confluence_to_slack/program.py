@@ -1,32 +1,43 @@
-"""
-When a new Confluence page is created in a specific space, if the page has
-a certain label, parse the page body and send certain fields to Slack.
-Then, send a webhook request to a public URL.
-"""
+"""A real-life workflow that integrates Confluence and Slack."""
 
 import autokitteh
+from autokitteh.atlassian import confluence_client
 from autokitteh.slack import slack_client
 
 
+AK_CONFLUENCE_CONNECTION = "my_confluence"
 AK_SLACK_CONNECTION = "my_slack"
+
+SLACK_CHANNEL = ""  # TODO: Replace with your Slack channel name or ID
+SNIPPET_COUNT = 150
 
 
 def on_confluence_page_created(event):
-    """Workflow's entry-point, triggered by an incoming Confluence event."""
-    # TODO: Check to make sure that the page is created in a specific space.
-    # If not, ignore the event. OR is this something that can be setup in the
-    # trigger?
+    """Workflow's entry-point."""
 
-    # TODO: Check for specific label on the page. If not present, ignore the
-    # event.
+    # get the page body
+    confluence = confluence_client(AK_CONFLUENCE_CONNECTION)
+    res = confluence.get_page_by_id(event.data.page.id, expand="body.view")
+    html_body = res["body"]["view"]["value"]
 
-    # TODO: Extract the necessary fields from the page body.
+    page = autokitteh.AttrDict(
+        {
+            "snippet": "```" + html_body[:SNIPPET_COUNT] + "\n```",
+            "link": event.data.page.self,
+            "space": event.data.page.spaceKey,
+            "title": event.data.page.title,
+        }
+    )
 
-    # TODO: Send the extracted fields to Slack.
-    _send_slack_message(fields=None)
+    _send_slack_message(page)
 
 
-def _send_slack_message(fields):
+def _send_slack_message(page):
     slack = slack_client(AK_SLACK_CONNECTION)
-    text = "Hello, world!"
-    slack.chat_postMessage(channel="pasha-test", text=text)
+    message = f"""
+    A new page has been created in the `{page.space}` space.
+    *Title*: {page.title}
+    *Snippet*: {page.snippet}
+    <{page.link}|Link to page>
+    """
+    slack.chat_postMessage(channel=SLACK_CHANNEL, text=message)
