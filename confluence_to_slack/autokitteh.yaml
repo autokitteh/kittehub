@@ -1,3 +1,6 @@
+# TODO: Replace <your spaceKey> with the spaceKey of the 
+# Confluence space you want to monitor
+
 version: v1
 
 project:
@@ -11,6 +14,5 @@ project:
     - name: confluence_page_created
       connection: my_confluence
       event_type: page_created
-      # TODO: Replace <your spaceKey> with the spaceKey of the Confluence space you want to monitor
       filter: "data.page.spaceKey == '<your spaceKey>'"
       call: program.py:on_confluence_page_created
