@@ -1,4 +1,11 @@
-"""A real-life workflow that integrates Confluence and Slack."""
+"""A real-life workflow that integrates Confluence and Slack.
+
+Workflow:
+    1. Trigger: Detect a new page creation in Confluence space (specified
+    in the autokitteh.yaml).
+    2. Filter: Check if the page has the specified label.
+    3. Notify: Send a message to a Slack channel with a snippet of the page.
+"""
 
 import autokitteh
 from autokitteh.atlassian import confluence_client
@@ -8,6 +15,7 @@ from autokitteh.slack import slack_client
 AK_CONFLUENCE_CONNECTION = "my_confluence"
 AK_SLACK_CONNECTION = "my_slack"
 
+CONFLUENCE_LABEL = ""  # TODO: Replace with your Confluence label name
 SLACK_CHANNEL = ""  # TODO: Replace with your Slack channel name or ID
 SNIPPET_COUNT = 150
 
@@ -15,9 +23,16 @@ SNIPPET_COUNT = 150
 def on_confluence_page_created(event):
     """Workflow's entry-point."""
 
-    # get the page body
     confluence = confluence_client(AK_CONFLUENCE_CONNECTION)
-    res = confluence.get_page_by_id(event.data.page.id, expand="body.view")
+    page_id = event.data.page.id
+
+    # filter out pages without the specified label
+    labels = confluence.get_page_labels(page_id)["results"]
+    if not any(label["name"] == CONFLUENCE_LABEL for label in labels):
+        return
+
+    # get the page body
+    res = confluence.get_page_by_id(page_id, expand="body.view, include-labels")
     html_body = res["body"]["view"]["value"]
 
     page = autokitteh.AttrDict(
