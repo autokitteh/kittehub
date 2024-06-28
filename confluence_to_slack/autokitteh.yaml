@@ -3,10 +3,10 @@ version: v1
 project:
   name: confluence_to_slack
   connections:
-    - name: my_slack
-      integration: slack
     - name: my_confluence
       integration: confluence
+    - name: my_slack
+      integration: slack
   triggers:
     - name: confluence_page_created
       connection: my_confluence
