@@ -16,6 +16,7 @@ import os
 
 import autokitteh
 from autokitteh.google import google_calendar_client
+from autokitteh.atlassian import get_url
 
 
 CALENDAR_CONNECTION_NAME = "my_google_calendar"
@@ -24,12 +25,13 @@ JIRA_CONNECTION_NAME = "my_jira"
 
 def on_jira_issue_created(event):
     """Workflow's entry-point, triggered by an incoming Jira event."""
+
     details = _extract_issue_details(event.data.issue)
     _create_calendar_event(details)
 
 
 def _extract_issue_details(issue):
-    base_url = os.getenv(JIRA_CONNECTION_NAME + "__BaseURL")
+    base_url = get_url(JIRA_CONNECTION_NAME)
     desc = f"Link to Jira Issue: {base_url}/browse/{issue.key}\n\n"
     issue_details = autokitteh.AttrDict(
         {
