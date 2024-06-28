@@ -27,7 +27,7 @@ def on_confluence_page_created(event):
     confluence = confluence_client(AK_CONFLUENCE_CONNECTION)
     page_id = event.data.page.id
 
-    # filter out pages without the specified label
+    # Ignore pages without the specified label.
     labels = confluence.get_page_labels(page_id)["results"]
     if not any(label["name"] == CONFLUENCE_LABEL for label in labels):
         return
