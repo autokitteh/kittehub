@@ -38,7 +38,7 @@ def on_confluence_page_created(event):
 
     page = autokitteh.AttrDict(
         {
-            "snippet": "```" + html_body[:SNIPPET_COUNT] + "\n```",
+            "snippet": f"```{html_body[:SNIPPET_COUNT]}\n```",
             "link": event.data.page.self,
             "space": event.data.page.spaceKey,
             "title": event.data.page.title,
