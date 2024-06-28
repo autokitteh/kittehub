@@ -2,6 +2,11 @@ version: v1
 
 project:
   name: jira_to_google_calendar
+  vars:
+    - name: CALENDAR_CONNECTION_NAME
+      value: my_google_calendar
+    - name: JIRA_CONNECTION_NAME
+      value: my_jira
   connections:
     - name: my_jira
       integration: jira
