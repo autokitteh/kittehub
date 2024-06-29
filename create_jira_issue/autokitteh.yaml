@@ -1,0 +1,22 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that creates Atlassian Jira issues.
+#
+# After creating this AutoKitteh project by applying this file,
+# initialize its Jira connection.
+
+version: v1
+
+project:
+  name: create_jira_issue
+  connections:
+    - name: http_connection
+      integration: http
+    - name: jira_connection
+      integration: jira
+  triggers:
+    - name: http_post_webhook
+      connection: http_connection
+      filter: data.method == "GET" || data.method == "POST"
+      data:
+        path: webhook
+      call: program.py:on_http_request
