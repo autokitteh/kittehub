@@ -1,4 +1,3 @@
-# TODO: Add description
 """This program listens for Jira events and assigns the issue to the on-call engineer."""
 
 from datetime import datetime, timezone
