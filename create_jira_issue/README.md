@@ -2,8 +2,8 @@
 
 ## Sources
 
-- HTTP GET webhook (URL path `/http/create_jira_issue` with query)
-- HTTP POST webhook (same URL path, but with form or JSON body)
+- HTTP GET webhook (URL path `/http/create_jira_issue` + query parameters)
+- HTTP POST webhook (same URL path, but with a form or a JSON body)
 
 ## HTTP Trigger Examples
 
