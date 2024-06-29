@@ -10,7 +10,6 @@ Workflow:
 
 import os
 
-import autokitteh
 from autokitteh.atlassian import confluence_client
 from autokitteh.slack import slack_client
 

@@ -1,5 +1,6 @@
-# TODO: Replace <your spaceKey> with the spaceKey of the 
-# Confluence space you want to monitor
+# TODO: Replace <your label> with the label you want to monitor
+# TODO: Replace <your channel> with the Slack channel you want to post to
+# TODO: Replace <your spaceKey> with the spaceKey of the Confluence space you want to monitor
 
 version: v1
 
@@ -11,9 +12,9 @@ project:
     - name: AK_SLACK_CONNECTION
       value: my_slack
     - name: CONFLUENCE_LABEL
-      value: "ak"
+      value: "<your label>"
     - name: SLACK_CHANNEL
-      value: "pasha-slack-test"
+      value: "<your channel>"
     - name: SNIPPET_LENGTH
       value: 150
   connections:
@@ -25,5 +26,5 @@ project:
     - name: confluence_page_created
       connection: my_confluence
       event_type: page_created
-      filter: "data.page.spaceKey == '~71202056cf78720ca24ff680ee0a1fd148408f'"
+      filter: "data.page.spaceKey == '<your spaceKey>'"
       call: program.py:on_confluence_page_created
