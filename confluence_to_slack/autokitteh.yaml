@@ -1,10 +1,22 @@
-# TODO: Replace <your spaceKey> with the spaceKey of the 
-# Confluence space you want to monitor
+# TODO: Replace <your label> with the label you want to monitor
+# TODO: Replace <your channel> with the Slack channel you want to post to
+# TODO: Replace <your spaceKey> with the spaceKey of the Confluence space you want to monitor
 
 version: v1
 
 project:
   name: confluence_to_slack
+  vars:
+    - name: AK_CONFLUENCE_CONNECTION
+      value: my_confluence
+    - name: AK_SLACK_CONNECTION
+      value: my_slack
+    - name: CONFLUENCE_LABEL
+      value: "<your label>"
+    - name: SLACK_CHANNEL
+      value: "<your channel>"
+    - name: SNIPPET_LENGTH
+      value: 150
   connections:
     - name: my_confluence
       integration: confluence
