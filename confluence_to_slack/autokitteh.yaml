@@ -5,6 +5,17 @@ version: v1
 
 project:
   name: confluence_to_slack
+  vars:
+    - name: AK_CONFLUENCE_CONNECTION
+      value: my_confluence
+    - name: AK_SLACK_CONNECTION
+      value: my_slack
+    - name: CONFLUENCE_LABEL
+      value: "ak"
+    - name: SLACK_CHANNEL
+      value: "pasha-slack-test"
+    - name: SNIPPET_LENGTH
+      value: 150
   connections:
     - name: my_confluence
       integration: confluence
@@ -14,5 +25,5 @@ project:
     - name: confluence_page_created
       connection: my_confluence
       event_type: page_created
-      filter: "data.page.spaceKey == '<your spaceKey>'"
+      filter: "data.page.spaceKey == '~71202056cf78720ca24ff680ee0a1fd148408f'"
       call: program.py:on_confluence_page_created
