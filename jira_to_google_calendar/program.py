@@ -29,7 +29,7 @@ def on_jira_issue_created(event):
 def _create_calendar_event(issue, key):
     start_time = datetime.strptime(issue.duedate, "%Y-%m-%d")
     end_time = start_time + timedelta(minutes=30)
-    url = get_url(os.getenv("JIRA_CONNECTION_NAME"))
+    url = get_base_url(os.getenv("JIRA_CONNECTION_NAME"))
     link = f"Link to Jira Issue: {url}/browse/{key}\n\n"
 
     event = {
