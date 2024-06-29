@@ -15,13 +15,12 @@ from datetime import datetime, timedelta
 import os
 
 import autokitteh
+from autokitteh.atlassian import get_base_url
 from autokitteh.google import google_calendar_client
-from autokitteh.atlassian import get_url
 
 
 def on_jira_issue_created(event):
     """Workflow's entry-point, triggered by an incoming Jira event."""
-
     _create_calendar_event(event.data.issue.fields, event.data.issue.key)
 
 
