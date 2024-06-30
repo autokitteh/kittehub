@@ -1,5 +1,5 @@
-# This YAML file is a declarative manifest that describes the setup
-# of an AutoKitteh project that sets the assignee of new Atlassian Jira
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that sets the assignee of new Atlassian Jira
 # issues based on an on-call rotation in a shared Google Calendar.
 #
 # Before deploying this AutoKitteh project:

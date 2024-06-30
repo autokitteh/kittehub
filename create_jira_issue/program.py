@@ -30,4 +30,4 @@ def _create_jira_issue(fields):
         fields["issuetype"] = {"name": fields["issuetype"]}
 
     issue = atlassian_jira_client("jira_connection").issue_create(fields=fields)
-    print(issue)
+    print("Created Jira issue: " + issue["key"])
