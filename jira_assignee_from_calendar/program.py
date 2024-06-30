@@ -1,43 +1,44 @@
-"""This program listens for Jira events and assigns the issue to the on-call engineer."""
+"""
+This program assignes Atlassian Jira issues based on a shared Google Calendar.
 
-from datetime import datetime, timezone
+The shared Google Calendar defines a 27/4 on-call rotation.
+How to create it: https://support.google.com/calendar/answer/37095
+
+This program assumes that the calendar entries have these fields:
+- Summary: the on-call person's human-readable name
+- Description: their Atlassian account ID
+"""
+
+from datetime import UTC, datetime, timedelta
 import os
 
 import autokitteh
 from autokitteh.atlassian import atlassian_jira_client
 from autokitteh.google import google_calendar_client
 
-# TODO: move all of these constants to .yaml
-CALENDAR_CONNECTION_NAME = "my_google_calendar"
-JIRA_CONNECTION_NAME = "my_jira"
-
-CALENDAR_ID = "c_38efc2d1983148b0dab1ec069d9bb430419eee9bf30ec43d320d483de2a385e4@group.calendar.google.com"
-
 
 def on_jira_issue_created(event):
-    """Workflow's entry-point, triggered by an incoming Jira event."""
-    id = _get_oncall_id()
+    """Workflow's entry-point."""
+    name, account_id = _get_current_oncall()
 
-    # Update issue field
-    jira = atlassian_jira_client(JIRA_CONNECTION_NAME)
-    fields = {"assignee": {"accountId": id}}
-    jira.update_issue_field(event.data.issue.key, fields, notify_users=True)
+    update = {"assignee": {"accountId": account_id}}
+    jira = atlassian_jira_client("jira_connection")
+    jira.update_issue_field(event.data.issue.key, update, notify_users=True)
+
+    print(f"Assigned {event.data.issue.key} to {name}")
 
 
 @autokitteh.activity
-def _get_oncall_id():
-    cal = google_calendar_client(CALENDAR_CONNECTION_NAME)
-    event = (
-        cal.events()
-        .list(
-            calendarId=CALENDAR_ID,
-            timeMin=datetime.now(timezone.utc).isoformat(),
-            maxResults=1,
-            singleEvents=True,
-            orderBy="startTime",
-        )
-        .execute()
-        .get("items", [])[0]
-        .strip()  # Calendar returns description with whitespace at the front.
-    )
-    return event["description"]
+def _get_current_oncall():
+    """Return the name and Atlassian account ID of the current on-call."""
+    gcal = google_calendar_client("google_calendar_connection").events()
+    now = datetime.now(UTC)
+    in_a_minute = now + timedelta(minutes=1)
+    result = gcal.list(
+        calendarId=os.getenv("SHARED_CALENDAR_ID"),
+        timeMin=now.isoformat(),  # Request all currently-effective events.
+        timeMax=in_a_minute.isoformat(),
+        orderBy="updated",  # Use the most-recently updated one.
+    ).execute()["items"][-1]
+    # Google Calendar may add whitespaces - strip them.
+    return result["summary"].strip(), result["description"].strip()
