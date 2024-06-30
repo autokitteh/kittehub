@@ -40,4 +40,5 @@ def _create_calendar_event(issue, key):
 
     gcal = google_calendar_client("google_calendar_connection").events()
     event = gcal.insert(calendarId="primary", body=event).execute()
-    print(f"Event created: {event.get("htmlLink")}")
+
+    print("Google Cloud event created: " + event.get("htmlLink"))

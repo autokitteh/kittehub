@@ -20,8 +20,8 @@ from autokitteh.google import google_calendar_client
 def on_jira_issue_created(event):
     """Workflow's entry-point."""
     name, account_id = _get_current_oncall()
-
     update = {"assignee": {"accountId": account_id}}
+
     jira = atlassian_jira_client("jira_connection")
     jira.update_issue_field(event.data.issue.key, update, notify_users=True)
 
@@ -34,11 +34,13 @@ def _get_current_oncall():
     gcal = google_calendar_client("google_calendar_connection").events()
     now = datetime.now(UTC)
     in_a_minute = now + timedelta(minutes=1)
+
     result = gcal.list(
         calendarId=os.getenv("SHARED_CALENDAR_ID"),
         timeMin=now.isoformat(),  # Request all currently-effective events.
         timeMax=in_a_minute.isoformat(),
         orderBy="updated",  # Use the most-recently updated one.
     ).execute()["items"][-1]
+
     # Google Calendar may add whitespaces - strip them.
     return result["summary"].strip(), result["description"].strip()
