@@ -26,24 +26,24 @@ def on_http_get(event):
 
 
 @autokitteh.activity
-def _poll_inbox(prev_total_messages: int):
+def _poll_inbox(prev_total: int):
     gmail = google.gmail_client("my_gmail").users()
-    curr_total_messages = gmail.getProfile(userId="me").execute()["messagesTotal"]
+    curr_total = gmail.getProfile(userId="me").execute()["messagesTotal"]
     # Note: This is not meant to be a robust solution for handling email operations.
-    if prev_total_messages and curr_total_messages > prev_total_messages:
-        new_email_count = curr_total_messages - prev_total_messages
+    if prev_total and curr_total > prev_total:
+        new_email_count = curr_total - prev_total
         message_ids = _get_latest_message_ids(gmail, new_email_count)
         for message_id in message_ids:
             _process_email(gmail, message_id)
 
-    return curr_total_messages
+    return curr_total
 
 
 def _process_email(gmail, message_id: str):
     message = gmail.messages().get(userId="me", id=message_id).execute()
     email_content = _parse_email(message)
     if email_content:
-        channel = _categorize_email(email_content, SLACK_CHANNELS)
+        channel = _categorize_email(email_content)
         if channel:
             client = slack.slack_client("my_slack")
             client.chat_postMessage(channel=channel, text=email_content)
@@ -91,7 +91,7 @@ def _get_label_id(gmail, label_name: str) -> str:
 
 
 @autokitteh.activity
-def _categorize_email(email_content: str, channels: list[str]) -> str:
+def _categorize_email(email_content: str) -> str:
     """Prompt ChatGPT to categorize an email based on its content.
 
     Returns:
@@ -109,8 +109,8 @@ def _categorize_email(email_content: str, channels: list[str]) -> str:
                 topic and suggest a channel to post it in from the 
                 provided list. The output should be one of the provided 
                 channels and nothing else.
-                Email Content: {email_content} Channels: {channels}
-                Output example: ui""",
+                Email Content: {email_content} Channels: {SLACK_CHANNELS}
+                Output example: {SLACK_CHANNELS[0]}""",
             },
         ],
     )
