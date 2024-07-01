@@ -34,7 +34,6 @@ def on_http_get(event):
 @autokitteh.activity
 def _poll_inbox(prev_total_messages: int):
     gmail = google.gmail_client(GMAIL_CONNECTION_NAME).users()
-    # TODO: fix: If user deletes emails before the next poll then new email messages will be missed.
     curr_total_messages = gmail.getProfile(userId="me").execute()["messagesTotal"]
     if prev_total_messages and curr_total_messages > prev_total_messages:
         new_email_count = curr_total_messages - prev_total_messages
