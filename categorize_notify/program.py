@@ -9,17 +9,11 @@ Workflow:
 """
 
 import base64
-import os
 import time
 
 import autokitteh
-from autokitteh import google, slack
-from openai import OpenAI
+from autokitteh import google, openai, slack
 
-
-GMAIL_CONNECTION_NAME = "my_gmail"
-OPENAI_CONNECTION_NAME = "my_chatgpt"
-SLACK_CONNECTION_NAME = "my_slack"
 
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
 
@@ -33,8 +27,9 @@ def on_http_get(event):
 
 @autokitteh.activity
 def _poll_inbox(prev_total_messages: int):
-    gmail = google.gmail_client(GMAIL_CONNECTION_NAME).users()
+    gmail = google.gmail_client("my_gmail").users()
     curr_total_messages = gmail.getProfile(userId="me").execute()["messagesTotal"]
+    # Note: This is not meant to be a robust solution for handling email operations.
     if prev_total_messages and curr_total_messages > prev_total_messages:
         new_email_count = curr_total_messages - prev_total_messages
         message_ids = _get_latest_message_ids(gmail, new_email_count)
@@ -50,7 +45,7 @@ def _process_email(gmail, message_id: str):
     if email_content:
         channel = _categorize_email(email_content, SLACK_CHANNELS)
         if channel:
-            client = slack.slack_client(SLACK_CONNECTION_NAME)
+            client = slack.slack_client("my_slack")
             client.chat_postMessage(channel=channel, text=email_content)
 
         # Add label to email
@@ -103,7 +98,7 @@ def _categorize_email(email_content: str, channels: list[str]) -> str:
         The name of the Slack channel to send a message to as a string.
         If the channel is not in the provided list, returns None.
     """
-    client = _openai_client()
+    client = openai.openai_client("my_chatgpt")
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -121,11 +116,3 @@ def _categorize_email(email_content: str, channels: list[str]) -> str:
     )
     channel = response.choices[0].message.content
     return channel if channel in SLACK_CHANNELS else None
-
-
-def _openai_client() -> OpenAI:
-    api_key = os.getenv(OPENAI_CONNECTION_NAME + "__api_key")
-    if not api_key:
-        raise RuntimeError('Env variable "OPENAI_API_KEY" not set')
-
-    return OpenAI(api_key=api_key)
