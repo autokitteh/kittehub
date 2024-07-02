@@ -1,5 +1,5 @@
 # This YAML file is a declarative manifest that describes the setup of
-# an AutoKitteh project that announced new Confluence pages in Slack.
+# an AutoKitteh project that announces new Confluence pages in Slack.
 #
 # Before deploying this AutoKitteh project:
 # - Set the "CONFLUENCE_SPACE_KEY" in the trigger's filter expression
