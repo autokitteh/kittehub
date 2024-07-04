@@ -10,7 +10,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  lint-format-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,5 +27,6 @@ jobs:
         run: |
           ruff check --target-version py311 --output-format github .
           ruff format --target-version py311 --check .
+      # (Enable this step once we have unit tests)
       # - name: Test with pytest
       #   run: pytest
