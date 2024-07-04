@@ -29,4 +29,4 @@ jobs:
           ruff format --target-version py311 --check .
       # (Enable this step once we have unit tests)
       # - name: Test with pytest
-      #   run: pytest
+      #   run: pytest -v
