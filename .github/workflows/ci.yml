@@ -25,8 +25,8 @@ jobs:
           pip install -r requirements.txt
       - name: Lint & format with ruff
         run: |
-          ruff check --target-version py311 --output-format github .
-          ruff format --target-version py311 --check .
+          ruff check --output-format github .
+          ruff format --check .
       # (Enable this step once we have unit tests)
       # - name: Test with pytest
       #   run: pytest -v
