@@ -1,0 +1,12 @@
+{
+  "Type": "SubscriptionConfirmation",
+  "MessageId": "XXXXXXXX-1ee3-4de3-9c69-XXXXXXXXXXXX",
+  "Token": "SECRET_TOKEN",
+  "TopicArn": "arn:aws:sns:us-west-2:XXXXXXXXXXXX:ses-test",
+  "Message": "You have chosen to subscribe to the topic arn:aws:sns:us-west-2:XXXXXXXXXXXX:ses-test. To confirm the subscription, visit the SubscribeURL included in this message.",
+  "SubscribeURL": "https://sns.us-west-2.amazonaws.com/?Action=ConfirmSubscription&TopicArn=arn:aws:sns:us-west-2:XXXXXXXXXXXX:ses-test&Token=SECRET_TOKEN",
+  "Timestamp": "2018-11-21T19:48:08.170Z",
+  "SignatureVersion": "1",
+  "Signature": "SECRET",
+  "SigningCertURL": "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.pem"
+}
