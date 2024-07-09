@@ -15,6 +15,8 @@ project:
   vars:
     - name: GOOGLE_SHEET_URL
       value: https://docs.google.com/spreadsheets/d/1PalmLwSZOPW9k668_jU-wFI5xCj88a4mDfNUtJAupMQ/
+    - name: TRIGGER_INTERVAL
+      value: 1m
   connections:
     - name: aws_connection
       integration: aws
@@ -25,4 +27,4 @@ project:
   triggers:
     - name: every_minute
       schedule: "@every 1m"
-      call: program.py:on_every_minute
+      call: program.py:on_schedule

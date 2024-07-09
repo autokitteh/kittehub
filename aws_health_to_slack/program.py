@@ -12,14 +12,14 @@ import re
 
 import autokitteh
 from autokitteh.aws import boto3_client
-from autokitteh.google import google_sheets_client
+from autokitteh.google import google_id, google_sheets_client
 from autokitteh.slack import slack_client
 
 
 url = os.getenv("GOOGLE_SHEET_URL")
 
 
-def on_every_minute(_):
+def on_schedule(_):
     """Workflow's entry-point."""
     slack_channels = _read_google_sheet()
     events = _aws_health_events()
@@ -39,13 +39,8 @@ def on_every_minute(_):
 @autokitteh.activity
 def _read_google_sheet() -> dict[str, str]:
     """Read mapping of project tags to Slack channels from Google Sheet."""
-    match = re.match(r"(.*/d/)?([\w-]{20,})", url)
-    if not match:
-        raise ValueError(f"Error: invalid Google Sheet ID in URL {url!r}")
-
-    id = match.group(2)
     sheets = google_sheets_client("google_sheets_connection").spreadsheets().values()
-    rows = sheets.get(spreadsheetId=id, range="A:B").execute().get("values", [])
+    rows = sheets.get(spreadsheetId=google_id(url), range="A:B").execute().get("values", [])
     return {row[0].strip(): row[1].strip() for row in rows}
 
 
@@ -53,14 +48,18 @@ def _read_google_sheet() -> dict[str, str]:
 def _aws_health_events() -> list[dict]:
     """List all recent AWS Health events.
 
-    API Reference:
+    This function currently fetches events for a single AWS account:
     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/health/client/describe_events.html
+
+    With a bit more code, you can also fetch events for multiple ones:
+    https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/health/client/describe_events_for_organization.html
     """
     try:
+        mins = int(re.match(r"(\d+)m", os.getenv("TRIGGER_INTERVAL")).group(1))
+        prev_check = datetime.now(UTC) - timedelta(minutes=mins)
+        filter = {"lastUpdatedTime": [{"from": prev_check}]}
+
         aws = boto3_client("aws_connection", "health")
-        dt = datetime.now(UTC) - timedelta(minutes=1)
-        filter = {"lastUpdatedTime": [{"from": dt}]}
-        # Possible alternative: describe_events_for_organization.
         resp = aws.describe_events(filter=filter)
         events = resp.get("events", [])
 
@@ -71,6 +70,8 @@ def _aws_health_events() -> list[dict]:
             nextToken = resp.get("nextToken")
 
         return events
+
+    # TODO: More specific exception handling.
     except Exception as e:
         print(f"Error: {e}")
         return []
