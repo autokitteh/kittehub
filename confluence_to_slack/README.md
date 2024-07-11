@@ -17,4 +17,5 @@ This real-life workflow demonstrates the integration between two popular service
 - Confluence returns HTML, and this program does not format it in any way. The purpose of this workflow is to demonstrate how data can move between different services. Desired formatting can be easily added to suit individual needs.
 
 ## Additional Comment
-- Environment variables are set in `autokitteh.yaml` (e.g., Slack channel, Confluence page, etc.).
+
+- Environment variables are set in [`autokitteh.yaml`](./autokitteh.yaml) (e.g., Slack channel, Confluence page, etc.).
