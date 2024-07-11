@@ -13,6 +13,7 @@ This real-life workflow demonstrates the integration between two popular service
 - **Result**: A Slack message is sent to a selected channel containing data from the newly created Confluence page.
 
 ## Known Limitations
+
 - Confluence returns HTML, and this program does not format it in any way. The purpose of this workflow is to demonstrate how data can move between different services. Desired formatting can be easily added to suit individual needs.
 
 ## Additional Comment
