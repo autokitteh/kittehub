@@ -3,6 +3,7 @@
 This real-life example workflow demonstrates the integration of JIRA and Google Calendar in an on-call scenario.
 
 ## Benefits
+
 - **Focus on what matters**: Write code that focuses on the desired outcome, not the underlying infrastructure.
 - **Flexibility**: Implement your own authorization flow or use the one that works out of the box.
 - **Extensibility**: Easily add additional steps or integrations.
