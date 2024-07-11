@@ -40,8 +40,8 @@ def on_schedule(_):
 def _read_google_sheet() -> dict[str, str]:
     """Read mapping of project tags to Slack channels from Google Sheet."""
     sheets = google_sheets_client("google_sheets_connection").spreadsheets().values()
-    rows = sheets.get(spreadsheetId=google_id(url), range="A:B").execute().get("values", [])
-    return {row[0].strip(): row[1].strip() for row in rows}
+    rows = sheets.get(spreadsheetId=google_id(url), range="A:B").execute()
+    return {row[0].strip(): row[1].strip() for row in rows.get("values", [])}
 
 
 @autokitteh.activity
