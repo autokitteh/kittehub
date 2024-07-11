@@ -3,6 +3,7 @@
 This real-life workflow demonstrates the integration between two popular services.
 
 ## Benefits
+
 - **Small overhead**: Run the `ak` server, deploy the project, and write code.
 - **Filtering**: Add filters in the configuration to limit the number of times your code is triggered, or filter data in the code itself. This workflow demonstrates both.
 
