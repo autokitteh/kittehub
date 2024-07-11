@@ -8,6 +8,7 @@ This real-life workflow demonstrates the integration between two popular service
 - **Filtering**: Add filters in the configuration to limit the number of times your code is triggered, or filter data in the code itself. This workflow demonstrates both.
 
 ## How It Works
+
 - **Trigger**: A new Confluence page is created in a designated space.
 - **Result**: A Slack message is sent to a selected channel containing data from the newly created Confluence page.
 
