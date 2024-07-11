@@ -9,5 +9,6 @@ This real-life example workflow demonstrates the integration of JIRA and Google 
 - **Extensibility**: Easily add additional steps or integrations.
 
 ## How It Works
-- **Trigger**: A new JIRA issue in the designated JIRA project (specified in `autokitteh.yaml`)
-- **Result**: The current person on-call is retrieved via the Google Calendar API and added as the assignee in the JIRA issue that triggered the workflow.
+
+- **Trigger**: A new Jira issue in the designated Jira project (specified in [`autokitteh.yaml`](./autokitteh.yaml))
+- **Result**: The current person on-call is retrieved via the Google Calendar API and added as the assignee in the Jira issue that triggered the workflow.
