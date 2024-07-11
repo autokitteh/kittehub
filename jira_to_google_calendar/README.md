@@ -9,7 +9,7 @@ This program is a real-life example workflow integrating Jira and Google Calenda
 
 ## How It Works
 
-- **Trigger**: The creation of a Jira issue in the designated project (specified in the `autokitteh.yaml` file).
+- **Trigger**: The creation of a Jira issue in the designated project (specified in the [`autokitteh.yaml`](./autokitteh.yaml) file).
 - **Result**: A new event is created in the user's Google Calendar containing information from the Jira issue (e.g., `duedate`).
 
 ## Known Limitations
