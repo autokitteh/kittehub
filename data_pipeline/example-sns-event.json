@@ -1,0 +1,12 @@
+{
+  "Type": "Notification",
+  "MessageId": "7db2e638-a87f-5e63-8faa-b8cc6d8b294d",
+  "TopicArn": "arn:aws:sns:eu-north-1:975050051518:hikes",
+  "Subject": "Amazon S3 Notification",
+  "Message": "{\"Records\":[{\"eventVersion\":\"2.1\",\"eventSource\":\"aws:s3\",\"awsRegion\":\"eu-north-1\",\"eventTime\":\"2024-06-25T13:18:43.193Z\",\"eventName\":\"ObjectCreated:Put\",\"userIdentity\":{\"principalId\":\"AWS:AROA6GBMDB67DH6QBEE75:miki\"},\"requestParameters\":{\"sourceIPAddress\":\"62.0.134.40\"},\"responseElements\":{\"x-amz-request-id\":\"396RJHM7A05CBDFX\",\"x-amz-id-2\":\"le/wihJ5KVdyKCdYy91HNlBerbBaTtOIEnUFvnWBIUyFRmy75S4IB3IX9dIHZ033RE+mOOMWzN4OwcVBvbZw3jpVYiT6uDiYvTUaXewfDwk=\"},\"s3\":{\"s3SchemaVersion\":\"1.0\",\"configurationId\":\"new\",\"bucket\":{\"name\":\"ak-miki-hikes\",\"ownerIdentity\":{\"principalId\":\"A3RBVIBHMVQI0T\"},\"arn\":\"arn:aws:s3:::ak-miki-hikes\"},\"object\":{\"key\":\"simple.tar.gz\",\"size\":758,\"eTag\":\"d6805ceca3d89e3f784a5c6ec9a5a483\",\"sequencer\":\"00667AC3B32730E451\"}}}]}",
+  "Timestamp": "2024-06-25T13:18:44.098Z",
+  "SignatureVersion": "1",
+  "Signature": "WJUHeHE5DIvKDRkSIe0mjHBCbt4WdAdR68s72w5GOUI4/G5Me1r1ZI1KWYLYPbMECucH6PKFW2XfgSERlOtpUdZkFkf0gdy3TqVB+Jmrm1x4MjLTrEHGQ27GFApj3MRTLiFOBJFUNo1KE9hNpJuZKcX3g0VjD7+xFc3uYqJT4KHTBY+2rpt3BnKBfIZEswhajFBWZ9Ro1izfXBYl2NYPBvGMC1xd2l6IQqMDfjev0pkIUcq9lAFXbwpCWW+SV5kW4Tut0Pso8EHzu2lGzmbBSlpQXC8ZCHBz07PtuVL5Cy0Uc5KvEd2XepVmu4OtzZwRNye9C1mQKh2WRQLuDEB/5A==",
+  "SigningCertURL": "https://sns.eu-north-1.amazonaws.com/SimpleNotificationService-60eadc530605d63b8e62a523676ef735.pem",
+  "UnsubscribeURL": "https://sns.eu-north-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-north-1:975050051518:hikes:18b9ba01-43f1-4a6f-a5a1-95c76a68f760"
+}
