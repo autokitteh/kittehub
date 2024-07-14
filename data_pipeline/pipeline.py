@@ -66,6 +66,7 @@ def insert_records(db_dsn, records):
 
 trkpt_tag = "{http://www.topografix.com/GPX/1/1}trkpt"
 
+
 @autokitteh.activity
 def parse_gpx(track_id, data):
     io = BytesIO(data)
