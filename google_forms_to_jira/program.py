@@ -1,4 +1,4 @@
-""" This program polls a Google Form for new responses and creates a Jira issue for each new response.
+"""This program polls a Google Form for new responses and creates a Jira issue for each new response.
 
 Workflow:
 1. Trigger: HTTP GET request.
