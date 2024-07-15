@@ -4,6 +4,7 @@
 #
 # After applying this file, initialize this AutoKitteh project's
 # Google Forms and Jira connections.
+
 version: v1
 
 project:
