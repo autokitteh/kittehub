@@ -13,10 +13,10 @@ version: v1
 project:
   name: reviewkitteh
   vars:
-    - name: "CHANNEL"
-      value: "pasha-slack-test"
-    - name: "SHEET_ID"
-      value: "16xnDhSm9JWa2nZNs65XtQ19N94KddZYAI-lovJkdDW0"
+    - name: CHANNEL
+      value: <Channel Name or ID>
+    - name: SHEET_ID
+      value: <Google Sheets ID>
   connections:
     - name: my_slack
       integration: slack
