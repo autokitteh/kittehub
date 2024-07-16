@@ -13,11 +13,8 @@ load("@googlesheets", "my_googlesheets")
 load("env", "CHANNEL", "SHEET_ID")
 
 
-def log(msg):
-    print("[%s] %s" % (time.now(), msg))
-
-
 def on_github_pull_request(data):
+    """Workflow's entry-point."""
     if data.action not in ["opened", "reopened"]:
         return
 
@@ -44,8 +41,12 @@ def on_github_pull_request(data):
             rows = my_googlesheets.read_range(SHEET_ID, "A1:A5")
             the_chosen_one = rows[rand.intn(len(rows))][0]
             log("meowing at %s" % the_chosen_one)
-            user_email = "%s@your-domain.com" % the_chosen_one
+            user_email = "%s@autokitteh.com" % the_chosen_one
             user = my_slack.users_lookup_by_email(user_email).user
             my_slack.chat_post_message(CHANNEL, "paging <@%s>" % user.id, thread_ts=ts)
 
     log("pr is %s" % pr.state)
+
+
+def log(msg):
+    print("[%s] %s" % (time.now(), msg))

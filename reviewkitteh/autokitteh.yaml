@@ -14,9 +14,9 @@ project:
   name: reviewkitteh
   vars:
     - name: "CHANNEL"
-      value: "<Channel Name or ID>"
+      value: "pasha-slack-test"
     - name: "SHEET_ID"
-      value: "<Google Sheets ID>"
+      value: "16xnDhSm9JWa2nZNs65XtQ19N94KddZYAI-lovJkdDW0"
   connections:
     - name: my_slack
       integration: slack
