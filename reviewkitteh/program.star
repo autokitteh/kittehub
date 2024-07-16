@@ -5,8 +5,6 @@ Slack channel when a pull request is opened or reopened. It then polls the
 pull request until it is closed or merged, updating the message with the
 current state of the pull request. Every 15 seconds, it also reads a random
 name from a Google Sheet and pages that person in the Slack channel.
-
-TODO: Explain what the Google Sheets contains
 """
 
 load("@slack", "my_slack")
@@ -42,6 +40,7 @@ def on_github_pull_request(data):
         i += 1
 
         if i % 3 == 0:
+            # Spreadsheet contains a list of usernames
             rows = my_googlesheets.read_range(SHEET_ID, "A1:A5")
             the_chosen_one = rows[rand.intn(len(rows))][0]
             log("meowing at %s" % the_chosen_one)
