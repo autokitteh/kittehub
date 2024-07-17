@@ -4,7 +4,7 @@ project:
   name: slack_support
   vars:
     - name: GEMINI_API_KEY
-      value: "AIzaSyDwdnl3suQGjaWwH3cGorjrkU1S_MGKXuk"
+      value: "your api key"
     - name: HELP_REQUEST_TIMEOUT_MINUTES
       value: "10"
     - name: HELP_REQUEST_IDLE_TIMEOUT_MINUTES
