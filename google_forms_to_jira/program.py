@@ -15,13 +15,16 @@ from autokitteh import google
 from autokitteh.atlassian import atlassian_jira_client
 
 
+POLL_INTERVAL = os.getenv("POLL_INTERVAL")
+
+
 def on_http_get(event):
     form_id = os.getenv("FORM_ID")
     form_data = _get_form_data(form_id)
     total_responses = None
     while True:
         total_responses = _poll_forms(form_data, form_id, total_responses)
-        time.sleep(os.getenv("POLL_INTERVAL"))
+        time.sleep(float(POLL_INTERVAL))
 
 
 @autokitteh.activity
