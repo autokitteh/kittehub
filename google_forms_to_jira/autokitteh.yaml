@@ -11,7 +11,11 @@ project:
   name: google_forms_to_jira
   vars: 
     - name: FORM_ID
-      value: "<Google Form ID>" # TODO: Replace with Google Form ID
+      value: <Google Form ID> # TODO: Replace with Google Form ID
+    - name: JIRA_PROJECT_KEY
+      value: <Jira Project Key> # TODO: Replace with Jira Project Key
+    - name: POLL_INTERVAL
+      value: 10
   connections:
     - name: jira_connection
       integration: jira

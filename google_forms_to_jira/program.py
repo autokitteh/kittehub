@@ -21,7 +21,7 @@ def on_http_get(event):
     total_responses = None
     while True:
         total_responses = _poll_forms(form_data, form_id, total_responses)
-        time.sleep(10)
+        time.sleep(os.getenv("POLL_INTERVAL"))
 
 
 @autokitteh.activity
@@ -41,7 +41,7 @@ def _create_jira_issue(title, response):
     jira = atlassian_jira_client("jira_connection")
     answers = json.dumps(response["answers"], indent=2)
     fields = {
-        "project": {"key": "<JIRA_PROJECT_KEY>"},  # Replace with your Jira project key.
+        "project": {"key": os.getenv("JIRA_PROJECT_KEY")},
         "summary": "New Google Form Response for form: " + title,
         "description": f"{{code:|language=python}} {answers} {{code}}",
         "issuetype": {"name": "Task"},
