@@ -74,7 +74,7 @@ ak up --mode dev
 #### CLI
 >💡 **Note**: `my_http` does not need to initialized
 
-Run these commands:
+Using the connection ID's from the previous step, run these commands:
 <!-- TODO: Change the commands below to working commands -->
 ```shell
 ak connection init my_chatgpt <connection ID>
