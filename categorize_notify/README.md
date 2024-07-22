@@ -14,18 +14,12 @@ This project automates the process of categorizing incoming emails and notifying
 
 For more details, refer to [this blog post](https://autokitteh.com/technical-blog/from-inbox-to-slack-automating-email-categorization-and-notifications-with-ai/).
 
-## Installation Instructions
-If you're using VS Code, make sure to [install the AutoKitteh extension](https://docs.autokitteh.com/get_started/client/vscode/install) before proceeding.
-### Mac 
-To install on Mac, run the following command:
-```shell
-brew install autokitteh/tap/autokitteh
-``` 
-### Linux
-For Linux installation instructions, click [here](https://docs.autokitteh.com/get_started/install?os=linux).
+## Installation and Usage 
+First and foremost, [install AutoKitteh](https://docs.autokitteh.com/get_started/install).
 
-### Windows
-For Windows installation instructions, click [here](https://docs.autokitteh.com/get_started/install?os=windows).
+### Configure integrations
+- [Configure Slack integration](https://docs.autokitteh.com/config/integrations/slack/)
+- [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
 
 ### Clone the Repository
 ```shell
@@ -43,7 +37,6 @@ ak up --mode dev
 
 ### Apply Manifest and Deploy Project
 
-#### CLI
 1. Navigate to the `categorize_notify` directory:
 
    ```shell
@@ -63,15 +56,9 @@ ak up --mode dev
     [exec] create_connection "categorize_notify/my_chatgpt": con_01j36p9gj6e2nt87p9vap6rbmz created
     ```
 
-    `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.    
-#### VS Code
-1. Open the project's YAML manifest file
-2. In the VS Code command palette, run: `AutoKitteh: Apply Manifest`
-3. Open AutoKitteh VS Code extension
-4. To the right of the project title, select `Run Project`
+    `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
 
 ### Initiliaze Connections
-#### CLI
 >💡 **Note**: `my_http` does not need to initialized
 
 Using the connection ID's from the previous step, run these commands:
@@ -81,16 +68,6 @@ ak connection init my_chatgpt <connection ID>
 ak connection init my_gmail <connection ID>
 ak connection init my_slack <connection ID>
 ```
-Alternatively, you can initialize connections using VS Code.
-
-#### VS Code
-1. Open the AutoKitteh extension
-2. Select `categorize_notify`
-3. Click on connections
-![](../../static/img/connect_init.png)
-4. Click on the cog wheel next to `my_chatgpt`, `my_gmail` and `my_slack` connections to be redirected to their respective initialization page
-![](../../static/img/connect_init2.png)
-
 
 ### Trigger the Workflow
 Run this command:
@@ -98,6 +75,8 @@ Run this command:
 ```shell
 curl -v "http://localhost:9980/http/categorize_notify/"
 ```
+
+Now send yourself a new email and watch the workflow do its job!
 ## Known Limitations
 - **ChatGPT**: the prompt for this workflow works for simple cases. It may have mixed results for emails that lack detail or have nothing to do with the channels provided.
 - **E-mail polling**: the polling mechanism is basic and does not cover edge cases.
