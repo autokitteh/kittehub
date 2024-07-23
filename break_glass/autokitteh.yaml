@@ -1,0 +1,22 @@
+version: v1
+
+project:
+  name: break_glass
+  vars:
+    - name: BASE_URL
+      value: "https://example.com/"
+  connections:
+    - name: http_connection 
+      integration: http
+    - name: slack_connection 
+      integration: slack
+  triggers:
+    - name: slack_slash_command
+      connection: slack_connection
+      event_type: slash_command
+      call: program.py:on_slack_slash_command 
+    - name: slack_interaction
+      connection: slack_connection
+      event_type: interaction
+      filter: data.type == "view_submission"
+      call: program.py:on_form_submit
