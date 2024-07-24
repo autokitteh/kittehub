@@ -18,10 +18,10 @@
   "blocks": [
     {
       "type": "input",
-      "block_id": "block_ticket_id",
+      "block_id": "block_issue_key",
       "element": {
         "type": "plain_text_input",
-        "action_id": "ticket_id"
+        "action_id": "issue_key"
       },
       "label": {
         "type": "plain_text",

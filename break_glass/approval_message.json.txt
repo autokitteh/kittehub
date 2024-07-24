@@ -39,7 +39,7 @@
                     "text":  "Approve"
                 },
                 "value":     "Approve",
-                "action_id": "Approve ActionID"
+                "action_id": "Approve Requester IssueKey"
             },
             {
                 "type":  "button",
@@ -50,7 +50,7 @@
                     "text":  "Deny"
                 },
                 "value":     "Deny",
-                "action_id": "Deny ActionID"
+                "action_id": "Deny Requester IssueKey"
             }
         ]
     }
