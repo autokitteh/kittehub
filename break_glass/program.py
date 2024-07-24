@@ -24,10 +24,8 @@ def on_form_submit(event):
     reason = form_data["block_reason"]["reason"]["value"]
     issue_key = form_data["block_issue_key"]["issue_key"]["value"]
     base_url = os.getenv("jira_connection__AccessURL")
-    # TODO: get the requester's name by doing a slack lookup
     requester_id = event.data["user"]["id"]
     requester_name = slack.users_info(user=requester_id)["user"]["name"]
-    print(requester_name)
 
     if not check_issue_exists(issue_key):
         message = f"Ticket {issue_key} does not exist. Please try again."
@@ -54,7 +52,6 @@ def on_form_submit(event):
 
 @autokitteh.activity
 def on_approve_deny(event):
-    # print(event.data)
     action_id = event.data["actions"][0]["action_id"]
     params = action_id.split(" ")
     approver = event.data["user"]["id"]
