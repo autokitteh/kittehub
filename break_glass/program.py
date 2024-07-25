@@ -20,6 +20,7 @@ def on_slack_slash_command(event):
 
 @autokitteh.activity
 def on_form_submit(event):
+    # TODO: make into helper function
     form_data = event.data["view"]["state"]["values"]
     reason = form_data["block_reason"]["reason"]["value"]
     issue_key = form_data["block_issue_key"]["issue_key"]["value"]
@@ -43,7 +44,8 @@ def on_form_submit(event):
         ("Title", "Approval request from " + f"<@{requester_name}>"),
         ("Ticket", f"*Ticket*: <{base_url}/browse/{issue_key}|{issue_key}>"),
         ("Message", "*Reason for request*: " + reason),
-        ("ActionID", requester_id),
+        ("Requester", requester_id),
+        ("IssueKey", issue_key),
     ]
     for old, new in changes:
         blocks = blocks.replace(old, new)
@@ -53,27 +55,24 @@ def on_form_submit(event):
 @autokitteh.activity
 def on_approve_deny(event):
     action_id = event.data["actions"][0]["action_id"]
-    params = action_id.split(" ")
-    approver = event.data["user"]["id"]
-    # TODO: get the approver's name/slack tag? by doing a slack lookup
+    _, requester, issue_key = action_id.split(" ")
+    approver_id = event.data["user"]["id"]
+    approver_info = slack.users_info(user=approver_id)
 
     if event.data["actions"][0]["value"] == "Approve":
-        # TODO: can't combine the two lines below because of node error
-        requester = params[1]
-        # TODO: Add a message to the ticket. Request to break glass was approved by:
-        issue_key = params[2]
-        print(f"Issue key: {issue_key}")
-        # jira.issue_add_comment(issue_key, f"Request approved by: {approver}")
+        approver_email = approver_info["user"]["profile"]["email"]
+        jira.issue_add_comment(issue_key, f"Request approved by: {approver_email}")
     else:
-        requester = action_id.split(" ")[1]
-        slack.chat_postMessage(channel=requester, text=f"Request denied by: {approver}")
+        print(f"Requester: {requester}")
+        message = f"Request denied by: <@{approver_info["user"]["name"]}>"
+        slack.chat_postMessage(channel=requester, text=message)
 
 
 def check_issue_exists(issue_key):
     try:
         jira.issue(issue_key)
         return True
-    # TODO: Add a more specific exception?
+    # TODO: Add a more specific exception. Use JIRA's error exception
     except Exception as e:
         print(f"Error retrieving issue: {e}")
         return False
@@ -81,9 +80,5 @@ def check_issue_exists(issue_key):
 
 def validate_requester(issue_key, requester):
     issue = jira.issue(issue_key)
-    assignee = issue["fields"]["assignee"]
-    if not assignee:
-        # TODO: Potentially different error case? This is when the assignee is not set.
-        return False
-    assignee = issue["fields"]["assignee"]["emailAddress"]
+    assignee = issue.get("fields", {}).get("assignee", {}).get("emailAddress", "")
     return assignee == requester
