@@ -12,6 +12,7 @@ project:
       connection: slack_connection
       event_type: slash_command
       call: program.py:on_slack_slash_command 
+      filter: data.text == "break-glass"
     - name: form_submission 
       connection: slack_connection
       event_type: interaction

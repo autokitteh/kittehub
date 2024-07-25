@@ -14,14 +14,24 @@
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "Ticket"
+            "text": "RequestFromMessage"
         }
     },
     {
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "Message"
+            "text": "Ticket"
+        }
+    },
+    {
+        "type": "divider"
+    },
+    {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "Reason"
         }
     },
     {
@@ -39,7 +49,7 @@
                     "text":  "Approve"
                 },
                 "value":     "Approve",
-                "action_id": "Approve Requester IssueKey"
+                "action_id": "Approve RequesterId IssueKey"
             },
             {
                 "type":  "button",
@@ -50,7 +60,7 @@
                     "text":  "Deny"
                 },
                 "value":     "Deny",
-                "action_id": "Deny Requester IssueKey"
+                "action_id": "Deny RequesterId IssueKey"
             }
         ]
     }
