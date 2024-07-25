@@ -12,7 +12,7 @@ import time
 
 import autokitteh
 from autokitteh import google
-from autokitteh.atlassian import atlassian_jira_client
+from autokitteh.atlassian import jira_client
 
 
 POLL_INTERVAL = os.getenv("POLL_INTERVAL")
@@ -41,7 +41,7 @@ def _poll_forms(form_data, form_id, prev_total):
 
 
 def _create_jira_issue(title, response):
-    jira = atlassian_jira_client("jira_connection")
+    jira = jira_client("jira_connection")
     answers = json.dumps(response["answers"], indent=2)
     fields = {
         "project": {"key": os.getenv("JIRA_PROJECT_KEY")},
