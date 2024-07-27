@@ -6,8 +6,15 @@ project:
     - name: APPROVAL_CHANNEL
       value: "sre-team"
   connections:
+    - name: aws_connection
+      integration: aws
     - name: jira_connection
       integration: jira
+    - name: redis_connection
+      integration: redis
+      vars:
+        - name: URL 
+          value: redis://localhost:6379/0 # Modify this if needed.
     - name: slack_connection 
       integration: slack
   triggers:
