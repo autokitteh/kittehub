@@ -126,6 +126,13 @@ def parse_event_data(event):
     return reason, issue_key, base_url, requester_id
 
 
+def validate_requester(issue_key, requester):
+    issue = jira.issue(issue_key)
+    assignee = issue.get("fields", {}).get("assignee", {}).get("emailAddress", "")
+    return assignee == requester
+
+
+@autokitteh.activity
 def check_issue_exists(issue_key):
     try:
         jira.issue(issue_key)
@@ -136,16 +143,10 @@ def check_issue_exists(issue_key):
         return False
 
 
-def validate_requester(issue_key, requester):
-    issue = jira.issue(issue_key)
-    assignee = issue.get("fields", {}).get("assignee", {}).get("emailAddress", "")
-    return assignee == requester
-
-
 @autokitteh.activity
 def set_permissions(user_name):
     aws.add_user_to_group(GroupName="break-glass-admin", UserName=user_name)
-    redis.set(user_name, time.time() + 120)
+    redis.set(user_name, time.time() + os.getenv("PERMISSION_EXPIRY"))
 
 
 @autokitteh.activity
