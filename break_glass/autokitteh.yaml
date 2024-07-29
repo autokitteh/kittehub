@@ -4,10 +4,18 @@ project:
   name: break_glass
   vars:
     - name: APPROVAL_CHANNEL
-      value: "sre-team"
+      value: sre-team
+    - name: PERMISSION_EXPIRY
+      value: 60 # seconds
+    - name: SHEETS_RANGE
+      value: Sheet1!A:B
+    - name: SHEETS_ID
+      value: 14HTDDXapk548dBA1nNbeKq9NaXMsI7UE6Y2YkxQDjZs
   connections:
     - name: aws_connection
       integration: aws
+    - name: googlesheets_connection
+      integration: googlesheets
     - name: jira_connection
       integration: jira
     - name: redis_connection

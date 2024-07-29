@@ -21,8 +21,6 @@ is the assignee of the ticket. It also uses Slack for communication and notifica
 throughout the process.
 """
 
-from collections import namedtuple
-from datetime import datetime
 import os
 from pathlib import Path
 import time
@@ -30,13 +28,17 @@ import time
 import autokitteh
 from autokitteh.atlassian import atlassian_jira_client
 from autokitteh.aws import boto3_client
-
+from autokitteh.google import google_sheets_client
 from autokitteh.redis import redis_client
 from autokitteh.slack import slack_client
 from requests.exceptions import HTTPError
 
 
 APPROVAL_CHANNEL = os.getenv("APPROVAL_CHANNEL")
+SHEET_ID = os.getenv("SHEETS_ID")
+SHEETS_RANGE = os.getenv("SHEETS_RANGE")
+aws = boto3_client("aws_connection")
+google_sheets = google_sheets_client("google_sheets_connection")
 jira = atlassian_jira_client("jira_connection")
 redis = redis_client("redis_connection")
 slack = slack_client("slack_connection")
@@ -86,6 +88,10 @@ def on_approve_deny(event):
     slack.chat_postMessage(channel=requester, text=message)
 
     # TODO: get user from google sheets
+    sheet = google_sheets.spreadsheets()
+    result = sheet.values()
+    values = result.get(spreadsheetId=SHEET_ID, range=SHEETS_RANGE).execute()
+    print(values)
     aws_user = "break-glass-test-user"
     set_permissions(aws_user)
     monitor_and_remove_permissions(aws_user, requester)
@@ -128,8 +134,11 @@ def parse_event_data(event):
 
 def validate_requester(issue_key, requester):
     issue = jira.issue(issue_key)
-    assignee = issue.get("fields", {}).get("assignee", {}).get("emailAddress", "")
-    return assignee == requester
+    assignee = issue.get("fields", {}).get("assignee", {})
+    if assignee is None:
+        return False
+    email = assignee.get("emailAddress", "")
+    return email == requester
 
 
 @autokitteh.activity
