@@ -30,7 +30,7 @@ from autokitteh.slack import slack_client
 from requests.exceptions import HTTPError
 
 
-APPROVER = "sre-team"
+APPROVAL_CHANNEL = os.getenv("APPROVAL_CHANNEL")
 jira = atlassian_jira_client("jira_connection")
 slack = slack_client("slack_connection")
 
@@ -44,7 +44,7 @@ def on_slack_slash_command(event):
 
 @autokitteh.activity
 def on_form_submit(event):
-    reason, issue_key, base_url, requester_id, requester_name = parse_event_data(event)
+    reason, issue_key, base_url, requester_id = parse_event_data(event)
 
     if not check_issue_exists(issue_key):
         message = f"Ticket `{issue_key}` does not exist. Please try again."
@@ -53,11 +53,12 @@ def on_form_submit(event):
 
     email = slack.users_info(user=requester_id)["user"]["profile"]["email"]
     if not validate_requester(issue_key, email):
-        message = f"You are not the assignee for ticket {issue_key}. Please try again."
+        issue_link = f"<{base_url}/browse/{issue_key}|{issue_key}>"
+        message = f"You are not the assignee in ticket {issue_link}. Please try again."
         slack.chat_postMessage(channel=requester_id, text=message)
         return
 
-    send_approval_request(reason, issue_key, base_url, requester_id, requester_name)
+    send_approval_request(reason, issue_key, base_url, requester_id)
     slack.chat_postMessage(channel=requester_id, text="Request sent for approval.")
 
 
@@ -79,11 +80,10 @@ def on_approve_deny(event):
         slack.chat_postMessage(channel=requester, text=message)
 
 
-def send_approval_request(reason, issue_key, base_url, requester_id, requester_name):
+def send_approval_request(reason, issue_key, base_url, requester_id):
     blocks = Path("approval_message.json.txt").read_text()
     changes = [
-        ("Title", "Break Glass Request"),
-        ("RequestFromMessage", f"*Request from*: <@{requester_name}>"),
+        ("RequestFromMessage", f"*Request from*: <@{requester_id}>"),
         ("Ticket", f"*Ticket*: <{base_url}/browse/{issue_key}|{issue_key}>"),
         ("Reason", "*Reason for request*: " + reason),
         ("RequesterId", requester_id),
@@ -91,7 +91,7 @@ def send_approval_request(reason, issue_key, base_url, requester_id, requester_n
     ]
     for old, new in changes:
         blocks = blocks.replace(old, new)
-    slack.chat_postMessage(channel=APPROVER, blocks=blocks)
+    slack.chat_postMessage(channel=APPROVAL_CHANNEL, blocks=blocks)
 
 
 def parse_event_data(event):
@@ -100,8 +100,7 @@ def parse_event_data(event):
     issue_key = form_data["block_issue_key"]["issue_key"]["value"]
     base_url = os.getenv("jira_connection__AccessURL")
     requester_id = event.data["user"]["id"]
-    requester_name = slack.users_info(user=requester_id)["user"]["name"]
-    return reason, issue_key, base_url, requester_id, requester_name
+    return reason, issue_key, base_url, requester_id
 
 
 def check_issue_exists(issue_key):
