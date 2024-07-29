@@ -1,0 +1,28 @@
+version: v1
+
+project:
+  name: break_glass
+  vars:
+    - name: APPROVAL_CHANNEL
+      value: "sre-team"
+  connections:
+    - name: jira_connection
+      integration: jira
+    - name: slack_connection 
+      integration: slack
+  triggers:
+    - name: slack_slash_command
+      connection: slack_connection
+      event_type: slash_command
+      call: program.py:on_slack_slash_command 
+      filter: data.text == "break-glass"
+    - name: form_submission 
+      connection: slack_connection
+      event_type: interaction
+      filter: data.type == "view_submission"
+      call: program.py:on_form_submit
+    - name: approve_deny
+      connection: slack_connection
+      event_type: interaction
+      filter: data.type == "block_actions"
+      call: program.py:on_approve_deny

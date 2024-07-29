@@ -1,0 +1,47 @@
+{
+  "title": {
+    "type": "plain_text",
+    "text": "My App",
+    "emoji": true
+  },
+  "submit": {
+    "type": "plain_text",
+    "text": "Submit",
+    "emoji": true
+  },
+  "type": "modal",
+  "close": {
+    "type": "plain_text",
+    "text": "Cancel",
+    "emoji": true
+  },
+  "blocks": [
+    {
+      "type": "input",
+      "block_id": "block_issue_key",
+      "element": {
+        "type": "plain_text_input",
+        "action_id": "issue_key"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Reference Ticket ID",
+        "emoji": true
+      }
+    },
+    {
+      "type": "input",
+      "block_id": "block_reason",
+      "element": {
+        "type": "plain_text_input",
+        "multiline": true,
+        "action_id": "reason"
+      },
+      "label": {
+        "type": "plain_text",
+        "text": "Reason",
+        "emoji": true
+      }
+    }
+  ]
+}
