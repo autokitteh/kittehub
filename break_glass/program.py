@@ -47,7 +47,7 @@ def on_form_submit(event):
     reason, issue_key, base_url, requester_id, requester_name = parse_event_data(event)
 
     if not check_issue_exists(issue_key):
-        message = f"Ticket {issue_key} does not exist. Please try again."
+        message = f"Ticket `{issue_key}` does not exist. Please try again."
         slack.chat_postMessage(channel=requester_id, text=message)
         return
 
