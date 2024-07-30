@@ -35,10 +35,10 @@ from requests.exceptions import HTTPError
 
 
 APPROVAL_CHANNEL = os.getenv("APPROVAL_CHANNEL")
-SHEET_ID = os.getenv("SHEETS_ID")
-SHEETS_RANGE = os.getenv("SHEETS_RANGE")
-aws = boto3_client("aws_connection")
-google_sheets = google_sheets_client("google_sheets_connection")
+AWS_ADMIN_GROUP = os.getenv("AWS_ADMIN_GROUP")
+PERMISSION_EXPIRY = os.getenv("PERMISSION_EXPIRY")
+REQUESTER_EMAIL = os.getenv("REQUESTER_EMAIL")
+aws = boto3_client("aws_connection", "iam")
 jira = atlassian_jira_client("jira_connection")
 redis = redis_client("redis_connection")
 slack = slack_client("slack_connection")
@@ -87,12 +87,7 @@ def on_approve_deny(event):
     message = f"Request approved by: <@{approver_info['user']['name']}>"
     slack.chat_postMessage(channel=requester, text=message)
 
-    # TODO: get user from google sheets
-    sheet = google_sheets.spreadsheets()
-    result = sheet.values()
-    values = result.get(spreadsheetId=SHEET_ID, range=SHEETS_RANGE).execute()
-    print(values)
-    aws_user = "break-glass-test-user"
+    aws_user = lookup_user_by_email(approver_email)
     set_permissions(aws_user)
     monitor_and_remove_permissions(aws_user, requester)
 
@@ -141,12 +136,20 @@ def validate_requester(issue_key, requester):
     return email == requester
 
 
+def lookup_user_by_email(email):
+    # this is meant to be a placeholder for a real lookup function
+    email_to_user = {
+        REQUESTER_EMAIL: "break-glass-test-user",
+        "david@example.com": "random-user",
+    }
+    return email_to_user.get(email)
+
+
 @autokitteh.activity
 def check_issue_exists(issue_key):
     try:
         jira.issue(issue_key)
         return True
-    # TODO: issue exists or a more specific error code 404 etc
     except HTTPError as e:
         print(f"Error retrieving issue: {e}")
         return False
@@ -154,13 +157,14 @@ def check_issue_exists(issue_key):
 
 @autokitteh.activity
 def set_permissions(user_name):
-    aws.add_user_to_group(GroupName="break-glass-admin", UserName=user_name)
-    redis.set(user_name, time.time() + os.getenv("PERMISSION_EXPIRY"))
+    aws.add_user_to_group(GroupName=AWS_ADMIN_GROUP, UserName=user_name)
+    time_alotted = os.getenv("PERMISSION_EXPIRY")
+    redis.set(user_name, time.time() + float(time_alotted))
 
 
 @autokitteh.activity
 def expire_permissions(user_name):
-    aws.remove_user_from_group(GroupName="break-glass-admin", UserName=user_name)
+    aws.remove_user_from_group(GroupName=AWS_ADMIN_GROUP, UserName=user_name)
     redis.delete(user_name)
 
 
