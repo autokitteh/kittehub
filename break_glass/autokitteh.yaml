@@ -16,11 +16,11 @@ project:
   name: break_glass
   vars:
     - name: APPROVAL_CHANNEL
-      value: sre-team # Modify this if needed.
+      value: <slack-channel> # Modify this if needed.
     - name: AWS_ADMIN_GROUP
       value: break-glass-admin # Modify this if needed.
     - name: REQUESTER_EMAIL # can be replaced with a database or spreadsheet lookup
-      value: pasha@autokitteh.com
+      value: <your-email>
     - name: PERMISSION_EXPIRY
       value: 10 # seconds
   connections:
