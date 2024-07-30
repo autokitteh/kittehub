@@ -8,13 +8,6 @@ project:
   connections:
     - name: aws_connection
       integration: aws
-    - name: jira_connection
-      integration: jira
-    - name: redis_connection
-      integration: redis
-      vars:
-        - name: URL 
-          value: redis://localhost:6379/0 # Modify this if needed.
     - name: slack_connection 
       integration: slack
   triggers:
@@ -23,13 +16,13 @@ project:
       event_type: slash_command
       call: program.py:on_slack_slash_command 
       filter: data.text == "break-glass"
-    - name: form_submission 
-      connection: slack_connection
-      event_type: interaction
-      filter: data.type == "view_submission"
-      call: program.py:on_form_submit
-    - name: approve_deny
-      connection: slack_connection
-      event_type: interaction
-      filter: data.type == "block_actions"
-      call: program.py:on_approve_deny
+    # - name: form_submission 
+    #   connection: slack_connection
+    #   event_type: interaction
+    #   filter: data.type == "view_submission"
+    #   call: program.py:on_form_submit
+    # - name: approve_deny
+    #   connection: slack_connection
+    #   event_type: interaction
+    #   filter: data.type == "block_actions"
+    #   call: program.py:on_approve_deny

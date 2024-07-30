@@ -1,0 +1,116 @@
+{
+  "actions": [],
+  "api_app_id": "A05RNB2CMEV",
+  "channel": "None",
+  "container": "None",
+  "enterprise": "None",
+  "is_enterprise_install": "False",
+  "message": "None",
+  "response_ur_ls": [],
+  "response_url": "",
+  "team": { "domain": "autokitteh", "id": "T02T1NWQK62", "name": "" },
+  "trigger_id": "7501189618066.2919778835206.f3e4d021b1945f2f9bfe1446651ce2a0",
+  "type": "view_submission",
+  "user": {
+    "deleted": "False",
+    "enterprise_user": "None",
+    "id": "U05HDSWAS82",
+    "is_admin": "False",
+    "is_app_user": "False",
+    "is_bot": "False",
+    "is_email_confirmed": "False",
+    "is_invited_user": "False",
+    "is_owner": "False",
+    "is_primary_owner": "False",
+    "is_restricted": "False",
+    "is_stranger": "False",
+    "is_ultra_restricted": "False",
+    "profile": "None",
+    "real_name": "",
+    "team_id": "T02T1NWQK62",
+    "tz": "",
+    "tz_label": "",
+    "tz_offset": 0,
+    "updated": 0
+  },
+  "view": {
+    "app_id": "A05RNB2CMEV",
+    "app_installed_team_id": "T02T1NWQK62",
+    "blocks": [
+      {
+        "block_id": "block_issue_key",
+        "dispatch_action": "False",
+        "element": {
+          "action_id": "issue_key",
+          "dispatch_action_config": {
+            "trigger_actions_on": ["on_enter_pressed"]
+          },
+          "type": "plain_text_input"
+        },
+        "label": {
+          "emoji": "True",
+          "text": "Reference Ticket ID",
+          "type": "plain_text"
+        },
+        "optional": "False",
+        "type": "input"
+      },
+      {
+        "block_id": "block_reason",
+        "dispatch_action": "False",
+        "element": {
+          "action_id": "reason",
+          "dispatch_action_config": {
+            "trigger_actions_on": ["on_enter_pressed"]
+          },
+          "multiline": "True",
+          "type": "plain_text_input"
+        },
+        "label": { "emoji": "True", "text": "Reason", "type": "plain_text" },
+        "optional": "False",
+        "type": "input"
+      }
+    ],
+    "bot_id": "B067J6R0MCP",
+    "callback_id": "",
+    "clear_on_close": "False",
+    "close": {
+      "emoji": "True",
+      "text": "Cancel",
+      "type": "plain_text",
+      "verbatim": "False"
+    },
+    "external_id": "",
+    "hash": "1722357407.ElfBslGF",
+    "id": "V07EJGFKUKY",
+    "notify_on_close": "False",
+    "private_metadata": "",
+    "root_view_id": "V07EJGFKUKY",
+    "state": {
+      "values": {
+        "block_issue_key": {
+          "issue_key": { "type": "plain_text_input", "value": "sdfsdf" }
+        },
+        "block_reason": {
+          "reason": { "type": "plain_text_input", "value": "sdfsdf" }
+        }
+      }
+    },
+    "submit": {
+      "emoji": "True",
+      "text": "Submit",
+      "type": "plain_text",
+      "verbatim": "False"
+    },
+    "submit_disabled": "False",
+    "team_id": "T02T1NWQK62",
+    "title": {
+      "emoji": "True",
+      "text": "My App",
+      "type": "plain_text",
+      "verbatim": "False"
+    },
+    "type": "modal",
+    "view_id": ""
+  }
+}
