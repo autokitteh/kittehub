@@ -1,0 +1,25 @@
+version: v1
+
+project:
+  name: deploysentry
+  vars:
+    - name: DEPLOYSENTRY_ADDR
+      value: "localhost:8080"
+    - name: INITIAL_RATIO
+      value: "10"
+    - name: RATIO_INCREMENT
+      value: "10"
+    - name: STEP_DURATION
+      value: "2s"
+  connections:
+    - name: grpc
+      integration: "grpc"
+    - name: slack
+      integration: "slack"
+    - name: "http"
+      integration: "http"
+  triggers:
+    - name: slack_app_mention
+      connection: slack
+      event_type: app_mention
+      entrypoint: main.star:on_slack_app_mention

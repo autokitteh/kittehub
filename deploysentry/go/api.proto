@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package autokitteh.deploysentry.api.v1;
+
+message DeployRequest {
+    string svc = 1;
+    string version = 2;
+}
+
+message DeployResponse {}
+
+message SetRatioRequest {
+    string svc = 1;
+    string version = 2;
+    int32 ratio = 3; // 0..100
+}
+
+message SetRatioResponse {}
+
+message GetRequest {
+  string svc = 1;
+}
+
+message GetResponse {
+  string version = 1;
+  int32 ratio = 2;
+}
+
+service DeploySentryService {
+  rpc Deploy(DeployRequest) returns (DeployResponse);
+  rpc SetRatio(SetRatioRequest) returns (SetRatioResponse);
+  rpc Get(GetRequest) returns (GetResponse);
+}
