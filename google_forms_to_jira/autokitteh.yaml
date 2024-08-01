@@ -24,8 +24,8 @@ project:
     - name: http_connection
       integration: http
   triggers:
-    - name: http_request  
-      connection: http_connection 
+    - name: http_request
+      connection: http_connection
       event_type: get
-       # Triggered by GET request to http://localhost:9980/http/google_forms_to_jira/ 
+      # Triggered by GET request to http://localhost:9980/http/google_forms_to_jira/
       call: program.py:on_http_get
