@@ -13,10 +13,12 @@ version: v1
 project:
   name: reviewkitteh
   vars:
-    - name: CHANNEL
-      value: <Channel Name or ID>
-    - name: SHEET_ID
-      value: <Google Sheets ID>
+    - # Channel name or ID
+      name: CHANNEL
+      required: true
+    - # Google Sheets ID
+      name: SHEET_ID
+      required: true
   connections:
     - name: my_slack
       integration: slack
