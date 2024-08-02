@@ -1,0 +1,27 @@
+version: v1
+
+project:
+  name: github_copilot
+  vars:
+    - name: GITHUB_ORG
+      value: "yourorg"
+    - name: IDLE_USAGE_THRESHOLD
+      value: "72h"
+    # If set, only manage GitHub Copilot subscriptions to the specified users, separated by commas.
+    - name: LOGINS
+      value: ""
+    - name: LOG_CHANNEL
+      value: "github-copilot-registrations"
+  connections:
+    - name: mygithub
+      integration: github
+    - name: myslack
+      integration: slack
+  triggers:
+    - name: check_daily
+      schedule: "@daily"
+      call: triggers.star:on_schedule
+    - name: check_now
+      connection: myslack
+      event_type: app_mention
+      call: triggers.star:on_slack_app_mention
