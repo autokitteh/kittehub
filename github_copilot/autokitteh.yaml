@@ -7,7 +7,7 @@ project:
       value: "yourorg"
     - name: IDLE_USAGE_THRESHOLD
       value: "72h"
-    # If set, only manage github copilot subscriptions to the specified users, separated by commas.
+    # If set, only manage GitHub Copilot subscriptions to the specified users, separated by commas.
     - name: LOGINS
       value: ""
     - name: LOG_CHANNEL
