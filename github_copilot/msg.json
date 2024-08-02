@@ -1,0 +1,46 @@
+{
+    "blocks": [
+        {
+            "type": "header",
+            "text": {
+                "type": "plain_text",
+                "text": "You have been removed from the Copilot program due to inactivity",
+                "emoji": true
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Reinstate"
+            },
+            "accessory": {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "text": ":repeat:",
+                    "emoji": true
+                },
+                "value": "reinstate",
+                "action_id": "button-action"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "OK"
+            },
+            "accessory": {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "text": ":relieved:",
+                    "emoji": true
+                },
+                "value": "ok",
+                "action_id": "button-action"
+            }
+        }
+    ]
+}
