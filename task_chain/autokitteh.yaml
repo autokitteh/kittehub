@@ -15,4 +15,8 @@ project:
     - name: slack_slash_command
       connection: slack_conn
       event_type: slash_command
-      call: program.py:on_slack_slash_command
+      call: main.py:on_slack_slash_command
+    - name: slack_interaction
+      connection: slack_conn
+      event_type: interaction
+      call: event_driven.py:on_slack_interaction
