@@ -15,6 +15,7 @@ from collections.abc import Callable
 from autokitteh.slack import slack_client
 
 from ask_user import ask_user
+import tasks
 
 
 slack = slack_client("slack_conn")
@@ -46,4 +47,4 @@ def on_slack_interaction(event):
 
     # This workflow's starting point is a retry of the failed task in the aborted workflow.
     task_name = event.data.actions[0]["action_id"].split()[-1]
-    run_tasks(globals()[task_name], event.data.user.id)
+    run_tasks(getattr(tasks, task_name), event.data.user.id)
