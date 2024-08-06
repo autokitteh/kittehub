@@ -3,7 +3,7 @@
 # channels, based on resource ownership data in a Google Sheet.
 #
 # Before deploying this AutoKitteh project, set "GOOGLE_SHEET_URL"
-# to your own resource ownership data, like in the template.
+# to your own resource ownership data.
 #
 # After creating this AutoKitteh project by applying this file,
 # initialize its AWS, Google Sheets, and Slack connections.
