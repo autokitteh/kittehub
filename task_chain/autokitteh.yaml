@@ -8,6 +8,9 @@ version: v1
 
 project:
   name: task_chain
+  vars:
+    - name: SINGLE_WORKFLOW
+      value: true
   connections:
     - name: slack_conn
       integration: slack

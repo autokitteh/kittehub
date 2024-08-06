@@ -35,7 +35,7 @@ def run_retriable_task(task: Callable, user_id: str) -> Callable | None:
     try:
         return task()
     except Exception as e:
-        ask_user(task.__name__, str(e), user_id, wait_resp=True)
+        ask_user(task.__name__, str(e), user_id)
         raise e  # Abort the current workflow.
 
 
