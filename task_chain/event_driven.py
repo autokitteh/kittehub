@@ -11,11 +11,15 @@ A single workflow is in charge of running all the tasks, except retries:
 """
 
 from collections.abc import Callable
+import os
 
 from autokitteh.slack import slack_client
 
 from ask_user import ask_user
 import tasks
+
+
+SINGLE_WORKFLOW = os.getenv("SINGLE_WORKFLOW", "true").lower()
 
 
 slack = slack_client("slack_conn")
@@ -42,6 +46,9 @@ def run_retriable_task(task: Callable, user_id: str) -> Callable | None:
 
 def on_slack_interaction(event):
     """Handle the user's response (retry / abort) in a new workflow."""
+    if SINGLE_WORKFLOW in ["true", "yes", "on", "1"]:
+        return
+
     if event.data.actions[0]["value"] == "abort":
         return
 
