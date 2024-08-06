@@ -16,7 +16,7 @@ project:
   name: jira_assignee_from_calendar
   vars:
     - name: SHARED_CALENDAR_ID
-      value: primary
+      value: 
   connections:
     - name: google_calendar_connection
       integration: googlecalendar
