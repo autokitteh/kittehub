@@ -18,7 +18,7 @@ project:
     - name: FILTER_LABEL
       value: ""
     - name: SLACK_CHANNEL
-      value: slack-test
+      value: 
     - name: SNIPPET_LENGTH
       value: 150
   connections:
