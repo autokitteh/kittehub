@@ -14,7 +14,7 @@ project:
   name: aws_health_to_slack
   vars:
     - name: GOOGLE_SHEET_URL
-      value: https://docs.google.com/spreadsheets/d/1PalmLwSZOPW9k668_jU-wFI5xCj88a4mDfNUtJAupMQ/
+      value: 
     - name: TRIGGER_INTERVAL
       value: 1m
   connections:
