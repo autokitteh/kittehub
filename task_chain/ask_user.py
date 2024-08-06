@@ -30,7 +30,7 @@ def ask_user(task_name: str, error: str, user_id: str) -> bool:
     message = f"The task `{task_name}` failed:\n\n`{error}`"
     blocks = Path("interactive_message.json.txt").read_text()
     blocks = blocks.replace("MESSAGE", message).replace("TASK_NAME", task_name)
-    slack.chat_postMessage(channel=user_id, text="blocks", blocks=blocks)
+    slack.chat_postMessage(channel=user_id, text="Workflow error", blocks=blocks)
 
     # Event-driven approach: the user's response is handled by a different workflow.
     if not wait_for_response:
