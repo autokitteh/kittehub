@@ -30,6 +30,6 @@ def run_retriable_task(task: Callable, user_id: str) -> tuple[Callable | None, b
     try:
         return task(), True
     except Exception as e:
-        retry = ask_user.ask_user(task.__name__, str(e), user_id, wait_resp=True)
+        retry = ask_user(task.__name__, str(e), user_id, wait_resp=True)
         result = task if retry else None
         return result, False
