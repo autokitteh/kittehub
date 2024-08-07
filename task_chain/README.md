@@ -1,16 +1,24 @@
 # Task Chain
 
-This project demonstrates running a sequence of tasks, in three ways.
+This project demonstrates running a sequence of tasks with fault tolerance.
+
+The workflow is resilient to errors in each step (with the ability to retry
+each failing step on-demand), as well as server-side failures (thanks to
+AutoKitteh's durable execution).
+
+![Slack screenshot](./slack.png)
+
+This directory contains three variants of this project:
 
 1. **Single-workflow approach**: a single workflow runs all the tasks,
    including retry loops; it handles Slack interactions using runtime event
    subscriptions
 
    1. ["Basic" mode](./single_workflow/basic/) - an explicit specification of
-      the transition between steps, and each step is retried in its own loop
+      the transitions between steps, and each step is retried in its own loop
 
-   2. ["Advanced" mode](./single_workflow/advanced/) - a single loop iterating
-      over a global list of all the steps, and handling all retries
+   2. ["Advanced" mode](./single_workflow/advanced/) - a single loop iterates
+      over a global list of all the steps, and handles all the retries
 
 ```mermaid
 flowchart LR
