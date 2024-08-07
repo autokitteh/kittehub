@@ -2,13 +2,17 @@
 
 This project demonstrates running a sequence of tasks, in several ways.
 
-- Single-workflow approach:
-  - A single workflow runs all the tasks, including retry loops; it handles
-    Slack interactions using runtime event subscriptions
-  - ["Basic" mode](./single_workflow/basic/) - ...
-  - ["Advanced" mode](./single_workflow/advanced/) - ...
-- [Event-driven approach](./event_driven/)
-  - A single workflow runs all the tasks, except retries
+**Single-workflow approach**: a single workflow runs all the tasks, including
+retry loops; it handles Slack interactions using runtime event subscriptions
+
+- ["Basic" mode](./single_workflow/basic/) - explicit specification of the
+  workflow's steps, each step is retried in its own loop
+
+- ["Advanced" mode](./single_workflow/advanced/) - a single loop iterating
+  over a global list of all the steps, and handling all retries
+
+**[Event-driven approach](./event_driven/)**: a single workflow runs all the
+tasks, except retries, which branch into separate workflows
 
 ```mermaid
 flowchart LR
@@ -24,11 +28,12 @@ flowchart LR
     success(("`Workflow
     Success`"))
     slack -. Slash Command .-> task1
+    error -. Retry/Abort Message .-> slack
     slack -. Retry Button Clicked .-> task3b
     subgraph Workflow 2
     task3b --> task4 -.-> success
     end
     subgraph Workflow 1
-    task1 --> task2 --> task3a -.-> error -. Retry/Abort Message .-> slack
+    task1 --> task2 --> task3a -.-> error
     end
 ```
