@@ -1,0 +1,19 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that runs a sequence of tasks, using an
+# advanced single-workflow approach.
+#
+# After applying this file, initialize this AutoKitteh project's
+# Slack connection.
+
+version: v1
+
+project:
+  name: task_chain
+  connections:
+    - name: slack_conn
+      integration: slack
+  triggers:
+    - name: slack_slash_command
+      connection: slack_conn
+      event_type: slash_command
+      call: program.py:on_slack_slash_command
