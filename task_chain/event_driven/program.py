@@ -40,14 +40,15 @@ tasks = [step1, step2, step3, step4]
 
 def on_slack_slash_command(event):
     """Use a Slack slash command from a user to start a chain of tasks."""
-    run_tasks(event.data.user_id)
+    run_tasks(0, event.data.user_id)
 
 
-def run_tasks(user_id):
+def run_tasks(start_index, user_id):
     # Note to the interested reader: it's easy to improve this project
     # to traverse a dynamic DAG, instead of a simple static list.
     for i, task in enumerate(tasks):
-        run_retriable_task(task, i, user_id)
+        if i >= start_index:
+            run_retriable_task(task, i, user_id)
 
     message = "Workflow completed successfully :smiley_cat:"
     slack.chat_postMessage(channel=user_id, text=message)
@@ -77,7 +78,5 @@ def on_slack_interaction(event):
         return
 
     # This workflow's starting point is a retry of the failed task in the aborted workflow.
-    global tasks
     i = int(event.data.actions[0]["action_id"].split()[-1])
-    tasks = tasks[i:]
-    run_tasks(event.data.user.id)
+    run_tasks(i, event.data.user.id)
