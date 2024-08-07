@@ -13,7 +13,7 @@ from datetime import UTC, datetime, timedelta
 import os
 
 import autokitteh
-from autokitteh.atlassian import atlassian_jira_client
+from autokitteh.atlassian import jira_client
 from autokitteh.google import google_calendar_client
 
 
@@ -22,7 +22,7 @@ def on_jira_issue_created(event):
     name, account_id = _get_current_oncall()
     update = {"assignee": {"accountId": account_id}}
 
-    jira = atlassian_jira_client("jira_connection")
+    jira = jira_client("jira_connection")
     jira.update_issue_field(event.data.issue.key, update, notify_users=True)
 
     print(f"Assigned {event.data.issue.key} to {name}")

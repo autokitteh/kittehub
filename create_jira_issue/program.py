@@ -6,7 +6,7 @@ See invocation details in the README file.
 import json
 from urllib.parse import parse_qsl
 
-from autokitteh.atlassian import atlassian_jira_client
+from autokitteh.atlassian import jira_client
 
 
 def on_http_request(event):
@@ -29,5 +29,5 @@ def _create_jira_issue(fields):
     if isinstance(fields["issuetype"], str):
         fields["issuetype"] = {"name": fields["issuetype"]}
 
-    issue = atlassian_jira_client("jira_connection").issue_create(fields=fields)
+    issue = jira_client("jira_connection").issue_create(fields=fields)
     print("Created Jira issue: " + issue["key"])
