@@ -31,7 +31,6 @@
                     "text": "Retry"
                 },
                 "value": "retry",
-                "action_id": "RETRY TASK_NAME"
             },
             {
                 "type": "button",
@@ -42,7 +41,6 @@
                     "text": "Abort"
                 },
                 "value": "abort",
-                "action_id": "ABORT TASK_NAME"
             }
         ]
     }

@@ -8,9 +8,6 @@ version: v1
 
 project:
   name: task_chain
-  vars:
-    - name: SINGLE_WORKFLOW
-      value: true
   connections:
     - name: slack_conn
       integration: slack
@@ -18,8 +15,4 @@ project:
     - name: slack_slash_command
       connection: slack_conn
       event_type: slash_command
-      call: main.py:on_slack_slash_command
-    - name: slack_interaction
-      connection: slack_conn
-      event_type: interaction
-      call: event_driven.py:on_slack_interaction
+      call: program.py:on_slack_slash_command
