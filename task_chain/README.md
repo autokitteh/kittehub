@@ -28,9 +28,10 @@ flowchart LR
     Success`"))
 
     subgraph Workflow 1
-        slack1 -. Slash Command .-> task1 --> task2 --> task3
-        task3 --> task4 --> success
-        task3 --> message
+        direction LR
+        slack -. Slash Command .-> task1 --> task2 --> task3
+        task3 -- Success --> task4 --> success
+        task3 -- Error --> message
         message -- Retry --> task3
         message -- Abort --> error
     end
