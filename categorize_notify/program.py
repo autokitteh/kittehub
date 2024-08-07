@@ -10,6 +10,7 @@ Workflow:
 
 import base64
 import time
+from datetime import datetime, timezone
 
 import autokitteh
 from autokitteh import google, openai, slack
@@ -17,53 +18,78 @@ from autokitteh import google, openai, slack
 
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
 
+processed_message_ids = set()
+start_time = datetime.now(timezone.utc)
+
 
 def on_http_get(event):
-    total_messages = None
     while True:
-        total_messages = _poll_inbox(total_messages)
+        _poll_inbox()
         time.sleep(10)
 
 
 @autokitteh.activity
-def _poll_inbox(prev_total: int):
+def _poll_inbox():
     gmail = google.gmail_client("my_gmail").users()
-    curr_total = gmail.getProfile(userId="me").execute()["messagesTotal"]
-    # Note: This is not meant to be a robust solution for handling email operations.
-    if prev_total and curr_total > prev_total:
-        new_email_count = curr_total - prev_total
-        message_ids = _get_latest_message_ids(gmail, new_email_count)
-        for message_id in message_ids:
-            _process_email(gmail, message_id)
+    token = None
+    current_message_ids = set()
 
-    return curr_total
+    while True:
+        query = "in:inbox -in:drafts"
+        if token:
+            gmail_list = gmail.messages().list(userId="me", q=query, pageToken=token)
+            results = gmail_list.execute()
+        else:
+            results = gmail.messages().list(userId="me", q=query).execute()
+
+        current_message_ids.update({msg["id"] for msg in results.get("messages", [])})
+
+        token = results.get("nextPageToken")
+        if not token:
+            break
+
+    new_message_ids = current_message_ids - processed_message_ids
+
+    for message_id in new_message_ids:
+        _process_email(gmail, message_id)
+
+    processed_message_ids.update(new_message_ids)
 
 
 def _process_email(gmail, message_id: str):
     message = gmail.messages().get(userId="me", id=message_id).execute()
+    email_timestamp = int(message["internalDate"]) / 1000
+    email_datetime = datetime.fromtimestamp(email_timestamp, timezone.utc)
+
+    if email_datetime < start_time:
+        return
+
     email_content = _parse_email(message)
+
     if email_content:
         channel = _categorize_email(email_content)
+
         if channel:
             client = slack.slack_client("my_slack")
-            client.chat_postMessage(channel=channel, text=email_content)
+            client.chat_postMessage(
+                channel=channel, text=email_content or "Empty email"
+            )
 
         # Add label to email
         label_id = _get_label_id(gmail, channel) or _create_label(gmail, channel)
-        body = {"addLabelIds": [label_id]}
-        gmail.messages().modify(userId="me", id=message_id, body=body).execute()
-
-
-def _get_latest_message_ids(gmail, new_email_count: int):
-    results = gmail.messages().list(userId="me", maxResults=new_email_count).execute()
-    return [msg["id"] for msg in results.get("messages", [])]
+        if label_id:
+            body = {"addLabelIds": [label_id]}
+            gmail.messages().modify(userId="me", id=message_id, body=body).execute()
 
 
 def _parse_email(message: dict):
     payload = message["payload"]
-    for part in payload.get("parts", []):
-        if part["mimeType"] == "text/plain":
-            return base64.urlsafe_b64decode(part["body"]["data"]).decode("utf-8")
+    parts = payload.get("parts", [])
+    for part in parts:
+        if part.get("mimeType") == "text/plain":
+            email_body = base64.urlsafe_b64decode(part["body"]["data"]).decode("utf-8")
+            return email_body
+    return None
 
 
 def _create_label(gmail, label_name: str) -> str:
@@ -76,8 +102,8 @@ def _create_label(gmail, label_name: str) -> str:
         "messageListVisibility": "show",
         "name": label_name,
     }
+
     created_label = gmail.labels().create(userId="me", body=label).execute()
-    print(f"Label created: {created_label['name']}")
     return created_label["id"]
 
 
