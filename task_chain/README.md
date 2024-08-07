@@ -7,7 +7,6 @@ each failing step on-demand), as well as server-side failures (thanks to
 AutoKitteh's durable execution).
 
 <img src="./images/slack1.png" width="366" height="210" alt="Slack screenshot 1">
-&nbsp;
 <img src="./images/slack2.png" width="366" height="295" alt="Slack screenshot 2">
 
 This directory contains three variants of this project:
