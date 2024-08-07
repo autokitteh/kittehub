@@ -12,22 +12,23 @@ This project demonstrates running a sequence of tasks, in several ways.
 
 ```mermaid
 flowchart LR
-    slack{Slack event}
+    slack{"`Slack
+    Event`"}
     task1[Task 1]
     task2[Task 2]
     task3a[Task 3]
-    task3b[Task 3 retry]
+    task3b[Task 3 (Retry)]
     task4[Task 4]
     error(("`Workflow
     Error`"))
     success(("`Workflow
     Success`"))
-    slack -. Slash command .-> task1
-    slack -. Retry button clicked .-> task3b
+    slack -. Slash Command .-> task1
+    slack -. Retry Button Clicked .-> task3b
     subgraph Workflow 2
     task3b --> task4 -.-> success
     end
     subgraph Workflow 1
-    task1 --> task2 --> task3a -.-> error -. Retry/abort message .-> slack
+    task1 --> task2 --> task3a -.-> error -. Retry/Abort Message .-> slack
     end
 ```
