@@ -21,7 +21,7 @@ flowchart LR
     error((fa:fa-circle-xmark Workflow error))
     success((fa:fa-circle-check Workflow success))
     slack -. Slash command .-> task1
-    slack -. Click "retry" .-> task3b
+    slack -. Retry button clicked .-> task3b
     subgraph Workflow 1
     task1 --> task2 --> task3a ~~~ error
     end
