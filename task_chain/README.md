@@ -40,7 +40,7 @@ flowchart LR
         task3 -- Success --> task4 -.-> wend
         task3 -- Error --> message
         message -- Retry --> task3
-        message -- Abort -.-> wend
+        message -. Abort .-> wend
     end
 ```
 
