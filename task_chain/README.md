@@ -13,11 +13,14 @@ This project demonstrates running a sequence of tasks, in three ways.
       over a global list of all the steps, and handling all retries
 
 2. **[Event-driven approach](./event_driven/)**: a single workflow runs
-   multiple tasks, except for retries, which branch into separate workflows
+   multiple tasks, except for retries, which branch into separate workflows;
+   see the following flowchart diagram:
 
 ```mermaid
 flowchart LR
-    slack{"`Slack
+    slack1{"`Slack
+    Event`"}
+    slack2{"`Slack
     Event`"}
     task1[Task 1]
     task2[Task 2]
@@ -28,13 +31,11 @@ flowchart LR
     Error`"))
     success(("`Workflow
     Success`"))
-    slack -. Slash Command .-> task1
-    error -. Retry/Abort Message .-> slack
-    slack -. Retry Button Clicked .-> task3b
     subgraph Workflow 1
-    task1 --> task2 --> task3a -.-> error
+    slack1 -. Slash Command .-> task1 --> task2 --> task3a -.-> error
     end
     subgraph Workflow 2
-    task3b --> task4 -.-> success
+    slack2 -. Retry Button Clicked .-> task3b --> task4 -.-> success
     end
+    error -. Retry/Abort Message .-> slack2
 ```
