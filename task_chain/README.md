@@ -37,5 +37,4 @@ flowchart LR
     subgraph Workflow 2
     slack2 -. Retry Button Clicked .-> task3b --> task4 -.-> success
     end
-    error -. Retry/Abort Message .-> slack2
 ```
