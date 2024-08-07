@@ -17,7 +17,7 @@ flowchart LR
     task1[Task 1]
     task2[Task 2]
     task3a[Task 3]
-    task3b[Task 3 (Retry)]
+    task3b[Task 3 Retry]
     task4[Task 4]
     error(("`Workflow
     Error`"))
