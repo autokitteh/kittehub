@@ -17,7 +17,7 @@ This project demonstrates running a sequence of tasks, in three ways.
    see the following flowchart diagram:
 
 ```mermaid
-flowchart LR
+flowchart TB
     slack1{"`Slack
     Event`"}
     slack2{"`Slack
@@ -32,9 +32,11 @@ flowchart LR
     success(("`Workflow
     Success`"))
     subgraph Workflow 1
-    slack1 -. Slash Command .-> task1 --> task2 --> task3a -.-> error
+      direction LR
+      slack1 -. Slash Command .-> task1 --> task2 --> task3a -.-> error
     end
     subgraph Workflow 2
-    slack2 -. Retry Button Clicked .-> task3b --> task4 -.-> success
+      direction LR
+      slack2 -. Retry Button Clicked .-> task3b --> task4 -.-> success
     end
 ```
