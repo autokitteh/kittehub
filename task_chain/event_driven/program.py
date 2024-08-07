@@ -11,6 +11,7 @@ A single workflow runs all the tasks, except retries:
 """
 
 from pathlib import Path
+import random
 
 from autokitteh.slack import slack_client
 
@@ -28,7 +29,8 @@ def step2():
 
 def step3():
     print("Step 3 is doing stuff...")
-    raise RuntimeError("Something bad happened")
+    if random.choice([True, False]):
+        raise RuntimeError("Something bad happened")
 
 
 def step4():

@@ -5,6 +5,7 @@ It handles Slack interactions using runtime event subscriptions.
 """
 
 from pathlib import Path
+import random
 
 import autokitteh
 from autokitteh.slack import slack_client
@@ -23,7 +24,8 @@ def step2():
 
 def step3():
     print("Step 3 is doing stuff...")
-    raise RuntimeError("Something bad happened")
+    if random.choice([True, False]):
+        raise RuntimeError("Something bad happened")
 
 
 def step4():
