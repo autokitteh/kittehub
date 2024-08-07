@@ -1,6 +1,6 @@
 """This module uses an event-driven approach for the task-chain project.
 
-A single workflow is in charge of running all the tasks, except retries:
+A single workflow runs all the tasks, except retries:
 
 1. First workflow:
    - Trigger: Slack slash command

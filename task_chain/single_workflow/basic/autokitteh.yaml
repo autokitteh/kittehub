@@ -1,5 +1,6 @@
 # This YAML file is a declarative manifest that describes the setup
-# of an AutoKitteh project that ...TODO...
+# of an AutoKitteh project that runs a sequence of tasks, using a
+# basic single-workflow approach.
 #
 # After applying this file, initialize this AutoKitteh project's
 # Slack connection.

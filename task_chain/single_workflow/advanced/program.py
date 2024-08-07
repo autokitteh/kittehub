@@ -1,7 +1,7 @@
-"""This module uses a single-workflow approach for this project.
+"""This module uses a single-workflow approach for the task-chain project.
 
-A single workflow is in charge of running all the tasks, including retries.
-It handles Slack interactions internally using runtime event subscriptions.
+A single workflow runs all the tasks, including retry loops.
+It handles Slack interactions using runtime event subscriptions.
 """
 
 from pathlib import Path
