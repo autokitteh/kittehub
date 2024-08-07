@@ -18,14 +18,16 @@ flowchart LR
     task3a[Task 3]
     task3b[Task 3 retry]
     task4[Task 4]
-    error((Error))
-    success((Success))
+    error(("`Workflow
+    Error`"))
+    success(("`Workflow
+    Success`"))
     slack -. Slash command .-> task1
     slack -. Retry button clicked .-> task3b
-    subgraph Workflow 1
-    task1 --> task2 --> task3a -.-> error -. Retry/abort? .-> slack
-    end
     subgraph Workflow 2
     task3b --> task4 -.-> success
+    end
+    subgraph Workflow 1
+    task1 --> task2 --> task3a -.-> error -. Retry/abort message .-> slack
     end
 ```
