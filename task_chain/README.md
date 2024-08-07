@@ -6,7 +6,7 @@ The workflow is resilient to errors in each step (with the ability to retry
 each failing step on-demand), as well as server-side failures (thanks to
 AutoKitteh's durable execution).
 
-![Slack screenshot](./slack.png)
+<img src="./slack.png" width="50%" alt="Slack screenshot">
 
 This directory contains three variants of this project:
 
