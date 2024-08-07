@@ -31,16 +31,16 @@ flowchart LR
     task4[Task 4]
     message{"`Retry/Abort
     Message`"}
-    end(("`Workflow
+    wend(("`Workflow
     End`"))
 
     subgraph Workflow 1
         direction LR
         slack -. Slash Command .-> task1 --> task2 --> task3
-        task3 -- Success --> task4 -.-> end
+        task3 -- Success --> task4 -.-> wend
         task3 -- Error --> message
         message -- Retry --> task3
-        message -- Abort -.-> end
+        message -- Abort -.-> wend
     end
 ```
 
