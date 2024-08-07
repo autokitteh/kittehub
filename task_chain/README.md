@@ -12,9 +12,32 @@ This project demonstrates running a sequence of tasks, in three ways.
    2. ["Advanced" mode](./single_workflow/advanced/) - a single loop iterating
       over a global list of all the steps, and handling all retries
 
+```mermaid
+flowchart LR
+    slack{"`Slack
+    Event`"}
+    task1[Task 1]
+    task2[Task 2]
+    task3[Task 3]
+    task4[Task 4]
+    message{"`Retry/Abort
+    Message`"}
+    error(("`Workflow
+    Error`"))
+    success(("`Workflow
+    Success`"))
+
+    subgraph Workflow 1
+        slack1 -. Slash Command .-> task1 --> task2 --> task3
+        task3 --> task4 --> success
+        task3 --> message
+        message -- Retry --> task3
+        message -- Abort --> error
+    end
+```
+
 2. **[Event-driven approach](./event_driven/)**: a single workflow runs
-   multiple tasks, except for retries, which branch into separate workflows;
-   see the following flowchart diagram:
+   multiple tasks, except for retries, which branch into separate workflows
 
 ```mermaid
 flowchart TB
