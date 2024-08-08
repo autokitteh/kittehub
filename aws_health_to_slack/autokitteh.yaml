@@ -3,7 +3,7 @@
 # channels, based on resource ownership data in a Google Sheet.
 #
 # Before deploying this AutoKitteh project, set "GOOGLE_SHEET_URL"
-# to your own resource ownership data.
+# to your own resource ownership data, like in the template.
 #
 # After creating this AutoKitteh project by applying this file,
 # initialize its AWS, Google Sheets, and Slack connections.
@@ -14,7 +14,7 @@ project:
   name: aws_health_to_slack
   vars:
     - name: GOOGLE_SHEET_URL
-      value: 
+      value: https://docs.google.com/spreadsheets/d/1PalmLwSZOPW9k668_jU-wFI5xCj88a4mDfNUtJAupMQ/
     - name: TRIGGER_INTERVAL
       value: 1m
   connections:
