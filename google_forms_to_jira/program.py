@@ -19,7 +19,7 @@ POLL_INTERVAL = os.getenv("POLL_INTERVAL")
 
 
 def on_http_get(event):
-    form_id = os.getenv("FORM_ID")
+    form_id = os.getenv("GOOGLE_FORM_ID")
     form_data = _get_form_data(form_id)
     total_responses = None
     while True:

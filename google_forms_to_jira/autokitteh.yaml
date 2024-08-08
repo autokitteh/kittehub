@@ -2,6 +2,12 @@
 # an AutoKitteh sample project that demonstrates integration with 
 # Google Forms and Jira.
 #
+# Before deploying this AutoKitteh project:
+# - Set the "GOOGLE_FORM_ID" in the project's vars
+# - Set the "JIRA_PROJECT_KEY" in the project's vars
+# - Set the "POLL_INTERVAL" in the project's vars
+#  (in seconds, e.g. 60 for 1 minute)
+# 
 # After applying this file, initialize this AutoKitteh project's
 # Google Forms and Jira connections.
 
@@ -10,12 +16,12 @@ version: v1
 project:
   name: google_forms_to_jira
   vars: 
-    - name: FORM_ID
-      value: <Google Form ID> # TODO: Replace with Google Form ID
+    - name: GOOGLE_FORM_ID
+      value: 
     - name: JIRA_PROJECT_KEY
-      value: <Jira Project Key> # TODO: Replace with Jira Project Key
+      value: 
     - name: POLL_INTERVAL
-      value: 10
+      value: 10 
   connections:
     - name: jira_connection
       integration: jira
