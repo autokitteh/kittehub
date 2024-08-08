@@ -3,7 +3,8 @@
 # ReviewKitteh integrates GitHub, Google Sheets and Slack.
 #
 # Before applying this file:
-# - Modify the values in the project's "vars" section
+# - Set "CHANNEL" to the name of the Slack channel to post review reminders
+# - Set "SHEET_ID" to the ID of the Google Sheets document of random names
 #
 # After applying this file, initialize this AutoKitteh project's
 # GitHub, Google Sheets and Slack connections.
@@ -14,9 +15,9 @@ project:
   name: reviewkitteh
   vars:
     - name: CHANNEL
-      value: <Channel Name or ID>
+      value: 
     - name: SHEET_ID
-      value: <Google Sheets ID>
+      value: 
   connections:
     - name: my_slack
       integration: slack
