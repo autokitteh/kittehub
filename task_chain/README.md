@@ -1,10 +1,10 @@
 # Task Chain
 
-This project demonstrates running a sequence of tasks with fault tolerance.
+This project runs a sequence of tasks with fault tolerance.
 
 The workflow is resilient to errors in each step (with the ability to retry
-each failing step on-demand), as well as server-side failures (thanks to
-AutoKitteh's durable execution).
+each failing step on-demand via Slack), as well as server-side failures
+(thanks to AutoKitteh's durable execution).
 
 <img src="./images/slack1.png" width="366" height="210" alt="Slack screenshot 1">
 <img src="./images/slack2.png" width="366" height="295" alt="Slack screenshot 2">
