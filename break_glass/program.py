@@ -23,15 +23,23 @@ throughout the process.
 
 import os
 from pathlib import Path
+import time
 
 import autokitteh
 from autokitteh.atlassian import atlassian_jira_client
+from autokitteh.aws import boto3_client
+from autokitteh.redis import redis_client
 from autokitteh.slack import slack_client
 from requests.exceptions import HTTPError
 
 
 APPROVAL_CHANNEL = os.getenv("APPROVAL_CHANNEL")
+AWS_ADMIN_GROUP = os.getenv("AWS_ADMIN_GROUP")
+PERMISSION_EXPIRY = os.getenv("PERMISSION_EXPIRY")
+REQUESTER_EMAIL = os.getenv("REQUESTER_EMAIL")
+aws = boto3_client("aws_connection", "iam")
 jira = atlassian_jira_client("jira_connection")
+redis = redis_client("redis_connection")
 slack = slack_client("slack_connection")
 
 
@@ -42,7 +50,6 @@ def on_slack_slash_command(event):
     slack.views_open(trigger_id=trigger_id, view=request_modal)
 
 
-@autokitteh.activity
 def on_form_submit(event):
     reason, issue_key, base_url, requester_id = parse_event_data(event)
 
@@ -62,22 +69,26 @@ def on_form_submit(event):
     slack.chat_postMessage(channel=requester_id, text="Request sent for approval.")
 
 
-@autokitteh.activity
 def on_approve_deny(event):
+    """Processes the approval/denial of the request and notifies the requester."""
     action_id = event.data["actions"][0]["action_id"]
     _, requester, issue_key = action_id.split(" ")
     approver_id = event.data["user"]["id"]
     approver_info = slack.users_info(user=approver_id)
 
-    if event.data["actions"][0]["value"] == "Approve":
-        approver_email = approver_info["user"]["profile"]["email"]
-        jira.issue_add_comment(issue_key, f"Request approved by: {approver_email}")
-        message = f"Request approved by: <@{approver_info['user']['name']}>"
-        slack.chat_postMessage(channel=requester, text=message)
-    else:
-        print(f"Requester: {requester}")
+    if event.data["actions"][0]["value"] != "Approve":
         message = f"Request denied by: <@{approver_info["user"]["name"]}>"
         slack.chat_postMessage(channel=requester, text=message)
+        return
+
+    approver_email = approver_info["user"]["profile"]["email"]
+    jira.issue_add_comment(issue_key, f"Request approved by: {approver_email}")
+    message = f"Request approved by: <@{approver_info['user']['name']}>"
+    slack.chat_postMessage(channel=requester, text=message)
+
+    aws_user = lookup_user_by_email(approver_email)
+    set_permissions(aws_user)
+    monitor_and_remove_permissions(aws_user, requester)
 
 
 def send_approval_request(reason, issue_key, base_url, requester_id):
@@ -94,6 +105,18 @@ def send_approval_request(reason, issue_key, base_url, requester_id):
     slack.chat_postMessage(channel=APPROVAL_CHANNEL, blocks=blocks)
 
 
+def monitor_and_remove_permissions(aws_user, slack_user):
+    while True:
+        timestamp = get_user_timestamp(aws_user)
+        if not timestamp:
+            return
+        if float(timestamp) < time.time():
+            break
+        time.sleep(10)
+    expire_permissions(aws_user)
+    slack.chat_postMessage(channel=slack_user, text="Your permissions have expired.")
+
+
 def parse_event_data(event):
     form_data = event.data["view"]["state"]["values"]
     reason = form_data["block_reason"]["reason"]["value"]
@@ -103,6 +126,25 @@ def parse_event_data(event):
     return reason, issue_key, base_url, requester_id
 
 
+def validate_requester(issue_key, requester):
+    issue = jira.issue(issue_key)
+    assignee = issue.get("fields", {}).get("assignee", {})
+    if assignee is None:
+        return False
+    email = assignee.get("emailAddress", "")
+    return email == requester
+
+
+def lookup_user_by_email(email):
+    # this is meant to be a placeholder for a real lookup function
+    email_to_user = {
+        REQUESTER_EMAIL: "break-glass-test-user",
+        "david@example.com": "random-user",
+    }
+    return email_to_user.get(email)
+
+
+@autokitteh.activity
 def check_issue_exists(issue_key):
     try:
         jira.issue(issue_key)
@@ -112,7 +154,19 @@ def check_issue_exists(issue_key):
         return False
 
 
-def validate_requester(issue_key, requester):
-    issue = jira.issue(issue_key)
-    assignee = issue.get("fields", {}).get("assignee", {}).get("emailAddress", "")
-    return assignee == requester
+@autokitteh.activity
+def set_permissions(user_name):
+    aws.add_user_to_group(GroupName=AWS_ADMIN_GROUP, UserName=user_name)
+    time_alotted = os.getenv("PERMISSION_EXPIRY")
+    redis.set(user_name, time.time() + float(time_alotted))
+
+
+@autokitteh.activity
+def expire_permissions(user_name):
+    aws.remove_user_from_group(GroupName=AWS_ADMIN_GROUP, UserName=user_name)
+    redis.delete(user_name)
+
+
+@autokitteh.activity
+def get_user_timestamp(user_name):
+    return redis.get(user_name)

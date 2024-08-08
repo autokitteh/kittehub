@@ -1,13 +1,38 @@
+# This YAML file is a declarative manifest that describes the setup
+# of the AutoKitteh project "Break Glass".
+# Break Glass integrates AWS, Jira, Redis, and Slack to streamline
+# emergency access requests.
+#
+# Before applying this file:
+# - Modify the values in the project's "vars" section, if desired
+# - Modify the Redis connection string, if needed
+#
+# After applying this file, initialize this AutoKitteh project's
+# AWS, Jira and Slack connections.
+
 version: v1
 
 project:
   name: break_glass
   vars:
     - name: APPROVAL_CHANNEL
-      value: "sre-team"
+      value: <slack-channel> # Modify this if needed.
+    - name: AWS_ADMIN_GROUP
+      value: break-glass-admin # Modify this if needed.
+    - name: REQUESTER_EMAIL # can be replaced with a database or spreadsheet lookup
+      value: <your-email>
+    - name: PERMISSION_EXPIRY
+      value: 10 # seconds
   connections:
+    - name: aws_connection
+      integration: aws
     - name: jira_connection
       integration: jira
+    - name: redis_connection
+      integration: redis
+      vars:
+        - name: url 
+          value: redis://localhost:6379/0 # Modify this if needed.
     - name: slack_connection 
       integration: slack
   triggers:
