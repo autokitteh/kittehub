@@ -18,7 +18,7 @@ project:
     - name: GITHUB_ORG
       value: 
     - name: IDLE_USAGE_THRESHOLD
-      value: 
+      value: "72h" 
     # If set, only manage GitHub Copilot subscriptions to the specified users, separated by commas.
     - name: LOGINS
       value:

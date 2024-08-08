@@ -21,7 +21,7 @@ project:
     - name: JIRA_PROJECT_KEY
       value: 
     - name: POLL_INTERVAL
-      value: 
+      value: 10 
   connections:
     - name: jira_connection
       integration: jira
