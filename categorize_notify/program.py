@@ -9,38 +9,33 @@ Workflow:
 """
 
 import base64
-import time
 from datetime import datetime, timezone
+import os
+import time
 
 import autokitteh
 from autokitteh import google, openai, slack
 
 
+POLL_INTERVAL = os.getenv("POLL_INTERVAL")
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
-
+gmail = google.gmail_client("my_gmail").users()
 processed_message_ids = set()
-start_time = datetime.now(timezone.utc)
+start_time = datetime.now(timezone.utc).timestamp()
 
 
 def on_http_get(event):
     while True:
         _poll_inbox()
-        time.sleep(10)
+        time.sleep(float(POLL_INTERVAL))
 
 
-@autokitteh.activity
 def _poll_inbox():
-    gmail = google.gmail_client("my_gmail").users()
     token = None
     current_message_ids = set()
 
     while True:
-        query = "in:inbox -in:drafts"
-        if token:
-            gmail_list = gmail.messages().list(userId="me", q=query, pageToken=token)
-            results = gmail_list.execute()
-        else:
-            results = gmail.messages().list(userId="me", q=query).execute()
+        results = get_new_inbox_messages(token)
 
         current_message_ids.update({msg["id"] for msg in results.get("messages", [])})
 
@@ -51,17 +46,27 @@ def _poll_inbox():
     new_message_ids = current_message_ids - processed_message_ids
 
     for message_id in new_message_ids:
-        _process_email(gmail, message_id)
+        _process_email(message_id, start_time)
 
     processed_message_ids.update(new_message_ids)
 
 
-def _process_email(gmail, message_id: str):
-    message = gmail.messages().get(userId="me", id=message_id).execute()
-    email_timestamp = int(message["internalDate"]) / 1000
-    email_datetime = datetime.fromtimestamp(email_timestamp, timezone.utc)
+@autokitteh.activity
+def get_new_inbox_messages(token):
+    query = "in:inbox -in:drafts"
+    if token:
+        gmail_list = gmail.messages().list(userId="me", q=query, pageToken=token)
+        results = gmail_list.execute()
+    else:
+        results = gmail.messages().list(userId="me", q=query).execute()
+    return results
 
-    if email_datetime < start_time:
+
+def _process_email(message_id: str, start_time: datetime):
+    message = get_message(message_id)
+    email_timestamp = float(message["internalDate"]) / 1000
+
+    if email_timestamp < start_time:
         return
 
     email_content = _parse_email(message)
@@ -71,15 +76,25 @@ def _process_email(gmail, message_id: str):
 
         if channel:
             client = slack.slack_client("my_slack")
-            client.chat_postMessage(
-                channel=channel, text=email_content or "Empty email"
-            )
+            text = email_content or "Email content not found."
+            client.chat_postMessage(channel=channel, text=text)
 
         # Add label to email
-        label_id = _get_label_id(gmail, channel) or _create_label(gmail, channel)
+        label_id = _get_label_id(channel) or _create_label(channel)
         if label_id:
             body = {"addLabelIds": [label_id]}
-            gmail.messages().modify(userId="me", id=message_id, body=body).execute()
+            apply_label_to_message(message_id, body)
+
+
+@autokitteh.activity
+def apply_label_to_message(message_id, body):
+    gmail.messages().modify(userId="me", id=message_id, body=body).execute()
+
+
+@autokitteh.activity
+def get_message(message_id):
+    message = gmail.messages().get(userId="me", id=message_id).execute()
+    return message
 
 
 def _parse_email(message: dict):
@@ -92,7 +107,8 @@ def _parse_email(message: dict):
     return None
 
 
-def _create_label(gmail, label_name: str) -> str:
+@autokitteh.activity
+def _create_label(label_name: str) -> str:
     """Create a new label in the user's gmail account.
 
     https://developers.google.com/gmail/api/reference/rest/v1/users.labels#Label
@@ -102,12 +118,15 @@ def _create_label(gmail, label_name: str) -> str:
         "messageListVisibility": "show",
         "name": label_name,
     }
+    try:
+        created_label = gmail.labels().create(userId="me", body=label).execute()
+    except Exception as e:
+        print(f"Error creating label: {e}")
+    return created_label["id"] if created_label else None
 
-    created_label = gmail.labels().create(userId="me", body=label).execute()
-    return created_label["id"]
 
-
-def _get_label_id(gmail, label_name: str) -> str:
+@autokitteh.activity
+def _get_label_id(label_name: str) -> str:
     labels_response = gmail.labels().list(userId="me").execute()
     labels = labels_response.get("labels", [])
     for label in labels:
