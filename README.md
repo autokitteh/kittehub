@@ -11,4 +11,4 @@ projects for:
 | :----------------------------------------------- | :------------------------------------------------------------------------------ | :--------------------------- |
 | [Pull Request Review Reminder (Purrr)](./purrr/) | Streamline code reviews and cut down the turnaround time to merge pull requests | GitHub, Slack                |
 | [ReviewKitteh](./reviewkitteh/)                  | Monitor pull requests, and meow at random people                                | GitHub, Google Sheets, Slack |
-| [Task Chain](./task_chain/)                      | demonstrates Run a sequence of tasks with fault tolerance                       | Slack                        |
+| [Task Chain](./task_chain/)                      | Run a sequence of tasks with fault tolerance                                    | Slack                        |
