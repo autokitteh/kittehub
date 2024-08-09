@@ -13,7 +13,7 @@
 version: v1
 
 project:
-  name: jira_assignee_from_calendar
+  name: jira_assignee_from_google_calendar_schedule
   vars:
     - name: SHARED_CALENDAR_ID
       value: primary 
