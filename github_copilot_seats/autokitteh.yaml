@@ -13,7 +13,7 @@
 version: v1
 
 project:
-  name: github_copilot
+  name: github_copilot_seats
   vars:
     - name: GITHUB_ORG
       value: 
