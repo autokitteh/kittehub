@@ -11,7 +11,7 @@
 version: v1
 
 project:
-  name: jira_to_google_calendar
+  name: jira_deadline_to_google_calendar_event
   connections:
     - name: jira_connection
       integration: jira
