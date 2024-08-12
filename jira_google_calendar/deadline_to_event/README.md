@@ -1,6 +1,6 @@
 # Jira to Google Calendar Workflow
 
-This program is a real-life example workflow integrating Jira and Google Calendar.
+This project automates the process of creating Google Calendar events based on Jira issue creation. When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline to ensure that the required tasks are completed on time.
 
 ## Benefits
 
@@ -9,8 +9,77 @@ This program is a real-life example workflow integrating Jira and Google Calenda
 
 ## How It Works
 
-- **Trigger**: The creation of a Jira issue in the designated project (specified in the [`autokitteh.yaml`](./autokitteh.yaml) file).
-- **Result**: A new event is created in the user's Google Calendar containing information from the Jira issue (e.g., `duedate`).
+1. **Trigger**: The workflow is triggered by the creation of a new Jira issue.
+2. **Create Calendar Event**: The program creates a Google Calendar event based on the Jira issue details, including the due date and description.
+3. **Notify**: The event is created in the Google Calendar, and attendees are notified.
+
+## Installation and Usage 
+
+- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
+
+### Configure integrations
+
+> [!IMPORTANT]
+> The `autokitteh.yaml` file includes environment variables for the Jira and Google Calendar connections that need to be configured.
+
+Ensure you have set up the required integrations:
+
+- [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
+- [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
+
+### Clone the Repository
+
+```shell
+git clone https://github.com/autokitteh/kittehub.git
+cd kittehub/jira_google_calendar/deadline_to_event
+```
+
+Alternatively, you can copy the individual files in this directory.
+
+### Run the AutoKitteh Server
+
+Simply run this command:
+
+```shell
+ak up --mode dev
+```
+
+### Apply Manifest and Deploy Project
+
+1. Navigate to the `deadline_to_event` directory:
+
+```shell
+cd deadline_to_event
+```
+
+2. Apply manifest and deploy the project by running the following command:
+
+```shell
+ak deploy --manifest autokitteh.yaml --file program.py
+```
+
+The output of this command will be important for initializing connections in the following step if you're using the CLI.
+
+For example, for each configured connection, you will see a line that looks similar to the one below:
+
+```shell
+[exec] create_connection "deadline_to_event/google_calendar_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
+```
+
+`con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
+
+### Initiliaze Connections
+
+Using the connection IDs from the previous step, run these commands:
+
+```shell
+ak connection init my_jira <connection ID>
+ak connection init my_google_calendar <connection ID>
+```
+
+### Trigger the Workflow
+
+The workflow is triggered by the creation of a new Jira issue, which prompts the creation of a Google Calendar event according to the issue's details.
 
 ## Known Limitations
 
