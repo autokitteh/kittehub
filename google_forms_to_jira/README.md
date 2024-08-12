@@ -20,7 +20,10 @@ This project automates the process of creating Jira issues based on new response
 
 ### Configure integrations
 
-Ensure you have set up the required integrations. The `autokitteh.yaml` file includes environment variables for the Google Forms and Jira connections that need to be configured.
+> [!IMPORTANT]
+> The `autokitteh.yaml` file includes environment variables for the Google Forms and Jira connections that need to be configured.
+
+Ensure you have set up the required integrations: 
 
 - [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
 - [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)

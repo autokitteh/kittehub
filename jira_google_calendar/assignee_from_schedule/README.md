@@ -20,7 +20,10 @@ This project automates the process of assigning Jira issues based on a shared Go
 
 ### Configure integrations
 
-Ensure you have set up the required integrations. The `autokitteh.yaml` file includes environment variables for the Google Calendar and Jira connections that need to be configured.
+> [!IMPORTANT]
+> The `autokitteh.yaml` file includes environment variables for the Jira and Google Calendar connections that need to be configured.
+
+Ensure you have set up the required integrations:
 
 - [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
 - [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
@@ -29,7 +32,7 @@ Ensure you have set up the required integrations. The `autokitteh.yaml` file inc
 
 ```shell
 git clone https://github.com/autokitteh/kittehub.git
-cd kittehub/assignee_from_schedule
+cd kittehub/jira_google_calendar/assignee_from_schedule
 ```
 
 Alternatively, you can copy the individual files in this directory.
@@ -47,7 +50,7 @@ ak up --mode dev
 1. Navigate to the `assignee_from_schedule` directory:
 
 ```shell
-cd assignee_from_schedule
+cd jira_google_calendar/assignee_from_schedule
 ```
 
 2. Apply manifest and deploy the project by running the following command:

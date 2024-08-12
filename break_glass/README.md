@@ -21,7 +21,10 @@ This project implements a break-glass request workflow that allows users to subm
 
 ### Configure Integrations
 
-Ensure you have set up the required integrations and environment variables. This project uses Slack and Jira APIs.
+> [!IMPORTANT]
+> The `autokitteh.yaml` file includes an environment variable for the Slack connection that needs to be configured.
+
+Ensure you have set up the required integrations and environment variables:
 
 - [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
 - [Configure Slack integration](https://docs.autokitteh.com/config/integrations/slack/)

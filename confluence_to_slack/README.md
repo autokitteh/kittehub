@@ -27,6 +27,9 @@ This workflow automates notifications to a Slack channel whenever a new Confluen
 
 ### Configure Integrations
 
+> [!IMPORTANT]
+> The `autokitteh.yaml` file includes environment variables for the Confluence and Slack connections that need to be configured.
+
 Ensure you have set up the required integrations and environment variables. This project uses Confluence and Slack APIs.
 
 - [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
