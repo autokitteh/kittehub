@@ -17,7 +17,7 @@ import autokitteh
 from autokitteh import google, openai, slack
 
 
-POLL_INTERVAL = os.getenv("POLL_INTERVAL")
+POLL_INTERVAL = float(os.getenv("POLL_INTERVAL"))
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
 
 
