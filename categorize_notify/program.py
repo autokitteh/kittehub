@@ -38,9 +38,7 @@ def _poll_inbox():
 
     while True:
         results = get_new_inbox_messages(token)
-
         current_message_ids.update({msg["id"] for msg in results.get("messages", [])})
-
         token = results.get("nextPageToken")
         if not token:
             break
