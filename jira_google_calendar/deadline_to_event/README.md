@@ -55,7 +55,7 @@ cd deadline_to_event
 2. Apply manifest and deploy the project by running the following command:
 
 ```shell
-ak deploy --manifest autokitteh.yaml --file program.py
+ak deploy --manifest autokitteh.yaml
 ```
 
 The output of this command will be important for initializing connections in the following step if you're using the CLI.
