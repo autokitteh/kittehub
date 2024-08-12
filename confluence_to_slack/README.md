@@ -1,6 +1,7 @@
+
 # Confluence To Slack Workflow 
 
-This real-life workflow demonstrates the integration between two popular services.
+This workflow automates notifications to a Slack channel whenever a new Confluence page is created in a specified space.
 
 ## Benefits
 
@@ -19,3 +20,64 @@ This real-life workflow demonstrates the integration between two popular service
 ## Additional Comment
 
 - Environment variables are set in [`autokitteh.yaml`](./autokitteh.yaml) (e.g., Slack channel, Confluence page, etc.).
+
+## Installation and Usage 
+
+[Install AutoKitteh](https://docs.autokitteh.com/get_started/install).
+
+### Configure Integrations
+
+Ensure you have set up the required integrations and environment variables. This project uses Confluence and Slack APIs.
+
+### Clone the Repository
+
+```shell
+git clone https://github.com/autokitteh/kittehub.git
+cd kittehub/
+```
+Alternatively, you can copy the individual files in this directory.
+
+### Run the AutoKitteh Server
+
+Simply run this command:
+
+```shell
+ak up --mode dev
+```
+
+### Apply Manifest and Deploy Project
+
+1. Navigate to the project directory:
+
+   ```shell
+   cd confluence_to_slack
+   ```
+
+2. Apply manifest and deploy the project by running the following command:
+
+   ```shell
+   ak deploy --manifest autokitteh.yaml --file program.py
+   ```
+
+   The output of this command will be important for initializing connections in the following step if you're using the CLI.
+
+   For example, for each configured connection, you will see a line that looks similar to the one below:
+
+   ```shell
+   [exec] create_connection "confluence_to_slack/slack_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
+   ```
+
+   `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
+
+### Initialize Connections
+
+Using the connection IDs from the previous step, run these commands:
+
+```shell
+ak connection init slack_connection <connection ID>
+ak connection init confluence_connection <connection ID>
+```
+
+### Trigger the Workflow
+
+Once the project has been properly installed, configured and deployed, the workflow will be triggered by an event from Confluence.
