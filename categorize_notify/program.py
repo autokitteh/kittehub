@@ -19,6 +19,8 @@ from autokitteh import google, openai, slack
 
 POLL_INTERVAL = os.getenv("POLL_INTERVAL")
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
+
+
 gmail = google.gmail_client("my_gmail").users()
 processed_message_ids = set()
 start_time = datetime.now(timezone.utc).timestamp()
