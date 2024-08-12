@@ -6,5 +6,5 @@ Users can then optionally ask for their subscription to be reinstated.
 
 ## Slack Usage
 
-- `/ak prune-idle-copilot-seats` invokes the automation immidetly.
-- `/ak find-idle-copilot-seats` just displays the potentially idle seats.
+- `/ak prune-idle-copilot-seats` invokes the automation immediately.
+- `/ak find-idle-copilot-seats` displays the potentially idle seats.
