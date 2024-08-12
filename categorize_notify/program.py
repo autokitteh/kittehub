@@ -29,7 +29,7 @@ start_time = datetime.now(timezone.utc).timestamp()
 def on_http_get(event):
     while True:
         _poll_inbox()
-        time.sleep(float(POLL_INTERVAL))
+        time.sleep(POLL_INTERVAL)
 
 
 def _poll_inbox():
