@@ -1,5 +1,7 @@
 # Create Atlassian Jira Issues
 
+This project automates the process of creating Jira issues based on incoming HTTP requests via a webhook.
+
 ## Sources
 
 - HTTP GET webhook (URL path `/http/create_jira_issue` + query parameters)
