@@ -1,10 +1,20 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that orchestrates the request and approval 
+# process for break glass scenarios.
+#
+# Before deploying this AutoKitteh project, set "APPROVAL_CHANNEL"
+# to your own Slack Channel.
+#
+# After creating this AutoKitteh project by applying this file,
+# initialize its Jira and Slack connections.
+
 version: v1
 
 project:
   name: break_glass
   vars:
     - name: APPROVAL_CHANNEL
-      value: "sre-team"
+      value: 
   connections:
     - name: jira_connection
       integration: jira

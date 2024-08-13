@@ -1,3 +1,11 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that parses a new GPX file from an S3 bucket 
+# and inserts its data into a SQLite database whenever a new file is 
+# uploaded.
+#
+# Before deploying this AutoKitteh project:
+# - Set the "AWS_REGION" in the vars section
+
 version: v1
 
 project:
@@ -12,5 +20,5 @@ project:
       event_type: post
   vars:
     - name: AWS_REGION
-      value: eu-north-1
+      value: 
       # Triggered by POST request to http://localhost:9980/http/pipeline/new_object

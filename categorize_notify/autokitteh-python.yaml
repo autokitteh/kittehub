@@ -8,7 +8,7 @@
 version: v1
 
 project:
-  name: categorize_notify
+  name: categorize_emails
   vars:
     - name: POLL_INTERVAL
       value: 10
@@ -25,5 +25,5 @@ project:
     - name: http_get
       connection: my_http
       event_type: get
-      # Triggered by GET request to http://localhost:9980/http/categorize_notify/
+      # Triggered by GET request to http://localhost:9980/http/categorize_emails/
       call: program.py:on_http_get

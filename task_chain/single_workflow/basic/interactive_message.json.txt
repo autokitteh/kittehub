@@ -1,0 +1,47 @@
+[
+    {
+        "type": "header",
+        "text": {
+            "type": "plain_text",
+            "emoji": true,
+            "text": ":warning: Workflow Error"
+        }
+    },
+    {
+        "type": "divider"
+    },
+    {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "MESSAGE"
+        }
+    },
+    {
+        "type": "divider"
+    },
+    {
+        "type": "actions",
+        "elements": [
+            {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "emoji": true,
+                    "text": "Retry"
+                },
+                "value": "retry",
+            },
+            {
+                "type": "button",
+                "style": "danger",
+                "text": {
+                    "type": "plain_text",
+                    "emoji": true,
+                    "text": "Abort"
+                },
+                "value": "abort",
+            }
+        ]
+    }
+]
