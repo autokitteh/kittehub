@@ -1,4 +1,4 @@
-# GitHub Pull Request to Slack Meow Workflow
+# GitHub Pull Request to Slack Workflow
 
 This project automates the process of listening for GitHub pull request events and posting updates to a Slack channel. The workflow tracks the state of the pull request and meows at random people from a Google Sheet in the Slack channel.
 

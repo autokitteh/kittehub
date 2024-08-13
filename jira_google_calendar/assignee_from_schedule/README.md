@@ -14,6 +14,12 @@ This project automates the process of assigning Jira issues based on a shared Go
 2. **Check Calendar**: The program checks the shared Google Calendar to identify the current on-call person.
 3. **Assign Issue**: The program assigns the newly created Jira issue to the current on-call person.
 
+### Calendar Example
+
+![Calendar Example](./images/calendar_example.png)
+
+The image above illustrates a sample Google Calendar used in this workflow. Each event on the calendar represents an all-day on-call shift for a team member. The workflow checks this calendar to determine the current on-call person, which is then used to automatically assign newly created Jira issues to the person scheduled during that time.
+
 ## Installation and Usage 
 
 - [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)

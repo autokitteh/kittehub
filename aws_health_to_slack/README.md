@@ -8,9 +8,31 @@ This project automates the process of announcing AWS health events in Slack base
 2. Reads project-to-Slack-channel mappings from a Google Sheet.
 3. Posts relevant health events to the corresponding Slack channels based on the Google Sheet data.
 
+## How It Works
+
+1. Fetches AWS Health events from AWS API.
+2. Reads project-to-Slack-channel mappings from a Google Sheet.
+3. Posts relevant health events to the corresponding Slack channels based on the Google Sheet data.
+
+### Google Sheets Data
+
+The default Google Sheet used for mapping projects to Slack channels is as follows:
+
+| Project Tag | Slack Channel      |
+|-------------|--------------------|
+| clubs       | clubs_team         |
+| diamonds    | diamonds_alerts    |
+| hearts      | hearts_oncall      |
+| spades      | C12345678          |
+
+This table represents how each project is linked to a specific Slack channel, guiding where health events will be posted.
+
+> [!NOTE] You can configure your own project-to-Slack-channel mappings by specifying a different Google Sheet in the [`autokitteh.yaml`](autokitteh.yaml) file.
+
+
 ## Installation and Usage 
 
-[Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
+- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
 
 ### Configure Integrations
 
