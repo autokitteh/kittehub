@@ -21,7 +21,8 @@ POLL_INTERVAL = float(os.getenv("POLL_INTERVAL"))
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
 
 
-gmail = google.gmail_client("my_gmail").users()
+gmail_client = google.gmail_client("my_gmail").users()
+slack_client = slack.slack_client("my_slack")
 processed_message_ids = set()
 start_time = datetime.now(timezone.utc).timestamp()
 
@@ -33,16 +34,9 @@ def on_http_get(event):
 
 
 def _poll_inbox():
-    token = None
     current_message_ids = set()
-
-    while True:
-        results = get_new_inbox_messages(token)
-        current_message_ids.update({msg["id"] for msg in results.get("messages", [])})
-        token = results.get("nextPageToken")
-        if not token:
-            break
-
+    results = get_new_inbox_messages()
+    current_message_ids.update({msg["id"] for msg in results.get("messages", [])})
     new_message_ids = current_message_ids - processed_message_ids
 
     for message_id in new_message_ids:
@@ -51,19 +45,8 @@ def _poll_inbox():
     processed_message_ids.update(new_message_ids)
 
 
-@autokitteh.activity
-def get_new_inbox_messages(token):
-    query = "in:inbox -in:drafts"
-    if token:
-        gmail_list = gmail.messages().list(userId="me", q=query, pageToken=token)
-        results = gmail_list.execute()
-    else:
-        results = gmail.messages().list(userId="me", q=query).execute()
-    return results
-
-
 def _process_email(message_id: str, start_time: datetime):
-    message = get_message(message_id)
+    message = gmail_client.messages().get(userId="me", id=message_id).execute()
     email_timestamp = float(message["internalDate"]) / 1000
 
     if email_timestamp < start_time:
@@ -71,30 +54,25 @@ def _process_email(message_id: str, start_time: datetime):
 
     email_content = _parse_email(message)
 
-    if email_content:
-        channel = _categorize_email(email_content)
+    if not email_content:
+        print("Email content not found.")
+        return
 
-        if channel:
-            client = slack.slack_client("my_slack")
-            text = email_content or "Email content not found."
-            client.chat_postMessage(channel=channel, text=text)
+    channel = _categorize_email(email_content)
 
-        # Add label to email
-        label_id = _get_label_id(channel) or _create_label(channel)
-        if label_id:
-            body = {"addLabelIds": [label_id]}
-            apply_label_to_message(message_id, body)
+    if not channel:
+        print("Could not categorize email.")
+        return
 
+    slack_client.chat_postMessage(channel=channel, text=email_content)
 
-@autokitteh.activity
-def apply_label_to_message(message_id, body):
-    gmail.messages().modify(userId="me", id=message_id, body=body).execute()
+    # Add label to email
+    label_id = _get_label_id(channel) or _create_label(channel)
+    if not label_id:
+        return
 
-
-@autokitteh.activity
-def get_message(message_id):
-    message = gmail.messages().get(userId="me", id=message_id).execute()
-    return message
+    body = {"addLabelIds": [label_id]}
+    gmail_client.messages().modify(userId="me", id=message_id, body=body).execute()
 
 
 def _parse_email(message: dict):
@@ -107,7 +85,6 @@ def _parse_email(message: dict):
     return None
 
 
-@autokitteh.activity
 def _create_label(label_name: str) -> str:
     """Create a new label in the user's gmail account.
 
@@ -118,21 +95,22 @@ def _create_label(label_name: str) -> str:
         "messageListVisibility": "show",
         "name": label_name,
     }
-    try:
-        created_label = gmail.labels().create(userId="me", body=label).execute()
-    except Exception as e:
-        print(f"Error creating label: {e}")
-    return created_label["id"] if created_label else None
+    created_label = gmail_client.labels().create(userId="me", body=label).execute()
+    return created_label.get("id", None)
 
 
-@autokitteh.activity
 def _get_label_id(label_name: str) -> str:
-    labels_response = gmail.labels().list(userId="me").execute()
+    labels_response = gmail_client.labels().list(userId="me").execute()
     labels = labels_response.get("labels", [])
     for label in labels:
         if label["name"] == label_name:
             return label["id"]
     return None
+
+
+def get_new_inbox_messages():
+    query = "in:inbox -in:drafts"
+    return gmail_client.messages().list(userId="me", q=query).execute()
 
 
 @autokitteh.activity
@@ -145,7 +123,7 @@ def _categorize_email(email_content: str) -> str:
     """
     client = openai.openai_client("my_chatgpt")
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {
