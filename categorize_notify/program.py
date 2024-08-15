@@ -9,64 +9,83 @@ Workflow:
 """
 
 import base64
+from datetime import datetime, timezone
+import os
 import time
 
 import autokitteh
 from autokitteh import google, openai, slack
 
 
+POLL_INTERVAL = float(os.getenv("POLL_INTERVAL"))
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
 
 
+gmail_client = google.gmail_client("my_gmail").users()
+slack_client = slack.slack_client("my_slack")
+processed_message_ids = set()
+start_time = datetime.now(timezone.utc).timestamp()
+
+
 def on_http_get(event):
-    total_messages = None
     while True:
-        total_messages = _poll_inbox(total_messages)
-        time.sleep(10)
+        _poll_inbox()
+        time.sleep(POLL_INTERVAL)
 
 
-@autokitteh.activity
-def _poll_inbox(prev_total: int):
-    gmail = google.gmail_client("my_gmail").users()
-    curr_total = gmail.getProfile(userId="me").execute()["messagesTotal"]
-    # Note: This is not meant to be a robust solution for handling email operations.
-    if prev_total and curr_total > prev_total:
-        new_email_count = curr_total - prev_total
-        message_ids = _get_latest_message_ids(gmail, new_email_count)
-        for message_id in message_ids:
-            _process_email(gmail, message_id)
+def _poll_inbox():
+    current_message_ids = set()
+    results = get_new_inbox_messages()
+    current_message_ids.update({msg["id"] for msg in results.get("messages", [])})
+    new_message_ids = current_message_ids - processed_message_ids
 
-    return curr_total
+    for message_id in new_message_ids:
+        _process_email(message_id, start_time)
+
+    processed_message_ids.update(new_message_ids)
 
 
-def _process_email(gmail, message_id: str):
-    message = gmail.messages().get(userId="me", id=message_id).execute()
+def _process_email(message_id: str, start_time: datetime):
+    message = gmail_client.messages().get(userId="me", id=message_id).execute()
+    email_timestamp = float(message["internalDate"]) / 1000
+
+    if email_timestamp < start_time:
+        return
+
     email_content = _parse_email(message)
-    if email_content:
-        channel = _categorize_email(email_content)
-        if channel:
-            client = slack.slack_client("my_slack")
-            client.chat_postMessage(channel=channel, text=email_content)
 
-        # Add label to email
-        label_id = _get_label_id(gmail, channel) or _create_label(gmail, channel)
-        body = {"addLabelIds": [label_id]}
-        gmail.messages().modify(userId="me", id=message_id, body=body).execute()
+    if not email_content:
+        print("Email content not found.")
+        return
 
+    channel = _categorize_email(email_content)
 
-def _get_latest_message_ids(gmail, new_email_count: int):
-    results = gmail.messages().list(userId="me", maxResults=new_email_count).execute()
-    return [msg["id"] for msg in results.get("messages", [])]
+    if not channel:
+        print("Could not categorize email.")
+        return
+
+    slack_client.chat_postMessage(channel=channel, text=email_content)
+
+    # Add label to email
+    label_id = _get_label_id(channel) or _create_label(channel)
+    if not label_id:
+        return
+
+    body = {"addLabelIds": [label_id]}
+    gmail_client.messages().modify(userId="me", id=message_id, body=body).execute()
 
 
 def _parse_email(message: dict):
     payload = message["payload"]
-    for part in payload.get("parts", []):
-        if part["mimeType"] == "text/plain":
-            return base64.urlsafe_b64decode(part["body"]["data"]).decode("utf-8")
+    parts = payload.get("parts", [])
+    for part in parts:
+        if part.get("mimeType") == "text/plain":
+            email_body = base64.urlsafe_b64decode(part["body"]["data"]).decode("utf-8")
+            return email_body
+    return None
 
 
-def _create_label(gmail, label_name: str) -> str:
+def _create_label(label_name: str) -> str:
     """Create a new label in the user's gmail account.
 
     https://developers.google.com/gmail/api/reference/rest/v1/users.labels#Label
@@ -76,18 +95,22 @@ def _create_label(gmail, label_name: str) -> str:
         "messageListVisibility": "show",
         "name": label_name,
     }
-    created_label = gmail.labels().create(userId="me", body=label).execute()
-    print(f"Label created: {created_label['name']}")
-    return created_label["id"]
+    created_label = gmail_client.labels().create(userId="me", body=label).execute()
+    return created_label.get("id", None)
 
 
-def _get_label_id(gmail, label_name: str) -> str:
-    labels_response = gmail.labels().list(userId="me").execute()
+def _get_label_id(label_name: str) -> str:
+    labels_response = gmail_client.labels().list(userId="me").execute()
     labels = labels_response.get("labels", [])
     for label in labels:
         if label["name"] == label_name:
             return label["id"]
     return None
+
+
+def get_new_inbox_messages():
+    query = "in:inbox -in:drafts"
+    return gmail_client.messages().list(userId="me", q=query).execute()
 
 
 @autokitteh.activity
@@ -100,7 +123,7 @@ def _categorize_email(email_content: str) -> str:
     """
     client = openai.openai_client("my_chatgpt")
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {
