@@ -8,14 +8,10 @@ project:
     - name: http_connection
       integration: http
   triggers:
-    # - name: on_http_get
-    #   connection: http_connection
-    #   event_type: get
-    #   data:
-    #     # Triggered by GET request to http://localhost:9980/http/github_actions/cross-repo
-    #     path: cross-repo
-    #   call: program.py:on_cross_repo
-    - name: on_workflow_run
-      connection: github_connection
-      event_type: workflow_run
-      call: program.py:on_workflow_run
+    - name: on_cross_repo
+      connection: http_connection
+      event_type: get
+      data:
+        # Triggered by GET request to http://localhost:9980/http/github_actions/cross-repo
+        path: cross-repo
+      call: program.py:on_cross_repo
