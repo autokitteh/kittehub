@@ -19,12 +19,12 @@ For more details, refer to [this blog post](https://autokitteh.com/technical-blo
 
 ## Installation and Usage 
 
-[Install AutoKitteh](https://docs.autokitteh.com/get_started/install).
+- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
 
 ### Configure integrations
 
-- [Configure Slack integration](https://docs.autokitteh.com/config/integrations/slack/)
 - [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
+- [Configure Slack integration](https://docs.autokitteh.com/config/integrations/slack/)
 
 ### Clone the Repository
 
