@@ -9,6 +9,9 @@ version: v1
 
 project:
   name: categorize_emails
+  vars:
+    - name: POLL_INTERVAL
+      value: 10
   connections:
     - name: my_chatgpt
       integration: chatgpt
