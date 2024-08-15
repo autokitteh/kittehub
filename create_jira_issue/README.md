@@ -1,4 +1,6 @@
-# Create Atlassian Jira Issues
+# Create Atlassian Jira Issues From an HTTP Request
+
+This project automates the process of creating Jira issues based on incoming HTTP requests via a webhook. It is particularly useful when you need to create a ticket from an internal system or service.
 
 ## Sources
 
