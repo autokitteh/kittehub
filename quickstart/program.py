@@ -11,7 +11,7 @@ def on_http_get(event):
 
     iterations = int(event.data.params.get("iters", "0"))
     for i in range(iterations):
-        print("Loop iteration: %d of 50" % (i + 1))
+        print("Loop iteration: %d of %d" % (i + 1, iterations))
         time.sleep(FIVE_SECONDS)
 
     print(f"Finished processing {event.data.method} request")
