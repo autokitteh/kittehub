@@ -15,9 +15,3 @@ project:
       data:
         path: trigger_path
       call: program.py:on_http_get
-    - name: http_get_with_param
-      connection: http_conn
-      event_type: get
-      data:
-        path: iterations/{iters}
-      call: program.py:on_http_get
