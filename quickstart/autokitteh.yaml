@@ -1,0 +1,23 @@
+# This YAML file is a declarative manifest that describes
+# the minimal setup of an AutoKitteh project.
+
+version: v1
+
+project:
+  name: quickstart
+  connections:
+    - name: http_conn
+      integration: http
+  triggers:
+    - name: http_get
+      connection: http_conn
+      event_type: get
+      data:
+        path: trigger_path
+      call: program.py:on_http_get
+    - name: http_get_with_param
+      connection: http_conn
+      event_type: get
+      data:
+        path: iterations/{iters}
+      call: program.py:on_http_get
