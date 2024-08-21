@@ -23,6 +23,7 @@ projects for:
 | ⭐ [Pull Request Review Reminder (Purrr)](./purrr/)                              | Streamline code reviews and cut down turnaround time to merge pull requests              | GitHub &harr; Slack                |
 | ⭐ [ReviewKitteh](./reviewkitteh/)                                               | Monitor pull requests, and meow at random people                                         | GitHub, Google Sheets, Slack       |
 | 🐍 [Task chain](./task_chain/)                                                   | Run a sequence of tasks with fault tolerance                                             | Slack                              |
+| 🐍 [Slack Support](./slack_support/)                                             | Categorize slack support requests using AI and make sure appropiate people handle them   | Slack, Google Sheets, Gemini       |
 
 > [!NOTE]
 > 🐍 = Python implementation, ⭐ = Starlark implementation.
