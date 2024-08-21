@@ -11,7 +11,6 @@ project:
   triggers:
     - name: http_get
       connection: http_conn
-      event_type: get
       data:
         path: trigger_path
-      call: program.py:on_http_get
+      call: program.py:on_http_request
