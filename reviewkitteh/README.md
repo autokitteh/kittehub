@@ -20,9 +20,9 @@ This project automates the process of listening for GitHub pull request events a
 
 Ensure you have set up the required integrations:
 
-- [Configure GitHub integration](https://docs.autokitteh.com/config/integrations/github)
-- [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
-- [Configure Slack integration](https://docs.autokitteh.com/config/integrations/slack/)
+- [Configure GitHub integration](https://docs.autokitteh.com/integrations/github/config)
+- [Configure Google integration](https://docs.autokitteh.com/integrations/google/config)
+- [Configure Slack integration](https://docs.autokitteh.com/integrations/slack/config)
 
 ### Clone the Repository
 
