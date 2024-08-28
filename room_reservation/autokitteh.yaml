@@ -1,5 +1,6 @@
 # This YAML file is a declarative manifest that describes the setup
-# of an AutoKitteh project that ...TODO...
+# of an AutoKitteh project that manages via Slack ad-hoc room
+# reservations in Google Calendar.
 #
 # ...TODO...
 
@@ -9,7 +10,7 @@ project:
   name: room_reservation
   vars:
     - name: GOOGLE_SHEET_ID
-      value: "1_yEEKKZn_0pbtnIKjD0OtKUhlrqKs5bmmfJIDaHCuSI" # TODO...
+      value: 
   connections:
     - name: calendar_conn
       integration: googlegalendar
@@ -18,18 +19,18 @@ project:
     - name: slack_conn
       integration: slack
   triggers:
-    - name: slack_slash_command_roomstatus
+    - name: slack_slash_command_available_rooms
+      connection: slack_conn
+      event_type: slash_command
+      filter: data.command == "/availablerooms"
+      call: available_rooms.py:on_slack_slash_command
+    - name: slack_slash_command_room_status
       connection: slack_conn
       event_type: slash_command
       filter: data.command == "/roomstatus"
-      call: room_status.py:on_slack_roomstatus_slash_command
-    - name: slack_slash_command_createmeeting
+      call: room_status.py:on_slack_slash_command
+    - name: slack_slash_command_reserve_room
       connection: slack_conn
       event_type: slash_command
-      filter: data.command == "/createmeeting"
-      call: create_meeting.py:on_slack_createmeeting_slash_command
-    - name: slack_slash_command_whatsfree
-      connection: slack_conn
-      event_type: slash_command
-      filter: data.command == "/whatsfree"
-      call: whats_free.py:on_slack_whatsfree_slash_command
+      filter: data.command == "/reserveroom"
+      call: reserve_room.py:on_slack_slash_command

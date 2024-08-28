@@ -1,19 +1,21 @@
+"""List all the available rooms for the next half hour."""
+
 from datetime import UTC, datetime, timedelta
 
 from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
 
-import helpers
+import google_sheets
 
 
-# Entry point for the /whatsfree slash command
-def on_slack_whatsfree_slash_command(event):
+def on_slack_slash_command(event):
+    """Entry point for the "/availablerooms" Slack slash command."""
     # user_id = event.data['user_id']
     channel_id = event.data["channel_id"]
 
     slack = slack_client("slack_conn")
 
-    rooms = helpers.get_room_list()
+    rooms = google_sheets.get_room_list()
 
     gcal = google_calendar_client("calendar_conn").events()
     now = datetime.now(UTC)

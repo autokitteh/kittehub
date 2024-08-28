@@ -1,21 +1,21 @@
+"""Reserve a specific room for the next half hour."""
+
 from datetime import UTC, datetime, timedelta
 
 import autokitteh
 from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
 
-import helpers
+import google_sheets
 
 
-# Entry point for the /createmeeting slash command
 # event.data['text'] contains the text of the slash command.
-# The format is /createmeeting <room> <event>
-# The event is a string that will be used as the title of the event.
-def on_slack_createmeeting_slash_command(event):
+def on_slack_slash_command(event):
+    """Entry point for the "/reserveroom <room> <title>" Slack slash command."""
     slack = slack_client("slack_conn")
 
     channel_id = event.data["channel_id"]
-    rooms = helpers.get_room_list()
+    rooms = google_sheets.get_room_list()
 
     txt = event.data["text"]
     words = txt.split(maxsplit=1)

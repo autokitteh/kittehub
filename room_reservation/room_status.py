@@ -1,21 +1,23 @@
+"""Check the status of a specific room for the next half hour."""
+
 from datetime import UTC, datetime, timedelta
 
 from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
 
-import helpers
+import google_sheets
 
 
-# Entry point for the /roomstatus slash command
-def on_slack_roomstatus_slash_command(event):
+def on_slack_slash_command(event):
+    """Entry point for the "/roomstatus <room>" Slack slash command."""
     slack = slack_client("slack_conn")
 
     # user_id = event.data['user_id']
-    rooms = helpers.get_room_list()
+    rooms = google_sheets.get_room_list()
     channel_id = event.data["channel_id"]
 
     room_id = event.data["text"]
-    rooms = helpers.get_room_list()
+    rooms = google_sheets.get_room_list()
     if room_id not in rooms:
         slack.chat_postMessage(
             channel=channel_id, text=f"{room_id} not found in list of rooms"

@@ -11,8 +11,8 @@ meeting within the next half hour.
 
 We configured three slash commands in Slack:
 
-- `/whatsfree` - list all the available rooms for the next hour
-- `/roomstatus <room>` - show the status of a specific room right now
+- `/availablerooms` - list all the available rooms
+- `/roomstatus <room>` - check the status of a specific room
 - `/reserveroom <room> <title>` - reserve a specific room
 
 You can extend this project to add participants, set the time, etc.
