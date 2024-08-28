@@ -4,6 +4,7 @@ from datetime import UTC, datetime, timedelta
 
 from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
+from googleapiclient.errors import HttpError
 
 import google_sheets
 
@@ -11,7 +12,7 @@ import google_sheets
 def on_slack_slash_command(event):
     """Entry point for the "/availablerooms" Slack slash command."""
     slack = slack_client("slack_conn")
-    channel_id = event.data["channel_id"]
+    channel_id = event.data.user_id  # event.data.channel_id
 
     now = datetime.now(UTC)
     in_30_minutes = now + timedelta(minutes=30)
@@ -31,15 +32,19 @@ def on_slack_slash_command(event):
                 orderBy="startTime",
             ).execute()
 
-            if not events.get("items"):
+            events = events.get("items", [])
+            # Ignore non-blocking events where the room is marked as "free".
+            events = [e for e in events if e.get("transparency", "") != "transparent"]
+
+            if not events:
                 msg = f"The room `{room}` is available for the next half hour"
                 slack.chat_postMessage(channel=channel_id, text=msg)
                 available = True
 
-        except Exception as e:
-            # TODO: Send a better error message if room isn't found as a resource.
-            slack.chat_postMessage(channel=channel_id, text=f"{e}")
-            print(f"Error: {e}")
+        except HttpError as e:
+            err = f"Error for the room `{room}`: '{e.reason}'"
+            slack.chat_postMessage(channel=channel_id, text=err)
+            print(f"Error when listing events for room `{room}`: {e}")
 
     if not available:
         msg = "No available rooms found for the next half hour"

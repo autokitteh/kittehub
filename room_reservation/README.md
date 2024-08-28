@@ -25,11 +25,11 @@ Each meeting room is represented by an email account.
 The list of available meeting rooms is stored in a Google Sheet as a single
 column of room email addresses:
 
-|     | A                   |
-| --- | ------------------- |
-| 1   | `room1@example.com` |
-| 2   | `room2@example.com` |
-| 3   | `room3@example.com` |
+|     |          A          |
+| :-: | :-----------------: |
+|  1  | `room1@example.com` |
+|  2  | `room2@example.com` |
+|  3  | `room3@example.com` |
 
 Before deploying this project, set the `GOOGLE_SHEET_ID` variable in the
 [autokitteh.yaml](./autokitteh.yaml) manifest file, to point to your Google
