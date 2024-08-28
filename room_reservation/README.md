@@ -15,7 +15,8 @@ We configured three slash commands in Slack:
 - `/roomstatus <room>` - check the status of a specific room
 - `/reserveroom <room> <title>` - reserve a specific room
 
-You can extend this project to add participants, set the time, etc.
+> [!TIP]
+> You can extend this project to add participants, set the time, etc.
 
 ## Configuration
 
@@ -30,7 +31,12 @@ column of room email addresses:
 | 2   | `room2@example.com` |
 | 3   | `room3@example.com` |
 
-You can extend this project to add another column for user-friendly aliases.
+Before deploying this project, set the `GOOGLE_SHEET_ID` variable in the
+[autokitteh.yaml](./autokitteh.yaml) manifest file, to point to your Google
+Sheet.
+
+> [!TIP]
+> You can extend this project to add another column for user-friendly aliases.
 
 ## AutoKitteh Integrations
 
