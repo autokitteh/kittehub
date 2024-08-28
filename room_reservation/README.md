@@ -30,7 +30,3 @@ The list of available meeting rooms is stored in a Google Sheet, which looks lik
 ## AutoKitteh Integrations
 
 Google Calendar, Google Sheets, Slack
-
-## Implementation Languages
-
-🐍 Python

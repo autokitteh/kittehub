@@ -21,15 +21,15 @@ project:
     - name: slack_slash_command_roomstatus
       connection: slack_conn
       event_type: slash_command
-      call: room_status.py:on_slack_roomstatus_slash_command
       filter: data.command == "/roomstatus"
+      call: room_status.py:on_slack_roomstatus_slash_command
     - name: slack_slash_command_createmeeting
       connection: slack_conn
       event_type: slash_command
-      call: create_meeting.py:on_slack_createmeeting_slash_command
       filter: data.command == "/createmeeting"
+      call: create_meeting.py:on_slack_createmeeting_slash_command
     - name: slack_slash_command_whatsfree
       connection: slack_conn
       event_type: slash_command
-      call: whats_free.py:on_slack_whatsfree_slash_command
       filter: data.command == "/whatsfree"
+      call: whats_free.py:on_slack_whatsfree_slash_command
