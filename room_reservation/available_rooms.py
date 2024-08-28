@@ -10,45 +10,37 @@ import google_sheets
 
 def on_slack_slash_command(event):
     """Entry point for the "/availablerooms" Slack slash command."""
-    # user_id = event.data['user_id']
+    slack = slack_client("slack_conn")
     channel_id = event.data["channel_id"]
 
-    slack = slack_client("slack_conn")
-
-    rooms = google_sheets.get_room_list()
-
-    gcal = google_calendar_client("calendar_conn").events()
     now = datetime.now(UTC)
     in_30_minutes = now + timedelta(minutes=30)
+    gcal = google_calendar_client("calendar_conn").events()
 
+    # Iterate over the list of rooms, notify the user about
+    # each room which is available in the next half hour.
     available = False
-
-    # Iterate through the list of rooms and notify the user if the room is free in the next 30 minutes
-    for room in rooms:
-        print(f"Checking events in {room}.")
-
+    for room in sorted(google_sheets.get_room_list()):
+        print(f"Checking upcoming events in: {room}")
         try:
-            events_result = gcal.list(
+            events = gcal.list(
                 calendarId=room,
                 timeMin=now.isoformat(),
                 timeMax=in_30_minutes.isoformat(),
                 singleEvents=True,
                 orderBy="startTime",
             ).execute()
-            events = events_result.get("items", [])
 
-            if not events:
-                slack.chat_postMessage(
-                    channel=channel_id, text=f"{room} is free for the next 30 minutes"
-                )
+            if not events.get("items"):
+                msg = f"The room `{room}` is available for the next half hour"
+                slack.chat_postMessage(channel=channel_id, text=msg)
                 available = True
 
         except Exception as e:
-            # TODO: if room in the list if not found as a resource, send a better message to the user
+            # TODO: Send a better error message if room isn't found as a resource.
             slack.chat_postMessage(channel=channel_id, text=f"{e}")
             print(f"Error: {e}")
 
     if not available:
-        slack.chat_postMessage(
-            channel=channel_id, text="No free rooms found for the next 30 minutes"
-        )
+        msg = "No available rooms found for the next half hour"
+        slack.chat_postMessage(channel=channel_id, text=msg)

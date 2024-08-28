@@ -1,7 +1,8 @@
-"""Check the status of a specific room for the next half hour."""
+"""Check the status of a specific room for the next hour."""
 
 from datetime import UTC, datetime, timedelta
 
+import autokitteh
 from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
 
@@ -11,43 +12,37 @@ import google_sheets
 def on_slack_slash_command(event):
     """Entry point for the "/roomstatus <room>" Slack slash command."""
     slack = slack_client("slack_conn")
+    channel_id = event.data.channel_id
 
-    # user_id = event.data['user_id']
-    rooms = google_sheets.get_room_list()
-    channel_id = event.data["channel_id"]
-
-    room_id = event.data["text"]
-    rooms = google_sheets.get_room_list()
-    if room_id not in rooms:
-        slack.chat_postMessage(
-            channel=channel_id, text=f"{room_id} not found in list of rooms"
-        )
-        return
+    room = event.data.text
+    if room not in google_sheets.get_room_list():
+        error = f"Error: `{room}` not found in the list of rooms"
+        slack.chat_postMessage(channel=channel_id, text=error)
 
     gcal = google_calendar_client("calendar_conn").events()
-
-    # TODO: change the time you would like to check for the room status
     now = datetime.now(UTC)
-    in_5_hours = now + timedelta(hours=24)
+    in_1_hour = now + timedelta(hours=1)
 
+    msg = f"Events in the room `{room}`:"
     try:
-        events_result = gcal.list(
-            calendarId=room_id,
+        events = gcal.list(
+            calendarId=room,
             timeMin=now.isoformat(),
-            timeMax=in_5_hours.isoformat(),
+            timeMax=in_1_hour.isoformat(),
             singleEvents=True,
             orderBy="startTime",
-        ).execute()
-        events = events_result.get("items", [])
-
-        msg = f"Events in {room_id}:"
+        )
+        events = events.execute().get("items", [])
 
         if not events:
-            msg = msg + " No upcoming events found."
+            msg += " no upcoming events found"
+
         for event in events:
-            start = event["start"].get("dateTime", event["start"].get("date"))
-            msg = msg + f"\n{start} - {event['summary']}"
-        slack.chat_postMessage(channel=channel_id, text=msg)
+            event = autokitteh.AttrDict(event)
+            start = event.start.get("dateTime") or event.start.get("date")
+            msg += f"\n{start} - {event.summary}"
     except Exception as e:
-        slack.chat_postMessage(channel_id, f"{e}")
-        print(f"Error: {e}")
+        msg = f"Error: {e}"
+        print(msg)
+
+    slack.chat_postMessage(channel=channel_id, text=msg)
