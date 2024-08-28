@@ -1,4 +1,4 @@
-"""Basic handler for incoming HTTP GET requests."""
+"""Basic handler for incoming HTTP requests."""
 
 import time
 
@@ -6,7 +6,7 @@ import time
 FIVE_SECONDS = 5
 
 
-def on_http_get(event):
+def on_http_request(event):
     print(f"Received {event.data.method} request")
 
     iterations = int(event.data.url.query.get("iterations", "0"))
