@@ -15,7 +15,9 @@ project:
   name: reviewkitteh
   vars:
     - name: CHANNEL
+      value: "<YOUR_SLACK_CHANNEL>"
     - name: SHEET_ID
+      value: "<YOU_SHEET_ID>"
   connections:
     - name: my_slack
       integration: slack

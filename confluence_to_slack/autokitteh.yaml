@@ -18,9 +18,9 @@ project:
     - name: FILTER_LABEL
       value: ""
     - name: SLACK_CHANNEL
-      value: 
+      value: ""
     - name: SNIPPET_LENGTH
-      value: 150
+      value: "150"
   connections:
     - name: confluence_connection
       integration: confluence
