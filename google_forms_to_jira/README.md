@@ -25,8 +25,8 @@ This project automates the process of creating Jira issues based on new response
 
 Ensure you have set up the required integrations: 
 
-- [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
-- [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
+- [Atlassian Jira](https://docs.autokitteh.com/integrations/atlassian)
+- [Google Forms](https://docs.autokitteh.com/integrations/google)
 
 ### Clone the Repository
 

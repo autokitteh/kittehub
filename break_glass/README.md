@@ -26,8 +26,8 @@ This project implements a break-glass request workflow that allows users to subm
 
 Ensure you have set up the required integrations and environment variables:
 
-- [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
-- [Configure Slack integration](https://docs.autokitteh.com/config/integrations/slack/)
+- [Atlassian Jira](https://docs.autokitteh.com/integrations/atlassian)
+- [Slack](https://docs.autokitteh.com/integrations/slack)
 
 ### Clone the Repository
 

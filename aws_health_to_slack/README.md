@@ -38,8 +38,8 @@ This table represents how each project is linked to a specific Slack channel, gu
 
 Ensure you have set up the required integrations and environment variables. This project uses Google Sheets, AWS Health API, and Slack API.
 
-- [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
-- [Configure Slack integration](https://docs.autokitteh.com/config/integrations/slack/)
+- [Google Sheets](https://docs.autokitteh.com/integrations/google)
+- [Slack](https://docs.autokitteh.com/integrations/slack)
 
 ### Clone the Repository
 

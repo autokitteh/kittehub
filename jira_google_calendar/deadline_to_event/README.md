@@ -24,8 +24,8 @@ This project automates the process of creating Google Calendar events based on J
 
 Ensure you have set up the required integrations:
 
-- [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
-- [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
+- [Atlassian Jira](https://docs.autokitteh.com/integrations/atlassian)
+- [Google Calendar](https://docs.autokitteh.com/integrations/google)
 
 ### Clone the Repository
 

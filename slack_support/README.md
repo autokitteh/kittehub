@@ -19,8 +19,8 @@ This would happen:
 
 Requirements:
 
-- Slack integration is set up. See https://docs.autokitteh.com/tutorials/new_connections/slack.
-- Google integration is set up. See TODO.
+- Slack integration is set up. See https://docs.autokitteh.com/integrations/slack.
+- Google integration is set up. See https://docs.autokitteh.com/integrations/google.
 
 First apply the manifest:
 
