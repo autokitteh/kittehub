@@ -1,5 +1,5 @@
 # This YAML file is a declarative manifest that describes the setup of
-# an AutoKitteh sample project that demonstrates integration with 
+# an AutoKitteh sample project that demonstrates integration with
 # Google Forms and Jira.
 #
 # Before deploying this AutoKitteh project:
@@ -7,7 +7,7 @@
 # - Set the "JIRA_PROJECT_KEY" in the project's vars
 # - Set the "POLL_INTERVAL" in the project's vars
 #  (in seconds, e.g. 60 for 1 minute)
-# 
+#
 # After applying this file, initialize this AutoKitteh project's
 # Google Forms and Jira connections.
 
@@ -15,13 +15,13 @@ version: v1
 
 project:
   name: google_forms_to_jira
-  vars: 
+  vars:
     - name: GOOGLE_FORM_ID
-      value: 
+      value: ""
     - name: JIRA_PROJECT_KEY
-      value: 
+      value: ""
     - name: POLL_INTERVAL
-      value: 10 
+      value: "10"
   connections:
     - name: jira_connection
       integration: jira

@@ -14,7 +14,7 @@ project:
   name: room_reservation
   vars:
     - name: GOOGLE_SHEET_ID
-      value: 
+      value: ""
   connections:
     - name: calendar_conn
       integration: googlecalendar

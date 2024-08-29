@@ -1,6 +1,6 @@
 # This YAML file is a declarative manifest that describes the setup of
 # an AutoKitteh project that manages GitHub Copilot subscriptions.
-# 
+#
 # Before deploying this AutoKitteh project:
 # - Set the "GITHUB_ORG" in the project's vars
 # - Set the "IDLE_USAGE_THRESHOLD" in the project's vars
@@ -16,15 +16,14 @@ project:
   name: github_copilot_seats
   vars:
     - name: GITHUB_ORG
-      value: 
+      value: "<YOUR_GITHUB_ORG>"
     - name: IDLE_USAGE_THRESHOLD
-      value: "72h" 
-    # If set, only manage GitHub Copilot subscriptions to the specified users, separated by commas.
-    - name: LOGINS
-      value:
-      optional: true
+      value: "72h"
+    - # If not empty, only manage GitHub Copilot subscriptions to the specified users, separated by commas.
+      name: LOGINS
+      value: ""
     - name: LOG_CHANNEL
-      value: 
+      value: ""
   connections:
     - name: mygithub
       integration: github
