@@ -5,7 +5,7 @@ projects for:
 
 - Full-fledged, ready-to-use solutions for real-life use cases
 - Composable templates for interoperability between common services
-- Demonstrations of system capabilities and features
+- Demonstrations of advanced system capabilities and features
 
 | Name                                                                             | Description                                                                              | Integrations                                |
 | :------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------------ |
