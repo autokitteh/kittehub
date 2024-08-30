@@ -31,8 +31,8 @@ The image above illustrates a sample Google Calendar used in this workflow. Each
 
 Ensure you have set up the required integrations:
 
-- [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
-- [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
+- [Atlassian Jira](https://docs.autokitteh.com/integrations/atlassian)
+- [Google Calendar](https://docs.autokitteh.com/integrations/google)
 
 ### Clone the Repository
 

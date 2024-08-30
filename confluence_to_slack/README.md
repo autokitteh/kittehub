@@ -32,8 +32,8 @@ This workflow automates notifications to a Slack channel whenever a new Confluen
 
 Ensure you have set up the required integrations and environment variables. This project uses Confluence and Slack APIs.
 
-- [Configure Atlassian integration](https://docs.autokitteh.com/config/integrations/atlassian)
-- [Configure Slack integration](https://docs.autokitteh.com/config/integrations/slack/)
+- [Atlassian Confluence](https://docs.autokitteh.com/integrations/atlassian)
+- [Slack](https://docs.autokitteh.com/integrations/slack)
 
 ### Clone the Repository
 

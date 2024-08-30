@@ -23,8 +23,8 @@ For more details, refer to [this blog post](https://autokitteh.com/technical-blo
 
 ### Configure integrations
 
-- [Configure Google integration](https://docs.autokitteh.com/config/integrations/google)
-- [Configure Slack integration](https://docs.autokitteh.com/config/integrations/slack/)
+- [Gmail](https://docs.autokitteh.com/config/integrations/google)
+- [Slack](https://docs.autokitteh.com/config/integrations/slack)
 
 ### Clone the Repository
 
