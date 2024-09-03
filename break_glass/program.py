@@ -25,13 +25,13 @@ import os
 from pathlib import Path
 
 import autokitteh
-from autokitteh.atlassian import atlassian_jira_client
+from autokitteh.atlassian import jira_client
 from autokitteh.slack import slack_client
 from requests.exceptions import HTTPError
 
 
 APPROVAL_CHANNEL = os.getenv("APPROVAL_CHANNEL")
-jira = atlassian_jira_client("jira_connection")
+jira = jira_client("jira_connection")
 slack = slack_client("slack_connection")
 
 
