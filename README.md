@@ -7,6 +7,10 @@ projects for:
 - Composable templates for interoperability between common services
 - Demonstrations of advanced system capabilities and features
 
+Go to the [samples](https://github.com/autokitteh/samples) repository to find
+more projects that demonstrate foundational system features, integration API
+details, and recommended practices.
+
 | Name                                                                             | Description                                                                              | Integrations                                |
 | :------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------------ |
 | 🐍 [AWS Health to Slack](./aws_health_to_slack/)                                 | Announce cloud health events based on a resource ownership mapping                       | AWS (Health), Google Sheets, Slack          |
