@@ -5,12 +5,7 @@ version: v1
 
 project:
   name: quickstart
-  connections:
-    - name: http_conn
-      integration: http
   triggers:
     - name: http_request
-      connection: http_conn
-      data:
-        path: trigger_path
+      type: webhook
       call: program.py:on_http_request

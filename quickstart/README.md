@@ -1,12 +1,7 @@
 # Quickstart
 
-Basic workflow for tutorials, used in
-https://docs.autokitteh.com/get_started/quickstart.
+Basic workflow for tutorials.
 
-## AutoKitteh Integrations
+## Setup and Usage Instructions
 
-HTTP
-
-## Implementation Languages
-
-🐍 Python
+https://docs.autokitteh.com/get_started/quickstart
