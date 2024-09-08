@@ -7,7 +7,7 @@ This project creates Jira issue based on various HTTP requests:
 - HTTP POST with a JSON body
 
 This is particularly useful when you need to create issues automatically from
-another internal system or service, with minimal fuss.
+another system or service with no fuss.
 
 ## API Documentation
 
@@ -53,8 +53,7 @@ HTTP:
 > ```
 
 5. Initialize this project's Atlassian Jira connection, with an OAuth 2.0
-   (3LO) app (based on step 3), or with user impersonation using an API token
-   or a Personal Access Token (PAT)
+   (3LO) app (based on step 3), or with user impersonation using a token
 
 > [!TIP]
 > The exact CLI command to do so (`ak connection init ...`) will appear in the
@@ -108,4 +107,5 @@ HTTP:
    }
    ```
 
-   ...As well as any other field from [Jira's REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post-request-body).
+   As well as any other field from
+   [Jira's REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post-request-body).

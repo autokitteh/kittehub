@@ -59,7 +59,7 @@ Google Forms:
 6. Initialize this project's connections:
 
    - Atlassian Jira: with an OAuth 2.0 (3LO) app (based on step 2), or with
-     user impersonation using an API token or a Personal Access Token (PAT)
+     user impersonation using a token
    - Google Forms: with user impersonation using OAuth 2.0 (based on step 2),
      or a GCP service account's JSON key
 
