@@ -1,6 +1,12 @@
-"""Create Atlassian Jira issues from a webhook.
+"""Create Jira issues based on HTTP GET/POST requests.
 
-See invocation details in the README file.
+Atlassian Jira API documentation:
+- https://docs.autokitteh.com/integrations/atlassian/jira/python
+- https://docs.autokitteh.com/integrations/atlassian/jira/events
+
+HTTP API documentation:
+- https://docs.autokitteh.com/integrations/http/python
+- https://docs.autokitteh.com/integrations/http/events
 """
 
 import json
@@ -29,5 +35,5 @@ def _create_jira_issue(fields):
     if isinstance(fields["issuetype"], str):
         fields["issuetype"] = {"name": fields["issuetype"]}
 
-    issue = jira_client("jira_connection").issue_create(fields=fields)
-    print("Created Jira issue: " + issue["key"])
+    issue = jira_client("jira_conn").issue_create(fields=fields)
+    print("Created Jira issue:", issue["key"])

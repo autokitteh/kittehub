@@ -17,7 +17,6 @@ details, and recommended practices.
 | 🐍 [Break-glass](./break_glass/)                                                 | Manage break-glass requests and approvals for temporary elevated permissions             | Slack &rarr; AWS (IAM), Jira                |
 | 🐍 [Categorize emails](./categorize_emails/)                                     | Categorize new emails and notify the appropriate channels based on the content           | Gmail &rarr; ChatGPT &rarr; Slack           |
 | 🐍 [Confluence to Slack](./confluence_to_slack/)                                 | Notify when a new page with a specific label is created                                  | Confluence &rarr; Slack                     |
-| 🐍 [Create Jira issue via webhook](./create_jira_issue/)                         | Create Jira issues with HTTP GET/POST requests                                           | HTTP &rarr; Jira                            |
 | 🐍 [Data pipeline](./data_pipeline/)                                             | Process and store data from new S3 files in a database                                   | AWS (SNS, S3) &rarr; SQLite                 |
 | ⭐ [GitHub Copilot seats](./github_copilot/)                                     | Automate daily GitHub Copilot user pruning and report changes                            | GitHub &harr; Slack                         |
 | 🐍 [Google Forms to Jira](./google_forms_to_jira/)                               | Create Jira issues based on Google Forms responses                                       | Google Forms &rarr; Jira                    |
@@ -29,6 +28,7 @@ details, and recommended practices.
 | 🐍 [Room reservation](./room_reservation/)                                       | Manage via Slack ad-hoc room reservations in Google Calendar                             | Slack &harr; Google Calendar, Google Sheets |
 | 🐍 [Slack support](./slack_support/)                                             | Categorize Slack support requests using AI, and route them to the appropiate people      | Slack &harr; Gemini, Google Sheets          |
 | 🐍 [Task chain](./task_chain/)                                                   | Run a sequence of tasks with fault tolerance                                             | Slack                                       |
+| 🐍 [Webhook to Jira](./webhook_to_jira/)                                         | Create Jira issues based on HTTP GET/POST requests                                       | HTTP &rarr; Jira                            |
 
 > [!NOTE]
 > 🐍 = Python implementation, ⭐ = Starlark implementation.
