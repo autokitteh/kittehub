@@ -94,16 +94,18 @@ HTTP:
 
    ```shell
    curl -iL [-X POST] "http://localhost:9980/webhooks/.../" \
-        --json @filename.json
+        --json @file.json
    ```
 
-   With this
+   With this minimal content for `file.json`:
 
    ```json
    {
-     "project": "TEST",
-     "issuetype": "Task",
+     "project": { "key": "TEST" },
+     "issuetype": { "name": "Task" },
      "summary": "Test issue 3",
      "description": "Created with JSON"
    }
    ```
+
+   ...As well as any other field from [Jira's REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post-request-body).
