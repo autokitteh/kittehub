@@ -1,85 +1,96 @@
+# Google Forms to Jira
 
-# Google Forms to Jira Workflow
-
-This project automates the process of creating Jira issues based on new responses to a Google Form. The workflow periodically polls a Google Form for new responses and creates a Jira issue for each new response.
-
-## Benefits
-
-- **Automated Issue Creation**: Automatically creates Jira issues for each new Google Form response.
-- **Seamless Integration**: Integrates Google Forms and Jira without additional manual steps.
+This project creates Jira issues based on Google Forms responses.
 
 ## How It Works
 
-1. **Trigger**: The workflow is triggered by an HTTP GET request.
-2. **Poll Forms**: The program polls the specified Google Form for new responses.
-3. **Create Jira Issue**: For each new response, the program creates a Jira issue with the response data.
+1. The workflow is triggered by response events from Google Forms, for a
+   specific form ID
 
-## Installation and Usage 
+2. The workflow extracts the answers from the response, and matches them with
+   the form's questions, to construct a human-readable summary
 
-- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
+3. The workflow checks if there's already an existing Jira issue for the
+   response's ID:
 
-### Configure integrations
+   - No (new response): it creates a new Jira issue
+   - Yes (edited response): it updates the existing Jira issue's description
+     with the new response
+
+## API Documentation
+
+Atlassian Jira:
+
+- https://docs.autokitteh.com/integrations/atlassian/jira/python
+- https://docs.autokitteh.com/integrations/atlassian/jira/events
+
+Google Forms:
+
+- https://docs.autokitteh.com/integrations/google/forms/python
+- https://docs.autokitteh.com/integrations/google/forms/events
+
+## Setup Instructions
+
+1. Install and start a
+   [self-hosted AutoKitteh server](https://docs.autokitteh.com/get_started/quickstart),
+   or use AutoKitteh Cloud
+
+2. Optional for self-hosted servers (preconfigured in AutoKitteh Cloud):
+
+   - [Enable Google connections to use OAuth 2.0](https://docs.autokitteh.com/integrations/google/config)
+   - [Enable Atlassian connections to use an OAuth 2.0 (3LO) app](https://docs.autokitteh.com/integrations/atlassian/config)
+
+3. Run this command to clone the Kittehub repository, which contains this
+   project:
+
+   ```shell
+   git clone https://github.com/autokitteh/kittehub.git
+   ```
+
+4. Set the `JIRA_PROJECT_KEY` variable in this project's
+   [autokitteh.yaml](./autokitteh.yaml) manifest file
+
+5. Run this command to deploy this project's manifest file:
+
+   ```shell
+   ak deploy --manifest kittehub/google_forms_to_jira/autokitteh.yaml
+   ```
+
+6. Initialize this project's connections:
+
+   - Atlassian Jira: with an OAuth 2.0 (3LO) app (based on step 2), or with
+     user impersonation using an API token or a Personal Access Token (PAT)
+   - Google Forms: with user impersonation using OAuth 2.0 (based on step 2),
+     or a GCP service account's JSON key
+
+> [!TIP]
+> The exact CLI commands to do so (`ak connection init ...`) will appear in
+> the output of the `ak deploy` command from step 3 when you create the
+> project on the server, i.e. when you run that command for the first time.
 
 > [!IMPORTANT]
-> The `autokitteh.yaml` file includes environment variables for the Google Forms and Jira connections that need to be configured.
+> Specify the ID of a form that you own, to receive notifications about it.
 
-Ensure you have set up the required integrations: 
+## Usage Instructions
 
-- [Atlassian Jira](https://docs.autokitteh.com/integrations/atlassian)
-- [Google Forms](https://docs.autokitteh.com/integrations/google)
-
-### Clone the Repository
-
-```shell
-git clone https://github.com/autokitteh/kittehub.git
-cd kittehub/google_forms_to_jira
-```
-Alternatively, you can copy the individual files in this directory.
-
-### Run the AutoKitteh Server
-
-Simply run this command:
-
-```shell
-ak up --mode dev
-```
-
-### Apply Manifest and Deploy Project
-
-1. Navigate to the `google_forms_to_jira` directory:
+1. Run this command to start a session that appends a question to the form
+   watched by the Google Forms connection (use the URL path from step 4
+   above instead of `/webhooks/.../`):
 
    ```shell
-   cd google_forms_to_jira
+   curl -iL "http://localhost:9980/webhooks/.../"
    ```
 
-2. Apply manifest and deploy the project by running the following command:
+2. The session in step 1 will cause Google Forms to send a form-change event
+   (a.k.a. `schema`) to the AutoKitteh server, which will start another session
 
-   ```shell
-   ak deploy --manifest autokitteh.yaml
-   ```
+3. Check out both session logs in the AutoKitteh server:
 
-   The output of this command will be important for initializing connections in the following step if you're using the CLI.
+   - The first one, triggered by the HTTP request
+   - The second one, triggered by the subsequent Google Forms event
 
-   For example, for each configured connection, you will see a line that looks similar to the one below:
+4. Submit a response to the form - this will cause Google Forms to send a
+   new-response event (a.k.a. `responses`) to the AutoKitteh server, which
+   will start a third session
 
-   ```shell
-   [exec] create_connection "google_forms_to_jira/jira_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
-   ```
-
-   `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
-
-### Initiliaze Connections
-
-> [!NOTE] 
-> `my_http` does not need to initialized
-
-Using the connection IDs from the previous step, run these commands:
-
-```shell
-ak connection init jira_connection <connection ID>
-ak connection init google_forms_connection <connection ID>
-```
-
-### Trigger the Workflow
-
-The workflow is triggered by an HTTP GET request to http://localhost:9980/http/google_forms_to_jira/, which starts the polling process for new Google Form responses.
+5. Check out the resulting session log in the AutoKitteh server
