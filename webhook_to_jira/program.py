@@ -2,10 +2,8 @@
 
 Atlassian Jira API documentation:
 - https://docs.autokitteh.com/integrations/atlassian/jira/python
-- https://docs.autokitteh.com/integrations/atlassian/jira/events
 
 HTTP API documentation:
-- https://docs.autokitteh.com/integrations/http/python
 - https://docs.autokitteh.com/integrations/http/events
 """
 

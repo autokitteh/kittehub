@@ -14,11 +14,9 @@ another system or service with no fuss.
 Atlassian Jira:
 
 - https://docs.autokitteh.com/integrations/atlassian/jira/python
-- https://docs.autokitteh.com/integrations/atlassian/jira/events
 
 HTTP:
 
-- https://docs.autokitteh.com/integrations/http/python
 - https://docs.autokitteh.com/integrations/http/events
 
 ## Setup Instructions
