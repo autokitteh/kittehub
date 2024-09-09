@@ -2,10 +2,8 @@
 
 Atlassian Jira API documentation:
 - https://docs.autokitteh.com/integrations/atlassian/jira/python
-- https://docs.autokitteh.com/integrations/atlassian/jira/events
 
 Google Forms API documentation:
-- https://docs.autokitteh.com/integrations/google/forms/python
 - https://docs.autokitteh.com/integrations/google/forms/events
 """
 

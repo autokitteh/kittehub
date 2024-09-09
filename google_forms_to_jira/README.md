@@ -22,11 +22,9 @@ This project creates Jira issues based on Google Forms responses.
 Atlassian Jira:
 
 - https://docs.autokitteh.com/integrations/atlassian/jira/python
-- https://docs.autokitteh.com/integrations/atlassian/jira/events
 
 Google Forms:
 
-- https://docs.autokitteh.com/integrations/google/forms/python
 - https://docs.autokitteh.com/integrations/google/forms/events
 
 ## Setup Instructions
