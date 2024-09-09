@@ -41,7 +41,7 @@ HTTP:
    copy the URL path for later:
 
    ```
-   [!!!!] Trigger created, webhook path is "/webhooks/.../"
+   [!!!!] trigger "http_get_or_post_request" created, webhook path is "/webhooks/..."
    ```
 
 > [!TIP]
@@ -68,10 +68,10 @@ HTTP:
 
 1. Run this command to create a Jira issue using an HTTP GET request with
    URL-encoded query parameters (use the URL path from step 4 above instead of
-   `/webhooks/.../`):
+   `/webhooks/...`):
 
    ```shell
-   curl -iL [--get] "http://localhost:9980/webhooks/.../" \
+   curl -i [--get] "http://localhost:9980/webhooks/..." \
         --url-query project=TEST --url-query issuetype=Task \
         --url-query "summary=Test issue 1" \
         --url-query "description=Created with HTTP GET" \
@@ -79,20 +79,20 @@ HTTP:
 
 2. Run this command to create a Jira issue using an HTTP POST request with a
    URL-encoded form body (use the URL path from step 4 above instead of
-   `/webhooks/.../`):
+   `/webhooks/...`):
 
    ```shell
-   curl -iL [-X POST] "http://localhost:9980/webhooks/.../" \
+   curl -i [-X POST] "http://localhost:9980/webhooks/..." \
         --data project=TEST --data issuetype=Task \
         --data "summary=Test issue 2" \
         --data "description=Created with URL-encoded form" \
    ```
 
 3. Run this command to create a Jira issue using an HTTP POST request with a
-   JSON body (use the URL path from step 4 above instead of `/webhooks/.../`):
+   JSON body (use the URL path from step 4 above instead of `/webhooks/...`):
 
    ```shell
-   curl -iL [-X POST] "http://localhost:9980/webhooks/.../" \
+   curl -i [-X POST] "http://localhost:9980/webhooks/..." \
         --json @file.json
    ```
 

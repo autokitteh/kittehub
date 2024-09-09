@@ -73,24 +73,11 @@ Google Forms:
 
 ## Usage Instructions
 
-1. Run this command to start a session that appends a question to the form
-   watched by the Google Forms connection (use the URL path from step 4
-   above instead of `/webhooks/.../`):
+1. Submit a response to the Google Form that you specified in step 6 above
 
-   ```shell
-   curl -iL "http://localhost:9980/webhooks/.../"
-   ```
+2. See the Jira issue which was auto-created in the Jira project that you
+   specified in the [autokitteh.yaml](./autokitteh.yaml) manifest file
 
-2. The session in step 1 will cause Google Forms to send a form-change event
-   (a.k.a. `schema`) to the AutoKitteh server, which will start another session
-
-3. Check out both session logs in the AutoKitteh server:
-
-   - The first one, triggered by the HTTP request
-   - The second one, triggered by the subsequent Google Forms event
-
-4. Submit a response to the form - this will cause Google Forms to send a
-   new-response event (a.k.a. `responses`) to the AutoKitteh server, which
-   will start a third session
-
-5. Check out the resulting session log in the AutoKitteh server
+3. If the Google Form is configured to allow editing responses instead of
+   submitting new ones, edit your response, and see the update in the
+   previously-created Jira issue
