@@ -1,4 +1,4 @@
-"""This program logs Discord message events and the author's username 
+"""This program logs Discord message events and the author's username
 into a Google Sheets document.
 """
 
