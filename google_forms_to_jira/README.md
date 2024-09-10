@@ -4,8 +4,8 @@ This project creates Jira issues based on Google Forms responses.
 
 ## How It Works
 
-1. The workflow is triggered by response events from Google Forms, for a
-   specific form ID
+1. The workflow is triggered by Google Forms response events for a predefined
+   form ID
 
 2. The workflow extracts the answers from the response, and matches them with
    the form's questions, to construct a human-readable summary
