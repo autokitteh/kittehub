@@ -32,7 +32,7 @@ This project demonstrates how to utilize AutoKitteh's event system for Discord, 
 3. Configure Discord Integration:
 
    Set up your Discord bot and connection using the documentation:
-   [Discord Integration Guide](https://docs.autokitteh.com/integrations/discord/connect)
+   [Discord Integration Guide](https://docs.autokitteh.com/integrations/discord/connection)
 
 4. Run the AutoKitteh Server:
    
