@@ -1,0 +1,21 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that forwards GitHub Marketplace webhook
+# notifications to a Slack channel.
+
+version: v1
+
+project:
+  name: github_marketplace_to_slack
+  vars:
+    - name: GITHUB_WEBHOOK_SECRET
+      value: 
+    - name: SLACK_CHANNEL_NAME_OR_ID
+      value: 
+  connections:
+    - name: slack_conn
+      integration: slack
+  triggers:
+    - name: webhook_notification
+      type: webhook
+      event_type: post
+      call: program.py:on_webhook_notification
