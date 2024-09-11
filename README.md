@@ -7,9 +7,8 @@ projects for:
 - Composable templates for interoperability between common services
 - Demonstrations of advanced system capabilities and features
 
-Go to the [samples](https://github.com/autokitteh/samples) repository to find
-more projects that demonstrate foundational system features, integration API
-details, and recommended practices.
+In addition, the [samples](./samples/) directory contains projects that
+demonstrate basic system features, integration APIs, and best practices.
 
 | Name                                                                             | Description                                                                              | Integrations                                |
 | :------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------------ |

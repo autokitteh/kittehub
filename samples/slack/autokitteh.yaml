@@ -1,0 +1,32 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way integration with
+# Slack (https://slack.com).
+
+version: v1
+
+project:
+  name: slack_sample
+  connections:
+    - name: slack_conn
+      integration: slack
+  triggers:
+    - name: slack_app_mention
+      connection: slack_conn
+      event_type: app_mention
+      call: program.py:on_slack_app_mention
+    - name: slack_interaction
+      connection: slack_conn
+      event_type: interaction
+      call: program.py:on_slack_interaction
+    - name: slack_message
+      connection: slack_conn
+      event_type: message
+      call: program.py:on_slack_message
+    - name: slack_reaction_added
+      connection: slack_conn
+      event_type: reaction_added
+      call: program.py:on_slack_reaction_added
+    - name: slack_slash_command
+      connection: slack_conn
+      event_type: slash_command
+      call: program.py:on_slack_slash_command

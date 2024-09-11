@@ -1,0 +1,18 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way integration with
+# Google Sheets (https://workspace.google.com/products/sheets/).
+
+version: v1
+
+project:
+  name: google_sheets_sample
+  connections:
+    - name: sheets_conn
+      integration: googlesheets
+    - name: slack_conn
+      integration: slack
+  triggers:
+    - name: slack_slash_command
+      connection: slack_conn
+      event_type: slash_command
+      call: program.py:on_slack_slash_command

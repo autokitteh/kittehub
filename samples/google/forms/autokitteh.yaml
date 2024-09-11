@@ -1,0 +1,24 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way integration with
+# Google Forms (https://www.google.com/forms/about/).
+
+version: v1
+
+project:
+  name: google_forms_sample
+  connections:
+    - name: forms_conn
+      integration: googleforms
+  triggers:
+    - name: add_question
+      type: webhook
+      event_type: get
+      call: program.py:add_question
+    - name: google_forms_schema_change
+      connection: forms_conn
+      event_type: schema
+      call: program.py:on_form_change
+    - name: google_forms_response
+      connection: forms_conn
+      event_type: responses
+      call: program.py:on_form_response

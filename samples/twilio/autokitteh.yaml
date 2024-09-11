@@ -1,0 +1,21 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way integration with
+# Twilio (https://www.twilio.com).
+
+version: v1
+
+project:
+  name: twilio_sample
+  vars:
+    - name: FROM_PHONE_NUMBER
+      value: 
+  connections:
+    - name: slack_conn
+      integration: slack
+    - name: twilio_conn
+      integration: twilio
+  triggers:
+    - name: slack_slash_command
+      connection: slack_conn
+      event_type: slash_command
+      call: program.star:on_slack_slash_command

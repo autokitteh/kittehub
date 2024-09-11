@@ -1,0 +1,30 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way usage of HTTP.
+
+version: v1
+
+project:
+  name: http_sample
+  vars:
+    - name: HTTPBIN_BASE_URL
+      value: https://httpbin.org/
+  triggers:
+    - name: receive_http_get_or_head
+      type: webhook
+      filter: data.method in ["GET", "HEAD"]
+      call: webhooks.py:on_http_get_or_head
+
+    - name: receive_http_post_form
+      type: webhook
+      event_type: post
+      filter: data.headers["Content-Type"] == "application/x-www-form-urlencoded"
+      call: webhooks.py:on_http_post_form
+    - name: receive_http_post_json
+      type: webhook
+      event_type: post
+      filter: data.headers["Content-Type"].startsWith("application/json")
+      call: webhooks.py:on_http_post_json
+
+    - name: send_requests
+      type: webhook
+      call: webhooks.py:send_requests
