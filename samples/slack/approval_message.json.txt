@@ -1,0 +1,50 @@
+[
+    {
+        "type": "header",
+        "text": {
+            "type":  "plain_text",
+            "emoji": true,
+            "text":  "Title"
+        }
+    },
+    {
+        "type": "divider"
+    },
+    {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "Message"
+        }
+    },
+    {
+        "type": "divider"
+    },
+    {
+        "type": "actions",
+        "elements": [
+            {
+                "type":  "button",
+                "style": "primary",
+                "text": {
+                    "type":  "plain_text",
+                    "emoji": true,
+                    "text":  "Approve"
+                },
+                "value":     "Approve",
+                "action_id": "Approve ActionID"
+            },
+            {
+                "type":  "button",
+                "style": "danger",
+                "text": {
+                    "type":  "plain_text",
+                    "emoji": true,
+                    "text":  "Deny"
+                },
+                "value":     "Deny",
+                "action_id": "Deny ActionID"
+            }
+        ]
+    }
+]

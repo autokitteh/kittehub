@@ -1,0 +1,22 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way integration with
+# Gmail (https://www.google.com/gmail/about/).
+
+version: v1
+
+project:
+  name: gmail_sample
+  connections:
+    - name: gmail_conn
+      integration: gmail
+    - name: slack_conn
+      integration: slack
+  triggers:
+    - name: slack_slash_command
+      connection: slack_conn
+      event_type: slash_command
+      call: program.py:on_slack_slash_command
+    - name: gmail_mailbox_change
+      connection: gmail_conn
+      event_type: mailbox_change
+      call: program.py:on_gmail_mailbox_change

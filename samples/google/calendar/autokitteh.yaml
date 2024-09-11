@@ -1,0 +1,28 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way integration with
+# Google Calendar (https://workspace.google.com/products/calendar/).
+
+version: v1
+
+project:
+  name: google_calendar_sample
+  connections:
+    - name: calendar_conn
+      integration: googlecalendar
+  triggers:
+    - name: list_events
+      type: webhook
+      event_type: get
+      call: program.py:list_events
+    - name: google_calendar_event_created
+      connection: calendar_conn
+      event_type: event_created
+      call: program.py:on_calendar_event_created
+    - name: google_calendar_event_updated
+      connection: calendar_conn
+      event_type: event_updated
+      call: program.py:on_calendar_event_updated
+    - name: google_calendar_event_deleted
+      connection: calendar_conn
+      event_type: event_deleted
+      call: program.py:on_calendar_event_deleted

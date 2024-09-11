@@ -1,0 +1,13 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates runtime event handling.
+
+version: v1
+
+project:
+  name: runtime_events_sample
+  triggers:
+    - name: meow_webhook
+      type: webhook
+      event_type: get
+      filter: data.url.path.endsWith("/meow")
+      call: program.py:on_http_get_meow

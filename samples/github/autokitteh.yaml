@@ -1,0 +1,31 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way integration with
+# GitHub (https://github.com).
+
+version: v1
+
+project:
+  name: github_sample
+  connections:
+    - name: github_conn
+      integration: github
+  triggers:
+    - name: github_issue_comment
+      connection: github_conn
+      event_type: issue_comment
+      # Handle only new issue comments in this sample code
+      # (FYI, the other options are "edited" and "deleted").
+      filter: data.action == "created"
+      call: program.star:on_github_issue_comment
+    - name: github_workflow_dispatch
+      connection: github_conn
+      event_type: workflow_dispatch
+      call: workflow.star:on_github_workflow_dispatch
+    - name: github_workflow_job
+      connection: github_conn
+      event_type: workflow_job
+      call: workflow.star:on_github_workflow_job
+    - name: github_workflow_run
+      connection: github_conn
+      event_type: workflow_run
+      call: workflow.star:on_github_workflow_run

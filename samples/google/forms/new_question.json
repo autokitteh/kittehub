@@ -1,0 +1,27 @@
+{
+    "requests": [
+        {
+            "createItem": {
+                "item": {
+                    "title": "In what year did the United States land a mission on the moon?",
+                    "questionItem": {
+                        "question": {
+                            "required": true,
+                            "choiceQuestion": {
+                                "type": "RADIO",
+                                "options": [
+                                    {"value": "1965"},
+                                    {"value": "1967"},
+                                    {"value": "1969"},
+                                    {"value": "1971"}
+                                ],
+                                "shuffle": true
+                            }
+                        }
+                    }
+                },
+                "location": {"index": 0}
+            }
+        }
+    ]
+}

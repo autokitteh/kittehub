@@ -63,7 +63,7 @@ Google Forms:
 
 > [!TIP]
 > The exact CLI commands to do so (`ak connection init ...`) will appear in
-> the output of the `ak deploy` command from step 3 when you create the
+> the output of the `ak deploy` command from step 5 when you create the
 > project on the server, i.e. when you run that command for the first time.
 
 > [!IMPORTANT]

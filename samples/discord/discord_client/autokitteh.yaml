@@ -1,0 +1,19 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way integration with
+# Discord (https://discord.com/).
+
+version: v1
+
+project:
+  name: discord_client_sample
+  vars:
+    - name: CHANNEL_ID
+      value: 
+  connections:
+    - name: discord_conn
+      integration: discord
+  triggers:
+    - name: start_event_loop
+      type: webhook
+      event_type: get
+      call: program.py:start_event_loop

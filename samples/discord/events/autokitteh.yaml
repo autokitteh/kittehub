@@ -1,0 +1,24 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates 2-way integration with
+# Discord (https://discord.com/).
+
+version: v1
+
+project:
+  name: discord_events_sample
+  connections:
+    - name: discord_conn
+      integration: discord
+  triggers:
+    - name: discord_message_create
+      connection: discord_conn
+      event_type: message_create
+      call: program.py:on_discord_message_create
+    - name: discord_message_update
+      connection: discord_conn
+      event_type: message_update
+      call: program.py:on_discord_message_update
+    - name: discord_message_delete
+      connection: discord_conn
+      event_type: message_delete
+      call: program.py:on_discord_message_delete

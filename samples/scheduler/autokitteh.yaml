@@ -1,0 +1,24 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates integration with a
+# cron-like scheduler.
+
+version: v1
+
+project:
+  name: scheduler_sample
+  vars:
+    - name: GITHUB_OWNER
+      value: 
+    - name: GITHUB_REPO
+      value: 
+    - name: SLACK_CHANNEL_NAME_OR_ID
+      value: 
+  connections:
+    - name: github_conn
+      integration: github
+    - name: slack_conn
+      integration: slack
+  triggers:
+    - name: daily
+      schedule: "@daily" # Same as `@midnight', `0 0 * * *', or `@every 1d'.
+      call: program.star:on_cron_trigger
