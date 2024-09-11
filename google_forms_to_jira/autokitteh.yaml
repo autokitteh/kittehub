@@ -1,37 +1,20 @@
-# This YAML file is a declarative manifest that describes the setup of
-# an AutoKitteh sample project that demonstrates integration with
-# Google Forms and Jira.
-#
-# Before deploying this AutoKitteh project:
-# - Set the "GOOGLE_FORM_ID" in the project's vars
-# - Set the "JIRA_PROJECT_KEY" in the project's vars
-# - Set the "POLL_INTERVAL" in the project's vars
-#  (in seconds, e.g. 60 for 1 minute)
-#
-# After applying this file, initialize this AutoKitteh project's
-# Google Forms and Jira connections.
+# This YAML file is a declarative manifest that describes the setup of an
+# AutoKitteh project that creates Jira issues based on Google Forms responses.
 
 version: v1
 
 project:
   name: google_forms_to_jira
   vars:
-    - name: GOOGLE_FORM_ID
-      value: ""
     - name: JIRA_PROJECT_KEY
-      value: ""
-    - name: POLL_INTERVAL
-      value: "10"
+      value: 
   connections:
-    - name: jira_connection
-      integration: jira
-    - name: google_forms_connection
+    - name: forms_conn
       integration: googleforms
-    - name: http_connection
-      integration: http
+    - name: jira_conn
+      integration: jira
   triggers:
-    - name: http_request
-      connection: http_connection
-      event_type: get
-      # Triggered by GET request to http://localhost:9980/http/google_forms_to_jira/
-      call: program.py:on_http_get
+    - name: google_forms_response
+      connection: forms_conn
+      event_type: responses
+      call: program.py:on_form_response

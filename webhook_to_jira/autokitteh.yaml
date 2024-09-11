@@ -1,0 +1,15 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that creates Jira issues based on HTTP requests.
+
+version: v1
+
+project:
+  name: webhook_to_jira
+  connections:
+    - name: jira_conn
+      integration: jira
+  triggers:
+    - name: http_get_or_post_request
+      type: webhook
+      filter: data.method == "GET" || data.method == "POST"
+      call: program.py:on_http_request

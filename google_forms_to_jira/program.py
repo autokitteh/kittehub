@@ -1,59 +1,69 @@
-"""This program polls a Google Form for new responses and creates a Jira issue for each new response.
+"""Create Jira issues based on Google Forms responses.
 
-Workflow:
-1. Trigger: HTTP GET request.
-2. Poll Forms: Poll the Google Form for new responses.
-3. Create Jira Issue: For each new response, create a Jira issue with the response data.
+Atlassian Jira API documentation:
+- https://docs.autokitteh.com/integrations/atlassian/jira/python
+
+Google Forms API documentation:
+- https://docs.autokitteh.com/integrations/google/forms/events
 """
 
-import json
 import os
-import time
 
-import autokitteh
 from autokitteh import google
 from autokitteh.atlassian import jira_client
 
 
-POLL_INTERVAL = os.getenv("POLL_INTERVAL")
+JIRA_PROJECT_KEY = os.getenv("JIRA_PROJECT_KEY")
+
+jira = jira_client("jira_conn")
 
 
-def on_http_get(event):
-    form_id = os.getenv("GOOGLE_FORM_ID")
-    form_data = _get_form_data(form_id)
-    total_responses = None
-    while True:
-        total_responses = _poll_forms(form_data, form_id, total_responses)
-        time.sleep(float(POLL_INTERVAL))
+def on_form_response(event):
+    print("Form response submitted:", event.data)
+    response_id = event.data.response.response_id
+
+    forms = google.google_forms_client("forms_conn").forms()
+    questions = forms.get(formId=event.data.form_id).execute().get("items", [])
+
+    answers = _summarize_form_response(event.data.response.answers, questions)
+
+    # Check if a Jira issue already exists for this response (i.e. response edited).
+    query = f"project = {JIRA_PROJECT_KEY} AND description ~ {response_id}"
+    issues = jira.jql(query + " ORDER BY created DESC")
+    if issues.get("total", 0) == 0:
+        _create_jira_issue(answers, response_id)
+    else:
+        _update_jira_issue(issues["issues"][0], answers, response_id)
 
 
-@autokitteh.activity
-def _poll_forms(form_data, form_id, prev_total):
-    google_forms = google.google_forms_client("google_forms_connection")
-    result = google_forms.forms().responses().list(formId=form_id).execute()
-    responses = result.get("responses", [])
-    curr_total = len(responses)
-    if prev_total and curr_total > prev_total:
-        new_responses = curr_total - prev_total
-        for response in responses[-new_responses:]:
-            _create_jira_issue(form_data["info"]["title"], response)
-    return curr_total
+def _summarize_form_response(answers, questions):
+    """Extract answers from response, and match with form questions."""
+    summary = []
+    for i, question in enumerate(questions, start=1):
+        question_id = question["questionItem"]["question"]["questionId"]
+        title = question.get("title", "Untitled question")
+
+        if question_id not in answers:
+            summary.append(f"{i}. {title}:\nNot answered")
+        else:
+            answer = answers[question_id]["text_answers"]["answers"][0]["value"]
+            summary.append(f"{i}. {title}:\n{answer}")
+
+    return summary
 
 
-def _create_jira_issue(title, response):
-    jira = jira_client("jira_connection")
-    answers = json.dumps(response["answers"], indent=2)
+def _create_jira_issue(answers, response_id):
     fields = {
-        "project": {"key": os.getenv("JIRA_PROJECT_KEY")},
-        "summary": "New Google Form Response for form: " + title,
-        "description": f"{{code:|language=python}} {answers} {{code}}",
+        "project": {"key": JIRA_PROJECT_KEY},
         "issuetype": {"name": "Task"},
+        "summary": "Response to Google Form",
+        "description": "\n\n".join(answers) + f"\n\n(Response ID: {response_id})",
     }
-    new_issue = jira.create_issue(fields=fields)
-    print(f"Created Jira issue: {new_issue["key"]}")
+    issue = jira.create_issue(fields=fields)
+    print("Created Jira issue:", issue["key"])
 
 
-@autokitteh.activity
-def _get_form_data(form_id):
-    google_forms = google.google_forms_client("google_forms_connection")
-    return google_forms.forms().get(formId=form_id).execute()
+def _update_jira_issue(issue, answers, response_id):
+    description = "\n\n".join(answers) + f"\n\n(Response ID: {response_id})"
+    jira.update_issue_field(issue["key"], fields={"description": description})
+    print("Updated Jira issue:", issue["key"])
