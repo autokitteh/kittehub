@@ -20,6 +20,7 @@ def on_http_get_or_head(event):
         event: Incoming HTTP request details.
     """
     _print_request_details(event.data)
+
     print("Query parameters:")
     if not event.data.url.query:
         print("  none")
@@ -37,11 +38,13 @@ def on_http_post_form(event):
         event: Incoming HTTP request details.
     """
     _print_request_details(event.data)
-    # TODO(ENG-1518): print(f"Text body: {event.data.body.text()}")
-    # TODO(ENG-1518): _parse_form_data(event.data.body.form())
-    # for key, value in event.data.body.form().items():
-    #     print(f"  {key} = {value}")
-    print(f"Form body: {event.data.body}")
+    print(f"Body: {event.data.body.bytes}")
+
+    print("Form parameters:")
+    if not event.data.body.form:
+        print("  none")
+    for key in sorted(event.data.body.form):
+        print(f"  {key} = {event.data.body.form[key]}")
 
 
 def on_http_post_json(event):
@@ -53,19 +56,13 @@ def on_http_post_json(event):
         event: Incoming HTTP request details.
     """
     _print_request_details(event.data)
-    # TODO(ENG-1518): print(f"Text body: {event.data.body.text()}")
-    # TODO(ENG-1518): _parse_json_body(event.data.body.json())
-    # try:
-    #     j = data.body.json()
-    #     print(f"request body (json): {j}")
-    # except Exception as err:
-    #     print(f"Error parsing request body as JSON: {err}")
-    print(f"JSON body: {event.data.body}")
+    print(f"Body: {event.data.body.bytes}")
+    print(f"JSON: {event.data.body.json}")
 
 
 def _print_request_details(data):
     print(f"Triggered by an HTTP {data.method} request")
-    # TODO(ENG-1517): print("Full URL:", data.full_url_string)
+    print("Full URL:", data.raw_url)
     print("URL path:", data.url.path)
 
     print("Headers:")
