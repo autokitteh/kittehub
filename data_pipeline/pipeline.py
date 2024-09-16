@@ -1,12 +1,17 @@
-import json
-import sqlite3
-import xml.etree.ElementTree as xml
+"""Parse GPX files when uploaded to an S3 bucket, and insert the data into a SQLite database."""
+
 from contextlib import closing
 from io import BytesIO
-from os import getenv
+import json
+import os
+import sqlite3
+import xml.etree.ElementTree as xml
 
 import autokitteh
-import boto3
+from autokitteh.aws import boto3_client
+
+
+DB_DSN = os.getenv("DB_DSN")  # Secret
 
 INSERT_SQL = """
 INSERT INTO points
@@ -17,25 +22,20 @@ VALUES
 """
 
 
-# From secret
-AWS_ACCESS_KEY_ID = getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_KEY = getenv("AWS_SECRET_KEY")
-DB_DSN = getenv("DB_DSN")
-
-# From vars in manifest
-AWS_REGION = getenv("AWS_REGION")
-
-
 def on_new_s3_object(event):
-    event = json.loads(event.data.body)
-    print("event:", event)
-    if url := event.get("SubscribeURL"):
-        print(f"SNS Subscribe URL: {url}")
+    if not event.data.body.json:
+        print("Unexpected (non-JSON) content type:", event)
         return
 
-    # sns events encodes the `Message` field in JSON
-    s3_event = json.loads(event["Message"])
-    for record in s3_event["Records"]:
+    event = event.data.body.json
+    print("event:", event)
+    if url := event.get("SubscribeURL"):
+        print("SNS Subscribe URL:", url)
+        return
+
+    # SNS events encode the `Message` field in JSON
+    s3_event = json.loads(event.get("Message", {}))
+    for record in s3_event.get("Records", []):
         bucket = record["s3"]["bucket"]["name"]
         key = record["s3"]["object"]["key"]
         print(f"getting {bucket}/{key}")
@@ -47,13 +47,7 @@ def on_new_s3_object(event):
 
 @autokitteh.activity
 def get_s3_object(bucket, key):
-    s3_client = boto3.client(
-        "s3",
-        aws_access_key_id=AWS_ACCESS_KEY_ID,
-        aws_secret_access_key=AWS_SECRET_KEY,
-        region_name=AWS_REGION,
-    )
-    response = s3_client.get_object(Bucket=bucket, Key=key)
+    response = boto3_client("aws_conn", "s3").get_object(Bucket=bucket, Key=key)
     return response["Body"].read()
 
 
