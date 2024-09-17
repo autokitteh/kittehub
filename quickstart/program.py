@@ -7,6 +7,10 @@ FIVE_SECONDS = 5
 
 
 def on_http_request(event):
+    if not event:
+        print("Meow, world!")
+        return
+
     print(f"Received {event.data.method} request")
 
     iterations = int(event.data.url.query.get("iterations", "0"))
