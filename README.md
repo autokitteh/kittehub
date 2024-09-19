@@ -1,5 +1,7 @@
 # Kittehub
 
+<img width="451" alt="image" src="https://github.com/user-attachments/assets/f556279f-40a4-4df2-93ef-e1838fcb9861">
+
 This is a central repository of [AutoKitteh](https://github.com/autokitteh/autokitteh)
 projects for:
 
