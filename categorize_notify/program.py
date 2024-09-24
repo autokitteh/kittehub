@@ -110,7 +110,7 @@ def _get_label_id(label_name: str) -> str:
 
 def get_new_inbox_messages():
     query = "in:inbox -in:drafts"
-    return gmail_client.messages().list(userId="me", q=query).execute()
+    return gmail_client.messages().list(userId="me", q=query, maxResults=10).execute()
 
 
 @autokitteh.activity
