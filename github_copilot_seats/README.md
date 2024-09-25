@@ -10,4 +10,4 @@ Users can then optionally ask for their subscription to be reinstated.
 - `/ak find-idle-copilot-seats` displays the potentially idle seats.
 
 > [!WARNING]
-> This example currently works only with a [Personal Access Token](https://docs.autokitteh.com/integrations/github/connection/#personal-access-token-pat), specifically a [classic token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic.)
+> This example currently works only with a [Personal Access Token](https://docs.autokitteh.com/integrations/github/connection/#personal-access-token-pat), specifically a [classic token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).

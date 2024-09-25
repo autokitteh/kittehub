@@ -23,8 +23,12 @@ def on_schedule(_):
     """Workflow's entry-point."""
     slack_channels = _read_google_sheet()
     events = _aws_health_events()
-    events_by_arn = {event["arn"]: event for event in events}
 
+    if not events:
+        print("No AWS Health events found.")
+        return
+
+    events_by_arn = {event["arn"]: event for event in events}
     for entity in _affected_aws_entities(events):
         project = entity.get("tags", {}).get("project")
         if not project:
@@ -87,9 +91,6 @@ def _affected_aws_entities(events: list[dict]) -> list[dict]:
     try:
         aws = boto3_client("aws_connection", "health")
         arns = [event["arn"] for event in events]
-
-        if not arns:
-            return []
 
         filter = {"eventArns": arns}
         # Possible alternative: describe_affected_entities_for_organization.
