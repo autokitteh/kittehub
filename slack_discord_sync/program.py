@@ -1,6 +1,6 @@
 """
 This script mirrors messages between Slack and Discord channels using
-autokitteh's Slack and Discord clients.
+AutoKitteh's Slack and Discord clients.
 
 Imports:
 - `autokitteh.discord as ak_discord`: Wrapper around the Discord API
