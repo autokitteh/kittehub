@@ -17,13 +17,9 @@ project:
       integration: chatgpt
     - name: my_gmail
       integration: gmail
-    - name: my_http
-      integration: http
     - name: my_slack
       integration: slack
   triggers:
-    - name: http_get
-      connection: my_http
-      event_type: get
-      # Triggered by GET request to http://localhost:9980/http/categorize_emails/
+    - name: receive_http_get
+      type: webhook
       call: program.py:on_http_get

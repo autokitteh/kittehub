@@ -23,8 +23,12 @@ def on_schedule(_):
     """Workflow's entry-point."""
     slack_channels = _read_google_sheet()
     events = _aws_health_events()
-    events_by_arn = {event["arn"]: event for event in events}
 
+    if not events:
+        print("No AWS Health events found.")
+        return
+
+    events_by_arn = {event["arn"]: event for event in events}
     for entity in _affected_aws_entities(events):
         project = entity.get("tags", {}).get("project")
         if not project:
@@ -57,7 +61,7 @@ def _aws_health_events() -> list[dict]:
     try:
         mins = int(re.match(r"(\d+)m", os.getenv("TRIGGER_INTERVAL")).group(1))
         prev_check = datetime.now(UTC) - timedelta(minutes=mins)
-        filter = {"lastUpdatedTime": [{"from": prev_check}]}
+        filter = {"lastUpdatedTimes": [{"from": prev_check}]}
 
         aws = boto3_client("aws_connection", "health")
         resp = aws.describe_events(filter=filter)
@@ -87,13 +91,15 @@ def _affected_aws_entities(events: list[dict]) -> list[dict]:
     try:
         aws = boto3_client("aws_connection", "health")
         arns = [event["arn"] for event in events]
+
+        filter = {"eventArns": arns}
         # Possible alternative: describe_affected_entities_for_organization.
-        resp = aws.describe_affected_entities(eventArn=arns)
+        resp = aws.describe_affected_entities(filter=filter)
         entities = resp.get("entities", [])
 
         nextToken = resp.get("nextToken")
         while nextToken:
-            resp = aws.describe_affected_entities(eventArn=arns, nextToken=nextToken)
+            resp = aws.describe_affected_entities(filter=filter, nextToken=nextToken)
             entities += resp.get("entities", [])
             nextToken = resp.get("nextToken")
 

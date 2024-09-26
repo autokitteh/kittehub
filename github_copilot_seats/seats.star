@@ -5,7 +5,6 @@ load("helpers.star", "github_username_to_slack_user_id")
 load("msg.json", "blocks")
 
 logins = LOGINS.split(",")
-idle_usage_threshold = time.parse_duration(IDLE_USAGE_THRESHOLD)
 
 def prune_idle_seats():
     seats = find_idle_seats()
@@ -23,6 +22,7 @@ def _get_all_seats():
 
 def find_idle_seats():
     seats = _get_all_seats()
+    idle_usage_threshold = time.parse_duration(IDLE_USAGE_THRESHOLD)
 
     t, idle_seats = time.now(), []
     for seat in seats:
@@ -79,4 +79,4 @@ def engage_seat(seat):
         say("You have been reinstated to the Copilot program.")
         return
 
-    log("wierd response: {}".format(value))
+    log("weird response: {}".format(value))
