@@ -15,13 +15,15 @@ from autokitteh.slack import slack_client
 GITHUB_OWNER = os.getenv("GITHUB_OWNER")
 GITHUB_REPO = os.getenv("GITHUB_REPO")
 SLACK_CHANNEL_NAME_OR_ID = os.getenv("SLACK_CHANNEL_NAME_OR_ID")
+OPENED_CUTOFF = os.getenv("OPENED_CUTOFF")
+UPDATE_CUTOFF = os.getenv("UPDATE_CUTOFF")
+
+github = github_client("github_conn")
+slack = slack_client("slack_conn")
 
 
 def on_cron_trigger(_):
     """Handles the AutoKitteh cron schedule trigger."""
-
-    github = github_client("github_conn")
-    slack = slack_client("slack_conn")
 
     # Fetch open pull requests that are not drafts or WIP
     repo = github.get_repo(f"{GITHUB_OWNER}/{GITHUB_REPO}")
@@ -34,13 +36,13 @@ def on_cron_trigger(_):
     ]
 
     now = datetime.now(timezone.utc)
-    opened_cutoff = now - timedelta(days=4)
-    update_cutoff = now - timedelta(days=1)
+    opened_cutoff = now - timedelta(days=int(OPENED_CUTOFF))
+    update_cutoff = now - timedelta(days=int(UPDATE_CUTOFF))
 
     msg = "Daily reminder about stalled PRs:"
 
     for pr in active_prs:
-        stalled_details = get_stalled_pr_details(pr, now, opened_cutoff, update_cutoff)
+        stalled_details = _get_stalled_pr_details(pr, now, opened_cutoff, update_cutoff)
 
         if stalled_details:
             print(f"PR {pr.number} is stalled")
@@ -48,7 +50,7 @@ def on_cron_trigger(_):
             slack.chat_postMessage(channel=SLACK_CHANNEL_NAME_OR_ID, text=msg)
 
 
-def get_stalled_pr_details(pr, now, opened_cutoff, update_cutoff):
+def _get_stalled_pr_details(pr, now, opened_cutoff, update_cutoff):
     """Returns details if a PR is stalled, otherwise returns an empty string."""
     details = []
 
