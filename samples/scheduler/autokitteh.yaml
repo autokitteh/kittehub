@@ -8,11 +8,11 @@ project:
   name: scheduler_sample
   vars:
     - name: GITHUB_OWNER
-      value: 
+      value:
     - name: GITHUB_REPO
-      value: 
+      value:
     - name: SLACK_CHANNEL_NAME_OR_ID
-      value: 
+      value:
   connections:
     - name: github_conn
       integration: github
@@ -21,4 +21,4 @@ project:
   triggers:
     - name: daily
       schedule: "@daily" # Same as `@midnight', `0 0 * * *', or `@every 1d'.
-      call: program.star:on_cron_trigger
+      call: program.py:on_cron_trigger
