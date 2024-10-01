@@ -41,7 +41,7 @@ def start_github_action(event):
     repo = g.get_repo(repo)
     workflow = repo.get_workflow(workflow_file)
 
-    print("Triggering workflow: %s" % workflow_file)
+    print(f"Triggering workflow: {workflow_file}")
     # https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
     workflow.create_dispatch(ref=ref)
 
@@ -52,7 +52,7 @@ def on_github_workflow_dispatch(event):
     Args:
         data: GitHub event data.
     """
-    print("Workflow dispatch: " + event.data.workflow)
+    print(f"Workflow dispatch: {event.data.workflow}")
     print(event.data.inputs)
 
 
@@ -62,7 +62,7 @@ def on_github_workflow_job(event):
     Args:
         data: GitHub event data.
     """
-    print("Workflow job %s: %s" % (event.data.action, event.data.workflow_job.name))
+    print(f"Workflow job {event.data.action}: {event.data.workflow_job.name}")
     print(event.data.workflow_job.htmlurl)
 
 
@@ -72,5 +72,5 @@ def on_github_workflow_run(event):
     Args:
         data: GitHub event data.
     """
-    print("Workflow run %s: %s" % (event.data.action, event.data.workflow_run.name))
+    print(f"Workflow run {event.data.action}: {event.data.workflow_run.name}")
     print(event.data.workflow_run.htmlurl)
