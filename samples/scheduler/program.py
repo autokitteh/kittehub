@@ -55,9 +55,9 @@ def _get_stalled_pr_details(pr, now, opened_cutoff, update_cutoff):
     details = []
 
     if pr.created_at < opened_cutoff:
-        details.append(f"opened {hours_ago(now, pr.created_at)}h ago")
+        details.append(f"opened {_hours_ago(now, pr.created_at)}h ago")
     if pr.updated_at < update_cutoff:
-        details.append(f"last updated {hours_ago(now, pr.updated_at)}h ago")
+        details.append(f"last updated {_hours_ago(now, pr.updated_at)}h ago")
 
     return ", ".join(details)
 
