@@ -27,7 +27,7 @@ def on_http_get(event):
     send SMS and WhatsApp messages via Twilio.
 
     Example usage:
-    curl "http://localhost:9980/webhooks/<webhook_slug>?to=15555555"
+    curl "http://localhost:9980/webhooks/<webhook_slug>?to=+15551234567"
 
     The phone number to send the message to must be provided in the query
     parameter 'to'. The message will be sent both as an SMS and a WhatsApp
@@ -37,22 +37,18 @@ def on_http_get(event):
         event (object): An event object containing the request data.
     """
     to = event.data["url"]["query"]["to"]
-    try:
-        # Send SMS text via Twilio
-        message = t.messages.create(
-            from_=FROM_PHONE_NUMBER,
-            to=to,
-            body="This is an AutoKitteh demo message, meow!",
-        )
-        print(f"SMS message sent: {message.sid}")
+    # Send SMS text via Twilio
+    message = t.messages.create(
+        from_=FROM_PHONE_NUMBER,
+        to=to,
+        body="This is an AutoKitteh demo message, meow!",
+    )
+    print(f"SMS message sent: {message.sid}")
 
-        # Send a WhatsApp message to the same number
-        whatsapp_message = t.messages.create(
-            from_="whatsapp:" + FROM_PHONE_NUMBER,
-            to="whatsapp:" + to,
-            body="This is an AutoKitteh demo message, meow!",
-        )
-        print(f"WhatsApp message sent: {whatsapp_message.sid}")
-
-    except Exception as e:
-        print(f"Failed to send message: {e}")
+    # Send a WhatsApp message to the same number
+    whatsapp_message = t.messages.create(
+        from_="whatsapp:" + FROM_PHONE_NUMBER,
+        to="whatsapp:" + to,
+        body="This is an AutoKitteh demo message, meow!",
+    )
+    print(f"WhatsApp message sent: {whatsapp_message.sid}")
