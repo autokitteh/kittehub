@@ -94,5 +94,9 @@ This project demonstrates how to use AutoKitteh's Discord integration to create 
 ## Notes
 
 - **Event Loop:** The bot uses an event loop to maintain the connection to Discord and listen for events.
+
+> [!WARNING]
+> If you don't explicitly close the client connection with `client.close()`, this will result in duplicate messages being sent and other unpredictable behavior.
+
 - **Extensibility:** You can add more event handlers to the bot by using the `@client.event` decorator. 
 - **Permissions:** Ensure the bot has the necessary permissions to send messages in the specified channel.

@@ -68,3 +68,6 @@ async def on_ready():
         print("The bot does not have permission to send messages in this channel.")
     except discord.HTTPException as e:
         print(f"Failed to send message: {e}")
+    finally:
+        # Closing the client to prevent duplicate messages or unexpected behavior in future workflows
+        await client.close()
