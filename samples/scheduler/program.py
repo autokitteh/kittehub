@@ -62,7 +62,7 @@ def _get_stalled_pr_details(pr, now, opened_cutoff, update_cutoff):
     return ", ".join(details)
 
 
-def hours_ago(now, past_time):
+def _hours_ago(now, past_time):
     """Returns the number of hours between now and a past datetime."""
     delta = now - past_time
     return delta.total_seconds() // 3600
