@@ -9,17 +9,14 @@ file to receive "scheduler" events, and uses constant values defined in the
 from datetime import datetime, timedelta, timezone
 import os
 from autokitteh.github import github_client
-from autokitteh.slack import slack_client
 
 # Set in "autokitteh.yaml"
 GITHUB_OWNER = os.getenv("GITHUB_OWNER")
 GITHUB_REPO = os.getenv("GITHUB_REPO")
-SLACK_CHANNEL_NAME_OR_ID = os.getenv("SLACK_CHANNEL_NAME_OR_ID")
 OPENED_CUTOFF = os.getenv("OPENED_CUTOFF")
 UPDATE_CUTOFF = os.getenv("UPDATE_CUTOFF")
 
 github = github_client("github_conn")
-slack = slack_client("slack_conn")
 
 
 def on_cron_trigger(_):
@@ -47,7 +44,7 @@ def on_cron_trigger(_):
         if stalled_details:
             print(f"PR {pr.number} is stalled")
             msg += f"\nPR: `{pr.title}`\n  {pr.url}\n  {stalled_details}\n"
-            slack.chat_postMessage(channel=SLACK_CHANNEL_NAME_OR_ID, text=msg)
+            print(msg)
 
 
 def _get_stalled_pr_details(pr, now, opened_cutoff, update_cutoff):
