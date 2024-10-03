@@ -27,7 +27,7 @@ def on_http_get(event):
 
     Example usage:
     - URL: "http://localhost:9980/webhooks/<webhook_slug>"
-    - Curl command: 
+    - Curl command:
       curl -X POST "<URL>" -H "Content-Type: text/plain" -d "Meow"
 
     Args:
