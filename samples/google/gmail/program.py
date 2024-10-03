@@ -34,29 +34,30 @@ def on_http_get(event):
     params = event.data.url.query
     cmd = params.get("cmd")
 
-    if cmd == "get_profile":
-        _get_profile()
-    elif cmd == "list_drafts":
-        _drafts_list(params.get("query", ""))
-    elif cmd == "get_draft":
-        _drafts_get(params.get("draft_id"))
-    elif cmd == "list_messages":
-        _messages_list(params.get("query", ""))
-    elif cmd == "get_message":
-        _messages_get(params.get("message_id"))
-    elif cmd == "send_message":
-        _messages_send(params.get("text"))
-    else:
-        return "Unknown command"
+    match cmd:
+        case "get_profile":
+            _get_profile()
+        case "list_drafts":
+            _drafts_list(params.get("query", ""))
+        case "get_draft":
+            _drafts_get(params.get("draft_id"))
+        case "list_messages":
+            _messages_list(params.get("query", ""))
+        case "get_message":
+            _messages_get(params.get("message_id"))
+        case "send_message":
+            _messages_send(params.get("text"))
+        case _:
+            return "Unknown command"
 
 
 def _get_profile():
     """https://developers.google.com/resources/api-libraries/documentation/gmail/v1/python/latest/gmail_v1.users.html#getProfile"""
     resp = gmail.getProfile(userId="me").execute()
     print(resp["emailAddress"])
-    print(f"Total no. of messages: {resp['messagesTotal']}")
-    print(f"Total no. of threads: {resp['threadsTotal']}")
-    print(f"Current History record ID: {resp['historyId']}")
+    print("Total no. of messages:", resp["messagesTotal"])
+    print("Total no. of threads:", resp["threadsTotal"])
+    print("Current History record ID:", resp["historyId"])
 
 
 def _drafts_get(id):
