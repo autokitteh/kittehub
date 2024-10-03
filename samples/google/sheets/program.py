@@ -24,6 +24,7 @@ def on_http_get(event):
     """
     sheet_id = event.data.url.query.get("id")
     if not sheet_id:
+        print("Error: Missing required 'id' URL parameter for Google Sheets.")
         return
 
     _write_values(sheet_id)
