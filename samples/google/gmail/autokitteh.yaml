@@ -12,6 +12,7 @@ project:
   triggers:
     - name: on_http_get
       type: webhook
+      event_type: get
       call: program.py:on_http_get
     - name: gmail_mailbox_change
       connection: gmail_conn
