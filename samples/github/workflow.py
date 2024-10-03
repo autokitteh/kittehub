@@ -9,8 +9,8 @@ def start_github_action(event):
     See the following link for more information:
     https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch
 
-    This function is preconfigured as the entry-point for an AutoKitteh trigger, 
-    but it's currently commented out in the "autokitteh.yaml" file. To activate it, 
+    This function is preconfigured as the entry-point for an AutoKitteh trigger,
+    but it's currently commented out in the "autokitteh.yaml" file. To activate it,
     uncomment the following lines:
 
         # - name: github_push
