@@ -38,10 +38,9 @@ def start_github_action(event):
     workflow_file = "dispatch.yml"  # .github/workflows/dispatch.yml
 
     g = github_client("github_conn")
-    repo = g.get_repo(repo)
-    workflow = repo.get_workflow(workflow_file)
+    workflow = g.get_repo(repo).get_workflow(workflow_file)
 
-    print(f"Triggering workflow: {workflow_file}")
+    print("Triggering workflow:", workflow_file)
     # https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
     workflow.create_dispatch(ref=ref)
 
