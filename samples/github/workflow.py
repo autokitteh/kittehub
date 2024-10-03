@@ -51,7 +51,7 @@ def on_github_workflow_dispatch(event):
     Args:
         data: GitHub event data.
     """
-    print(f"Workflow dispatch: {event.data.workflow}")
+    print("Workflow dispatch:", event.data.workflow)
     print(event.data.inputs)
 
 
