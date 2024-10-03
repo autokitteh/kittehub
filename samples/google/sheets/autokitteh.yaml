@@ -10,7 +10,8 @@ project:
     - name: sheets_conn
       integration: googlesheets
   triggers:
-    - name: on_http_get
+    - name: http_get
       type: webhook
+      event_type: get
       call: program.py:on_http_get
 
