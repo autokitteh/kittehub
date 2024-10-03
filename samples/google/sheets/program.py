@@ -12,19 +12,17 @@ sheet = google_sheets_client("sheets_conn").spreadsheets().values()
 
 
 def on_http_get(event):
-    """Use a Slack slash command to interact with a Google Sheet.
+    """Entry point for the workflow.
 
-    See: https://api.slack.com/interactivity/slash-commands, and
-    https://api.slack.com/interactivity/handling#message_responses
+    This function expects the URL parameter 'id' to be:
+    - A valid Google Sheets ID (see https://developers.google.com/sheets/api/guides/concepts)
 
-    In this sample, we expect the slash command's text to be either:
-    - A valid Google Sheets ID (https://developers.google.com/sheets/api/guides/concepts)
+    Example URL: "http://localhost:9980/webhooks/<webhook-slug>?id=<Google-Sheets-ID>"
 
     Args:
-        event: Slack event data.
+        event: HTTP event data, including URL query parameters.
     """
-    params = event.data.url.query
-    sheet_id = params.get("sheet_id")
+    sheet_id = event.data.url.query.get("id")
     if not sheet_id:
         return
 
@@ -57,9 +55,10 @@ def _write_values(id):
         },
     ).execute()
 
-    text = f"Updated: range `{resp['updatedRange']!r}`, `{resp['updatedRows']}` rows, "
-    text += f"`{resp['updatedColumns']}` columns, `{resp['updatedCells']}` cells"
-    print(text)
+    print(f"Updated range: {resp['updatedRange']!r}")
+    print(f"Rows: {resp['updatedRows']}")
+    print(f"Columns: {resp['updatedColumns']}")
+    print(f"Cells: {resp['updatedCells']}")
 
 
 @autokitteh.activity
@@ -79,8 +78,7 @@ def _read_values(id):
 
     for i, row in enumerate(zip(col_a, formatted_col_b, unformatted_col_b)):
         data_type, formatted, unformatted = row
-        text = "Row {0}: {1} = formatted `{2!r}`, unformatted `{3!r}`"
-        text = text.format(i + 1, data_type, formatted, unformatted)
+        text = f"Row {i + 1}: {data_type} = formatted `{formatted!r}`, unformatted `{unformatted!r}`"
         print(text)
 
 
