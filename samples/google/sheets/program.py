@@ -14,8 +14,8 @@ sheet = google_sheets_client("sheets_conn").spreadsheets().values()
 def on_http_get(event):
     """Entry point for the workflow.
 
-    This function expects the URL parameter 'id' to be:
-    - A valid Google Sheets ID (see https://developers.google.com/sheets/api/guides/concepts)
+    This function expects the URL parameter 'id' to be a valid Google Sheets ID
+    (see https://developers.google.com/sheets/api/guides/concepts).
 
     Example URL: "http://localhost:9980/webhooks/<webhook-slug>?id=<Google-Sheets-ID>"
 
