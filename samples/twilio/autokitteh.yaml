@@ -8,14 +8,12 @@ project:
   name: twilio_sample
   vars:
     - name: FROM_PHONE_NUMBER
-      value: 
+      value:
   connections:
-    - name: slack_conn
-      integration: slack
     - name: twilio_conn
       integration: twilio
   triggers:
-    - name: slack_slash_command
-      connection: slack_conn
-      event_type: slash_command
-      call: program.star:on_slack_slash_command
+    - name: http_get
+      type: webhook
+      event_type: get
+      call: program.py:on_http_get

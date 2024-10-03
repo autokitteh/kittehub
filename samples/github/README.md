@@ -3,13 +3,16 @@
 This [AutoKitteh](https://github.com/autokitteh/autokitteh) project
 demonstrates 2-way integration with [GitHub](https://github.com).
 
-The file [`program.star`](./program.star) implements multiple entry-point
+The file [`program.py`](./program.py) implements multiple entry-point
 functions that are triggered by various GitHub webhook events, which are
 defined in the [`autokitteh.yaml`](./autokitteh.yaml) manifest file. It also
 executes various GitHub API calls.
 
-The file [`workflow.star`](./workflow.star) demonstrates triggering GitHub
+The file [`workflow.py`](./workflow.py) demonstrates triggering GitHub
 Action workflows, and receiving workflow events.
+
+> [!NOTE]  
+> The `start_github_action` trigger is commented out in the [`autokitteh.yaml`](./autokitteh.yaml) manifest because it depends on a named workflow YAML file being available in the corresponding GitHub repository. For more information, refer to the function's docstring.
 
 GitHub API details:
 

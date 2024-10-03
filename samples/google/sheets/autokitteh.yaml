@@ -9,10 +9,9 @@ project:
   connections:
     - name: sheets_conn
       integration: googlesheets
-    - name: slack_conn
-      integration: slack
   triggers:
-    - name: slack_slash_command
-      connection: slack_conn
-      event_type: slash_command
-      call: program.py:on_slack_slash_command
+    - name: http_get
+      type: webhook
+      event_type: get
+      call: program.py:on_http_get
+
