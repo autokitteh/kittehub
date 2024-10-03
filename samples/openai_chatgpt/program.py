@@ -51,7 +51,7 @@ def on_http_get(event):
     ]
     msgs = [
         {"role": "system", "content": contents[0]},
-        {"role": "user", "content": body if body else contents[1]},
+        {"role": "user", "content": body or contents[1]},
     ]
 
     resp = chatgpt_client.chat.completions.create(model=MODEL, messages=msgs)
