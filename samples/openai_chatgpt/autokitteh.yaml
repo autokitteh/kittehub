@@ -9,10 +9,9 @@ project:
   connections:
     - name: chatgpt_conn
       integration: chatgpt
-    - name: slack_conn
-      integration: slack
   triggers:
-    - name: slack_slash_command
-      connection: slack_conn
-      event_type: slash_command
-      call: program.py:on_slack_slash_command
+    - name: on_http_get
+      type: webhook
+      event_type: post
+      filter: data.headers["Content-Type"] == "text/plain"
+      call: program.py:on_http_get
