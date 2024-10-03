@@ -35,6 +35,7 @@ def on_http_get(event):
     """
     body = event.data.body.bytes.decode("utf-8")
     print(body)
+
     # Example 1: trivial interaction with ChatGPT.
     msg = {"role": "user", "content": "Meow!"}
     resp = chatgpt_client.chat.completions.create(model=MODEL, messages=[msg])
