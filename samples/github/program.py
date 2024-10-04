@@ -30,9 +30,8 @@ def on_github_issue_comment(event):
     Args:
         event: GitHub event data.
     """
-
     g = github_client("github_conn")
-    repo = g.get_repo(event.data.repo.full_name)
+    repo = g.get_repo(event.data.repository.full_name)
     issue = repo.get_issue(event.data.issue.number)
     comment = issue.get_comment(event.data.comment.id)
     comment.create_reaction(random.choice(REACTIONS))
