@@ -9,6 +9,7 @@ import autokitteh
 from autokitteh.atlassian import jira_client
 from autokitteh.slack import slack_client
 
+
 slack = slack_client("slack_conn")
 jira = jira_client("jira_conn")
 
