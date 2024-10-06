@@ -1,5 +1,5 @@
 """This program listens for new Jira issues and creates a Slack channel for each issue.
-It then invites the issue creator to the channel and waits for the user to confirm completion by mentioning the Slack app with @app 'done'.
+It then invites the issue creator to the channel and waits for the user to confirm completion by mentioning the Slack app with @ak 'done'.
 Once confirmed, it archives the channel, notifies the channel members, and updates the Jira issue status to 'DONE'.
 """
 
