@@ -1,0 +1,18 @@
+# This YAML file is a declarative manifest that describes the setup of an
+# AutoKitteh project that implements a Jira ticket handling system.
+
+version: v1
+
+project:
+  name: jira_ticket_handling
+  connections:
+    - name: jira_conn
+      integration: jira
+    - name: slack_conn
+      integration: slack
+  triggers:
+    - name: jira_issue_created
+      connection: jira_conn
+      event_type: issue_created
+      filter: data.issue.fields.project.key == "PK"
+      call: program.py:on_jira_issue_created
