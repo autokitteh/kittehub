@@ -1,4 +1,4 @@
-"""A program that listens for GitHub pull requests and meows at random people.
+"""Listen for GitHub pull requests and meow at random people.
 
 This program listens for GitHub pull request events and posts a message to a
 Slack channel when a pull request is opened or reopened. It then polls the
