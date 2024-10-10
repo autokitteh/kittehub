@@ -24,4 +24,5 @@ project:
     - name: github_pull_request
       connection: github_conn
       event_type: pull_request
+      filter: data.action == "opened" || data.action == "reopened"
       call: program.py:on_github_pull_request

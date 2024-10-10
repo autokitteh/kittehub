@@ -7,6 +7,8 @@ current state of the pull request. Every 15 seconds, it also reads a random
 name from a Google Sheet and pages that person in the Slack channel.
 """
 
+from datetime import datetime
+import itertools
 import os
 import time
 import random
@@ -27,21 +29,18 @@ slack = slack_client("slack_conn")
 
 def on_github_pull_request(event):
     """Workflow's entry-point."""
-    if event.data.action not in {"opened", "reopened"}:
-        return
-
     pr = event.data.pull_request
-    msg = f"{pr.htmlurl} [{pr.state}]"
+    msg = f"{pr.html_url} [{pr.state}]"
     ts = slack.chat_postMessage(channel=CHANNEL_ID, text=msg)["ts"]
 
-    for i in iter(int, 1):  # Infinite loop with count
+    for i in itertools.count(start=1):
         if pr.state in {"closed", "merged"}:
             break
 
         log(f"Polling #{i}")
         time.sleep(5)
 
-        repo = github.get_repo(event.data.repo.full_name)
+        repo = github.get_repo(event.data.repository.full_name)
         pr = repo.get_pull(pr.number)
         msg = f"{pr.html_url} meow [{pr.state}]"
         slack.chat_update(channel=CHANNEL_ID, ts=ts, text=msg)
@@ -60,4 +59,4 @@ def on_github_pull_request(event):
 
 
 def log(msg):
-    print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] {msg}")
+    print(f"[{datetime.now()}] {msg}")
