@@ -4,9 +4,12 @@
 path that ends with `/meow`. The trigger is defined in the
 [autokitteh.yaml](./autokitteh.yaml) manifest file.
 
-During runtime, it waits (up to 60 seconds) for a subsequent webhook event
+During runtime, it waits (up to 1 minute) for a subsequent webhook event
 where the URL path ends with `/woof`, using the `subscribe` and `get_event`
-AutoKitteh Python SDK functions.
+functiona in the AutoKitteh Python SDK.
+
+For detailed information about runtime event subscriptions, see:
+https://docs.autokitteh.com/develop/events/subscription
 
 ## Setup Instructions
 

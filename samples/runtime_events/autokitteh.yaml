@@ -9,5 +9,5 @@ project:
     - name: meow_webhook
       type: webhook
       event_type: get
-      filter: data.url.path.endsWith("/meow")
+      filter: data.url.path.endsWith('/meow')
       call: program.py:on_http_get_meow
