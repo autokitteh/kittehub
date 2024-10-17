@@ -28,7 +28,7 @@ This AutoKitteh project demonstrates 2-way integration with
 
 4. Initialize this project's connections:
 
-   - Google Sheets: with user impersonation using OAuth 2.0 (based on step 2),
+   - Gmail: with user impersonation using OAuth 2.0 (based on step 2),
      or a GCP service account's JSON key.
 
 > [!TIP]
