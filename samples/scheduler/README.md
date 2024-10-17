@@ -5,7 +5,7 @@ This project demonstrates
 cron-like scheduler.
 
 It scans a specific GitHub repo on a daily basis to identify stalled PRs. If
-any are found, it sends a message about them to a specific Slack channel.
+any are found, it prints a message about them.
 
 ## API Documentation
 
@@ -32,7 +32,6 @@ any are found, it sends a message about them to a specific Slack channel.
 2. Optional for self-hosted servers (preconfigured in AutoKitteh Cloud):
 
    - [Enable GitHub connections to use a GitHub app](https://docs.autokitteh.com/integrations/github/config)
-   - [Enable Slack connections to use an OAuth v2 app](https://docs.autokitteh.com/integrations/slack/config)
 
 3. Run this command to clone the Kittehub repository, which contains this
    project:
@@ -45,7 +44,6 @@ any are found, it sends a message about them to a specific Slack channel.
    manifest file:
 
    - `GITHUB_OWNER` and `GITHUB_REPO`
-   - `SLACK_CHANNEL_NAME_OR_ID`
 
 5. Run this command to deploy this project's manifest file:
 
@@ -57,7 +55,6 @@ any are found, it sends a message about them to a specific Slack channel.
 
    - GitHub: with a GitHub app using OAuth 2.0 (based on step 2), or PATs
      (fine-grained or classic) and/or manually-configured webhooks
-   - Slack: with an OAuth v2 app (based on step 2), or a Socket Mode app
 
 > [!TIP]
 > The exact CLI commands to do so (`ak connection init ...`) will appear in

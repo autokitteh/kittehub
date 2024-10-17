@@ -29,7 +29,6 @@ https://docs.autokitteh.com/integrations/google/sheets/python
 
    - Google Sheets: with user impersonation using OAuth 2.0 (based on step 2),
      or a GCP service account's JSON key
-   - Slack: with an OAuth v2 app (based on step 2), or a Socket Mode app
 
 > [!TIP]
 > The exact CLI commands to do so (`ak connection init ...`) will appear in
@@ -42,7 +41,13 @@ Outgoing API calls:
 
 1. Create a new Google Sheet: https://sheets.new
 
-2. Run a slash command of the Slack app that you initialized in step 4 above,
-   with the URL of the new Google Sheet as the slash command's text
+2. Copy the Google Sheets ID from the URL (the string between `/d/` and `/edit`).
 
-3. See the Google Sheet, and the Slack app's DM responses to you
+3. Make an HTTP request to the following URL format, replacing `<webhook-slug>` with your webhook identifier and `<Google-Sheets-ID>` with the ID of the Google Sheet you copied in step 2:
+
+   ```
+   http://localhost:9980/webhooks/<webhook-slug>?id=<Google-Sheets-ID>
+   ```
+
+4. Check the Google Sheet for updates and the responses from the webhook (if applicable).
+

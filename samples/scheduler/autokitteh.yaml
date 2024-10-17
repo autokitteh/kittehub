@@ -11,8 +11,6 @@ project:
       value:
     - name: GITHUB_REPO
       value:
-    - name: SLACK_CHANNEL_NAME_OR_ID
-      value:
     - name: OPENED_CUTOFF
       value: 4 # days
     - name: UPDATE_CUTOFF
