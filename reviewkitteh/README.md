@@ -16,7 +16,7 @@ This project automates the process of listening for GitHub pull request events a
 ### Configure integrations
 
 > [!IMPORTANT]
->  The `autokitteh.yaml` file includes environment variables for the GitHub, Slack, and Google Sheets connections that need to be configured.
+>  The `autokitteh.yaml` file includes environment variables for the GitHub, Slack, and Google Sheets connections that need to be configured. When setting the `CHANNEL` variable, be sure to use the channel ID, not the channel name.
 
 Ensure you have set up the required integrations:
 
