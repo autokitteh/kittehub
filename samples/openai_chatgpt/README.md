@@ -7,8 +7,8 @@ The file [`program.py`](./program.py) implements a single entry-point
 function, which is configured in the [`autokitteh.yaml`](./autokitteh.yaml)
 manifest file as the receiver of HTTP events.
 
-It sends a couple of requests to the ChatGPT API, and sends the responses
-back to the user over Slack, as well as ChatGPT token usage stats.
+It sends a couple of requests to the ChatGPT API, and prints the responses
+back to the user, as well as ChatGPT token usage stats.
 
 API details:
 
