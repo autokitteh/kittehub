@@ -1,0 +1,29 @@
+# This YAML file defines a declarative manifest for an AutoKitteh project that
+# creates Asana tasks from Google Calendar events.
+#
+# Before deploying this AutoKitteh project:
+# - Set the "PROJECT_GID" in the vars section.
+#   - **PROJECT_GID**: The GID of the Asana project to which tasks will be added.
+#     You can find this GID in the URL of the project. It is the part after `/0/`.
+#     For example, in `https://app.asana.com/0/your_project_gid/list`, `your_project_gid`  
+# 
+# After applying this file, initialize this AutoKitteh project's
+# Google Calendar and Asana connections.
+
+version: v1
+
+project:
+  name: google_cal_to_asana
+  vars:
+    - name: PROJECT_GID
+      value:
+  connections:
+    - name: asana_conn
+      integration: asana
+    - name: google_conn
+      integration: googlecalendar
+  triggers:
+    - name: gcal_event_created
+      connection: google_conn
+      event_type: event_created
+      call: program.py:on_event_created
