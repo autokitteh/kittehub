@@ -8,7 +8,6 @@ name from a Google Sheet and pages that person in the Slack channel.
 """
 
 from datetime import datetime
-import itertools
 import os
 import time
 import random
@@ -33,10 +32,9 @@ def on_github_pull_request(event):
     msg = f"{pr.html_url} [{pr.state}]"
     ts = slack.chat_postMessage(channel=CHANNEL_ID, text=msg)["ts"]
 
-    for i in itertools.count(start=1):
-        if pr.state in {"closed", "merged"}:
-            break
+    i = 0
 
+    while pr.state not in ("closed", "merged"):
         log(f"Polling #{i}")
         time.sleep(5)
 
@@ -44,6 +42,8 @@ def on_github_pull_request(event):
         pr = repo.get_pull(pr.number)
         msg = f"{pr.html_url} meow [{pr.state}]"
         slack.chat_update(channel=CHANNEL_ID, ts=ts, text=msg)
+
+        i += 1
 
         if i % 3 == 0:
             # Spreadsheet contains a list of usernames
