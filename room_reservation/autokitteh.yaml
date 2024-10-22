@@ -14,7 +14,7 @@ project:
   name: room_reservation
   vars:
     - name: GOOGLE_SHEET_ID
-      value: ""
+      value:
   connections:
     - name: calendar_conn
       integration: googlecalendar
@@ -26,15 +26,15 @@ project:
     - name: slack_slash_command_available_rooms
       connection: slack_conn
       event_type: slash_command
-      filter: data.command == "/availablerooms"
+      filter: data.text == "availablerooms"
       call: available_rooms.py:on_slack_slash_command
     - name: slack_slash_command_room_status
       connection: slack_conn
       event_type: slash_command
-      filter: data.command == "/roomstatus"
+      filter: data.text.startsWith("roomstatus ")
       call: room_status.py:on_slack_slash_command
     - name: slack_slash_command_reserve_room
       connection: slack_conn
       event_type: slash_command
-      filter: data.command == "/reserveroom"
+      filter: data.text.startsWith("reserveroom ")
       call: reserve_room.py:on_slack_slash_command

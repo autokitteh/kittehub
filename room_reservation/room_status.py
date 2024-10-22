@@ -7,16 +7,19 @@ from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
 from googleapiclient.errors import HttpError
 
-import google_sheets
+from util import get_email_from_slack_command, get_room_list
 
 
 def on_slack_slash_command(event):
-    """Entry point for the "/roomstatus <room>" Slack slash command."""
+    """Entry point for the "/<app-name> roomstatus <room>" Slack slash command."""
     slack = slack_client("slack_conn")
     channel_id = event.data.user_id  # event.data.channel_id
 
-    room = event.data.text
-    if room not in google_sheets.get_room_list():
+    # Extract the email address from the Slack command text, which is formatted like:
+    # "<@USER_ID> <mailto:test@example.com|test@example.com>".
+    room = get_email_from_slack_command(event.data.text)
+
+    if room not in get_room_list():
         err = f"Error: `{room}` not found in the list of rooms"
         slack.chat_postMessage(channel=channel_id, text=err)
 
