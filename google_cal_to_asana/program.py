@@ -9,9 +9,9 @@ Note:
 
 import os
 
-from autokitteh.asana import asana_client
 import asana
 from asana.rest import ApiException
+from autokitteh.asana import asana_client
 
 PROJECT_GID = os.getenv("PROJECT_GID")
 
