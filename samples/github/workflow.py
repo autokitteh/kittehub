@@ -62,7 +62,7 @@ def on_github_workflow_job(event):
         data: GitHub event data.
     """
     print(f"Workflow job {event.data.action}: {event.data.workflow_job.name}")
-    print(event.data.workflow_job.htmlurl)
+    print(event.data.workflow_job.html_url)
 
 
 def on_github_workflow_run(event):
@@ -72,4 +72,4 @@ def on_github_workflow_run(event):
         data: GitHub event data.
     """
     print(f"Workflow run {event.data.action}: {event.data.workflow_run.name}")
-    print(event.data.workflow_run.htmlurl)
+    print(event.data.workflow_run.html_url)
