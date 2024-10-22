@@ -37,7 +37,7 @@ def create_asana_task(task_name, due_date, description):
     body = {
         "data": {
             "name": task_name,
-            "projects": [PROJECT_GID],  # more than one project can be added
+            "projects": [PROJECT_GID],  # More than one project can be added.
             "due_on": due_date,
             "notes": description,
         }
