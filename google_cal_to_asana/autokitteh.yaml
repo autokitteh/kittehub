@@ -15,7 +15,7 @@ version: v1
 project:
   name: google_cal_to_asana
   vars:
-    - name: PROJECT_GID
+    - name: ASANA_PROJECT_GID
       value:
   connections:
     - name: asana_conn
