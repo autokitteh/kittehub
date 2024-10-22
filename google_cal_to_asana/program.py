@@ -21,7 +21,7 @@ tasks_api_instance = asana.TasksApi(api_client)
 
 def on_event_created(event):
     """This is the workflow entry point."""
-    # Extract relevant information from the Google Calendar event
+    # Extract relevant information from the Google Calendar event.
     task_name = event.data.get("summary", "New Task")
     due_date = event.data.get("start", {}).get("date_time")
     description = event.data.get("description", "")
