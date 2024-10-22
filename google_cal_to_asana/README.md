@@ -1,4 +1,3 @@
-
 # Google Calendar to Asana Task Creation Workflow
 
 This project automates the process of creating a new Asana task when a new event is created in Google Calendar. It listens for Google Calendar event creation and automatically creates a corresponding task in an Asana project.
