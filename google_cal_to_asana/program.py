@@ -30,7 +30,8 @@ def on_event_created(event):
 
 
 def create_asana_task(task_name, due_date, description):
-    """ "Creates a new task in Asana.
+    """Create a new task in Asana.
+
     See:
         https://github.com/Asana/python-asana/blob/v5.0.10/docs/TasksApi.md#create_task
     """
