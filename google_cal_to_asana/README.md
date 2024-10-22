@@ -7,7 +7,6 @@ This project automates the process of creating a new Asana task when a new event
 - **Integration with Asana API:** Demonstrates how to integrate AutoKitteh with the Asana API for seamless task management.
 - **Ease of Use:** Uses AutoKitteh's `asana_client` for handling authentication, making the integration secure and simple.
 
-
 ## Installation and Usage
 
 1. [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
