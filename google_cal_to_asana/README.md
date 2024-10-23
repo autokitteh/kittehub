@@ -1,74 +1,75 @@
+
 # Google Calendar to Asana Task Creation Workflow
 
-This project automates the process of creating a new Asana task when a new event is created in Google Calendar. It listens for Google Calendar event creation and automatically creates a corresponding task in an Asana project.
+This project creates Asana tasks based on Google Calendar events.
 
-## Benefits
+## How It Works
 
-- **Integration with Asana API:** Demonstrates how to integrate AutoKitteh with the Asana API for seamless task management.
-- **Ease of Use:** Uses AutoKitteh's `asana_client` for handling authentication, making the integration secure and simple.
+1. The workflow is triggered by Google Calendar event creation for a specific calendar.
 
-## Installation and Usage
+2. The workflow extracts the event details (title, description, etc.) and constructs an Asana task in a predefined Asana project.
 
-1. [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
-   
-### Configure Integrations
+3. The task is created with all necessary information from the calendar event, such as summary, due date and description.
 
-- [Asana](https://docs.autokitteh.com/integrations/asana/connection)
-- [Google Calendar](https://docs.autokitteh.com/integrations/google/config)
+> [!TIP]
+> This workflow can be easily expanded by either pulling additional data from the Google Calendar event or adding fields to the Asana task.
 
-### Clone the Repository
+## API Documentation
 
-```shell
-git clone https://github.com/autokitteh/kittehub.git
-cd kittehub/google_calendar_asana
-```
+Asana:
 
-Alternatively, you can copy the individual files in this directory.
+- https://docs.autokitteh.com/integrations/asana
 
-### Run the AutoKitteh Server
+Google Calendar:
 
-Simply run this command:
+- https://docs.autokitteh.com/integrations/google/calendar
 
-```shell
-ak up --mode dev
-```
+## Setup Instructions
 
-### Apply Manifest and Deploy Project
+1. Install and start a
+   [self-hosted AutoKitteh server](https://docs.autokitteh.com/get_started/quickstart),
+   or use AutoKitteh Cloud.
 
-1. Navigate to the `google_calendar_asana` directory:
+2.	Mandatory for self-hosted servers (preconfigured in AutoKitteh Cloud):
 
-    ```shell
-    cd google_cal_to_asana
-    ```
+   - [Enable Google connections to use OAuth 2.0](https://docs.autokitteh.com/integrations/google/config)
+   - [Enable Asana connections](https://docs.autokitteh.com/integrations/asana/connection)
 
-2. Apply the manifest and deploy the project by running the following command:
+3. Run this command to clone the Kittehub repository, which contains this
+   project:
 
-    ```shell
-    ak deploy --manifest autokitteh.yaml
-    ```
-   
-   The output of this command will be important for initializing connections in the following step if you're using the CLI.
+   ```shell
+   git clone https://github.com/autokitteh/kittehub.git
+   ```
 
-   For example, for each configured connection, you will see a line that looks similar to the one below:
+4. Set the `ASANA_PROJECT_GID` variable in this project's
+   [autokitteh.yaml](./autokitteh.yaml) manifest file.
 
-    ```shell
-    [exec] create_connection "google_calendar_asana/asana_conn": con_01j36p9gj6e2nt87p9vap6rbmz created
-    ```
+   >[!TIP]
+   > You can find the GID in the URL of the Asana project. It is the part after `/0/`. For example, in `https://app.asana.com/0/your_project_gid/list`, `your_project_gid`.
 
-   `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
+5. Run this command to deploy this project's manifest file:
 
-### Initialize Connections
+   ```shell
+   ak deploy --manifest kittehub/google_cal_to_asana/autokitteh.yaml
+   ```
 
-> [!IMPORTANT] 
-> `asana_conn` needs to be initialized using the connection ID from the previous step.
+6. Initialize this project's connections:
 
-Using the connection ID from the previous step, run this command:
+   - Asana: with a PAT (Personal Access Token)
+   - Google Calendar: with OAuth 2.0 or a service account's JSON key
 
-```shell
-ak connection init asana_conn <connection ID>
-```
+> [!TIP]
+> The exact CLI commands to do so (`ak connection init ...`) will appear in
+> the output of the `ak deploy` command from step 5 when you create the
+> project on the server, i.e. when you run that command for the first time.
 
-### Trigger the Workflow
+> [!IMPORTANT]
+> Specify the ID of a calendar that you own, to receive notifications about new events.
 
-The workflow is triggered when a new event is created in Google Calendar, automatically generating a corresponding task in Asana.
+## Usage Instructions
 
+1. Create an event in the Google Calendar that you specified in step 6 above.
+
+2. See the Asana task which was auto-created in the Asana project that you
+   specified in the [autokitteh.yaml](./autokitteh.yaml) manifest file.
