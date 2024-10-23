@@ -2,15 +2,15 @@
 
 This project automates the process of creating Slack channels for new Jira issues and streamlines issue management. It listens for new Jira issues, creates a dedicated Slack channel for each issue, invites the issue creator to the channel, and waits for the user to confirm completion by mentioning the Slack app with `@ak done`. Once confirmed, it archives the channel, notifies the channel members, and updates the Jira issue status to `DONE`.
 
-> [!IMPORTANT]
-> The command `@ak done` assumes that you have named your custom Slack app "ak." If you used a different name, be sure to substitute "ak" with the appropriate name of your Slack app when mentioning it in a Slack channel.
+> [!IMPORTANT]  
+> The mention `@autokitteh done` assumes that you have named your custom Slack app "autokitteh." If you used a different name, be sure to substitute "autokitteh" with the appropriate name of your Slack app when mentioning it in a Slack channel.
 
 ## How It Works
 
 - **Detect New Jira Issues:** The program listens for new issues created in Jira.
 - **Create Slack Channel:** When a new issue is detected, it creates a Slack channel named after the issue key and summary.
 - **Invite Issue Creator:** Invites the issue creator to the Slack channel.
-- **Await User Confirmation:** Waits for the user to confirm completion by typing `@ak done` in the Slack channel.
+- **Await User Confirmation:** Waits for the user to confirm completion by typing `@autokitteh done` in the Slack channel.
 - **Archive Channel and Update Jira:** Notifies channel members, archives the Slack channel, and updates the Jira issue status to `DONE`.
 
 ## Installation and Usage
