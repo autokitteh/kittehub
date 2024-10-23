@@ -1,4 +1,4 @@
-"""This program creates a new Asana task when a new event is created in Google Calendar.
+"""This program creates a new Asana task when an event is created in Google Calendar.
 
 Note:
     The `asana_client` from AutoKitteh is used for handling authentication with Asana.
