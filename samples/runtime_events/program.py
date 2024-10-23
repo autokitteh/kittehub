@@ -1,7 +1,5 @@
 """This program demonstrates AutoKitteh's runtime event handling."""
 
-from datetime import timedelta
-
 import autokitteh
 
 
