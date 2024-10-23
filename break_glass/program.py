@@ -114,5 +114,6 @@ def check_issue_exists(issue_key):
 
 def validate_requester(issue_key, requester):
     issue = jira.issue(issue_key)
-    assignee = issue.get("fields", {}).get("assignee", {}).get("emailAddress", "")
+    assignee = issue.get("fields", {}).get("assignee") or {}
+    assignee = assignee.get("emailAddress")
     return assignee == requester
