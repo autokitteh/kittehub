@@ -1,39 +1,40 @@
 """This program demonstrates AutoKitteh's OpenAI ChatGPT integration.
 
-This program implements a single entry-point function, which is
-configured in the "autokitteh.yaml" manifest file as the receiver
-of Slack "slash_command" events.
+The program implements a single entry-point function, which is
+configured in the "autokitteh.yaml" manifest file to receive HTTP GET requests.
 
-It sends a couple of requests to the ChatGPT API, and sends the responses
-back to the user over Slack, as well as ChatGPT token usage stats.
+It sends a couple of requests to the ChatGPT API, and prints the responses
+in the AutoKitteh session log, along with ChatGPT token usage stats.
 
 API details:
 - OpenAI developer platform: https://platform.openai.com/
-- Go client API: https://pkg.go.dev/github.com/sashabaranov/go-openai
+- Python client library: https://github.com/openai/openai-python
 
 This program isn't meant to cover all available functions and events.
 It merely showcases various illustrative, annotated, reusable examples.
-
 """
 
-from autokitteh import openai, slack
+from autokitteh.openai import openai_client
 
 MODEL = "gpt-4o-mini"
 
-chatgpt_client = openai.openai_client("chatgpt_conn")
-slack_client = slack.slack_client("slack_conn")
+chatgpt_client = openai_client("chatgpt_conn")
 
 
-def on_slack_slash_command(event):
-    """https://api.slack.com/interactivity/slash-commands
+def on_http_get(event):
+    """
+    Entry-point function for handling HTTP GET requests in this workflow.
 
-    To use the slash command, simply type `/command-name` in the Slack message input,
-    where `command-name` is the name you have assigned to the command in your app.
-    This command does not require any additional text or arguments.
+    Example usage:
+    - URL: "http://localhost:9980/webhooks/<webhook_slug>"
+    - Curl command:
+      curl -X POST "<URL>" -H "Content-Type: text/plain" -d "Meow"
 
     Args:
-        event: Slack event data.
+        event: The HTTP event containing request data.
     """
+    body = event.data.body.bytes.decode("utf-8")
+    print(body)
 
     # Example 1: trivial interaction with ChatGPT.
     msg = {"role": "user", "content": "Meow!"}
@@ -51,13 +52,11 @@ def on_slack_slash_command(event):
     ]
     msgs = [
         {"role": "system", "content": contents[0]},
-        {"role": "user", "content": contents[1]},
-        {"role": "user", "content": event.data["text"]},
+        {"role": "user", "content": body or contents[1]},
     ]
 
     resp = chatgpt_client.chat.completions.create(model=MODEL, messages=msgs)
 
-    id = event.data["user_id"]
     for choice in resp.choices:
-        slack_client.chat_postMessage(channel=id, text=choice.message.content)
-    slack_client.chat_postMessage(channel=id, text=f"Usage: `{str(resp.usage)}`")
+        print(choice.message.content)
+    print(f"Usage: `{resp.usage}`")

@@ -76,7 +76,7 @@ def on_approve_deny(event):
         slack.chat_postMessage(channel=requester, text=message)
     else:
         print(f"Requester: {requester}")
-        message = f"Request denied by: <@{approver_info["user"]["name"]}>"
+        message = f"Request denied by: <@{approver_info['user']['name']}>"
         slack.chat_postMessage(channel=requester, text=message)
 
 

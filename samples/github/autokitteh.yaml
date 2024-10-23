@@ -16,16 +16,21 @@ project:
       # Handle only new issue comments in this sample code
       # (FYI, the other options are "edited" and "deleted").
       filter: data.action == "created"
-      call: program.star:on_github_issue_comment
+      call: program.py:on_github_issue_comment
     - name: github_workflow_dispatch
       connection: github_conn
       event_type: workflow_dispatch
-      call: workflow.star:on_github_workflow_dispatch
+      call: workflow.py:on_github_workflow_dispatch
     - name: github_workflow_job
       connection: github_conn
       event_type: workflow_job
-      call: workflow.star:on_github_workflow_job
+      call: workflow.py:on_github_workflow_job
     - name: github_workflow_run
       connection: github_conn
       event_type: workflow_run
-      call: workflow.star:on_github_workflow_run
+      call: workflow.py:on_github_workflow_run
+    # Uncomment the following trigger:
+    # - name: github_push
+    #   connection: github_conn
+    #   event_type: push
+    #   call: workflow.py:start_github_action

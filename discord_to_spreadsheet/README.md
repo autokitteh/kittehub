@@ -20,7 +20,7 @@ This project automates the process of logging Discord messages to a Google Sheet
 
 ### Configure Integrations
 
-- [Discord](https://docs.autokitteh.com/integrations/discord/config)
+- [Discord](https://docs.autokitteh.com/integrations/discord/connection)
 - [Google Sheets](https://docs.autokitteh.com/integrations/google/config)
 
 ### Clone the Repository

@@ -5,52 +5,38 @@ https://docs.autokitteh.com/integrations/google/sheets/python
 """
 
 import autokitteh
-from autokitteh.google import google_id, google_sheets_client
-from autokitteh.slack import slack_client
+from autokitteh.google import google_sheets_client
 
 
 sheet = google_sheets_client("sheets_conn").spreadsheets().values()
-slack = slack_client("slack_conn")
 
 
-def on_slack_slash_command(event):
-    """Use a Slack slash command to interact with a Google Sheet.
+def on_http_get(event):
+    """Entry point for the workflow.
 
-    See: https://api.slack.com/interactivity/slash-commands, and
-    https://api.slack.com/interactivity/handling#message_responses
+    This function expects the URL parameter 'id' to be a valid Google Sheets ID
+    (see https://developers.google.com/sheets/api/guides/concepts).
 
-    In this sample, we expect the slash command's text to be either:
-    - A Google Sheets ID (https://developers.google.com/sheets/api/guides/concepts)
-    - A full Google Sheets URL (to extract the spreadsheet ID from it)
+    Example URL: "http://localhost:9980/webhooks/<webhook-slug>?id=<Google-Sheets-ID>"
 
     Args:
-        event: Slack event data.
+        event: HTTP event data, including URL query parameters.
     """
-    user_id = event.data.user_id
-    sheet_id = _extract_sheet_id(event.data.text, user_id)
+    sheet_id = event.data.url.query.get("id")
     if not sheet_id:
+        print("Error: Missing required 'id' URL parameter for Google Sheets.")
         return
 
-    _write_values(sheet_id, user_id)
-    _read_values(sheet_id, user_id)
-    _read_formula(sheet_id, user_id)
-
-
-def _extract_sheet_id(text, user_id):
-    """Extract a Google Sheets ID from a Slack slash command."""
-    try:
-        return google_id(text)
-    except ValueError:
-        msg = f"Invalid Google Sheets URL or spreadsheet ID: `{text}`"
-        slack_client("slack_conn").chat_postMessage(channel=user_id, text=msg)
-        return None
+    _write_values(sheet_id)
+    _read_values(sheet_id)
+    _read_formula(sheet_id)
 
 
 @autokitteh.activity
-def _write_values(spreadsheet_id, slack_target):
+def _write_values(id):
     """Write multiple cell values, with different data types."""
     resp = sheet.update(
-        spreadsheetId=spreadsheet_id,
+        spreadsheetId=id,
         # Explanation of the A1 notation for cell ranges:
         # https://developers.google.com/sheets/api/guides/concepts#expandable-1
         range="Sheet1!A1:B7",
@@ -70,13 +56,14 @@ def _write_values(spreadsheet_id, slack_target):
         },
     ).execute()
 
-    text = f"Updated: range `{resp['updatedRange']!r}`, `{resp['updatedRows']}` rows, "
-    text += f"`{resp['updatedColumns']}` columns, `{resp['updatedCells']}` cells"
-    slack.chat_postMessage(channel=slack_target, text=text)
+    print(f"Updated range: {resp['updatedRange']!r}")
+    print(f"Rows: {resp['updatedRows']}")
+    print(f"Columns: {resp['updatedColumns']}")
+    print(f"Cells: {resp['updatedCells']}")
 
 
 @autokitteh.activity
-def _read_values(id, slack_target):
+def _read_values(id):
     """Read multiple cell values from a Google Sheet, and send them to Slack.
 
     Value render options:
@@ -92,13 +79,12 @@ def _read_values(id, slack_target):
 
     for i, row in enumerate(zip(col_a, formatted_col_b, unformatted_col_b)):
         data_type, formatted, unformatted = row
-        text = "Row {0}: {1} = formatted `{2!r}`, unformatted `{3!r}`"
-        text = text.format(i + 1, data_type, formatted, unformatted)
-        slack.chat_postMessage(channel=slack_target, text=text)
+        text = f"Row {i + 1}: {data_type} = formatted `{formatted!r}`, unformatted `{unformatted!r}`"
+        print(text)
 
 
 @autokitteh.activity
-def _read_formula(id, slack_target):
+def _read_formula(id):
     """Read a single cell value with a formula, and its evaluated result.
 
     Value render options:
@@ -107,14 +93,14 @@ def _read_formula(id, slack_target):
     f = "FORMULA"
     resp = sheet.get(spreadsheetId=id, range="B7", valueRenderOption=f).execute()
     value = resp.get("values", [["Not found"]])[0][0]
-    slack.chat_postMessage(channel=slack_target, text=f"Formula: `{value!r}`")
+    print(f"Formula: `{value!r}`")
 
     # Default value render option: "FORMATTED_VALUE".
     resp = sheet.get(spreadsheetId=id, range="B7").execute()
     value = resp.get("values", [["Not found"]])[0][0]
-    slack.chat_postMessage(channel=slack_target, text=f"Formatted: `{value!r}`")
+    print(f"Formula: `{value!r}`")
 
     ufv = "UNFORMATTED_VALUE"
     resp = sheet.get(spreadsheetId=id, range="B7", valueRenderOption=ufv).execute()
     value = resp.get("values", [["Not found"]])[0][0]
-    slack.chat_postMessage(channel=slack_target, text=f"Unformatted: `{value!r}`")
+    print(f"Formula: `{value!r}`")

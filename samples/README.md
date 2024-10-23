@@ -15,7 +15,6 @@ practices.
   - [Forms](./google/forms/)
   - [Gmail](./google/gmail/)
   - [Sheets](./google/sheets/)
-- [gRPC](./grpc/)
 - [HTTP](./http/)
 - [OpenAPI ChatGPT](./openai_chatgpt/)
 - [Runtime AutoKitteh event handling](./runtime_events/)
