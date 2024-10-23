@@ -26,4 +26,4 @@ project:
     - name: gcal_event_created
       connection: google_conn
       event_type: event_created
-      call: program.py:on_event_created
+      call: program.py:on_calendar_event_created
