@@ -6,11 +6,11 @@ from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
 from googleapiclient.errors import HttpError
 
-import google_sheets
+from util import get_room_list
 
 
 def on_slack_slash_command(event):
-    """Entry point for the "/availablerooms" Slack slash command."""
+    """Entry point for the "/<app-name> availablerooms" Slack slash command."""
     slack = slack_client("slack_conn")
     channel_id = event.data.user_id  # event.data.channel_id
 
@@ -21,7 +21,7 @@ def on_slack_slash_command(event):
     # Iterate over the list of rooms, notify the user about
     # each room which is available in the next half hour.
     available = False
-    for room in sorted(google_sheets.get_room_list()):
+    for room in sorted(get_room_list()):
         print(f"Checking upcoming events in: {room}")
         try:
             events = gcal.list(

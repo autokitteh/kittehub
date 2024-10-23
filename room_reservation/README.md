@@ -9,11 +9,17 @@ While users can reserve rooms directly from the calendar, we wanted to add a
 Slack interface to make it even quicker to reserve a room for an immediate
 meeting within the next half hour.
 
-We configured three slash commands in Slack:
+We did not configure separate slash commands in Slack. Instead, we listen for the `/autokitteh`
+command and parse the text that follows to determine the desired action. 
+The format of the commands is as follows:
 
-- `/availablerooms` - list all the available rooms
-- `/roomstatus <room>` - check the status of a specific room
-- `/reserveroom <room> <title>` - reserve a specific room
+- `/autokitteh availablerooms` - list all the available rooms
+- `/autokitteh roomstatus <room>` - check the status of a specific room
+- `/autokitteh reserveroom <room> <title>` - reserve a specific room
+
+> [!IMPORTANT]
+> If you're using Socket Mode or the open source version, replace `/autokitteh` 
+with your app's name (e.g., `/yourapp availablerooms`).
 
 > [!TIP]
 > You can extend this project to add participants, set the time, etc.
