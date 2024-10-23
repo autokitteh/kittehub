@@ -8,6 +8,7 @@ This program supports several types of triggers:
 3. OR trigger: Initiates a workflow in repository C if a workflow in either repository A or B completes.
 4. Fan-in trigger: Initiates a workflow in repository C only when workflows in both repositories A and B complete.
 """
+
 import os
 import autokitteh
 from autokitteh.github import github_client
