@@ -1,11 +1,4 @@
-"""This program creates a new Asana task when an event is created in Google Calendar.
-
-Note:
-    The `asana_client` from AutoKitteh is used for handling authentication with Asana.
-    This wraps necessary configurations for connecting to the Asana API securely.
-    However, all functional API calls, such as creating tasks, are made using
-    the official Asana client library (`asana`).
-"""
+"""This program creates a new Asana task when a new event is created in Google Calendar."""
 
 import os
 
@@ -19,7 +12,7 @@ api_client = asana_client("asana_conn")
 tasks_api_instance = asana.TasksApi(api_client)
 
 
-def on_event_created(event):
+def on_calendar_event_created(event):
     """This is the workflow entry point."""
     # Extract relevant information from the Google Calendar event.
     task_name = event.data.get("summary", "New Task")
