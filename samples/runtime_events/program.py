@@ -13,8 +13,8 @@ def on_http_get_meow(event):
     # event where the URL path ends with "woof".
     filter = "data.url.path.endsWith('/woof')"
     sub = autokitteh.subscribe("meow_webhook", filter)
-    delta = timedelta(minutes=1)
-    next = autokitteh.next_event(sub, timeout=delta)
+    # ENG-1730: change timeout to timedelta
+    next = autokitteh.next_event(sub, timeout=60)
 
     if next:
         print("Got a woof:", next)
