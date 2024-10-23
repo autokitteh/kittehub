@@ -1,4 +1,3 @@
-
 # Jira-Slack Issue Workflow Automation
 
 This project automates the process of creating Slack channels for new Jira issues and streamlines issue management. It listens for new Jira issues, creates a dedicated Slack channel for each issue, invites the issue creator to the channel, and waits for the user to confirm completion by mentioning the Slack app with `@ak done`. Once confirmed, it archives the channel, notifies the channel members, and updates the Jira issue status to `DONE`.
