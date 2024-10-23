@@ -54,7 +54,7 @@ def on_github_pull_request(event):
 
             user_email = f"{the_chosen_one}@{ORG_DOMAIN}"
             user = slack.users_lookupByEmail(email=user_email)["user"]
-            msg = f"Paging <@{user["id"]}>"
+            msg = f"Paging <@{user['id']}>"
             slack.chat_postMessage(channel=CHANNEL_ID, text=msg, thread_ts=ts)
 
 
