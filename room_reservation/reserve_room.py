@@ -43,7 +43,7 @@ def on_slack_slash_command(event):
         "end": {"dateTime": in_30_minutes.isoformat()},
         "reminders": {"useDefault": False},
         "attendees": [
-            {"email": user["email"]},
+            {"email": "test@example.com"},
         ],
     }
 
