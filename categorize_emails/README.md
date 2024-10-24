@@ -17,73 +17,46 @@ This project automates the process of categorizing incoming emails and notifying
 
 For more details, refer to [this blog post](https://autokitteh.com/technical-blog/from-inbox-to-slack-automating-email-categorization-and-notifications-with-ai/).
 
-## Installation and Usage 
-
-- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
 
 ### Configure integrations
 
 - [Gmail](https://docs.autokitteh.com/integrations/google/config)
 - [Slack](https://docs.autokitteh.com/integrations/slack/config)
 
-### Clone the Repository
+## Setup Instructions
 
-```shell
-git clone https://github.com/autokitteh/kittehub.git
-cd kittehub/categorize_notify
-```
-Alternatively, you can copy the individual files in this directory.
+1. Install and start a
+   [self-hosted AutoKitteh server](https://docs.autokitteh.com/get_started/quickstart),
+   or use AutoKitteh Cloud
 
-### Run the AutoKitteh Server
-
-Simply run this command:
-
-```shell
-ak up --mode dev
-```
-
-### Apply Manifest and Deploy Project
-
-1. Navigate to the `categorize_notify` directory:
+2. Run these commands to deploy this project's manifest file:
 
    ```shell
-   cd categorize_notify
+   git clone https://github.com/autokitteh/kittehub.git
+   ak deploy --manifest kittehub/categorize_emails/autokitteh.yaml
    ```
 
-2. Apply manifest and deploy project by running the following command:
+3. Look for the following lines in the output of the `ak deploy` command, and
+   copy the URL paths for later:
 
-   ```shell
-   ak deploy --manifest autokitteh-python.yaml --file program.py
-    ```
-    The output of this command will be important for initializing connections in the following step if you're using the CLI.
+   ```
+   [!!!!] trigger "..." created, webhook path is "/webhooks/..."
+   ```
 
-    For example, for each configured connection, you will see a line that looks similar to the one below:
+> [!TIP]
+> If you don't see the output of `ak deploy` anymore, you can run these
+> commands instead, and use the webhook slugs from their outputs:
+>
+> ```shell
+> ak trigger get receive_http_get --project categorize_emails -J
+> ```
 
-    ```shell
-    [exec] create_connection "categorize_notify/my_chatgpt": con_01j36p9gj6e2nt87p9vap6rbmz created
-    ```
+## Usage Instructions
 
-    `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
-
-### Initiliaze Connections
-
-> [!NOTE] 
-> `my_http` does not need to initialized
-
-Using the connection IDs from the previous step, run these commands:
+Run the following command, replacing {your-webhook-slug} with the webhook slug from the previous step:
 
 ```shell
-ak connection init my_chatgpt <connection ID>
-ak connection init my_gmail <connection ID>
-ak connection init my_slack <connection ID>
-```
-
-### Trigger the Workflow
-
-Run this command:
-
-```shell
-curl -v "http://localhost:9980/http/categorize_notify/"
+curl -v "http://localhost:9980/webhooks/{your-webhook-slug}"
 ```
 
 Now send yourself a new email and watch the workflow do its job!
