@@ -11,6 +11,14 @@ This automation searches daily for all users in a GitHub organization that are a
 If Copilot was not used in a preceding period, it automatically unregisters them, and then notifies them.
 Users can then optionally ask for their subscription to be reinstated.
 
+## Before Deploying This AutoKitteh Project:
+- Set the `GITHUB_ORG` in the project's vars.
+- Set the `IDLE_USAGE_THRESHOLD` in the project's vars:
+  - (e.g., `4320` for 72 hours)
+  - (e.g., `25` for 25 minutes)
+- Set the `LOGINS` in the project's vars (optional).
+- Set the `LOG_CHANNEL` in the project's vars to the Slack channel name/ID you want to post to.
+
 ## Slack Usage
 
 - `/autokitteh prune-idle-copilot-seats` invokes the automation immediately.
