@@ -16,24 +16,24 @@ project:
   name: github_copilot_seats
   vars:
     - name: GITHUB_ORG
-      value:
+      value: autokitteh
     - name: IDLE_USAGE_THRESHOLD
       value: "72h"
     - # If not empty, only manage GitHub Copilot subscriptions to the specified users, separated by commas.
       name: LOGINS
       value: ""
     - name: LOG_CHANNEL
-      value:
+      value: log
   connections:
-    - name: mygithub
+    - name: github_conn
       integration: github
-    - name: myslack
+    - name: slack_conn
       integration: slack
   triggers:
     - name: check_daily
       schedule: "@daily"
-      call: triggers.star:on_schedule
+      call: triggers.py:on_schedule
     - name: check_now
-      connection: myslack
+      connection: slack_conn
       event_type: slash_command
-      call: triggers.star:on_slack_slash_command
+      call: triggers.py:on_slack_slash_command
