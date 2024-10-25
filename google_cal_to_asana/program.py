@@ -6,7 +6,7 @@ import asana
 from asana.rest import ApiException
 from autokitteh.asana import asana_client
 
-PROJECT_GID = os.getenv("PROJECT_GID")
+ASANA_PROJECT_GID = os.getenv("ASANA_PROJECT_GID")
 
 api_client = asana_client("asana_conn")
 tasks_api_instance = asana.TasksApi(api_client)
@@ -31,7 +31,7 @@ def create_asana_task(task_name, due_date, description):
     body = {
         "data": {
             "name": task_name,
-            "projects": [PROJECT_GID],  # More than one project can be added.
+            "projects": [ASANA_PROJECT_GID],  # More than one project can be added.
             "due_on": due_date,
             "notes": description,
         }
