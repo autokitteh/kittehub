@@ -5,18 +5,18 @@ github = github_client("github_conn")
 slack = slack_client("slack_conn")
 
 
-def _email_to_slack_user_id(email):
+def _email_to_slack_user_id(email: str) -> str:
     """Fetch Slack user ID based on email address."""
     resp = slack.users_lookup_by_email(email)
-    return resp.user.id if resp.ok else ""
+    return resp.user.id if resp.ok else None
 
 
-def github_username_to_slack_user_id(github_username, github_owner_org):
+def github_username_to_slack_user_id(username: str, owner_org: str) -> str:
     """Map a GitHub username to a Slack user ID."""
-    resp = github.get_user(github_username, owner=github_owner_org)
+    resp = github.get_user(username, owner=owner_org)
 
     if resp.type == "Bot":
-        return ""
+        return None
 
     # Match by email address first.
     if resp.email:
@@ -27,23 +27,22 @@ def github_username_to_slack_user_id(github_username, github_owner_org):
     # Match by the user's full name if email doesn't work.
     gh_full_name = resp.name.lower() if resp.name else None
     if not gh_full_name:
-        return ""
+        return None
 
-    return next(
-        (
-            user.id
-            for user in _slack_users()
-            if gh_full_name
-            in (
-                user.profile.real_name.lower(),
-                user.profile.real_name_normalized.lower(),
-            )
-        ),
-        "",
-    )
+    slack_users = _slack_users()
+
+    # Normalize the names for comparison.
+    for user in slack_users:
+        real_name = user.profile.real_name.lower()
+        normalized_name = user.profile.real_name_normalized.lower()
+
+        if gh_full_name in (real_name, normalized_name):
+            return user.id
+
+    return None
 
 
-def _slack_users(cursor=""):
+def _slack_users(cursor="") -> list:
     """Retrieve all Slack users, handling pagination."""
     resp = slack.users_list(cursor, limit=100)
     if not resp.ok:
