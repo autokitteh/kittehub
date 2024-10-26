@@ -7,7 +7,7 @@ project:
   name: google_cal_to_asana
   vars:
     - name: ASANA_PROJECT_GID
-      value: 1208402622198831
+      value:
   connections:
     - name: asana_conn
       integration: asana
