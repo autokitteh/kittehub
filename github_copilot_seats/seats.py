@@ -17,7 +17,8 @@ github = github_client("github_conn")
 slack = slack_client("slack_conn")
 
 
-def prune_idle_seats():
+def prune_idle_seats() -> list:
+    """Prunes idle GitHub Copilot users based on their last activity time."""
     seats = find_idle_seats()
     new_idle_seats = []
     for seat in seats:
@@ -26,7 +27,8 @@ def prune_idle_seats():
     return new_idle_seats
 
 
-def find_idle_seats():
+def find_idle_seats() -> list:
+    """Identifies idle GitHub Copilot users based on their last activity time."""
     seats = _get_all_seats()
     t = datetime.now()
     idle_seats = []
@@ -53,7 +55,12 @@ def find_idle_seats():
     return idle_seats
 
 
-def engage_seat(seat):
+def engage_seat(seat: dict) -> None:
+    """Engages a GitHub user assigned to a seat by identifying their corresponding Slack user and initiating a workflow.
+
+    Args:
+        seat (dict): Contains details about the assigned GitHub user.
+    """
     github_login = seat["assignee"]["login"]
 
     log(github_login, "engaging")
@@ -66,16 +73,20 @@ def engage_seat(seat):
 
     _remove_seat(github_login)
 
+    # Loads a predefined message (blocks) from a JSON file and posts it to the user's Slack
     with open("msg.json") as file:
         blocks = json.load(file)
     slack.chat_postMessage(slack_id, blocks=blocks)
 
+    # Subscribes to Slack interaction events, waiting for the user's response
     s = autokitteh.subscribe(
         "slack_conn", f'data.type == "block_actions" && data.user.id == "{slack_id}"'
     )
 
+    # Retrieves the value from the user's response in the Slack event
     value = autokitteh.next_event(s)["actions"][0].value
 
+    # Based on the user's response, it either confirms the action or reinstates the seat
     if value == "ok":
         slack.chat_postMessage(slack_id, "Okey dokey!")
         log(github_login, "ok")
@@ -88,24 +99,24 @@ def engage_seat(seat):
         log(github_login, f"weird response: {value}")
 
 
-def _add_seat(login):
+def _add_seat(login: str) -> None:
     url = f"https://api.github.com/orgs/{GITHUB_ORG}/copilot/billing/selected_users"
     input_data = {"selected_usernames": [login]}
     github.requester.requestJsonAndCheck("POST", url, input_data=input_data)
 
 
-def _remove_seat(login):
+def _remove_seat(login: str) -> None:
     url = f"https://api.github.com/orgs/{GITHUB_ORG}/copilot/billing/selected_users"
     input_data = {"selected_usernames": [login]}
     github.requester.requestJsonAndCheck("DELETE", url, input_data=input_data)
 
 
-def _get_all_seats():
+def _get_all_seats() -> list:
     # TODO: pagination.
     url = f"https://api.github.com/orgs/{GITHUB_ORG}/copilot/billing/seats"
     _, data = github.requester.requestJsonAndCheck("GET", url)
     return data["seats"]
 
 
-def log(github_login, msg):
+def log(github_login: str, msg: str) -> None:
     slack.chat_postMessage(LOG_CHANNEL, f"{github_login}: {msg}")
