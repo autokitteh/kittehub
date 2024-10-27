@@ -1,3 +1,10 @@
+---
+title: AWS Health to Slack
+description: Monitor AWS health events
+integrations: ["aws", "slack", "sheets"]
+categories: ["DevOps"]
+---
+
 # Announce AWS Health Events in Slack
 
 This project automates the process of announcing AWS health events in Slack based on resource ownership listed in a Google Sheet. It leverages AWS Health API to fetch events and Google Sheets to map projects to Slack channels. This is not meant to be a complete solution but a solid starting point.
