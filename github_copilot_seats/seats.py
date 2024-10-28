@@ -66,7 +66,6 @@ def engage_seat(seat: dict) -> None:
     log(github_login, "engaging")
 
     slack_id = github_username_to_slack_user_id(github_login, GITHUB_ORG)
-
     if not slack_id:
         print(f"No slack user found for GitHub user {github_login}")
         return
