@@ -12,7 +12,7 @@ project:
       value: 4320 # 72 hours
     - # If not empty, only manage GitHub Copilot subscriptions to the specified users, separated by commas.
       name: LOGINS
-      value: ""
+      value:
     - name: LOG_CHANNEL
       value:
   connections:
