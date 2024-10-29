@@ -25,7 +25,7 @@ import os
 from pathlib import Path
 
 import autokitteh
-from autokitteh.atlassian import jira_client
+from autokitteh.atlassian import jira_client, get_base_url
 from autokitteh.slack import slack_client
 from requests.exceptions import HTTPError
 
@@ -98,7 +98,7 @@ def parse_event_data(event):
     form_data = event.data["view"]["state"]["values"]
     reason = form_data["block_reason"]["reason"]["value"]
     issue_key = form_data["block_issue_key"]["issue_key"]["value"]
-    base_url = os.getenv("jira_connection__AccessURL")
+    base_url = get_base_url("jira_connection")
     requester_id = event.data["user"]["id"]
     return reason, issue_key, base_url, requester_id
 
