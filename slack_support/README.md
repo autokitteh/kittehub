@@ -62,3 +62,6 @@ You are ready to roll. Deploy your project:
 ```
 $ ak deploy --project slack_support --dir .
 ```
+
+> [!NOTE]
+> This project includes a `requirements.txt` file for installing dependencies. This is relevant when using the [cloud offering](https://app.autokitteh.cloud/) or when running in [Docker mode](https://docs.autokitteh.com/get_started/start_server/#docker). If you're not using Google Gemini and want to customize this project, you can remove or modify the file as needed. Otherwise, leave it as is.
