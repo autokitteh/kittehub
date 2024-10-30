@@ -2,6 +2,9 @@
 src = ["./**", "./devops/**", "./reliability/**"]
 target-version = "py312"
 
+[tool.ruff.format]
+quote-style = "double"
+
 [tool.ruff.lint]
 # https://docs.astral.sh/ruff/rules/
 extend-select = ["B", "C4", "D101", "D2", "D3", "DTZ", "E5", "I", "N", "PT", "PTH", "Q", "S", "UP", "W"]
