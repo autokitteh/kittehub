@@ -11,8 +11,8 @@ from pathlib import Path
 import autokitteh
 from autokitteh.aws import boto3_client
 
-DB_DSN = os.getenv('DB_DSN')  # Secret
-CREATE_DB = os.getenv('CREATE_DB', 'no').lower() in {'y', 'yes', 'true'}
+DB_DSN = os.getenv("DB_DSN")  # Secret
+CREATE_DB = os.getenv("CREATE_DB", "no").lower() in {"y", "yes", "true"}
 
 INSERT_SQL = """
 INSERT INTO points
@@ -25,34 +25,34 @@ VALUES
 
 def on_new_s3_object(event):
     if not event.data.body.json:
-        print('Unexpected (non-JSON) content type:', event)
+        print("Unexpected (non-JSON) content type:", event)
         return
 
     if CREATE_DB:
         create_db(DB_DSN)
 
     event = event.data.body.json
-    print('event:', event)
-    if url := event.get('SubscribeURL'):
-        print('SNS Subscribe URL:', url)
+    print("event:", event)
+    if url := event.get("SubscribeURL"):
+        print("SNS Subscribe URL:", url)
         return
 
     # SNS events encode the `Message` field in JSON
-    s3_event = json.loads(event.get('Message', {}))
-    for record in s3_event.get('Records', []):
-        bucket = record['s3']['bucket']['name']
-        key = record['s3']['object']['key']
-        print(f'getting {bucket}/{key}')
+    s3_event = json.loads(event.get("Message", {}))
+    for record in s3_event.get("Records", []):
+        bucket = record["s3"]["bucket"]["name"]
+        key = record["s3"]["object"]["key"]
+        print(f"getting {bucket}/{key}")
         data = get_s3_object(bucket, key)
         records = parse_gpx(key, data)
         count = insert_records(DB_DSN, records)
-        print(f'inserted {count} records')
+        print(f"inserted {count} records")
 
 
 @autokitteh.activity
 def get_s3_object(bucket, key):
-    response = boto3_client('aws_conn', 's3').get_object(Bucket=bucket, Key=key)
-    return response['Body'].read()
+    response = boto3_client("aws_conn", "s3").get_object(Bucket=bucket, Key=key)
+    return response["Body"].read()
 
 
 @autokitteh.activity
@@ -64,7 +64,7 @@ def insert_records(db_dsn, records):
 
 def create_db(db_dsn):
     code_dir = Path(__file__).absolute().parent
-    schema_file = code_dir / 'schema.sql'
+    schema_file = code_dir / "schema.sql"
     with open(schema_file) as fp:
         schema_sql = fp.read()
 
@@ -72,7 +72,7 @@ def create_db(db_dsn):
         conn.executescript(schema_sql)
 
 
-trkpt_tag = '{http://www.topografix.com/GPX/1/1}trkpt'
+trkpt_tag = "{http://www.topografix.com/GPX/1/1}trkpt"
 
 
 @autokitteh.activity
@@ -81,11 +81,11 @@ def parse_gpx(track_id, data):
     root = xml.parse(io).getroot()
     return [
         {
-            'track_id': track_id,
-            'n': i,
-            'lat': float(elem.get('lat')),
-            'lng': float(elem.get('lon')),
-            'height': float(elem.findtext('.//')),
+            "track_id": track_id,
+            "n": i,
+            "lat": float(elem.get("lat")),
+            "lng": float(elem.get("lon")),
+            "height": float(elem.findtext(".//")),
         }
-        for i, elem in enumerate(root.findall('.//' + trkpt_tag))
+        for i, elem in enumerate(root.findall(".//" + trkpt_tag))
     ]
