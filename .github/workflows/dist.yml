@@ -9,17 +9,16 @@ jobs:
     concurrency:
       group: kittehub-releases-dist
       cancel-in-progress: true
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: build
-        run: zip -r /tmp/dist .
-      - name: push
-        run: |
-          cd /tmp
-          git clone git@github.com:autokitteh/kittehub-releases.git
-          cd kittehub-releases
-          mv /tmp/dist.zip .
-          git add dist.zip
-          git commit -m "update"
-          git push origin HEAD:main
+        run: zip -r dist .
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: release
+          branch: release
+          push_options: "--force"
+          create_branch: true
