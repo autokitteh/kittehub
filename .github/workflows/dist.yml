@@ -1,0 +1,25 @@
+name: Dist
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  dist:
+    concurrency:
+      group: kittehub-releases-dist
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: build
+        run: zip -r /tmp/dist .
+      - name: push
+        run: |
+          cd /tmp
+          git clone git@github.com:autokitteh/kittehub-releases.git
+          cd kittehub-releases
+          mv /tmp/dist.zip .
+          git add dist.zip
+          git commit -m "update"
+          git push origin HEAD:main
