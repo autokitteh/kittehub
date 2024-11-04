@@ -1,3 +1,10 @@
+---
+title: Google Calendar
+description: Samples using Google Calendar APIs
+integrations: ["calendar"]
+categories: ["Samples"]
+---
+
 # Google Calendar Sample
 
 This AutoKitteh project demonstrates 2-way integration with

@@ -1,3 +1,10 @@
+---
+title: Jira
+description: Samples using Jira APIs
+integrations: ["jira"]
+categories: ["Samples"]
+---
+
 # Atlassian Jira Sample
 
 This [AutoKitteh](https://github.com/autokitteh/autokitteh) project

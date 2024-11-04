@@ -1,3 +1,10 @@
+---
+title: Parse a file in S3 and insert to database
+description: Triggered by a new GPX file on an S3 bucket, the pipeline code will parse the GPX file and insert it into a database.
+integrations: ["aws", "http", "sqlite3"]
+categories: ["DevOps"]
+---
+
 # Data Pipeline Workflow
 
 This is an example of a data pipeline workflow. The pipeline is triggered by a new GPX file on an S3 bucket.

@@ -1,3 +1,10 @@
+---
+title: Log Discord messages to Sheets
+description: Logging Discord messages to a Google Sheets document
+integrations: ["discord", "sheets"]
+categories: ["DevOps"]
+---
+
 
 # Discord to Spreadsheet Workflow
 

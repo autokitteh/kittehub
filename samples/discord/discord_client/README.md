@@ -1,3 +1,10 @@
+---
+title: Discord Client
+description: Samples using Discord APIs
+integrations: ["discord"]
+categories: ["Samples"]
+---
+
 
 # Basic Discord Bot with AutoKitteh
 

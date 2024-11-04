@@ -1,3 +1,10 @@
+---
+title: HTTP
+description: Samples using HTTP requests and webhooks
+integrations: ["http"]
+categories: ["Samples"]
+---
+
 # HTTP Sample
 
 This AutoKitteh project demonstrates 2-way usage of HTTP, with AutoKitteh

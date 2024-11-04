@@ -1,3 +1,10 @@
+---
+title: Twilio
+description: Samples using Twilio APIs
+integrations: ["twilio"]
+categories: ["Samples"]
+---
+
 # Twilio Sample
 
 This sample project demonstrates AutoKitteh's integration with

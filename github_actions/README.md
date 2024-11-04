@@ -1,3 +1,10 @@
+---
+title: Github Actions
+description: GitHub actions: GitHub workflows that interact across multiple repositories
+integrations: ["github"]
+categories: ["DevOps"]
+---
+
 # GitHub Workflow Orchestration
 
 This AutoKitteh project automates the process of handling GitHub workflows that interact across multiple repositories, 

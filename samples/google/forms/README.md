@@ -1,3 +1,10 @@
+---
+title: Google Forms
+description: Samples using Google Forms APIs
+integrations: ["forms"]
+categories: ["Samples"]
+---
+
 # Google Forms Sample
 
 This AutoKitteh project demonstrates 2-way integration with

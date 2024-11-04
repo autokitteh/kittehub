@@ -1,3 +1,10 @@
+---
+title: Runtime Events
+description: Samples using events in AutoKitteh - subscribe(), next_event(), unsubscribe()
+integrations: ["autokitteh"]
+categories: ["Samples"]
+---
+
 # Runtime Event Handling Sample
 
 [The workflow](./program.py) is triggered by an HTTP GET request with a URL
