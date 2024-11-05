@@ -1,3 +1,10 @@
+---
+title: Ad-hoc room reservation via Slack
+description: Ad-hoc room reservation via Slack slash commands
+integrations: ["slack", "calendar"]
+categories: ["Office Automation"]
+---
+
 # Room Reservarion
 
 In our organization, we manage meeting rooms as resources in Google Calendar:

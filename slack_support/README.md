@@ -1,3 +1,10 @@
+---
+title: Slack bot for assistance requests with AI categorization
+description: Slack bot: request for assistance is inferred using Google's Gemini AI. The appropriate person is mentioned according to a predetermined table of expertise in a Google Doc. The person can then !take the request and later !resolve it.
+integrations: ["slack", "googlegemini"]
+categories: ["Office Automation"]
+---
+
 # AI Driven Slack Support
 
 This automation implements a Slack bot to manage requests for help as a bot mentions using a durable workflow. Once a request for assistance is received, the subject of the request is inferred using Google's Gemini AI. The appropriate person is mentioned according to a predetermined table of expertise in a Google Doc. The person can then `!take` the request and later `!resolve` it. If no one picks up the request for a configurable duration, the automation will remind the person that a request is pending.

@@ -1,3 +1,10 @@
+---
+title: OpenAI ChatGPT
+description: Samples using chatGPT APIs
+integrations: ["chatgpt"]
+categories: ["Samples"]
+---
+
 # OpenAI ChatGPT Sample
 
 This [AutoKitteh](https://github.com/autokitteh/autokitteh) project

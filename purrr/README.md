@@ -1,3 +1,10 @@
+---
+title: Pull Request Review Reminder (Purrr)
+description: Purrr integrates GitHub and Slack efficiently, to streamline code reviews and cut down the turnaround time to merge pull requests.
+integrations: ["github", "slack"]
+categories: ["DevOps"]
+---
+
 # Pull Request Review Reminder (Purrr)
 
 Purrr integrates GitHub and Slack efficiently, to streamline code reviews and

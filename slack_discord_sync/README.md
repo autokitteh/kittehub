@@ -1,3 +1,10 @@
+---
+title: Slack Discord Sync
+description: Sync Discord and Slack channel
+integrations: ["slack", "discord"]
+categories: ["Office Automation"]
+---
+
 
 # Slack-Discord Message Mirroring Workflow
 

@@ -1,3 +1,10 @@
+---
+title: Monitor PR until completion in Slack
+description: Create a Slack channel for each PR, update team leads until completion
+integrations: ["slack", "github", "sheets"]
+categories: ["DevOps"]
+---
+
 # GitHub Pull Request to Slack Workflow
 
 This project automates the process of listening for GitHub pull request events and posting updates to a Slack channel. The workflow tracks the state of the pull request and meows at random people from a Google Sheet in the Slack channel.
