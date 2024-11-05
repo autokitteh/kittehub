@@ -1,6 +1,6 @@
 ---
 title: Github Actions
-description: GitHub actions: GitHub workflows that interact across multiple repositories
+description: GitHub workflows that interact across multiple repositories
 integrations: ["github"]
 categories: ["DevOps"]
 ---
