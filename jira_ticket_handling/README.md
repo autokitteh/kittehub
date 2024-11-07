@@ -66,14 +66,18 @@ ak up --mode dev
 ### Initialize Connections
 
 > [!IMPORTANT]
-> `slack_conn` and `jira_conn` need to be initialized using the IDs from the previous step.
+> `slack_conn` and `jira_conn_api_key` need to be initialized using the IDs from the previous step.
 
 Using the connection IDs from the previous step, run these commands:
 
 ```shell
-ak connection init jira_conn <connection ID>
+ak connection init jira_conn_api_key <connection ID>
+ak connection init jira_events_oauth <connection ID>
 ak connection init slack_conn <connection ID>
 ```
+> [!WARNING]
+> The `jira_conn_api_key` connection is used to send requests to the Jira API and needs to be initialized with an API key.
+> The `jira_events_oauth` connection is used to listen for events from Jira. It must be initialized with the OAuth connection ID.
 
 ### Trigger the Workflow
 
