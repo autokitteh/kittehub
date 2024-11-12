@@ -23,26 +23,26 @@ C_WORKFLOW_FILE = os.getenv("C_WORKFLOW_FILE")
 github = github_client("github_conn")
 
 
-def on_cross_repo(_):
+def on_cross_repo(event):
     """Cross-repo trigger (completion of workflow in repo A triggers workflow in repo B)."""
     subscribe_to_event([REPO_A])
     trigger_workflow(REPO_B, B_WORKFLOW_FILE)
 
 
-def on_fan_out(_):
+def on_fan_out(event):
     """Fan-out trigger (completion of workflow A triggers workflows B and C)."""
     subscribe_to_event([REPO_A])
     trigger_workflow(REPO_B, B_WORKFLOW_FILE)
     trigger_workflow(REPO_C, C_WORKFLOW_FILE)
 
 
-def on_or_trigger(_):
+def on_or_trigger(event):
     """OR trigger (completion of workflow A or B triggers workflow C)."""
     subscribe_to_event([REPO_A, REPO_B])
     trigger_workflow(REPO_C, C_WORKFLOW_FILE)
 
 
-def on_fan_in(_):
+def on_fan_in(event):
     """Fan-in trigger (completion of workflows A and B triggers workflow C)."""
     completed_workflows = set()
     while len(completed_workflows) < 2:
