@@ -1,11 +1,3 @@
----
-title: Discord Client
-description: Samples using Discord APIs
-integrations: ["discord"]
-categories: ["Samples"]
----
-
-
 # Basic Discord Bot with AutoKitteh
 
 This project demonstrates how to use AutoKitteh's Discord integration to create a basic Discord bot that performs simple operations. The bot connects to Discord, waits until it is ready, and then sends a "Meow!" message to a specified channel. This example serves as a foundational guide for integrating AutoKitteh's Discord capabilities into your own projects.
@@ -25,6 +17,9 @@ This project demonstrates how to use AutoKitteh's Discord integration to create 
 - **Error Handling:** Handles exceptions related to permissions and HTTP issues when sending messages.
 
 ## Installation and Usage 
+
+> [!NOTE]
+> This sample currently works only on the local version of AutoKitteh and is not compatible with the cloud version.
 
 1. **Clone the Repository:**
 

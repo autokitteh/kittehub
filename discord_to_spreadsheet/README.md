@@ -1,11 +1,3 @@
----
-title: Log Discord messages to Sheets
-description: Logging Discord messages to a Google Sheets document
-integrations: ["discord", "sheets"]
-categories: ["DevOps"]
----
-
-
 # Discord to Spreadsheet Workflow
 
 This project automates the process of logging Discord messages to a Google Sheets document. It captures message events from a Discord server and appends the author's username and message content into the specified spreadsheet. This is intended as a starting point rather than a complete solution.
@@ -22,6 +14,9 @@ This project automates the process of logging Discord messages to a Google Sheet
 - **Log Message to Google Sheets:** The message author's username and content are appended to the designated range in a Google Sheets document using the Google Sheets API.
 
 ## Installation and Usage 
+
+> [!NOTE]
+> This sample currently works only on the local version of AutoKitteh and is not compatible with the cloud version.
 
 - [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
 
