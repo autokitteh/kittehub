@@ -14,7 +14,7 @@ project:
     - name: B_WORKFLOW_FILE
       value:
     - name: REPO_C
-      value: tests
+      value:
     - name: C_WORKFLOW_FILE
       value:
     - name: REPO_OWNER # assumes the same owner for all repos
