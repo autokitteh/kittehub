@@ -1,11 +1,3 @@
----
-title: Slack Discord Sync
-description: Sync Discord and Slack channel
-integrations: ["slack", "discord"]
-categories: ["Office Automation"]
----
-
-
 # Slack-Discord Message Mirroring Workflow
 
 This project automates the process of mirroring messages between Slack and Discord channels. It listens for new message events in Discord or Slack and sends them to the corresponding channel on the other platform. This project is intended as a starting point rather than a complete solution.
@@ -22,6 +14,9 @@ This project automates the process of mirroring messages between Slack and Disco
 - **Mirror Messages:** When a message is sent in one platform, it is immediately forwarded to the corresponding channel on the other platform.
 
 ## Installation and Usage 
+
+> [!NOTE]
+> This sample currently works only on the local version of AutoKitteh and is not compatible with the cloud version.
 
 - [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
 

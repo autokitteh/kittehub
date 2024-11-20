@@ -1,10 +1,3 @@
----
-title: Discord Events
-description: Samples using Discord events
-integrations: ["discord"]
-categories: ["Samples"]
----
-
 # Discord Events
 
 This project demonstrates how to utilize AutoKitteh's event system for Discord, offering a simpler alternative to the [discord.py library](../discord_client/) when working with supported [events](https://docs.autokitteh.com/integrations/discord/events). The program listens for message-related events (message creation, update, and deletion) in Discord and logs the corresponding information. This example serves as a foundational guide for integrating AutoKitteh's Discord event handling with other services.
@@ -23,6 +16,9 @@ This project demonstrates how to utilize AutoKitteh's event system for Discord, 
   - `Message Delete`: Logs when a message is deleted.
 
 ## Installation and Usage 
+
+> [!NOTE]
+> This sample currently works only on the local version of AutoKitteh and is not compatible with the cloud version.
 
 1. Clone the Repository:
    
