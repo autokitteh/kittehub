@@ -33,17 +33,15 @@ def on_http_get(event):
     parameter 'to'. The message will be sent both as an SMS and a WhatsApp
     message to the specified number.
 
-    Note: No need to include the `+` prefix in the `to` parameter.
-    The program automatically appends the `+` where required.
-
     Args:
         event (object): An event object containing the request data.
     """
-    to = event.data["url"]["query"]["to"].strip()
+    to = event.data["url"]["query"]["to"]
+    to = add_plus_prefix(to)
     # Send SMS text via Twilio
     message = t.messages.create(
         from_=FROM_PHONE_NUMBER,
-        to="+" + to,
+        to=to,
         body="This is an AutoKitteh demo message, meow!",
     )
     print(f"SMS message sent: {message.sid}")
@@ -51,7 +49,14 @@ def on_http_get(event):
     # Send a WhatsApp message to the same number
     whatsapp_message = t.messages.create(
         from_="whatsapp:" + FROM_PHONE_NUMBER,
-        to="whatsapp+:" + to,
+        to="whatsapp:" + to,
         body="This is an AutoKitteh demo message, meow!",
     )
     print(f"WhatsApp message sent: {whatsapp_message.sid}")
+
+
+def add_plus_prefix(phone_number):
+    # Add a '+' if missing
+    if not phone_number.startswith("+"):
+        return f"+{phone_number}"
+    return phone_number
