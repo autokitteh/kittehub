@@ -37,7 +37,11 @@ def on_http_get(event):
         event (object): An event object containing the request data.
     """
     to = event.data["url"]["query"]["to"]
-    to = add_plus_prefix(to)
+
+    # Add a '+' if missing
+    if not to.startswith("+"):
+        to = f"+{to}"
+
     # Send SMS text via Twilio
     message = t.messages.create(
         from_=FROM_PHONE_NUMBER,
@@ -53,10 +57,3 @@ def on_http_get(event):
         body="This is an AutoKitteh demo message, meow!",
     )
     print(f"WhatsApp message sent: {whatsapp_message.sid}")
-
-
-def add_plus_prefix(phone_number):
-    # Add a '+' if missing
-    if not phone_number.startswith("+"):
-        return f"+{phone_number}"
-    return phone_number
