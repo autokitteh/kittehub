@@ -60,28 +60,28 @@ triggering actions in specific repositories based on the completion of workflows
    (use the **1st** URL path from step 4 above):
 
    ```shell
-   curl -i "http://localhost:9980/webhooks/<webhook-slug>/cross-repo"
+   curl -i "http://localhost:9980/webhooks/<webhook-slug>"
    ```
 
 2. Run this command to initiate the Fan-out trigger 
-   (use the **2nd** URL path from step 3 above):
+   (use the **2nd** URL path from step 4 above):
 
    ```shell
-   curl -i "http://localhost:9980/webhooks/<webhook-slug>/fan-out"
+   curl -i "http://localhost:9980/webhooks/<webhook-slug>"
    ```
 
 3. Run this command for the OR trigger 
-   (use the **3rd** URL path from step 3 above):
+   (use the **3rd** URL path from step 4 above):
 
    ```shell
-   curl -i "http://localhost:9980/webhooks/<webhook-slug>/or-trigger"
+   curl -i "http://localhost:9980/webhooks/<webhook-slug>"
    ```
 
 4. Run this command for the Fan-in trigger 
-   (use the **4th** URL path from step 3 above):
+   (use the **4th** URL path from step 4 above):
 
    ```shell
-   curl -i "http://localhost:9980/webhooks/<webhook-slug>/fan-in"
+   curl -i "http://localhost:9980/webhooks/<webhook-slug>"
    ```
 
 5. Check out the resulting session logs in the AutoKitteh server for each of 
