@@ -1,7 +1,7 @@
 import os
 import glob
 import yaml
-from typing import List, Optional
+from typing import List
 
 FOLDER_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "../README.md")
