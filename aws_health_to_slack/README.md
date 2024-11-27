@@ -15,15 +15,16 @@ This project automates the process of announcing AWS health events in Slack base
 2. Reads project-to-Slack-channel mappings from a Google Sheet.
 3. Posts relevant health events to the corresponding Slack channels based on the Google Sheet data.
 
-## How It Works
+## Deployment & Configuration
 
-1. Fetches AWS Health events from AWS API.
-2. Reads project-to-Slack-channel mappings from a Google Sheet.
-3. Posts relevant health events to the corresponding Slack channels based on the Google Sheet data.
+### Cloud Usage (Recommended)
 
-### Google Sheets Data
+1. Initialize your connections through the UI
+2. Configure your Google Sheet mapping (see [Google Sheets Configuration](#google-sheets-configuration) below)
 
-The default Google Sheet used for mapping projects to Slack channels is as follows:
+## Google Sheets Configuration
+
+The default Google Sheet format for mapping projects to Slack channels:
 
 | Project Tag | Slack Channel      |
 |-------------|--------------------|
@@ -34,71 +35,47 @@ The default Google Sheet used for mapping projects to Slack channels is as follo
 
 This table represents how each project is linked to a specific Slack channel, guiding where health events will be posted.
 
-> [!NOTE] You can configure your own project-to-Slack-channel mappings by specifying a different Google Sheet in the [`autokitteh.yaml`](autokitteh.yaml) file.
+> [!NOTE]
+> You can configure your own project-to-Slack-channel mappings by either:
+> - Cloud/UI: Navigate to the Variables tab in your project settings and update the `GOOGLE_SHEET_URL` value
+> - Self-hosted (VSCode / CLI): Modify the Google Sheet URL in the [`autokitteh.yaml`](autokitteh.yaml) file
 
+## Self-Hosted Deployment
 
-## Installation and Usage 
-
+#### Prerequisites
 - [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
+- Set up required integrations:
+  - [Google Sheets](https://docs.autokitteh.com/integrations/google)
+  - [Slack](https://docs.autokitteh.com/integrations/slack)
+  - AWS Health API
 
-### Configure Integrations
+#### Installation Steps
+1. Clone the repository:
+   ```shell
+   git clone https://github.com/autokitteh/kittehub.git
+   cd kittehub/aws_health_to_slack
+   ```
 
-Ensure you have set up the required integrations and environment variables. This project uses Google Sheets, AWS Health API, and Slack API.
+2. Start the AutoKitteh server:
+   ```shell
+   ak up --mode dev
+   ```
 
-- [Google Sheets](https://docs.autokitteh.com/integrations/google)
-- [Slack](https://docs.autokitteh.com/integrations/slack)
+3. Deploy the project:
+   ```shell
+   ak deploy --manifest autokitteh.yaml
+   ```
 
-### Clone the Repository
+   The output will show your connection IDs, which you'll need for the next step. Look for lines like:
+   ```shell
+   [exec] create_connection "aws_health_slack/google_sheets_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
+   ```
+   
+   In this example, `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
 
-```shell
-git clone https://github.com/autokitteh/kittehub.git
-cd kittehub/aws_health_to_slack
-```
-
-Alternatively, you can copy the individual files in this directory.
-
-### Run the AutoKitteh Server
-
-Simply run this command:
-
-```shell
-ak up --mode dev
-```
-
-### Apply Manifest and Deploy Project
-
-1. Navigate to the aws_health_slack directory:
-
-```shell
-cd aws_health_slack
-```
-
-2. Apply manifest and deploy project by running the following command:
-
-```shell
-ak deploy --manifest autokitteh.yaml
-```
-
-The output of this command will be important for initializing connections in the following step if you're using the CLI.
-
-For example, for each configured connection, you will see a line that looks similar to the one below:
-
-```shell
-[exec] create_connection "aws_health_slack/google_sheets_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
-```
-
-`con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
-
-### Initialize Connections
-
-Using the connection IDs from the previous step, run these commands:
-
-```shell
-ak connection init aws_connection <connection ID>
-ak connection init google_sheets_connection <connection ID>
-ak connection init slack_connection <connection ID>
-```
-
-### Trigger the Workflow
-
-The workflow is triggered automatically after deployment to run every minute. The interval can be configured in `autokitteh.yaml`.
+4. Initialize your connections using the CLI:
+   ```shell
+   ak connection init aws_connection <connection ID>
+   ak connection init google_sheets_connection <connection ID>
+   ak connection init slack_connection <connection ID>
+   ```
