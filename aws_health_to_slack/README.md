@@ -40,6 +40,15 @@ This table represents how each project is linked to a specific Slack channel, gu
 > - Cloud/UI: Navigate to the Variables tab in your project settings and update the `GOOGLE_SHEET_URL` value
 > - Self-hosted (VSCode / CLI): Modify the Google Sheet URL in the [`autokitteh.yaml`](autokitteh.yaml) file
 
+## Trigger Workflow
+
+The workflow runs automatically every minute after deployment. You can modify this interval:
+- Cloud/UI: Navigate to the Variables tab in your project settings and update the `SCHEDULE_INTERVAL` value
+- Self-hosted (VSCode / CLI): Modify the schedule interval in the [`autokitteh.yaml`](autokitteh.yaml) file
+
+> [!IMPORTANT]
+> Ensure all connections (AWS, Google Sheets, and Slack) are properly initialized before the workflow starts running.
+
 ## Self-Hosted Deployment
 
 #### Prerequisites
