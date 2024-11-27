@@ -1,0 +1,15 @@
+version: v1
+
+project:
+  name: hackernews_alert
+  vars:
+    - name: SLACK_CHANNEL
+      value: 
+  connections:
+    - name: slack_connection
+      integration: slack
+  triggers:
+    - name: slack_slash_command
+      connection: slack_connection
+      event_type: slash_command
+      call: program.py:on_command
