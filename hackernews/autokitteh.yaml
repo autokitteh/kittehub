@@ -1,3 +1,6 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that fetches hackernews articles for a specific topic
+
 version: v1
 
 project:
@@ -12,4 +15,4 @@ project:
     - name: slack_slash_command
       connection: slack_connection
       event_type: slash_command
-      call: program.py:on_command
+      call: program.py:on_slack_command

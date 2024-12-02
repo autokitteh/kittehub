@@ -1,3 +1,6 @@
+"""This project monitors Hacker News for new articles on a specific topic provided via a Slack command
+and posts updates to a Slack channel in real-time."""
+
 import os
 import requests
 import time
@@ -10,15 +13,26 @@ slack = slack_client("slack_connection")
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL")
 
 
-def on_command(event):
-    topic = event.data.text  # Extract the topic from the Slack command
-    existing_articles = set()
-    fetch_articles(topic, existing_articles)
+def on_slack_command(event):
+    """
+    Workflow's entry-point.
 
+    The function extracts a topic from a Slack command, monitors for new articles,
+    and posts updates to the Slack channel.
+    """
+    topic = event.data.text
+    slack.chat_postMessage(
+        channel=SLACK_CHANNEL, text=f"Waiting for new articles on the topic: {topic}."
+    )
+    current_articles = set()
+    fetch_articles(topic, current_articles)
+
+    # NOTE: For low-traffic topics, it might take a while for new articles to be published,
+    # so users may experience delays in receiving notifications.
     while True:
-        all_articles = set(existing_articles)
+        all_articles = set(current_articles)
         fetch_articles(topic, all_articles)
-        new_articles = all_articles - existing_articles
+        new_articles = all_articles - current_articles
 
         if new_articles:
             for article in new_articles:
@@ -26,7 +40,7 @@ def on_command(event):
                 s_message = f"Title: {title}, URL: {url if url else 'No URL'}"
                 print(s_message)
                 slack.chat_postMessage(channel=SLACK_CHANNEL, text=s_message)
-            existing_articles.update(new_articles)
+            current_articles.update(new_articles)
 
         time.sleep(120)
 
