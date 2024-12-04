@@ -1,5 +1,4 @@
-"""This project monitors Hacker News for new articles on a specific topic provided via a Slack command
-and posts updates to a Slack channel in real-time."""
+"""Monitor Hacker News for new articles on a specific topic, and post updates to a Slack channel."""
 
 import os
 import requests
