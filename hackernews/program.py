@@ -47,8 +47,7 @@ def on_slack_command(event):
 def fetch_articles(topic, all_articles):
     encoded_query = urllib.parse.quote(topic)
     full_url = f"http://hn.algolia.com/api/v1/search_by_date?query={encoded_query}&tags=story&page=0"
-    response = requests.get(full_url).json()
-    hits = response["hits"]
+    hits = requests.get(full_url).json().get("hits", [])
 
     # Extract some of the article fields from API response
     for article in hits:
