@@ -1,5 +1,5 @@
-# This YAML file is a declarative manifest that describes the setup of
-# an AutoKitteh project that fetches hackernews articles for a specific topic
+# This YAML file is a declarative manifest that describes the setup of an
+# AutoKitteh project that monitors Hacker News for a specific topic.
 
 version: v1
 
