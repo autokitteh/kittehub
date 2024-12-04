@@ -19,7 +19,7 @@ This project monitors Hacker News for new articles matching a specific topic, fe
 
 ### Cloud Usage (Recommended)
 
-- Initialize your connection with slack through the UI
+- Initialize your connection with Slack through the UI
 
 
 ## Trigger Workflow
