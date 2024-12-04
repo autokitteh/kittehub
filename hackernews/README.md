@@ -21,7 +21,6 @@ This project monitors Hacker News for new articles matching a specific topic, fe
 
 - Initialize your connection with Slack through the UI
 
-
 ## Trigger Workflow
 
 - Type `/your_slack_app` `topic` in the Slack channel you set in the environment variable, replacing `topic` with what you want to search for, to start tracking articles.
