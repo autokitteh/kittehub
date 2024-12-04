@@ -5,7 +5,6 @@ integrations: ["slack"]
 categories: ["Office Automation"]
 ---
 
-
 # Hackernews Slack Sample
 
 This project monitors Hacker News for new articles matching a specific topic, fetching their details in real-time. It compares the latest results with previously fetched articles to identify new ones and sends their title and URL as notifications to a Slack channel.
