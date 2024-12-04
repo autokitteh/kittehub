@@ -22,7 +22,7 @@ def on_slack_command(event):
     """
     topic = event.data.text
     slack.chat_postMessage(
-        channel=SLACK_CHANNEL, text=f"Waiting for new articles on the topic: {topic}."
+        channel=SLACK_CHANNEL, text=f"Waiting for new articles on the topic: `{topic}`."
     )
     current_articles = set()
     fetch_articles(topic, current_articles)
