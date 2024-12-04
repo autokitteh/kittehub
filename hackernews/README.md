@@ -15,7 +15,6 @@ This project monitors Hacker News for new articles matching a specific topic, fe
 2. Add the topic to the Hacker News search query (check out [Algolia's REST API](https://www.algolia.com/doc/api-reference/rest-api) for more details)
 3. Return all the new articles related to the topic that were published since the last check
 
-
 ## Deployment & Configuration
 
 ### Cloud Usage (Recommended)
