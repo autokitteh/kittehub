@@ -1,21 +1,32 @@
+"""
+Process README files to extract metadata, generate a table of content, 
+and update a central README file with aggregated data.
+
+- Extract metadata from the top section of the README file for each project (e.g., between "---" delimiters).
+- Generate table rows summarizing the metadata
+- Insert the generated rows into the project table in the main README file
+
+Classes:
+- ReadmeMetadataProcessor: Extracts and processes metadata from individual README files.
+"""
+
 import os
-import glob
 import yaml
+from pathlib import Path
 from typing import List
 
-FOLDER_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "../README.md")
+ROOT_PATH = Path(__file__).parent.parent
+README_PATH = ROOT_PATH / "README.md"
 
 
 class ReadmeMetadataProcessor:
-    def __init__(self, readme_file):
+    def __init__(self, readme_file: Path):
         self.readme_file = readme_file
         self.metadata = self.extract_metadata()
 
     def extract_metadata(self) -> dict:
         metadata = {}
-        with open(self.readme_file, "r") as file:
-            lines = file.readlines()
+        lines = self.readme_file.read_text(encoding="utf-8").splitlines()
 
         # Check for metadata block at the top of the README
         if lines[0].strip() == "---":
@@ -46,17 +57,15 @@ class ReadmeMetadataProcessor:
 
         description = self.get_description()
         integrations = self.get_integrations()
-        relative_path = os.path.relpath(os.path.dirname(self.readme_file), FOLDER_PATH)
+        relative_path = os.path.relpath(os.path.dirname(self.readme_file), ROOT_PATH)
         link = f"./{relative_path}/"
 
         return f"| [{title}]({link}) | {description} | {integrations} |\n"
 
 
-def generate_readme_table(folder_path) -> List[str]:
+def generate_readme_table(folder_path: Path) -> List[str]:
     """Generate a list of table rows from README metadata."""
-    readme_files = glob.glob(
-        os.path.join(folder_path, "**", "README.md"), recursive=True
-    )
+    readme_files = folder_path.rglob("README.md")
 
     rows = []
     for readme_file in readme_files:
@@ -67,70 +76,55 @@ def generate_readme_table(folder_path) -> List[str]:
     return rows
 
 
-def insert_rows_to_table_start(readme_file, new_rows) -> None:
-    with open(readme_file, "r") as file:
-        lines = file.readlines()
+def insert_rows_to_table(readme_file: Path, new_rows: List[str]) -> None:
+    """Insert rows into the table section of the README file."""
+    lines = readme_file.read_text(encoding="utf-8").splitlines(keepends=True)
 
-    try:
-        header_index = (
-            next(
-                i
-                for i, line in enumerate(lines)
-                if line.startswith("| Name") and "| Description" in line
-            )
-            + 2
-        )
-    except StopIteration:
-        print("No table header found.")
-        return
+    start_marker_index = next(
+        i for i, line in enumerate(lines) if line.strip() == "<!--start-table-->"
+    )
+    end_marker_index = next(
+        i for i, line in enumerate(lines) if line.strip() == "<!--end-table-->"
+    )
 
-    lines[header_index:header_index] = new_rows
-
-    with open(readme_file, "w") as file:
-        file.writelines(lines)
+    # Replace content between the markers
+    updated_lines = (
+        lines[: start_marker_index + 3]
+        + [line if line.endswith("\n") else f"{line}\n" for line in new_rows]
+        + lines[end_marker_index:]
+    )
+    readme_file.write_text("".join(updated_lines), encoding="utf-8")
 
 
-def process_readme(file_path) -> None:
-    """
-    Clean the README file by removing old table rows while keeping the header.
+def reset_readme(file_path: Path) -> None:
+    """Reset the README.md file's table, in order to add the new table to it."""
+    lines = file_path.read_text(encoding="utf-8").splitlines()
 
-    This prepares the README for a new table to be added.
-    """
     new_lines = []
     keep_table_header = False
 
-    with open(file_path, "r") as file:
-        for line in file:
-            # Check if it's the table header or divider row
-            if line.strip().startswith("| Name") or line.strip().startswith("| :"):
-                keep_table_header = True
-                new_lines.append(line)
-                continue
-
-            if keep_table_header and line.strip().startswith("|"):
-                continue
-
+    for line in lines:
+        # Check if it's the table header or divider row
+        if line.strip().startswith("| Name") or line.strip().startswith("| :"):
+            keep_table_header = True
             new_lines.append(line)
+            continue
 
-    with open(file_path, "w") as file:
-        file.writelines(new_lines)
+        if keep_table_header and line.strip().startswith("|"):
+            continue
+
+        new_lines.append(line)
+
+    file_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
 
 
 def main():
-    print("Starting README processing...")
-    process_readme(OUTPUT_PATH)
-    print("Cleaned up existing table in README.")
 
-    new_rows = generate_readme_table(FOLDER_PATH)
-    print(f"Generated {len(new_rows)} new table rows.")
+    reset_readme(README_PATH)
 
-    if new_rows:
-        insert_rows_to_table_start(OUTPUT_PATH, new_rows)
-        print(f"Inserted {len(new_rows)} rows into the table in {OUTPUT_PATH}.")
-    else:
-        print("No new rows to insert.")
+    new_rows = generate_readme_table(ROOT_PATH)
 
-    print("README table update completed.")
+    insert_rows_to_table(README_PATH, new_rows)
 
 
 if __name__ == "__main__":
