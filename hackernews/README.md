@@ -27,6 +27,7 @@ This project monitors Hacker News for new articles matching a specific topic, fe
 - The workflow runs automatically every two minutes after deployment
 
 #### Prerequisites
+
 - [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
 - Set up required integrations:
   - [Slack](https://docs.autokitteh.com/integrations/slack)
