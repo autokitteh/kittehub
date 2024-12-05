@@ -10,18 +10,20 @@ from autokitteh.slack import slack_client
 
 slack = slack_client("slack_connection")
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL")
+API_URL = "http://hn.algolia.com/api/v1/search_by_date?tags=story&page=0&query="
 
 
 def on_slack_command(event):
     """
     Workflow's entry-point.
 
-    The function extracts a topic from a Slack command, monitors for new articles,
+    extract a topic from a Slack command, monitors for new articles,
     and posts updates to the Slack channel.
     """
-    topic = event.data.text
+    topic = event.data.text.split(" ", 1)[1].strip()
     slack.chat_postMessage(
-        channel=SLACK_CHANNEL, text=f"Waiting for new articles on the topic: `{topic}`."
+        channel=event.data.channel,
+        text=f"Waiting for new articles on the topic: `{topic}`.",
     )
     current_articles = set()
     fetch_articles(topic, current_articles)
@@ -33,20 +35,18 @@ def on_slack_command(event):
         fetch_articles(topic, all_articles)
         new_articles = all_articles - current_articles
 
-        if new_articles:
-            for article in new_articles:
-                _, title, url = article
-                s_message = f"Title: {title}, URL: {url if url else 'No URL'}"
-                print(s_message)
-                slack.chat_postMessage(channel=SLACK_CHANNEL, text=s_message)
-            current_articles.update(new_articles)
+        for article in new_articles:
+            _, title, url = article
+            slack_message = f"Title: {title}, URL: {url if url else 'No URL'}"
+            slack.chat_postMessage(channel=event.data.channel, text=slack_message)
+        current_articles.update(new_articles)
 
         time.sleep(120)
 
 
 def fetch_articles(topic, all_articles):
     encoded_query = urllib.parse.quote(topic)
-    full_url = f"http://hn.algolia.com/api/v1/search_by_date?query={encoded_query}&tags=story&page=0"
+    full_url = f"{API_URL}{encoded_query}"
     hits = requests.get(full_url).json().get("hits", [])
 
     # Extract some of the article fields from the API response.

@@ -17,14 +17,9 @@ This project monitors Hacker News for new articles matching a specific topic, fe
 
 ## Deployment & Configuration
 
-### Cloud Usage (Recommended)
+#### Cloud Usage (Recommended)
 
 - Initialize your connection with Slack through the UI
-
-## Trigger Workflow
-
-- Type `/your-slack-app topic` in the Slack channel you set in the environment variable, replacing `topic` with what you want to search for, to start tracking articles
-- The workflow runs automatically every two minutes after deployment
 
 #### Prerequisites
 
@@ -33,6 +28,7 @@ This project monitors Hacker News for new articles matching a specific topic, fe
   - [Slack](https://docs.autokitteh.com/integrations/slack)
 
 #### Installation Steps
+
 1. Clone the repository:
    ```shell
    git clone https://github.com/autokitteh/kittehub.git
@@ -61,3 +57,7 @@ This project monitors Hacker News for new articles matching a specific topic, fe
    ak connection init slack_connection <connection ID>
    ```
 
+## Trigger Workflow
+
+- Type `/your-slack-app topic` in the Slack channel you set in the environment variable, replacing `topic` with what you want to search for, to start tracking articles
+- The workflow runs automatically every two minutes after deployment
