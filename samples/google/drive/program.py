@@ -13,7 +13,7 @@ def on_file_deleted(event):
     print(f"File with ID {event.data['file']['id']} deleted!")
 
 
-def create_new_document(event) -> None:
+def create_new_document(event):
     """Creates a new Google Document and optionally shares it with a specified user.
 
     If the Google Drive permission scope is limited to https://www.googleapis.com/auth/drive.file,
