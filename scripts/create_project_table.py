@@ -65,10 +65,8 @@ class ReadmeMetadataProcessor:
 
 def generate_readme_table(folder_path: Path) -> list[str]:
     """Generate a list of table rows from README metadata."""
-    readme_files = folder_path.rglob("README.md")
-
     rows = []
-    for readme_file in readme_files:
+    for readme_file in folder_path.rglob("README.md"):
         processor = ReadmeMetadataProcessor(readme_file)
         row = processor.to_table_row()
         if row:
