@@ -14,11 +14,9 @@ API_URL = "http://hn.algolia.com/api/v1/search_by_date?tags=story&page=0&query="
 
 
 def on_slack_command(event):
-    """
-    Workflow's entry-point.
-
-    extract a topic from a Slack command, monitors for new articles,
-    and posts updates to the Slack channel.
+    """Workflow's entry-point.
+    Extracts a topic from a Slack command, monitors for new articles,
+    and posts updates to `SLACK_CHANNEL`.
     """
     topic = event.data.text.split(" ", 1)[1].strip()
     slack.chat_postMessage(
