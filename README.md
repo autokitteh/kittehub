@@ -9,7 +9,8 @@ projects for:
 
 In addition, the [samples](./samples/) directory contains projects that
 demonstrate basic system features, integration APIs, and best practices.
-<!--start-table-->
+
+<!-- START-TABLE -->
 | Name                                                                             | Description                                                                              | Integrations                                |
 | :------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------------ |
 | 🐍 [AWS Health to Slack](./aws_health_to_slack/)                                 | Announce cloud health events based on a resource ownership mapping                       | AWS (Health), Google Sheets, Slack          |
