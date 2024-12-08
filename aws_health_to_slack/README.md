@@ -21,6 +21,7 @@ This project automates the process of announcing AWS health events in Slack base
 
 1. Initialize your connections through the UI
 2. Configure your Google Sheet mapping (see [Google Sheets Configuration](#google-sheets-configuration) below)
+3. Deploy the project
 
 ## Google Sheets Configuration
 
