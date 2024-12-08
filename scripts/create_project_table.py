@@ -63,7 +63,7 @@ class ReadmeMetadataProcessor:
         return f"| [{title}]({link}) | {description} | {integrations} |\n"
 
 
-def generate_readme_table(folder_path: Path) -> List[str]:
+def generate_readme_table(folder_path: Path) -> list[str]:
     """Generate a list of table rows from README metadata."""
     readme_files = folder_path.rglob("README.md")
 
