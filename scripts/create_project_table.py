@@ -118,14 +118,7 @@ def reset_readme(file_path: Path) -> None:
     file_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
 
 
-def main():
-
-    reset_readme(README_PATH)
-
-    new_rows = generate_readme_table(ROOT_PATH)
-
-    insert_rows_to_table(README_PATH, new_rows)
-
-
 if __name__ == "__main__":
-    main()
+    reset_readme(README_PATH)
+    new_rows = generate_readme_table(ROOT_PATH)
+    insert_rows_to_table(README_PATH, new_rows)
