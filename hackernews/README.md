@@ -1,5 +1,5 @@
 ---
-title: Hackernews Alert in Slack 
+title: Hacker News Alerts in Slack 
 description: Track Hacker News articles by topic and send updates to Slack
 integrations: ["slack"]
 categories: ["Office Automation"]
