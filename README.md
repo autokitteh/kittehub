@@ -33,7 +33,8 @@ demonstrate basic system features, integration APIs, and best practices.
 | 🐍 [Slack support](./slack_support/)                                             | Categorize Slack support requests using AI, and route them to the appropiate people      | Slack &harr; Gemini, Google Sheets          |
 | 🐍 [Task chain](./task_chain/)                                                   | Run a sequence of tasks with fault tolerance                                             | Slack                                       |
 | 🐍 [Webhook to Jira](./webhook_to_jira/)                                         | Create Jira issues based on HTTP GET/POST requests                                       | HTTP &rarr; Jira                            |
-<!--end-table-->
+<!-- END-TABLE -->
+
 > [!NOTE]
 > 🐍 = Python implementation, ⭐ = Starlark implementation.
 
