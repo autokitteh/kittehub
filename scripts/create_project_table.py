@@ -76,7 +76,7 @@ def generate_readme_table(folder_path: Path) -> List[str]:
     return rows
 
 
-def insert_rows_to_table(readme_file: Path, new_rows: List[str]) -> None:
+def insert_rows_to_table(readme_file: Path, new_rows: list[str]) -> None:
     """Insert rows into the table section of the README file."""
     lines = readme_file.read_text(encoding="utf-8").splitlines(keepends=True)
 
