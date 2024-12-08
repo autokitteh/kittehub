@@ -11,9 +11,9 @@ This project monitors Hacker News for new articles matching a specific topic, fe
 
 ## How It Works
 
-1. Read the topic from the Slack command
-2. Add the topic to the Hacker News search query (check out [Algolia's REST API](https://www.algolia.com/doc/api-reference/rest-api) for more details)
-3. Return all the new articles related to the topic that were published since the last check
+1. Extract the topic from the Slack app mention.
+2. Add the topic to the Hacker News search query (check out [Algolia's REST API](https://www.algolia.com/doc/api-reference/rest-api) for more details).
+3. Return all the new articles related to the topic that were published since the last check.
 
 ## Deployment & Configuration
 
@@ -59,5 +59,5 @@ This project monitors Hacker News for new articles matching a specific topic, fe
 
 ## Trigger Workflow
 
-- Type `/your-slack-app topic` in the Slack channel you set in the environment variable, replacing `topic` with what you want to search for, to start tracking articles
+- Type `@your-slack-app topic` in the Slack channel you set in the environment variable, replacing `topic` with what you want to search for, to start tracking articles
 - The workflow runs automatically every two minutes after deployment

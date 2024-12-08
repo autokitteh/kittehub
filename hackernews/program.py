@@ -8,9 +8,10 @@ import urllib.parse
 from autokitteh.slack import slack_client
 
 
-slack = slack_client("slack_connection")
-SLACK_CHANNEL = os.getenv("SLACK_CHANNEL")
 API_URL = "http://hn.algolia.com/api/v1/search_by_date?tags=story&page=0&query="
+POLLING_INTERVAL_SECS = int(os.getenv("POLLING_INTERVAL_SECS"))
+
+slack = slack_client("slack_connection")
 
 
 def on_slack_command(event):
@@ -39,7 +40,7 @@ def on_slack_command(event):
             slack.chat_postMessage(channel=event.data.channel, text=slack_message)
         current_articles.update(new_articles)
 
-        time.sleep(120)
+        time.sleep(POLLING_INTERVAL_SECS)
 
 
 def fetch_articles(topic, all_articles):

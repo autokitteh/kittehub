@@ -5,6 +5,9 @@ version: v1
 
 project:
   name: hackernews_alert
+  vars:
+    - name: POLLING_INTERVAL_SECS
+      value: 120
   connections:
     - name: slack_connection
       integration: slack
