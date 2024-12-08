@@ -10,6 +10,7 @@ projects for:
 In addition, the [samples](./samples/) directory contains projects that
 demonstrate basic system features, integration APIs, and best practices.
 
+<!-- START-TABLE -->
 | Name                                                                             | Description                                                                              | Integrations                                |
 | :------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------------ |
 | 🐍 [AWS Health to Slack](./aws_health_to_slack/)                                 | Announce cloud health events based on a resource ownership mapping                       | AWS (Health), Google Sheets, Slack          |
@@ -31,6 +32,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | 🐍 [Slack support](./slack_support/)                                             | Categorize Slack support requests using AI, and route them to the appropiate people      | Slack &harr; Gemini, Google Sheets          |
 | 🐍 [Task chain](./task_chain/)                                                   | Run a sequence of tasks with fault tolerance                                             | Slack                                       |
 | 🐍 [Webhook to Jira](./webhook_to_jira/)                                         | Create Jira issues based on HTTP GET/POST requests                                       | HTTP &rarr; Jira                            |
+<!-- END-TABLE -->
 
 > [!NOTE]
 > 🐍 = Python implementation, ⭐ = Starlark implementation.
