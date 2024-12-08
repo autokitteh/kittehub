@@ -11,9 +11,8 @@ Classes:
 """
 
 import os
-import yaml
 from pathlib import Path
-from typing import List
+import yaml
 
 ROOT_PATH = Path(__file__).parent.parent
 README_PATH = ROOT_PATH / "README.md"
