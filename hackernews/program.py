@@ -19,7 +19,7 @@ def on_slack_command(event):
     Extracts a topic from a Slack command, monitors for new articles,
     and posts updates to `SLACK_CHANNEL`.
     """
-    topic = event.data.text.split(" ", 1)[1].strip()
+    topic = event.data.text.split(" ", 1)[-1].strip()
     slack.chat_postMessage(
         channel=event.data.channel,
         text=f"Waiting for new articles on the topic: `{topic}`.",
