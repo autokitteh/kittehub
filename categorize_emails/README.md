@@ -20,17 +20,16 @@ For more details, refer to [this blog post](https://autokitteh.com/technical-blo
 
 ## Cloud Usage (Recommended)
 
-1. **Initialize Connections:** Initializing your connections through the UI.
-2. **Open Project Settings:** Navigate to the "TRIGGERS" tab in your project settings.
-3. **Edit Trigger:**
-   - Find the "receive_http_get" trigger under the "Actions" column.
-   - Click **Edit**.
-4. **Copy Webhook URL:** Copy the provided webhook URL.
-5. **Test with curl Command:** Test the webhook by sending a curl request with the webhook URL.
+1. Initialize your connections through the UI.
+2. Navigate to the "TRIGGERS" tab in your project settings.
+3. Find the "receive_http_get" trigger under the "Actions" column.
+4. Click "Edit".
+5. Copy the provided webhook URL.
+6. Test the webhook by sending a curl request with the webhook URL.
       ```shell
-      curl -v "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
+      curl -i "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
       ```
-6. **Send Test Email:** Send yourself a new email to validate the connection.
+7. Send yourself a new email to validate the connection.
 
 
 > [!IMPORTANT]
@@ -38,14 +37,16 @@ For more details, refer to [this blog post](https://autokitteh.com/technical-blo
 
 ## Self-Hosted Deployment
 
-#### Prerequisites
+### Prerequisites
+
 - [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
 - Set up required integrations:
   - [Gmail](https://docs.autokitteh.com/integrations/google)
   - [Slack](https://docs.autokitteh.com/integrations/slack)
   - [ChatGPT](https://docs.autokitteh.com/integrations/chatgpt)
 
-#### Installation Steps
+### Installation Steps
+
 1. Clone the repository:
    ```shell
    git clone https://github.com/autokitteh/kittehub.git
@@ -81,6 +82,7 @@ For more details, refer to [this blog post](https://autokitteh.com/technical-blo
 Trigger the workflow using the webhook URL. Refer to the [Cloud Usage](#cloud-usage-recommended) section for detailed steps.
 
 ### Steps to Retrieve the Webhook URL
+
 - The webhook URL is provided in the output of the `ak deploy` command.
 - Run the following command to retrieve the URL:
   ```bash
