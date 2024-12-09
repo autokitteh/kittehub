@@ -1,6 +1,6 @@
 ---
-title: Slack notify on important Email
-description: Categorizing incoming emails and notifying relevant Slack channels by integrating Gmail, ChatGPT, and Slack
+title: Slack notify on categorized email
+description: Categorizes incoming emails and notifies relevant Slack channels by integrating Gmail, ChatGPT, and Slack
 integrations: ["gmail", "slack", "chatgpt"]
 categories: ["Office Automation"]
 ---
