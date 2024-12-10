@@ -88,6 +88,11 @@ Pick a location for the database, say `$PWD/hikes.db`, and create the database.
 sqlite3 $PWD/hikes.db < schema.sql
 ```
 
+> [!NOTE]
+> If you run the workflow on autokitteh.com, set the workflow variable
+> `CREATE_DB` to `yes` and the workflow will create the database on the first
+> event.
+
 ### Set Up Project Vars and Secrets
 
 Add database location and AWS keys to `ak` secrets.
