@@ -10,87 +10,69 @@ categories: ["DevOps"]
 
 This workflow automates notifications to a Slack channel whenever a new Confluence page is created in a specified space.
 
-## Benefits
-
-- **Small overhead**: Run the `ak` server, deploy the project, and write code.
-- **Filtering**: Add filters in the configuration to limit the number of times your code is triggered, or filter data in the code itself. This workflow demonstrates both.
-
 ## How It Works
 
-- **Trigger**: A new Confluence page is created in a designated space.
-- **Result**: A Slack message is sent to a selected channel containing data from the newly created Confluence page.
+1. Create a new Confluence page in a designated space.
+2. Send a Slack message to a selected channel containing data from the newly created Confluence page.
 
 ## Known Limitations
 
 - Confluence returns HTML, and this program does not format it in any way. The purpose of this workflow is to demonstrate how data can move between different services. Desired formatting can be easily added to suit individual needs.
 
-## Additional Comment
+## Deployment & Configuration
 
-- Environment variables are set in [`autokitteh.yaml`](./autokitteh.yaml) (e.g., Slack channel, Confluence page, etc.).
+### Cloud Usage (Recommended)
 
-## Installation and Usage 
-
-- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
-
-### Configure Integrations
+1. Initialize your connections through the UI
+2. Navigate to the "TRIGGERS" tab and under the "Actions" column click "Edit"
+3. Update the "CONFLUENCE_SPACE_KEY" variable with the space key of the Confluence space you want to monitor
+4. (Optional) Update the "FILTER_LABEL" variable with the label of the Confluence page you want to monitor
+5. Update the "SLACK_CHANNEL" variable with the name of the Slack channel you want to send messages to
+6. Deploy the project
 
 > [!IMPORTANT]
-> The `autokitteh.yaml` file includes environment variables for the Confluence and Slack connections that need to be configured.
+> Ensure all connections (Atlassian Confluence, Slack) are properly initialized before the workflow starts running.
 
-Ensure you have set up the required integrations and environment variables. This project uses Confluence and Slack APIs.
+## Trigger Workflow
 
-- [Atlassian Confluence](https://docs.autokitteh.com/integrations/atlassian)
-- [Slack](https://docs.autokitteh.com/integrations/slack)
+Once the project has been properly installed, configured and deployed, the workflow will be triggered by an event from Confluence.
 
-### Clone the Repository
+## Self-Hosted Deployment
 
-```shell
-git clone https://github.com/autokitteh/kittehub.git
-cd kittehub/
-```
-Alternatively, you can copy the individual files in this directory.
+### Prerequisites
 
-### Run the AutoKitteh Server
+- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
+- Set up required integrations:
+  - [Atlassian Confluence](https://docs.autokitteh.com/integrations/atlassian)
+  - [Slack](https://docs.autokitteh.com/integrations/slack)
 
-Simply run this command:
+### Installation Steps
 
-```shell
-ak up --mode dev
-```
-
-### Apply Manifest and Deploy Project
-
-1. Navigate to the project directory:
-
+1. Clone the repository:
    ```shell
-   cd confluence_to_slack
+   git clone https://github.com/autokitteh/kittehub.git
+   cd kittehub/confluence_to_slack
    ```
 
-2. Apply manifest and deploy the project by running the following command:
-
+2. Start the AutoKitteh server:
    ```shell
-   ak deploy --manifest autokitteh.yaml --file program.py
+   ak up --mode dev
    ```
 
-   The output of this command will be important for initializing connections in the following step if you're using the CLI.
+3. Deploy the project:
+   ```shell
+   ak deploy --manifest autokitteh.yaml
+   ```
 
-   For example, for each configured connection, you will see a line that looks similar to the one below:
-
+   The output will show your connection IDs, which you'll need for the next step. Look for lines like:
    ```shell
    [exec] create_connection "confluence_to_slack/slack_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
    ```
+   
+   In this example, `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
 
-   `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
-
-### Initialize Connections
-
-Using the connection IDs from the previous step, run these commands:
-
-```shell
-ak connection init slack_connection <connection ID>
-ak connection init confluence_connection <connection ID>
-```
-
-### Trigger the Workflow
-
-Once the project has been properly installed, configured and deployed, the workflow will be triggered by an event from Confluence.
+4. Initialize your connections using the CLI:
+   ```shell
+   ak connection init slack_connection <connection ID>
+   ak connection init confluence_connection <connection ID>
+   ```
