@@ -1,3 +1,10 @@
+---
+title: GitHub
+description: Samples using GitHub APIs
+integrations: ["github"]
+categories: ["Samples"]
+---
+
 # GitHub Sample
 
 This [AutoKitteh](https://github.com/autokitteh/autokitteh) project

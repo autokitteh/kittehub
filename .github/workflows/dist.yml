@@ -1,0 +1,24 @@
+name: Dist
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  dist:
+    concurrency:
+      group: kittehub-releases-dist
+      cancel-in-progress: true
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: build
+        run: zip -r dist .
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: release
+          branch: release
+          push_options: "--force"
+          create_branch: true

@@ -1,3 +1,10 @@
+---
+title: Create Jira ticket from Google form
+description: Trigger by HTTP request, continue polling Google forms, and create Jira ticket based on the form's data
+integrations: ["forms", "http", "jira"]
+categories: ["DevOps"]
+---
+
 # Google Forms to Jira
 
 This project creates Jira issues based on Google Forms responses.

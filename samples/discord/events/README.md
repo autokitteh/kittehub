@@ -17,6 +17,9 @@ This project demonstrates how to utilize AutoKitteh's event system for Discord, 
 
 ## Installation and Usage 
 
+> [!NOTE]
+> This sample currently works only on the local version of AutoKitteh and is not compatible with the cloud version.
+
 1. Clone the Repository:
    
    ```bash

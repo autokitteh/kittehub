@@ -29,8 +29,7 @@ project:
       connection: github_conn
       event_type: workflow_run
       call: workflow.py:on_github_workflow_run
-    # Uncomment the following trigger:
-    # - name: github_push
-    #   connection: github_conn
-    #   event_type: push
-    #   call: workflow.py:start_github_action
+    - name: github_push
+      connection: github_conn
+      event_type: push
+      call: workflow.py:start_github_action

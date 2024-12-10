@@ -56,7 +56,7 @@ If not taken or resolved, I will remind you in {HELP_REQUEST_TIMEOUT_MINUTES}m.
         msg = autokitteh.next_event(s, timeout=60)
 
         if not msg:  # timeout
-            dt = datetime.now().total_seconds() - start_time.total_seconds()
+            dt = (datetime.now() - start_time).total_seconds()
             print(f"timeout, dt={dt}")
 
             if not taken_by and dt >= HELP_REQUEST_TIMEOUT_MINUTES * 60:

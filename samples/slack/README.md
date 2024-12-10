@@ -1,3 +1,10 @@
+---
+title: Slack
+description: Samples using Slack APIs
+integrations: ["slack"]
+categories: ["Samples"]
+---
+
 # Slack Sample
 
 This sample project demonstrates AutoKitteh's 2-way integration with

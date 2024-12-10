@@ -1,3 +1,10 @@
+---
+title: Google Sheets
+description: Samples using Google Sheets APIs
+integrations: ["sheets"]
+categories: ["Samples"]
+---
+
 # Google Sheets Sample
 
 This AutoKitteh project demonstrates 2-way integration with

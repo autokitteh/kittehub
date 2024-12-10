@@ -1,3 +1,10 @@
+---
+title: Unregister non active users from Copilot
+description: If Copilot was not used in a preceding period by users, the workflow automatically unregisters and notifies them. Users can ask for their subscription to be reinstated.
+integrations: ["githubcopilot", "slack"]
+categories: ["DevOps"]
+---
+
 # GitHub Copilot Registration Pruning
 
 This automation searches daily for all users in a GitHub organization that are actively using Copilot.

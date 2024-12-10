@@ -1,3 +1,10 @@
+---
+title: Slack notify on important Email
+description: Categorizing incoming emails and notifying relevant Slack channels by integrating Gmail, ChatGPT, and Slack
+integrations: ["gmail", "slack", "chatgpt"]
+categories: ["Office Automation"]
+---
+
 # Email Categorization and Notification Workflow
 
 This project automates the process of categorizing incoming emails and notifying relevant Slack channels by integrating Gmail, ChatGPT, and Slack. It is not meant to be a 100% complete project, but rather a solid starting point.

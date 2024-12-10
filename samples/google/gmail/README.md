@@ -1,3 +1,10 @@
+---
+title: Gmail
+description: Samples using Gmail APIs
+integrations: ["gmail"]
+categories: ["Samples"]
+---
+
 
 # Gmail Sample
 

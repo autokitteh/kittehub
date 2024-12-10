@@ -1,3 +1,10 @@
+---
+title: Create Jira Ticket from a Webhook data
+description: Create Jira Ticket from a Webhook data
+integrations: ["jira", "http"]
+categories: ["DevOps"]
+---
+
 # Webhook to Jira
 
 This project creates Jira issue based on various HTTP requests:
