@@ -35,10 +35,9 @@ def to_table_row(readme_file: Path, metadata: dict) -> str:
 
     description = metadata.get("description", "")
     integrations = ", ".join(metadata.get("integrations", [])) or "None"
-    relative_path = os.path.relpath(os.path.dirname(readme_file), ROOT_PATH)
-    link = f"./{relative_path}/"
+    path = os.path.relpath(os.path.dirname(readme_file), ROOT_PATH)
 
-    return f"| [{title}]({link}) | {description} | {integrations} |\n"
+    return f"| [{title}](./{path}/) | {description} | {integrations} |\n"
 
 
 def generate_readme_table(folder_path: Path) -> list[str]:
