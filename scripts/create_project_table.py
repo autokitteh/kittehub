@@ -28,7 +28,7 @@ def extract_metadata(readme_file: Path) -> dict:
 
 
 def to_table_row(readme_file: Path, metadata: dict) -> str:
-    """Convert metadata into a table row."""
+    """Convert metadata into a markdown table row."""
     title = metadata.get("title", "")
     if not title:
         return ""
