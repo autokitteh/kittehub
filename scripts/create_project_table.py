@@ -1,7 +1,4 @@
-"""
-Process README files to extract metadata, generate a table of content, 
-and update a central README file with aggregated data.
-"""
+"""Extract metadata from project README files to update table in repo's README file."""
 
 import os
 from pathlib import Path
