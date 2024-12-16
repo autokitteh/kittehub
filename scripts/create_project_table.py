@@ -10,19 +10,16 @@ README_PATH = ROOT_PATH / "README.md"
 
 
 def extract_metadata(readme_file: Path) -> dict:
-    """Extract metadata from a README file."""
+    """Extract metadata from a project's README file."""
+    field_pattern = r"^([a-z]+):\s+(.+)$"
+    elements_pattern = r'"(.+?)"'
+    f = readme_file.read_text(encoding="utf-8")
     metadata = {}
-    lines = readme_file.read_text(encoding="utf-8").splitlines()
 
-    # Check for metadata block at the top of the README
-    if lines[0].strip() == "---":
-        metadata_lines = []
-        for line in lines[1:]:
-            if line.strip() == "---":
-                break
-            metadata_lines.append(line)
-
-        metadata = yaml.safe_load("\n".join(metadata_lines))
+    for k, v in re.findall(field_pattern, f, re.MULTILINE):
+        metadata[k] = v
+        if k == "integrations":
+            metadata[k] = ???
 
     return metadata
 
