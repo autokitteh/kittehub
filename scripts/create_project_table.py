@@ -3,7 +3,6 @@
 import os
 from pathlib import Path
 import re
-import yaml
 
 ROOT_PATH = Path(__file__).parent.parent
 README_PATH = ROOT_PATH / "README.md"
@@ -19,7 +18,7 @@ def extract_metadata(readme_file: Path) -> dict:
     for k, v in re.findall(field_pattern, f, re.MULTILINE):
         metadata[k] = v
         if k == "integrations":
-            metadata[k] = ???
+            metadata[k] = re.findall(elements_pattern, v)
 
     return metadata
 
@@ -31,7 +30,7 @@ def to_table_row(readme_file: Path, metadata: dict) -> str:
         return ""
 
     description = metadata.get("description", "")
-    integrations = ", ".join(metadata.get("integrations", [])) or "None"
+    integrations = ", ".join(metadata.get("integrations", []))
     path = os.path.relpath(os.path.dirname(readme_file), ROOT_PATH)
 
     return f"| [{title}](./{path}/) | {description} | {integrations} |\n"
@@ -51,25 +50,13 @@ def generate_readme_table(folder_path: Path) -> list[str]:
 def insert_rows_to_table(readme_file: Path, new_rows: list[str]) -> None:
     """Insert rows into the table section of the README file."""
     md = readme_file.read_text(encoding="utf-8")
-    headers = "-->\n| Name | Description | Integration |\n| :--- | :---------- | :---------- |\n<!--"
-    md = re.sub("-->.+<!--", headers, md, flags=re.DOTALL)
+    table = "-->\n| Name | Description | Integration |\n| :--- | :---------- | :---------- |\n"
 
-    lines = readme_file.read_text(encoding="utf-8").splitlines(keepends=True)
+    for row in new_rows:
+        table += row
 
-    start_marker_index = next(
-        i for i, line in enumerate(lines) if line.strip() == "<!-- START-TABLE -->"
-    )
-    end_marker_index = next(
-        i for i, line in enumerate(lines) if line.strip() == "<!-- END-TABLE -->"
-    )
-
-    # Replace content between the markers
-    updated_lines = (
-        lines[: start_marker_index + 3]
-        + [line if line.endswith("\n") else f"{line}\n" for line in new_rows]
-        + lines[end_marker_index:]
-    )
-    readme_file.write_text("".join(updated_lines), encoding="utf-8")
+    md = re.sub("-->.+<!--", table + "<!--", md, flags=re.DOTALL)
+    readme_file.write_text(md, encoding="utf-8")
 
 
 if __name__ == "__main__":

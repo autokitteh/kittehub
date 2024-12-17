@@ -11,8 +11,8 @@ In addition, the [samples](./samples/) directory contains projects that
 demonstrate basic system features, integration APIs, and best practices.
 
 <!-- START-TABLE -->
-| Name                                                                             | Description                                                                              | Integrations                                |
-| :------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------------ |
+| Name | Description | Integration |
+| :--- | :---------- | :---------- |
 | [Parse a file in S3 and insert to database](./data_pipeline/) | Triggered by a new GPX file on an S3 bucket, the pipeline code will parse the GPX file and insert it into a database. | aws, http, sqlite3 |
 | [AWS Health to Slack](./aws_health_to_slack/) | Monitor AWS health events | aws, slack, sheets |
 | [Quickstart](./quickstart/) | Sample for quickstart | http |
