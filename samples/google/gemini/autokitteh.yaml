@@ -1,0 +1,15 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates integration with Gemini
+
+version: v1
+
+project:
+  name: gemini_sample
+  connections:
+    - name: gemini_connection
+      integration: googlegemini
+  triggers:
+    - name: on_http_get
+      type: webhook
+      event_type: get
+      call: program.py:on_http_get
