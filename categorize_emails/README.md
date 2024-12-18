@@ -11,10 +11,10 @@ This project automates the process of categorizing incoming emails and notifying
 
 ## How It Works
 
-1. Fetches new emails from Gmail API
-2. Uses ChatGPT to analyze and categorize email content
-3. Posts categorized emails to relevant Slack channels
-4. Labels processed emails in Gmail
+1. Fetch new emails from Gmail API
+2. Use ChatGPT to analyze and categorize email content
+3. Post categorized emails to relevant Slack channels
+4. Label processed emails in Gmail
 
 For more details, refer to [this blog post](https://autokitteh.com/technical-blog/from-inbox-to-slack-automating-email-categorization-and-notifications-with-ai/).
 
@@ -85,7 +85,7 @@ Trigger the workflow using the webhook URL. Refer to the [Cloud Usage](#cloud-us
 
 - The webhook URL is provided in the output of the `ak deploy` command.
 - Run the following command to retrieve the URL:
-  ```bash
+  ```shell
   ak trigger get <trigger name or ID>
   ```
 
