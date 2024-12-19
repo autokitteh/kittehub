@@ -37,8 +37,12 @@ def add_new_users(users):
     """Add new Auth0 users to HubSpot as contacts."""
     for user in users:
         contact = _create_hubspot_contact(user)
-        hubspot.crm.contacts.basic_api.create(contact)
-        print(f"Added {user['email']} to HubSpot")
+        try:
+            hubspot.crm.contacts.basic_api.create(contact)
+            print(f"Added {user['email']} to HubSpot")
+        except Exception as e:
+            print(f"Failed to add {user['email']} to HubSpot: {e}")
+            continue
 
 
 def _create_hubspot_contact(user):
