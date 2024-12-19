@@ -82,7 +82,7 @@ For example, for each configured connection, you will see a line that looks simi
 
 `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
 
-### Initiliaze Connections
+### Initialize Connections
 
 Using the connection IDs from the previous step, run these commands:
 
