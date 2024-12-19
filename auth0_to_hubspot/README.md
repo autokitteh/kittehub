@@ -11,8 +11,8 @@ This project adds new Auth0 users to HubSpot as contacts, on a recurring basis.
 
 ## How It Works
 
-1. Fetch new Auth0 users from the last `HOURS` hours.
-2. Create HubSpot contacts for each user.
+1. Fetch new Auth0 users from the last `HOURS` hours
+2. Create HubSpot contacts for each user
 
 ## Deployment & Configuration
 
