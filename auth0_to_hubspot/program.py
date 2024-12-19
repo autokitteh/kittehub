@@ -38,10 +38,11 @@ def add_new_users(users):
         contact = _create_hubspot_contact(user)
         try:
             hubspot.crm.contacts.basic_api.create(contact)
-            print(f"Added {user['email']} to HubSpot")
+            print(f"Added to HubSpot: {user['email']}")
         except Exception as e:
             # TODO: Replace "Exception" with a specific error for
             # conflicts, i.e. don't ignore other types of errors.
+            # print(f"Contact already exists in HubSpot: {user['email']}")
             print(f"Failed to add {user['email']} to HubSpot: {e}")
             continue
 
