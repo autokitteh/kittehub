@@ -161,5 +161,5 @@ environ.update({
 
 with open('example-sns-event.json') as fp:
     event = json.load(fp)
-pipline.on_new_s3_object(event)
+pipeline.on_new_s3_object(event)
 ```
