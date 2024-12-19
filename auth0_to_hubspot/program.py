@@ -1,11 +1,12 @@
 """This program adds new Auth0 users to HubSpot as contacts."""
 
-import datetime
+from datetime import UTC, datetime
 import os
 
 from autokitteh.auth0 import auth0_client
 from autokitteh.hubspot import hubspot_client
 from hubspot.crm.contacts import SimplePublicObjectInput
+
 
 LOOKUP_HOURS = int(os.getenv("HOURS"))
 
@@ -20,16 +21,14 @@ def check_for_new_users(event):
     """
     start, end = _get_time_range(LOOKUP_HOURS)
     query = f"created_at:[{start} TO {end}]"
-
     response = auth0.users.list(q=query, search_engine="v3")
     add_new_users(response["users"])
 
 
 def _get_time_range(hours):
     """Calculate start and end times for user lookup."""
-    now = datetime.datetime.utcnow()
+    now = datetime.now(UTC)
     start_time = now - datetime.timedelta(hours=hours)
-
     return (start_time.isoformat() + "Z", now.isoformat() + "Z")
 
 
@@ -41,6 +40,8 @@ def add_new_users(users):
             hubspot.crm.contacts.basic_api.create(contact)
             print(f"Added {user['email']} to HubSpot")
         except Exception as e:
+            # TODO: Replace "Exception" with a specific error for
+            # conflicts, i.e. don't ignore other types of errors.
             print(f"Failed to add {user['email']} to HubSpot: {e}")
             continue
 
