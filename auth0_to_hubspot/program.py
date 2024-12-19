@@ -15,6 +15,7 @@ LOOKUP_HOURS = int(os.getenv("HOURS"))
 
 def check_for_new_users(event):
     """Workflow entrypoint.
+
     Looks up new Auth0 users in the last `HOURS` hours and adds them to HubSpot as contacts.
     """
     time_range = _get_time_range(LOOKUP_HOURS)
