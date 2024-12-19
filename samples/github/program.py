@@ -5,7 +5,7 @@ various GitHub webhook events, which are defined in the "autokitteh.yaml"
 manifest file. It also executes various GitHub API calls.
 
 API details:
-- REST API referene: https://docs.github.com/en/rest
+- REST API reference: https://docs.github.com/en/rest
 - PyGitHub library: https://pygithub.readthedocs.io/en/latest/index.html
 
 This program isn't meant to cover all available functions and events.

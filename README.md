@@ -28,7 +28,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | ⭐ [ReviewKitteh](./reviewkitteh/)                                               | Monitor pull requests, and meow at random people                                         | GitHub, Google Sheets, Slack                |
 | 🐍 [Room reservation](./room_reservation/)                                       | Manage via Slack ad-hoc room reservations in Google Calendar                             | Slack &harr; Google Calendar, Google Sheets |
 | 🐍 [Slack Discord sync](./slack_discord_sync)                                    | Sync Slack and Discord messages in real-time                                             | Slack &harr; Discord                        |
-| 🐍 [Slack support](./slack_support/)                                             | Categorize Slack support requests using AI, and route them to the appropiate people      | Slack &harr; Gemini, Google Sheets          |
+| 🐍 [Slack support](./slack_support/)                                             | Categorize Slack support requests using AI, and route them to the appropriate people      | Slack &harr; Gemini, Google Sheets          |
 | 🐍 [Task chain](./task_chain/)                                                   | Run a sequence of tasks with fault tolerance                                             | Slack                                       |
 | 🐍 [Webhook to Jira](./webhook_to_jira/)                                         | Create Jira issues based on HTTP GET/POST requests                                       | HTTP &rarr; Jira                            |
 
