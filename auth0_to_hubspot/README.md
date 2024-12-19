@@ -7,7 +7,7 @@ categories: ["Office Automation"]
 
 # Auth0 to HubSpot
 
-This project adds new Auth0 users to HubSpot as contacts.
+This project adds new Auth0 users to HubSpot as contacts, on a recurring basis.
 
 ## How It Works
 
