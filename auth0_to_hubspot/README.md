@@ -1,6 +1,6 @@
 ---
 title: Auth0 to HubSpot
-description: Add new Auth0 users to HubSpot as contacts
+description: Periodically add new Auth0 users to HubSpot as contacts
 integrations: ["auth0", "hubspot"]
 categories: ["Office Automation"]
 ---
