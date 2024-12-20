@@ -1,26 +1,11 @@
-"""
-Unit tests create_project_table.py.
-
-This suite tests functions for extracting metadata, generating markdown table rows, 
-processing multiple README files, and inserting rows into tables, using mocks to simulate file operations.
-"""
-
+from pathlib import Path
 import unittest
 from unittest.mock import MagicMock, patch
-from pathlib import Path
-import sys
-
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-
-from create_project_table import (
-    extract_metadata,
-    to_table_row,
-    generate_readme_table,
-    insert_rows_to_table,
-)
+import create_project_table
 
 
 class TestCreateProjectTable(unittest.TestCase):
+
     def test_extract_metadata(self):
         mock_readme_content = """\
 title: Example Project
@@ -38,7 +23,7 @@ extra_key: This should not appear
             "integrations": ["slack", "gemini"],
         }
 
-        metadata = extract_metadata(mock_readme_file)
+        metadata = create_project_table.extract_metadata(mock_readme_file)
         self.assertEqual(metadata, expected_metadata)
 
     def test_to_table_row(self):
@@ -51,7 +36,7 @@ extra_key: This should not appear
         }
 
         expected_row = "| [Project One](./projects/project1/) | An example project for testing. | slack, gemini |\n"
-        row = to_table_row(mock_readme_file, metadata)
+        row = create_project_table.to_table_row(mock_readme_file, metadata)
         self.assertEqual(row, expected_row)
 
     @patch("create_project_table.Path.rglob")
@@ -78,7 +63,7 @@ extra_key: This should not appear
         ]
 
         # Test the function
-        rows = generate_readme_table(Path("/mock"))
+        rows = create_project_table.generate_readme_table(Path("/mock"))
         self.assertEqual(rows, expected_rows)
 
         mock_rglob.assert_called_once_with("README.md")
@@ -126,7 +111,7 @@ Some footer text.
         mock_readme_file.read_text.return_value = mock_readme_content
         mock_readme_file.write_text = MagicMock()
 
-        insert_rows_to_table(mock_readme_file, new_rows)
+        create_project_table.insert_rows_to_table(mock_readme_file, new_rows)
 
         mock_readme_file.write_text.assert_called_once_with(
             expected_readme_content, encoding="utf-8"
