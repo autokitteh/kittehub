@@ -8,7 +8,7 @@ from autokitteh.google import gemini_client
 
 MODEL = "gemini-1.5-flash"
 
-gemini = gemini_client("gemini_connection", model_name=MODEL)
+gemini = gemini_client("gemini_conn", model_name=MODEL)
 
 
 def on_http_get(event):

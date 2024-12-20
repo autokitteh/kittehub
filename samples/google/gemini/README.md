@@ -65,3 +65,13 @@ API details:
    ak connection init gemini_connection <connection ID>
    ```
 
+## Trigger Workflow
+
+The workflow is triggered by sending an HTTP GET request.
+
+> [!TIP]
+> The workflow can also be triggered manually by clicking the "Run" button in the UI. Make sure to set the `on_http_get` function as the entrypoint.
+
+> [!IMPORTANT]
+> Ensure that the connection with Gemini is properly initialized before the workflow starts running.
+
