@@ -20,8 +20,8 @@ API details:
 
 ## How It Works
 
-1. Send an HTTP GET request to trigger the workflow.
-2. The workflow prints the responses of Gemini
+1. Generate content using Gemini and log the response.
+2. Conduct interactive chats with Gemini and log the responses.
 
 ## Deployment & Configuration
 
