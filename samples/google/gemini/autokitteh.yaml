@@ -6,7 +6,7 @@ version: v1
 project:
   name: gemini_sample
   connections:
-    - name: gemini_connection
+    - name: gemini_conn
       integration: googlegemini
   triggers:
     - name: on_http_get
