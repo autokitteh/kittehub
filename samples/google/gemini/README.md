@@ -29,7 +29,7 @@ API details:
 
 - Initialize your connection with Gemini through the UI
 
-### self-hosted
+### Self-Hosted Server
 
 #### Prerequisites
 
