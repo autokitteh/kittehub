@@ -19,7 +19,7 @@ def on_http_get(event):
 
     print(response.text)
 
-    # Example 2: interactive chat using the Gemini
+    # Example 2: interactive chat using the Gemini.
     chat = gemini.start_chat(
         history=[
             {"role": "user", "parts": "Hello"},
