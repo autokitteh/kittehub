@@ -16,7 +16,6 @@ def on_http_get(event):
     # Example 1: trivial interaction with Gemini.
     prompt = "say meow in different languages"
     response = gemini.generate_content(prompt)
-
     print(response.text)
 
     # Example 2: interactive chat using the Gemini.
