@@ -1,6 +1,6 @@
 ---
 title: Gemini
-description: Simple usage of Gemini API
+description: Simple usage of the Gemini API
 integrations: ["gemini"]
 categories: ["Samples"]
 ---
