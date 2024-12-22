@@ -13,7 +13,7 @@ gemini = gemini_client("gemini_connection", model_name=MODEL)
 
 def on_http_get(event):
     """Entry-point function for handling HTTP GET requests in this workflow."""
-    # Example 1: trivial interaction with Gemini
+    # Example 1: trivial interaction with Gemini.
     prompt = "say meow in different languages"
     response = gemini.generate_content(prompt)
 
