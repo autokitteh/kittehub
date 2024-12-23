@@ -18,7 +18,7 @@ No more:
 
 - Delays due to missed requests, comments, and state changes
 - Notification fatigue due to updates that don't concern you
-- Qestions like "Who's turn is it" or "What should I do now"
+- Questions like "Who's turn is it" or "What should I do now"
 
 All that and more is implemented with a few hundred lines of Python.
 AutoKitteh takes care of all the system infrastructure and reliability needs.

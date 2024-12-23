@@ -43,7 +43,7 @@ def initialize_for_github_pr(action: str, pr) -> None:
     # TODO: Post an introduction message to the new channel, describing the PR.
 
     # TODO: Also post a message summarizing check states (updated
-    # later based on "worklfow_job" and "workflow_run" events).
+    # later based on "workflow_job" and "workflow_run" events).
 
     # TODO: In case this is a replacement Slack channel, say so.
 
