@@ -1,0 +1,69 @@
+# This YAML file is a declarative manifest that describes the setup
+# of the AutoKitteh project "Pull Request Review Reminder" (Purrr).
+# Purrr integrates GitHub and Slack seamlessly, to streamline code
+# reviews and cut down the turnaround time to merge pull requests.
+
+version: v1
+
+project:
+  name: purrr
+
+  vars:
+    # Temporary (easy to debug, but not scalable) replacement for Redis/Valkey.
+    - name: DATA_SHEET_URL
+      value: TODO
+    # PR channel names in Slack: "<prefix>_<number>_<title>".
+    - name: SLACK_CHANNEL_PREFIX
+      value: _pr
+    # Visibility of PR channels in Slack: "public" (default) or "private".
+    - name: SLACK_CHANNEL_VISIBILITY
+      value: public
+    # Create this channel / replace with your own / set to "" to disable it.
+    - name: SLACK_DEBUG_CHANNEL
+      value: purrr-debug
+    # TTL for GitHub/Slack mappings = 30 days (to forget stale PRs).
+    - name: STATE_TTL
+      value: 720h
+
+  connections:
+    - name: github_conn
+      integration: github
+    - name: sheets_conn
+      integration: googlesheets
+    - name: slack_conn
+      integration: slack
+
+  triggers:
+    # - name: github_issue_comment
+    #   connection: github_conn
+    #   event_type: issue_comment
+    #   call: github_issue_comment.py:on_github_issue_comment
+    - name: github_pull_request
+      connection: github_conn
+      event_type: pull_request
+      call: github_pr.py:on_github_pull_request
+    # - name: github_pull_request_review
+    #   connection: github_conn
+    #   event_type: pull_request_review
+    #   call: github_pr_review.py:on_github_pull_request_review
+    # - name: github_pull_request_review_comment
+    #   connection: github_conn
+    #   event_type: pull_request_review_comment
+    #   call: github_review_comment.py:on_github_pull_request_review_comment
+    # - name: github_pull_request_review_thread
+    #   connection: github_conn
+    #   event_type: pull_request_review_thread
+    #   call: github_thread.py:on_github_pull_request_review_thread
+
+    # - name: slack_message
+    #   connection: slack_conn
+    #   event_type: message
+    #   call: slack_message.py:on_slack_message
+    # - name: slack_reaction_added
+    #   connection: slack_conn
+    #   event_type: reaction_added
+    #   call: slack_reaction.py:on_slack_reaction_added
+    - name: slack_slash_command
+      connection: slack_conn
+      event_type: slash_command
+      call: slack_cmd.py:on_slack_slash_command
