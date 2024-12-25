@@ -1,30 +1,78 @@
+import os
 from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import MagicMock, patch
+
 import create_project_table
 
 
 class TestCreateProjectTable(unittest.TestCase):
 
     def test_extract_metadata(self):
-        mock_readme_content = """\
+        # Define the content to be written to the temporary file
+        readme_content = """\
+Header text
+
 title: Example Project
 description: An example project for testing.
 integrations: "slack", "gemini"
-extra_key: This should not appear
+
+Other notes
 """
-
-        mock_readme_file = MagicMock()
-        mock_readme_file.read_text.return_value = mock_readme_content
-
         expected_metadata = {
             "title": "Example Project",
             "description": "An example project for testing.",
             "integrations": ["slack", "gemini"],
         }
 
-        metadata = create_project_table.extract_metadata(mock_readme_file)
-        self.assertEqual(metadata, expected_metadata)
+        with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
+            temp_file_path = Path(temp_file.name)
+            temp_file.write(readme_content)
+            temp_file.flush()
+        try:
+            metadata = create_project_table.extract_metadata(temp_file_path)
+            self.assertEqual(metadata, expected_metadata)
+        finally:
+            if os.path.exists(temp_file_path):
+                os.remove(temp_file_path)
+
+    def test_extract_metadata_missing_fields(self):
+        readme_content = """\
+title: Example Project
+description: An example project for testing.
+"""
+        expected_metadata = {
+            "title": "Example Project",
+            "description": "An example project for testing.",
+        }
+
+        with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
+            temp_file_path = Path(temp_file.name)
+            temp_file.write(readme_content)
+            temp_file.flush()
+        try:
+            metadata = create_project_table.extract_metadata(temp_file_path)
+            self.assertEqual(metadata, expected_metadata)
+        finally:
+            if os.path.exists(temp_file_path):
+                os.remove(temp_file_path)
+
+    def test_extract_metadata_empty_file(self):
+        readme_content = ""
+
+        expected_metadata = {}
+
+        with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
+            temp_file_path = Path(temp_file.name)
+            temp_file.write(readme_content)
+            temp_file.flush()
+        try:
+            metadata = create_project_table.extract_metadata(temp_file_path)
+            self.assertEqual(metadata, expected_metadata)
+        finally:
+            if os.path.exists(temp_file_path):
+                os.remove(temp_file_path)
 
     def test_to_table_row(self):
         mock_readme_file = Path("./projects/project1/README.md")
@@ -39,38 +87,40 @@ extra_key: This should not appear
         row = create_project_table.to_table_row(mock_readme_file, metadata)
         self.assertEqual(row, expected_row)
 
-    @patch("create_project_table.Path.rglob")
-    @patch("create_project_table.extract_metadata")
-    @patch("create_project_table.to_table_row")
-    def test_generate_readme_table(
-        self, mock_to_table_row, mock_extract_metadata, mock_rglob
-    ):
-        # Mock the README files found by rglob
-        mock_readme_file = MagicMock(spec=Path)
-        mock_readme_file.parent = Path("./mock/project")
-        mock_rglob.return_value = [mock_readme_file]
+    def test_generate_readme_table(self):
+        readme_content = """\
+Header text      
 
-        mock_extract_metadata.return_value = {
-            "title": "Example Project",
-            "description": "An example project for testing.",
-            "integrations": ["slack", "gemini"],
-        }
+title: Example Project
+description: An example project for testing.
+integrations: "slack", "gemini"
 
-        mock_to_table_row.return_value = "| [Example Project](./mock/project/) | An example project for testing. | slack, gemini |\n"
+Other notes
+"""
 
-        expected_rows = [
-            "| [Example Project](./mock/project/) | An example project for testing. | slack, gemini |\n"
-        ]
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_dir_path = Path(temp_dir)
+            temp_file_path = temp_dir_path / "README.md"
 
-        # Test the function
-        rows = create_project_table.generate_readme_table(Path("/mock"))
-        self.assertEqual(rows, expected_rows)
+            with temp_file_path.open(mode="w", encoding="utf-8") as temp_file:
+                temp_file.write(readme_content)
+                temp_file.flush()
 
-        mock_rglob.assert_called_once_with("README.md")
-        mock_extract_metadata.assert_called_once_with(mock_readme_file)
-        mock_to_table_row.assert_called_once_with(
-            mock_readme_file, mock_extract_metadata.return_value
-        )
+            relative_path = os.path.relpath(
+                temp_dir_path, create_project_table.ROOT_PATH
+            )
+            expected_row = [
+                f"| [Example Project](./{relative_path}/) | An example project for testing. | slack, gemini |\n"
+            ]
+
+            rows = create_project_table.generate_readme_table(temp_dir_path)
+            self.assertEqual(rows, expected_row)
+
+    def test_generate_readme_table_empty_directory(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_dir_path = Path(temp_dir)
+            rows = create_project_table.generate_readme_table(temp_dir_path)
+            self.assertEqual(rows, [])
 
     def test_insert_rows_to_table(self):
         mock_readme_content = """\
