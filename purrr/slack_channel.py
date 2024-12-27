@@ -53,20 +53,11 @@ def initialize_for_github_pr(action: str, pr) -> None:
 
 
 def _report_creation_error(pr) -> None:
-    github_username = pr.user.login
-    github_org = pr.base.repo.owner.login
-    user_id = users.github_username_to_slack_user_id(github_username, github_org)
-
+    user_id = users.github_username_to_slack_user_id(pr.user.login)
     error = "Failed to create Slack channel for " + pr.html_url
     slack_helper.debug(error)
-    try:
+    if user_id:
         slack.chat_postMessage(channel=user_id, text=error)
-    except SlackApiError as e:
-        error = f"Failed to notify <@{user_id}> (`{github_username}` in GitHub)"
-        error += " about failing to create Slack channel for "
-        error += f"{pr.html_url}: `{e.response["error"]}`"
-        slack_helper.debug(error)
-    return
 
 
 def _set_bookmarks(pr, channel_id: str) -> None:
@@ -75,7 +66,7 @@ def _set_bookmarks(pr, channel_id: str) -> None:
     Bookmark titles should be updated later based on relevant GitHub events.
 
     Args:
-        pr: GitHub PR event data.
+        pr: GitHub PR data.
         channel_id: Slack channel ID.
     """
     pass  # TODO: Implement this function.
@@ -85,8 +76,7 @@ def _set_description(pr, channel_id: str) -> None:
     """Set the description of a Slack channel to a GitHub PR title.
 
     Args:
-        action: GitHub PR event action.
-        pr: GitHub PR event data.
+        pr: GitHub PR data.
         channel_id: Slack channel ID.
     """
     title = f"`{pr.title}`"
@@ -103,8 +93,7 @@ def _set_topic(pr, channel_id: str) -> None:
     """Set the topic of a Slack channel to a GitHub PR URL.
 
     Args:
-        action: GitHub PR event action.
-        pr: GitHub PR event data.
+        pr: GitHub PR data.
         channel_id: Slack channel ID.
     """
     topic = pr.html_url
