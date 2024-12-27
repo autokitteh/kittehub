@@ -16,8 +16,9 @@ def github_username_to_slack_user_id(github_username: str) -> str:
 
     This function tries to match the email address first, and then
     falls back to matching the user's full name (case-insensitive).
-    This function also caches successful results for a day, to
-    reduce the amount of API calls, especially to Slack.
+
+    This function also caches both successful and failed results for
+    a day, to reduce the amount of API calls, especially to Slack.
 
     Args:
         github_username: GitHub username.
@@ -27,9 +28,9 @@ def github_username_to_slack_user_id(github_username: str) -> str:
     """
     # Optimization: if we already have it cached, no need to look it up.
     slack_user_id = data_helper.cached_slack_user_id(github_username)
-    if slack_user_id:
-        if slack_user_id in ("bot", "not found"):
-            slack_user_id = ""
+    if slack_user_id in ("bot", "not found"):
+        return ""
+    elif slack_user_id:
         return slack_user_id
 
     user = github.get_user(github_username)
