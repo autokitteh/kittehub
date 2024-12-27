@@ -69,7 +69,7 @@ def debug(msg: str) -> None:
             if "/ak-user-" not in file or func == "debug":
                 continue
             # Display shorter and cleaner paths.
-            file = re.sub(r'[^"]+/ak-user-.+?/', "", file)
+            file = re.sub(r"^.+/ak-user-.+?/", "", file)
             msg = f"```File: {file}, line {line}\nFunc: {func}\n{text}```"
             shared_client.chat_postMessage(channel=c, thread_ts=ts, text=msg)
 
