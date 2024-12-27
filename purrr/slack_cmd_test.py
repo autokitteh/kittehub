@@ -30,9 +30,9 @@ class SlackCmdTest(unittest.TestCase):
         data = autokitteh.AttrDict(self.data)
         text = slack_cmd._help_text(data)
 
-        for cmd, _, desc in slack_cmd._COMMANDS:
-            self.assertIn(cmd, text)
-            self.assertIn(desc, text)
+        for cmd in slack_cmd._COMMANDS.values():
+            self.assertIn(cmd.label, text)
+            self.assertIn(cmd.description, text)
 
     def test_on_slack_slash_command_without_text(self):
         event = autokitteh.AttrDict({"data": self.data | {"text": ""}})

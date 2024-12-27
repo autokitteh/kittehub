@@ -1,5 +1,6 @@
 """Handler for Slack slash-command events."""
 
+import collections
 import data_helper
 import slack_helper
 
@@ -32,10 +33,8 @@ def on_slack_slash_command(event):
         _help(data, args)
         return
 
-    for cmd, func, _ in _COMMANDS:
-        if cmd == args[0]:
-            func(data, args)
-            return
+    if args[0] in _COMMANDS:
+        _COMMANDS[args[0]].handler(data, args)
 
     error = f"Error: unrecognized Purrr command: `{args[0]}`"
     slack.chat_postEphemeral(channel=data.channel_id, user=data.user_id, text=error)
@@ -62,8 +61,8 @@ def _help(data, args: list[str]):
 def _help_text(data) -> str:
     text = ":wave: *GitHub Pull Request Review Reminder (Purrr)* :wave:\n\n"
     text += "Available slash commands:"
-    for cmd, _, description in _COMMANDS:
-        text += f"\n  •  `{data.command} {cmd}` - {description}"
+    for cmd in _COMMANDS.values():
+        text += f"\n  •  `{data.command} {cmd.label}` - {cmd.description}"
     return text
 
 
@@ -136,10 +135,12 @@ def _approve(data, args: list[str]):
     slack.chat_postEphemeral(channel=data.channel_id, user=data.user_id, text=error)
 
 
-_COMMANDS = [
-    ("opt-in", _opt_in, "Opt into receiving notifications"),
-    ("opt-out", _opt_out, "Opt out of receiving notifications"),
-    ("list", _list, "List all PRs you should pay attention to"),
-    ("status [PR]", _status, "Check the status of a specific PR"),
-    ("approve [PR]", _approve, "Approve a specific PR"),
-]
+_Command = collections.namedtuple("Command", ["label", "handler", "description"])
+
+_COMMANDS = {
+    "opt-in": _Command("opt-in", _opt_in, "Opt into receiving notifications"),
+    "opt-out": _Command("opt-out", _opt_out, "Opt out of receiving notifications"),
+    "list": _Command("list", _list, "List all PRs you should pay attention to"),
+    "status": _Command("status [PR]", _status, "Check the status of a specific PR"),
+    "approve": _Command("approve [PR]", _approve, "Approve a specific PR"),
+}
