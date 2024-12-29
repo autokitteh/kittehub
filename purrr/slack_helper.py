@@ -2,13 +2,15 @@
 
 import os
 import re
-import traceback
 
 from autokitteh.slack import slack_client
 from slack_sdk.errors import SlackApiError
 
+import data_helper
+import debug
+import users
 
-_DEBUG_CHANNEL = os.getenv("SLACK_DEBUG_CHANNEL")
+
 # PR channel names in Slack: "<prefix>_<number>_<title>".
 _CHANNEL_PREFIX = os.getenv("SLACK_CHANNEL_PREFIX", "_pr")
 # Visibility of PR channels in Slack: "public" (default) or "private".
@@ -43,38 +45,143 @@ def create_channel(name: str) -> str:
         except SlackApiError as e:
             if e.response["error"] != "name_taken":
                 error = f"Failed to create {visibility} Slack channel `{n}`"
-                debug(f"{error}: `{e.response["error"]}`")
+                debug.log(f"{error}: `{e.response["error"]}`")
                 return ""
 
 
-def debug(msg: str) -> None:
-    """Post a debug message to a predefined Slack channel, if defined.
+def impersonate_in_message(channel_id: str, github_user, msg: str) -> str:
+    """Post a message to a Slack channel, on behalf of a GitHub user.
 
-    Also post a filtered traceback, as replies to the message.
+    Similar functions:
+    - impersonate_in_reply
+    - mention_in_message
+    - mention_in_reply
 
     Args:
-        msg: Message to post.
+        channel_id: ID of the channel to send the message to.
+        github_user: GitHub user object of the impersonated user.
+        msg: Message to send.
+
+    Returns:
+        Message's thread timestamp, or "" in case of an error.
     """
-    if not _DEBUG_CHANNEL or not msg:
-        return
+    return impersonate_in_reply(channel_id, "", github_user, msg)
 
-    print("DEBUG:", msg)
-    c = _DEBUG_CHANNEL
+
+def impersonate_in_reply(
+    channel_id: str, comment_url: str, github_user, msg: str
+) -> str:
+    """Post a reply to a Slack thread, on behalf of a GitHub user.
+
+    Similar functions:
+    - impersonate_in_message
+    - mention_in_message
+    - mention_in_reply
+
+    Args:
+        channel_id: ID of the channel to send the message to.
+        comment_url: URL of the GitHub PR comment to reply to.
+        github_user: GitHub user object of the impersonated user.
+        msg: Message to send.
+
+    Returns:
+        Message's thread timestamp, or "" in case of an error.
+    """
+    # TODO: Is this check needed?
+    # if not channel_id:
+    #     return ""
+
+    user = users.github_username_to_slack_user(github_user.login)
+    if not user:
+        return ""
+
+    profile = user.get("profile", {})
+    icon = profile.get("image_48")
+    name = profile.get("real_name")
+    ts = _lookup_message(comment_url)
+
     try:
-        resp = shared_client.chat_postMessage(channel=c, text=msg)
-        ts = resp["ts"]
-
-        for file, line, func, text in traceback.extract_stack():
-            # Log only frame summaries relating to this project, up to this function.
-            if "/ak-user-" not in file or func == "debug":
-                continue
-            # Display shorter and cleaner paths.
-            file = re.sub(r"^.+/ak-user-.+?/", "", file)
-            msg = f"```File: {file}, line {line}\nFunc: {func}\n{text}```"
-            shared_client.chat_postMessage(channel=c, thread_ts=ts, text=msg)
-
+        resp = shared_client.chat_postMessage(
+            channel=channel_id, text=msg, thread_ts=ts, icon_url=icon, username=name
+        )
+        return resp["ts"]
     except SlackApiError as e:
-        print(f"DEBUG ERROR: {e}")
+        error = f"Failed to post {'reply' if ts else 'message'} "
+        error += f"as <@{user['id']}> in <#{channel_id}>"
+        debug.log(f"{error}: `{e.response["error"]}`")
+        return ""
+
+
+def _lookup_message(comment_url: str) -> str | None:
+    """Return the ID (timestamp) of a Slack message representing a GitHub PR review.
+
+    This function waits up to a few seconds for the PR review's Slack message
+    to exist, because GitHub events are asynchronous. For example: when a PR
+    review is submitted with file and line comments, some "child" comment
+    events may arrive before the "parent" review event.
+
+    Args:
+        comment_url: URL of the GitHub PR comment to reply to.
+
+    Returns:
+        Message's thread timestamp, or "" if not found.
+    """
+    thread_ts = data_helper.lookup_github_link_details(comment_url)
+    if not thread_ts:
+        debug.log(f"Slack message mapping for {comment_url} not found")
+    return thread_ts
+
+
+def mention_in_message(channel_id: str, github_user, msg: str) -> str:
+    """Post a message to a Slack channel, mentioning a GitHub user.
+
+    Similar functions:
+    - impersonate_user_in_message
+    - impersonate_user_in_reply
+    - mention_user_in_reply
+
+    Args:
+        channel_id: ID of the channel to send the message to.
+        github_user: GitHub user object of the mentioned user.
+        msg: Message to send, containing a single "{}" placeholder.
+
+    Returns:
+        Message's thread timestamp, or "" in case of an error.
+    """
+    return mention_in_reply(channel_id, "", github_user, msg)
+
+
+def mention_in_reply(channel_id: str, comment_url: str, github_user, msg: str) -> str:
+    """Post a reply to a Slack thread, mentioning a GitHub user.
+
+    Similar functions:
+    - impersonate_user_in_message
+    - impersonate_user_in_reply
+    - mention_user_in_message
+
+    Args:
+        channel_id: ID of the channel to send the message to.
+        comment_url: URL of the GitHub PR comment to reply to.
+        github_user: GitHub user object of the mentioned user.
+        msg: Message to send, containing a single "{}" placeholder.
+
+    Returns:
+        Message's thread timestamp, or "" in case of an error.
+    """
+    # TODO: Is this check needed?
+    # if not channel_id:
+    #     return ""
+
+    m = msg.format(users.resolve_github_user(github_user))
+    ts = _lookup_message(comment_url)
+
+    try:
+        resp = shared_client.chat_postMessage(channel=channel_id, text=m, thread_ts=ts)
+        return resp["ts"]
+    except SlackApiError as e:
+        error = f"Failed to post {'reply' if ts else 'message'} in <#{channel_id}>"
+        debug.log(f"{error}: `{e.response["error"]}`")
+        return ""
 
 
 def normalize_channel_name(name: str) -> str:

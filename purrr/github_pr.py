@@ -27,20 +27,20 @@ def _parse_github_pr_event(data) -> None:
     match data.action:
         # A new pull request was created.
         case "opened":
-            _on_pr_opened(data.action, data.pull_request)
+            _on_pr_opened(data.action, data.pull_request, data.sender)
         # A pull request was closed.
         case "closed":
             _on_pr_closed(data)
         # A previously closed pull request was reopened.
         case "reopened":
-            _on_pr_reopened(data.action, data.pull_request)
+            _on_pr_reopened(data.action, data.pull_request, data.sender)
 
         # A pull request was converted to a draft.
         case "converted_to_draft":
             _on_pr_converted_to_draft(data)
         # A draft pull request was marked as ready for review.
         case "ready_for_review":
-            _on_pr_ready_for_review(data.action, data.pull_request)
+            _on_pr_ready_for_review(data.action, data.pull_request, data.sender)
 
         # Review by a person or team was requested for a pull request.
         case "review_requested":
@@ -72,7 +72,7 @@ def _parse_github_pr_event(data) -> None:
         # - milestoned, demilestoned
 
 
-def _on_pr_opened(action: str, pr) -> None:
+def _on_pr_opened(action: str, pr, sender) -> None:
     """A new pull request was created (or reopened, or marked as ready for review).
 
     See also the functions "_on_pr_reopened" and "_on_pr_ready_for_review".
@@ -80,12 +80,13 @@ def _on_pr_opened(action: str, pr) -> None:
     Args:
         action: GitHub PR event action.
         pr: GitHub PR data.
+        sender: GitHub user who triggered the event.
     """
     # Ignore drafts until they're marked as ready for review.
     if pr.draft:
         return
 
-    slack_channel.initialize_for_github_pr(action, pr)
+    slack_channel.initialize_for_github_pr(action, pr, sender)
 
     # Keep an AutoKitteh session running as long as the PR is alive.
     filter = "event_type == 'pull_request' && data.number == " + pr.number
@@ -116,7 +117,7 @@ def _on_pr_closed(data) -> None:
     pass  # TODO: Implement this function.
 
 
-def _on_pr_reopened(action: str, pr) -> None:
+def _on_pr_reopened(action: str, pr, sender) -> None:
     """A previously closed pull request (possibly a draft) was reopened.
 
     Slack bug alert from https://api.slack.com/methods/conversations.unarchive:
@@ -127,13 +128,14 @@ def _on_pr_reopened(action: str, pr) -> None:
     Args:
         action: GitHub PR event action.
         pr: GitHub PR data.
+        sender: GitHub user who triggered the event.
     """
     # Ignore drafts - they don't have an active Slack channel anyway.
     if pr.draft:
         return
 
     # Workaround for the Slack unarchive bug: treat this as a new PR.
-    _on_pr_opened(action, pr)
+    _on_pr_opened(action, pr, sender)
 
 
 def _on_pr_converted_to_draft(data) -> None:
@@ -148,7 +150,7 @@ def _on_pr_converted_to_draft(data) -> None:
     pass  # TODO: Implement this function.
 
 
-def _on_pr_ready_for_review(action: str, pr) -> None:
+def _on_pr_ready_for_review(action: str, pr, sender) -> None:
     """A draft pull request was marked as ready for review.
 
     For more information, see "Changing the stage of a pull request":
@@ -162,9 +164,10 @@ def _on_pr_ready_for_review(action: str, pr) -> None:
     Args:
         action: GitHub PR event action.
         pr: GitHub PR data.
+        sender: GitHub user who triggered the event.
     """
     # Workaround for the Slack unarchive bug: treat this as a new PR.
-    _on_pr_opened(action, pr)
+    _on_pr_opened(action, pr, sender)
 
 
 def _on_pr_review_requested(data) -> None:
