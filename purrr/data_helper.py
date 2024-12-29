@@ -40,6 +40,9 @@ def lookup_github_link_details(github_link: str) -> str | None:
     with file/line comments, some "child" comment events may arrive before the
     "parent" review event.
     """
+    if not github_link:
+        return None
+
     return None  # TODO: Implement this function (with "wait=True").
 
 
