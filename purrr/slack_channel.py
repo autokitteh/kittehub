@@ -4,6 +4,7 @@ import json
 
 from slack_sdk.errors import SlackApiError
 
+import data_helper
 import debug
 import markdown
 import slack_helper
@@ -61,11 +62,11 @@ def initialize_for_github_pr(action: str, pr, sender) -> None:
 
 def _report_creation_error(pr, github_username) -> None:
     """Report to the PR sender that a Slack channel wasn't created for it, and abort."""
-    user_id = users.github_username_to_slack_user_id(github_username)
     error = "Failed to create Slack channel for " + pr.html_url
     debug.log(error)
 
-    if user_id:
+    user_id = users.github_username_to_slack_user_id(github_username)
+    if user_id and not data_helper.slack_opted_out(user_id):
         slack.chat_postMessage(channel=user_id, text=error)
 
     raise RuntimeError(error)
