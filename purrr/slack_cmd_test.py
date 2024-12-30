@@ -19,12 +19,12 @@ class SlackCmdTest(unittest.TestCase):
         }
 
     def setUp(self):
+        super().setUp()
         slack_cmd.slack = MagicMock()
         slack_cmd.data_helper = MagicMock()
-        return super().setUp()
 
     def tearDown(self):
-        return super().tearDown()
+        super().tearDown()
 
     def test_help_text(self):
         data = autokitteh.AttrDict(self.data)

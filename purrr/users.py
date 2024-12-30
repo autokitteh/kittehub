@@ -12,15 +12,19 @@ github = github_helper.shared_client
 slack = slack_client("slack_conn")
 
 
+def _email_to_github_user_id(email: str) -> str:
+    """Convert an email address to a GitHub user ID, or "" if not found."""
+    users = github.search_users(email + " in:email")
+    if users.totalCount == 1:
+        return users[0].login
+    else:
+        error = f"GitHub user search results: {users.totalCount} users"
+        debug.log(error + f" with the email address `{email}`")
+        return ""
+
+
 def _email_to_slack_user_id(email: str) -> str:
-    """Convert an email address to a Slack user ID.
-
-    Args:
-        email: Email address.
-
-    Returns:
-        Slack user ID, or "" if not found.
-    """
+    """Convert an email address to a Slack user ID, or "" if not found."""
     try:
         resp = slack.users_lookupByEmail(email=email)
         return resp.get("user", {}).get("id", "")
@@ -31,7 +35,7 @@ def _email_to_slack_user_id(email: str) -> str:
 
 
 def github_username_to_slack_user(github_username: str) -> dict | None:
-    """Convert a GitHub username into Slack user data.
+    """Convert a GitHub username to Slack user data.
 
     Args:
         github_username: GitHub username.
@@ -42,6 +46,7 @@ def github_username_to_slack_user(github_username: str) -> dict | None:
     slack_user_id = github_username_to_slack_user_id(github_username)
     if not slack_user_id:
         return None
+
     try:
         resp = slack.users_info(user=slack_user_id)
         return resp.get("user")
@@ -66,6 +71,10 @@ def github_username_to_slack_user_id(github_username: str) -> str:
     Returns:
         Slack user ID, or "" if not found.
     """
+    # Don't even check GitHub teams, only individual users.
+    if "/" in github_username:
+        return ""
+
     # Optimization: if we already have it cached, no need to look it up.
     slack_user_id = data_helper.cached_slack_user_id(github_username)
     if slack_user_id in ("bot", "not found"):
@@ -113,7 +122,7 @@ def github_username_to_slack_user_id(github_username: str) -> str:
 
 
 def resolve_github_user(github_user) -> str:
-    """Convert a GitHub user to a linkified user reference in Slack.
+    """Convert a GitHub user or team to a linkified reference in Slack.
 
     Args:
         github_user: GitHub user object.
@@ -128,7 +137,7 @@ def resolve_github_user(github_user) -> str:
         return f"<@{slack_user_id}>"
     else:
         # Otherwise, fall-back to their GitHub profile link.
-        return f"<{github_user.html_url}|{github_user.login}>"
+        return f"<{github_user.html_url}|@{github_user.login}>"
 
 
 def _slack_users() -> list[dict]:

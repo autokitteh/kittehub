@@ -5,6 +5,7 @@ import json
 from slack_sdk.errors import SlackApiError
 
 import debug
+import markdown
 import slack_helper
 import users
 
@@ -35,7 +36,11 @@ def initialize_for_github_pr(action: str, pr, sender) -> None:
     _set_description(pr, channel_id)
     _set_bookmarks(pr, channel_id)
 
-    # TODO: Post an introduction message to the new channel, describing the PR.
+    # Post an introduction message to the new channel, describing the PR.
+    msg = f"opened {pr.html_url}: `{pr.title}`"
+    if pr.body:
+        msg += "\n\n" + markdown.github_to_slack(pr.body, pr.html_url)
+    slack_helper.mention_in_message(channel_id, sender, "{} " + msg)
 
     # TODO: Also post a message summarizing check states (updated
     # later based on "workflow_job" and "workflow_run" events).

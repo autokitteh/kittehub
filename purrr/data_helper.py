@@ -16,6 +16,22 @@ _GET_TIMEOUT = 5
 _USER_CACHE_TTL = "24h"
 
 
+def cache_github_reference(slack_user_id: str, github_ref: str) -> None:
+    """Map a Slack user ID to a GitHub user reference/name, for a day.
+
+    This helps reduce the amount of GitHub and Slack lookup API calls, to avoid throttling.
+    """
+    return  # TODO: Implement this function.
+
+
+def cached_github_reference(slack_user_id: str) -> str:
+    """Return the GitHub user reference/name mapped to a Slack user ID, or "" if not cached yet.
+
+    This helps reduce the amount of GitHub and Slack lookup API calls, to avoid throttling.
+    """
+    return ""  # TODO: Implement this function.
+
+
 def cache_slack_user_id(github_username: str, slack_user_id: str) -> None:
     """Map a GitHub username to a Slack user ID, for a day.
 
