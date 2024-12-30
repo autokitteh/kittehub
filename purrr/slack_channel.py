@@ -84,6 +84,7 @@ def _set_bookmarks(pr, channel_id: str) -> None:
 
 
 def _set_description(pr, channel_id: str) -> None:
+    """Set the description of a Slack channel to a GitHub PR title."""
     title = f"`{pr.title}`"
     if len(title) > _MAX_METADATA_LENGTH:
         title = title[: _MAX_METADATA_LENGTH - 4] + "`..."
@@ -95,6 +96,7 @@ def _set_description(pr, channel_id: str) -> None:
 
 
 def _set_topic(pr, channel_id: str) -> None:
+    """Set the topic of a Slack channel to a GitHub PR URL."""
     topic = pr.html_url
     if len(topic) > _MAX_METADATA_LENGTH:
         topic = topic[: _MAX_METADATA_LENGTH - 4] + " ..."
