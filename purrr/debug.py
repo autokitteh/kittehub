@@ -1,4 +1,4 @@
-"""Simple utility function for debugging and reporting errors.
+"""Simple utility functions for debugging and reporting errors in Slack.
 
 Decoupled from the "slack_helper" module, to avoid circular imports.
 """
