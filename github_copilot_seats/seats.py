@@ -16,41 +16,44 @@ logins = LOGINS.split(",") if LOGINS else None
 github = github_client("github_conn")
 slack = slack_client("slack_conn")
 
+org = github.get_organization(GITHUB_ORG)
+copilot = org.get_copilot()
+
 
 def prune_idle_seats() -> list[dict]:
     """Prunes idle GitHub Copilot users based on their last activity time."""
     seats = find_idle_seats()
     for seat in seats:
-        autokitteh.start(loc="seats.py:engage_seat", data={"seat": seat})
+        autokitteh.start(loc="seats.py:engage_seat", data=seat)
     return seats
 
 
 def find_idle_seats() -> list[dict]:
     """Identifies idle GitHub Copilot users based on their last activity time."""
-    seats = _get_all_seats()
+    seats = copilot.get_seats()
     t = datetime.now(timezone.utc)
     idle_seats = []
 
     for seat in seats:
-        assignee_login = seat["assignee"]["login"]
-        last_activity_time = datetime.fromisoformat(
-            seat["last_activity_at"].replace("Z", "+00:00")
-        )
-
-        if logins and assignee_login not in logins:
-            print(f"skipping {assignee_login}")
+        if logins and seat.assignee.login not in logins:
+            print(f"skipping {seat.assignee.login}")
             continue
 
-        delta = t - last_activity_time
+        delta = t - seat.last_activity_at
         is_idle = delta >= timedelta(minutes=IDLE_USAGE_THRESHOLD)
 
         print(
-            f"{assignee_login}: {t} - {last_activity_time} = {delta} "
-            f"{'>=' if is_idle else '<'} {IDLE_USAGE_THRESHOLD}"
+            f"{seat.assignee.login}: {t} - {seat.last_activity_at} = {delta} "
+            f"{'>=' if is_idle else '<'} {IDLE_USAGE_THRESHOLD} minutes"
         )
 
         if is_idle:
-            idle_seats.append(seat)
+            # Convert CopilotSeat object to a dictionary
+            seat_dict = {
+                "assignee": {"login": seat.assignee.login},
+                "last_activity_at": seat.last_activity_at.isoformat(),
+            }
+            idle_seats.append(seat_dict)
 
     return idle_seats
 
@@ -66,9 +69,6 @@ def engage_seat(seat: dict[str, Any]) -> None:
         seat (dict): Contains details about the assigned GitHub user.
     """
     github_login = seat["assignee"]["login"]
-    # TODO: Remove this check. For testing purposes only.
-    if github_login != "pashafateev":
-        return
 
     report(github_login, "engaging")
 
@@ -77,12 +77,12 @@ def engage_seat(seat: dict[str, Any]) -> None:
         print(f"No slack user found for GitHub user {github_login}")
         return
 
-    _remove_seat(github_login)
+    copilot.remove_seats([github_login])
 
     # Loads a predefined message (blocks) from a JSON file and posts it to the user's Slack
     with open("msg.json") as file:
-        blocks = json.load(file)
-    slack.chat_postMessage(slack_id, blocks=blocks)
+        msg = json.load(file)
+    slack.chat_postMessage(channel=slack_id, blocks=msg["blocks"])
 
     # Subscribes to Slack interaction events, waiting for the user's response
     s = autokitteh.subscribe(
@@ -90,41 +90,24 @@ def engage_seat(seat: dict[str, Any]) -> None:
     )
 
     # Retrieves the value from the user's response in the Slack event
-    value = autokitteh.next_event(s)["actions"][0].value
+    value = autokitteh.next_event(s)["actions"][0]["value"]
 
     # Based on the user's response, it either confirms the action or reinstates the seat
     if value == "ok":
-        slack.chat_postMessage(slack_id, "Okey dokey!")
+        slack.chat_postMessage(channel=slack_id, text="Okey dokey!")
         report(github_login, "ok")
     elif value == "reinstate":
         report(github_login, "reinstate")
-        _add_seat(github_login)
+        copilot.add_seats([github_login])
         slack.chat_postMessage(
-            slack_id, msg="You have been reinstated to the Copilot program."
+            channel=slack_id, text="You have been reinstated to the Copilot program."
         )
     else:
         report(github_login, f"weird response: {value}")
-        slack.chat_postMessage(slack_id, f"Response: {value} not recognized.")
-
-
-def _add_seat(login: str) -> None:
-    url = f"https://api.github.com/orgs/{GITHUB_ORG}/copilot/billing/selected_users"
-    input_data = {"selected_usernames": [login]}
-    github.requester.requestJsonAndCheck("POST", url, input_data=input_data)
-
-
-def _remove_seat(login: str) -> None:
-    url = f"https://api.github.com/orgs/{GITHUB_ORG}/copilot/billing/selected_users"
-    input_data = {"selected_usernames": [login]}
-    github.requester.requestJsonAndCheck("DELETE", url, input_data=input_data)
-
-
-def _get_all_seats() -> list:
-    # TODO: pagination.
-    url = f"https://api.github.com/orgs/{GITHUB_ORG}/copilot/billing/seats"
-    _, data = github.requester.requestJsonAndCheck("GET", url)
-    return data["seats"]
+        slack.chat_postMessage(
+            channel=slack_id, text=f"Response: {value} not recognized."
+        )
 
 
 def report(github_login: str, msg: str) -> None:
-    slack.chat_postMessage(LOG_CHANNEL, f"{github_login}: {msg}")
+    slack.chat_postMessage(channel=LOG_CHANNEL, text=f"{github_login}: {msg}")

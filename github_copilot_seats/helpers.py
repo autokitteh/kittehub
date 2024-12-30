@@ -7,13 +7,13 @@ slack = slack_client("slack_conn")
 
 def _email_to_slack_user_id(email: str) -> str:
     """Fetch Slack user ID based on email address."""
-    resp = slack.users_lookup_by_email(email)
-    return resp.user.id if resp.ok else None
+    resp = slack.users_lookupByEmail(email=email)
+    return resp["user"]["id"] if resp.get("ok", False) else None
 
 
 def github_username_to_slack_user_id(username: str, owner_org: str) -> str:
     """Map a GitHub username to a Slack user ID."""
-    resp = github.get_user(username, owner=owner_org)
+    resp = github.get_user(username)
 
     if resp.type == "Bot":
         return None
@@ -45,9 +45,9 @@ def github_username_to_slack_user_id(username: str, owner_org: str) -> str:
 def _slack_users(cursor="") -> list:
     """Retrieve all Slack users, handling pagination."""
     resp = slack.users_list(cursor, limit=100)
-    if not resp.ok:
+    if not resp.get("ok", False):
         return []
 
-    users = resp.members
-    next_cursor = resp.response_metadata.next_cursor
+    users = resp["members"]
+    next_cursor = resp.get("response_metadata", {}).get("next_cursor")
     return users + _slack_users(next_cursor) if next_cursor else users
