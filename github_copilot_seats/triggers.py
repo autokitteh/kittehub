@@ -9,7 +9,7 @@ def on_schedule() -> None:
 
 
 def on_slack_slash_command(event) -> None:
-    cmd = event.data.text
+    cmd = event.data.text.lower()
     cid = event.data.channel_id
 
     if cmd == "prune-idle-copilot-seats":
