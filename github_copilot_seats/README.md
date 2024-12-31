@@ -12,6 +12,7 @@ If Copilot was not used in a preceding period, it automatically unregisters them
 Users can then optionally ask for their subscription to be reinstated.
 
 ## Before Deploying This AutoKitteh Project:
+
 - Set the `GITHUB_ORG` in the project's vars.
 - Set the `IDLE_USAGE_THRESHOLD` in the project's vars:
   - (e.g., `4320` for 72 hours)
