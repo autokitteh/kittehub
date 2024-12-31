@@ -219,10 +219,10 @@ class MarkdownSlackToGithubUserMentionsTest(unittest.TestCase):
         users._github_users = MagicMock()
 
     def tearDown(self):
-        super().tearDown()
         users._github_users = self._github_users
         users._email_to_github_user_id = self.__email_to_github_user_id
         users._slack_user_info = self._slack_user_info
+        super().tearDown()
 
     def test_slack_user_info_error(self):
         users._slack_user_info.return_value = {}
