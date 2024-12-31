@@ -11,7 +11,7 @@ def _email_to_slack_user_id(email: str) -> str:
     return resp["user"]["id"] if resp.get("ok", False) else None
 
 
-def github_username_to_slack_user_id(username: str, owner_org: str) -> str:
+def github_username_to_slack_user_id(username: str) -> str:
     """Map a GitHub username to a Slack user ID."""
     resp = github.get_user(username)
 
