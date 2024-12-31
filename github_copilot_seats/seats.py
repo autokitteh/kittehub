@@ -10,16 +10,16 @@ from autokitteh.slack import slack_client
 from helpers import github_username_to_slack_user_id
 
 
-GITHUB_ORG = os.getenv("GITHUB_ORG")
+ORG_NAME = os.getenv("github_conn__target_name")
 IDLE_USAGE_THRESHOLD = int(os.getenv("IDLE_USAGE_THRESHOLD"))
 LOGINS = os.getenv("LOGINS")
 LOG_CHANNEL = os.getenv("LOG_CHANNEL")
 
-logins = LOGINS.split(",") if LOGINS else None
+logins = LOGINS.split(",") if LOGINS else []
 github = github_client("github_conn")
 slack = slack_client("slack_conn")
 
-org = github.get_organization(GITHUB_ORG)
+org = github.get_organization(ORG_NAME)
 copilot = org.get_copilot()
 
 
@@ -71,7 +71,9 @@ def engage_seat(seat: dict[str, Any]) -> None:
         seat (dict): Contains details about the assigned GitHub user.
     """
     github_login = seat["assignee"]["login"]
-
+    # FOR TESTING ONLY; REMOVE AFTER TESTING
+    if github_login != "pashafateev":
+        return
     report(github_login, "engaging")
 
     slack_id = github_username_to_slack_user_id(github_login)
