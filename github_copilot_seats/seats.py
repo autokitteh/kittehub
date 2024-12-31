@@ -7,6 +7,7 @@ from autokitteh.github import github_client
 from autokitteh.slack import slack_client
 from helpers import github_username_to_slack_user_id
 
+
 GITHUB_ORG = os.getenv("GITHUB_ORG")
 IDLE_USAGE_THRESHOLD = int(os.getenv("IDLE_USAGE_THRESHOLD"))
 LOGINS = os.getenv("LOGINS")
