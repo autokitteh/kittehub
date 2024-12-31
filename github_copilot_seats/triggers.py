@@ -1,4 +1,5 @@
 from autokitteh.slack import slack_client
+
 import seats
 
 s = slack_client("slack_conn")
