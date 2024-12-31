@@ -1,10 +1,12 @@
+from datetime import datetime, timezone, timedelta
 import json
 import os
-from datetime import datetime, timezone, timedelta
 from typing import Any
+
 import autokitteh
 from autokitteh.github import github_client
 from autokitteh.slack import slack_client
+
 from helpers import github_username_to_slack_user_id
 
 
