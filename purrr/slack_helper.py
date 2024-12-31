@@ -172,7 +172,7 @@ def mention_in_reply(channel_id: str, comment_url: str, github_user, msg: str) -
     # if not channel_id:
     #     return ""
 
-    m = msg.format(users.resolve_github_user(github_user))
+    m = msg.format(users.format_github_user_for_slack(github_user))
     ts = _lookup_message(comment_url)
 
     try:

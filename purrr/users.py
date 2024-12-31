@@ -1,20 +1,22 @@
 """User-related helper functions across GitHub and Slack."""
 
 from autokitteh.slack import slack_client
+import github
 from slack_sdk.errors import SlackApiError
+
 
 import debug
 import data_helper
 import github_helper
 
 
-github = github_helper.shared_client
+gh = github_helper.shared_client
 slack = slack_client("slack_conn")
 
 
 def _email_to_github_user_id(email: str) -> str:
     """Convert an email address to a GitHub user ID, or "" if not found."""
-    users = github.search_users(email + " in:email")
+    users = gh.search_users(email + " in:email")
     if users.totalCount == 1:
         return users[0].login
     else:
@@ -34,26 +36,106 @@ def _email_to_slack_user_id(email: str) -> str:
         return ""
 
 
-def github_username_to_slack_user(github_username: str) -> dict | None:
-    """Convert a GitHub username to Slack user data.
+def format_github_user_for_slack(github_user) -> str:
+    """Convert a GitHub user or team to a linkified reference in Slack.
 
     Args:
-        github_username: GitHub username.
+        github_user: GitHub user object.
 
     Returns:
-        Slack user data, or None if not found.
+        Slack user reference, or GitHub profile link.
+        Used for mentioning users in Slack messages.
     """
-    slack_user_id = github_username_to_slack_user_id(github_username)
-    if not slack_user_id:
-        return None
+    slack_user_id = github_username_to_slack_user_id(github_user.login)
+    if slack_user_id:
+        # Mention the user by their Slack ID, if possible.
+        return f"<@{slack_user_id}>"
+    else:
+        # Otherwise, fall-back to their GitHub profile link.
+        return f"<{github_user.html_url}|@{github_user.login}>"
 
+
+def format_slack_user_for_github(slack_user_id: str) -> str:
+    """Convert a Slack user ID to a GitHub user reference/name.
+
+    This function also caches both successful and failed results for
+    a day, to reduce the amount of API calls, especially to Slack.
+
+    Args:
+        slack_user_id: Slack user ID.
+
+    Returns:
+        GitHub user reference, or the Slack user's full name, or "Someone".
+        Used for mentioning users in GitHub reviews and comments.
+    """
+    if not slack_user_id:
+        debug.log("Required input not found: Slack user ID")
+        return "Someone"
+
+    # Optimization: if we already have it cached, no need to look it up.
+    github_ref = data_helper.cached_github_reference(slack_user_id)
+    if github_ref:
+        return github_ref
+
+    user = _slack_user_info(slack_user_id)
+    if not user:
+        # This is never OK, don't cache it in order to keep retrying.
+        return "Someone"
+
+    profile = user.get("profile", {})
+
+    # Special case: Slack apps/bots can't have GitHub identities.
+    if user.get("is_bot"):
+        bot_name = profile.get("real_name", "Some Slack app")
+        data_helper.cache_github_reference(slack_user_id, bot_name)
+        return bot_name
+
+    # Try to match by the email address first.
+    email = profile.get("email", "")
+    if not email:
+        debug.log(f"Email address not set for Slack user <@{slack_user_id}>")
+    else:
+        github_id = _email_to_github_user_id(email)
+        if github_id:
+            github_ref = "@" + github_id
+            data_helper.cache_github_reference(slack_user_id, github_ref)
+            return github_ref
+
+    # Otherwise, try to match by the user's full name.
+    slack_name = profile.get("real_name", "").lower()
+    if not slack_name:
+        debug.log(f"Slack user <@{slack_user_id}>: `real_name` not found in profile")
+        return "Someone"
+
+    users = [user for user in _github_users() if user.name.lower() == slack_name]
+    if len(users) == 1:
+        github_ref = "@" + users[0].login
+        data_helper.cache_github_reference(slack_user_id, github_ref)
+        return github_ref
+
+    # Optimization: cache unsuccessful results too (i.e. external collaborators).
+    error = f"Slack user <@{slack_user_id}>: found {len(users)} "
+    debug.log(error + "GitHub org members with the same full name")
+    data_helper.cache_github_reference(slack_user_id, profile["real_name"])
+
+    # If all else fails, return the Slack user's full name.
+    return profile["real_name"]
+
+
+def _github_users() -> list[github.NamedUser.NamedUser]:
+    """Return a list of all GitHub users in the organization."""
     try:
-        resp = slack.users_info(user=slack_user_id)
-        return resp.get("user")
-    except SlackApiError as e:
-        error = f"Failed to get Slack user info for <@{slack_user_id}>"
-        debug.log(f"{error}: `{e.response['error']}`")
-        return None
+        return list(gh.get_organization(github_helper.ORG_NAME).get_members())
+    except github.GithubException as e:
+        error = "Failed to list GitHub members in the organization "
+        debug.log(error + f"`{github_helper.ORG_NAME}`:\n```{e}```")
+        return []
+
+
+def github_username_to_slack_user(github_username: str) -> dict:
+    """Convert a GitHub username to Slack user data (empty in case of errors)."""
+    slack_user_id = github_username_to_slack_user_id(github_username)
+    return _slack_user_info(slack_user_id) if slack_user_id else {}
 
 
 def github_username_to_slack_user_id(github_username: str) -> str:
@@ -82,7 +164,7 @@ def github_username_to_slack_user_id(github_username: str) -> str:
     elif slack_user_id:
         return slack_user_id
 
-    user = github.get_user(github_username)
+    user = gh.get_user(github_username)
     gh_user_link = f"<{user.html_url}|{github_username}>"
 
     # Special case: GitHub bots can't have Slack identities.
@@ -121,23 +203,15 @@ def github_username_to_slack_user_id(github_username: str) -> str:
     return ""
 
 
-def resolve_github_user(github_user) -> str:
-    """Convert a GitHub user or team to a linkified reference in Slack.
-
-    Args:
-        github_user: GitHub user object.
-
-    Returns:
-        Slack user reference, or GitHub profile link.
-        Used for mentioning users in Slack messages.
-    """
-    slack_user_id = github_username_to_slack_user_id(github_user.login)
-    if slack_user_id:
-        # Mention the user by their Slack ID, if possible.
-        return f"<@{slack_user_id}>"
-    else:
-        # Otherwise, fall-back to their GitHub profile link.
-        return f"<{github_user.html_url}|@{github_user.login}>"
+def _slack_user_info(slack_user_id: str) -> dict:
+    """Return all the details of a Slack user based on their ID."""
+    try:
+        resp = slack.users_info(user=slack_user_id)
+        return resp.get("user", {})
+    except SlackApiError as e:
+        error = f"Failed to get Slack user info for <@{slack_user_id}>"
+        debug.log(f"{error}: `{e.response['error']}`")
+        return {}
 
 
 def _slack_users() -> list[dict]:

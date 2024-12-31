@@ -4,12 +4,19 @@ import collections
 import re
 from urllib.parse import urlparse
 
+from slack_sdk.errors import SlackApiError
+
+import debug
+import slack_helper
 import users
 
 
 _GithubUser = collections.namedtuple("GithubUser", ["login", "html_url"])
 _SlackChannel = collections.namedtuple("SlackChannel", ["name", "id"])
 _SlackUser = collections.namedtuple("SlackUser", ["link", "id"])
+
+
+slack = slack_helper.shared_client
 
 
 def github_to_slack(text: str, pr_url: str) -> str:
@@ -64,7 +71,7 @@ def github_to_slack(text: str, pr_url: str) -> str:
             url_suffix = url_suffix.replace("/", "/teams/")
         profile_link = f"{parsed.scheme}://{parsed.netloc}/{url_suffix}"
         user_obj = _GithubUser(login=github_user[1:], html_url=profile_link)
-        slack_user = users.resolve_github_user(user_obj)
+        slack_user = users.format_github_user_for_slack(user_obj)
         text = text.replace(github_user, slack_user)
 
     # PR references: "#123" --> "<PR URL|#123>" (works for issues too).
@@ -127,9 +134,35 @@ def slack_to_github(text: str) -> str:
         channel = _SlackChannel(*channel)
         old = f"[{channel.name}](#{channel.id})"
         if not channel.name:
-            channel = "TODO"
-        team_id = "TEAM_ID"
+            channel = _SlackChannel(_slack_channel_name(channel.id), channel.id)
+        team_id = _slack_team_id()
         new = f"[#{channel.name}](slack://channel?team={team_id}&id={channel.id})"
         text = text.replace(old, new)
 
+    # User mentions: "<@...>" --> "[](@...)" --> "@github-user" or "Full Name".
+    for slack_user in re.findall(r"(\[.*?\]\(@([A-Z0-9]+)\))", text):
+        slack_user = _SlackUser(*slack_user)
+        github_user = users.format_slack_user_for_github(slack_user.id)
+        text = text.replace(slack_user.link, github_user)
+
     return text
+
+
+def _slack_channel_name(id: str) -> str:
+    """Return the name of a Slack channel based on its ID."""
+    try:
+        resp = slack.conversations_info(channel=id)
+        return resp.get("channel", {}).get("name", "")
+    except SlackApiError as e:
+        error = f"Failed to get Slack channel info for <#{id}>"
+        debug.log(f"{error}: `{e.response['error']}`")
+        return ""
+
+
+def _slack_team_id() -> str:
+    """Return the Slack app's team ID."""
+    try:
+        return slack.auth_test().get("team_id", "")
+    except SlackApiError as e:
+        debug.log(f"Slack auth test failed: `{e.response['error']}`")
+        return ""
