@@ -43,10 +43,9 @@ def find_idle_seats() -> list[dict]:
         delta = t - seat.last_activity_at
         is_idle = delta >= timedelta(minutes=IDLE_USAGE_THRESHOLD)
 
-        print(
-            f"{seat.assignee.login}: {t} - {seat.last_activity_at} = {delta} "
-            f"{'>=' if is_idle else '<'} {IDLE_USAGE_THRESHOLD} minutes"
-        )
+        comparison = ">=" if is_idle else "<"
+        status = f"{seat.assignee.login}: {t} - {seat.last_activity_at} = {delta} {comparison} {IDLE_USAGE_THRESHOLD} minutes"
+        print(status)
 
         if is_idle:
             # Convert CopilotSeat object to a dictionary
@@ -73,7 +72,7 @@ def engage_seat(seat: dict[str, Any]) -> None:
 
     report(github_login, "engaging")
 
-    slack_id = github_username_to_slack_user_id(github_login, GITHUB_ORG)
+    slack_id = github_username_to_slack_user_id(github_login)
     if not slack_id:
         print(f"No slack user found for GitHub user {github_login}")
         return

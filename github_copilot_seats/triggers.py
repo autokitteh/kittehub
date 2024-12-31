@@ -1,11 +1,11 @@
 from autokitteh.slack import slack_client
-from seats import prune_idle_seats, find_idle_seats
+import seats
 
 s = slack_client("slack_conn")
 
 
 def on_schedule() -> None:
-    print(prune_idle_seats())
+    print(seats.prune_idle_seats())
 
 
 def on_slack_slash_command(event) -> None:
@@ -13,16 +13,16 @@ def on_slack_slash_command(event) -> None:
     cid = event.data.channel_id
 
     if cmd == "prune-idle-copilot-seats":
-        seats = prune_idle_seats()
-        msg = f"Engaged {len(seats)} new idle seats: {', '.join(get_logins(seats))}"
-        s.chat_postMessage(channel=cid, text=msg)
+        idle_seats = seats.prune_idle_seats()
+        msg = f"Engaged {len(idle_seats)} new idle seats: {', '.join(get_logins(idle_seats))}"
+        s.chat_postEphemeral(channel=cid, user=event.data.user_id, text=msg)
     elif cmd == "find-idle-copilot-seats":
-        seats = find_idle_seats()
-        msg = f"Found {len(seats)} idle seats: {', '.join(get_logins(seats))}"
-        s.chat_postMessage(channel=cid, text=msg)
+        idle_seats = seats.find_idle_seats()
+        msg = f"Found {len(idle_seats)} idle seats: {', '.join(get_logins(idle_seats))}"
+        s.chat_postEphemeral(channel=cid, user=event.data.user_id, text=msg)
     else:
-        s.chat_postMessage(channel=cid, text="Unrecognized command")
+        s.chat_postEphemeral(channel=cid, user=event.data.user_id, text="Unrecognized command")
 
 
-def get_logins(seats: list) -> list:
-    return [seat["assignee"]["login"] for seat in seats]
+def get_logins(seat_list: list) -> list:
+    return [seat["assignee"]["login"] for seat in seat_list]
