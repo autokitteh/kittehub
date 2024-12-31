@@ -12,35 +12,33 @@
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": "Reinstate"
-            },
-            "accessory": {
-                "type": "button",
-                "text": {
-                    "type": "plain_text",
-                    "text": ":repeat:",
-                    "emoji": true
-                },
-                "value": "reinstate",
-                "action_id": "button-action"
+                "text": "Please select an option:"
             }
         },
         {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "OK"
-            },
-            "accessory": {
-                "type": "button",
-                "text": {
-                    "type": "plain_text",
-                    "text": ":relieved:",
-                    "emoji": true
+            "type": "actions",
+            "elements": [
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": ":repeat: Reinstate",
+                        "emoji": true
+                    },
+                    "value": "reinstate",
+                    "action_id": "reinstate-action"
                 },
-                "value": "ok",
-                "action_id": "button-action"
-            }
+                {
+                    "type": "button", 
+                    "text": {
+                        "type": "plain_text",
+                        "text": ":relieved: OK",
+                        "emoji": true
+                    },
+                    "value": "ok",
+                    "action_id": "ok-action"
+                }
+            ]
         }
     ]
 }
