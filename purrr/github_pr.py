@@ -30,7 +30,7 @@ def _parse_github_pr_event(data) -> None:
             _on_pr_opened(data.action, data.pull_request, data.sender)
         # A pull request was closed.
         case "closed":
-            _on_pr_closed(data)
+            _on_pr_closed(data.action, data.pull_request, data.sender)
         # A previously closed pull request was reopened.
         case "reopened":
             _on_pr_reopened(data.action, data.pull_request, data.sender)
@@ -88,7 +88,7 @@ def _on_pr_opened(action: str, pr, sender) -> None:
 
     channel = slack_channel.initialize_for_github_pr(action, pr, sender)
 
-    # Keep an AutoKitteh session running as long as the PR is alive.
+    # Intercept relevant GitHub and Slack events.
     filter = f"event_type == 'pull_request' && data.number == {pr.number}"
     subs = [autokitteh.subscribe("github_conn", filter=filter)]
 
@@ -99,6 +99,7 @@ def _on_pr_opened(action: str, pr, sender) -> None:
     filter = f"event_type == 'reaction_added' && data.event.item.channel == {channel}"
     subs.append(autokitteh.subscribe("slack_conn", filter=filter))
 
+    # Keep this AutoKitteh session running to handle them until the PR is closed.
     while True:
         data = autokitteh.next_event(subs)
 
@@ -106,7 +107,6 @@ def _on_pr_opened(action: str, pr, sender) -> None:
         if hasattr(data, "action"):
             print("Received GitHub PR event:", data.action)
             if data.action in ("closed", "converted_to_draft"):
-                _parse_github_pr_event(data)
                 for sub in subs:
                     autokitteh.unsubscribe(sub)
                 break
@@ -116,7 +116,7 @@ def _on_pr_opened(action: str, pr, sender) -> None:
             print("Received Slack event:", data.event.type)
 
 
-def _on_pr_closed(data) -> None:
+def _on_pr_closed(action: str, pr, sender) -> None:
     """A pull request (possibly a draft) was closed.
 
     If "merged" is false in the webhook payload, the pull request was
@@ -124,13 +124,15 @@ def _on_pr_closed(data) -> None:
     payload, the pull request was merged.
 
     Args:
-        data: GitHub event data.
+        action: GitHub PR event action.
+        pr: GitHub PR data.
+        sender: GitHub user who triggered the event.
     """
     # Ignore drafts - they don't have an active Slack channel anyway.
-    if data.pull_request.draft:
+    if pr.draft:
         return
 
-    pass  # TODO: Implement this function.
+    slack_channel.archive(action, pr, sender)
 
 
 def _on_pr_reopened(action: str, pr, sender) -> None:

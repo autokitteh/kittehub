@@ -1,6 +1,7 @@
 """Create and manage Slack channels."""
 
 import json
+import time
 
 from slack_sdk.errors import SlackApiError
 
@@ -11,14 +12,19 @@ import slack_helper
 import users
 
 
-_MAX_METADATA_LENGTH = 250  # Characters.
+# Character limit for topics and descriptions of Slack channels.
+_MAX_METADATA_LENGTH = 250
+
+# Wait for a few seconds to handle other asynchronous events
+# (e.g. a PR closure comment) before archiving the channel.
+_PR_CLOSE_DELAY = 5
 
 
 slack = slack_helper.shared_client
 
 
 def initialize_for_github_pr(action: str, pr, sender) -> str:
-    """Initialize a dedicated Slack channel for a GitHub PR.
+    """Initialize a Slack channel that represents a GitHub PR.
 
     Args:
         action: GitHub PR event action.
@@ -68,7 +74,7 @@ def _set_topic(pr, channel_id: str) -> None:
         slack.conversations_setTopic(channel=channel_id, topic=topic)
     except SlackApiError as e:
         error = f"Failed to set the topic of <#{channel_id}> to `{topic}`"
-        debug.log(error + f": `{e.response['error']}`")
+        debug.log(f"{error}: `{e.response['error']}`")
 
 
 def _set_description(pr, channel_id: str) -> None:
@@ -80,17 +86,13 @@ def _set_description(pr, channel_id: str) -> None:
         slack.conversations_setPurpose(channel=channel_id, purpose=title)
     except SlackApiError as e:
         error = f"Failed to set the purpose of <#{channel_id}> to `{title}`"
-        debug.log(error + f": `{e.response['error']}`")
+        debug.log(f"{error}: `{e.response['error']}`")
 
 
 def _set_bookmarks(pr, channel_id: str) -> None:
-    """Set the bookmarks of a Slack channel to important PR links.
+    """Set the bookmarks of a Slack channel to important GitHub PR links.
 
     Bookmark titles are also updated later based on relevant GitHub events.
-
-    Args:
-        pr: GitHub PR data.
-        channel_id: Slack channel ID.
     """
     pass  # TODO: Implement this function.
 
@@ -112,7 +114,7 @@ def _post_messages(action: str, pr, sender, channel_id: str) -> None:
 
 
 def _add_users(channel_id: str, github_users: list[str]) -> None:
-    """Invite all the participants (up to 1000) in a GitHub PR to a Slack channel."""
+    """Invite all the participants in a GitHub PR to a Slack channel."""
     slack_users = [users.github_username_to_slack_user_id(u) for u in github_users]
     slack_users = [user for user in slack_users if user]  # Ignore unrecognized users.
 
@@ -121,6 +123,10 @@ def _add_users(channel_id: str, github_users: list[str]) -> None:
     slack_users = [u for u in slack_users if not data_helper.slack_opted_out(u)]
     if not slack_users:
         return
+
+    # https://api.slack.com/methods/conversations.invite
+    if len(slack_users) > 1000:
+        slack_users = slack_users[:1000]
 
     users = ",".join(slack_users)
     try:
@@ -134,3 +140,34 @@ def _add_users(channel_id: str, github_users: list[str]) -> None:
         for e in e.response.get("errors", []):
             error += f"\n- <@{e.user}> - `{e.error}`"
         debug.log(error)
+
+
+def archive(action: str, pr, sender) -> None:
+    """Archive a Slack channel that represents a GitHub PR.
+
+    Args:
+        action: GitHub PR event action.
+        pr: GitHub PR data.
+        sender: GitHub user who triggered the event.
+    """
+    channel_id = slack_helper.lookup_channel(pr.html_url, action)
+    if not channel_id:
+        # Unrecoverable error, but no need to report/debug it:
+        # if we're not tracking it, there's nothing to fix.
+        return
+
+    # Wait for a few seconds to handle other asynchronous events
+    # (e.g. a PR closure comment) before archiving the channel.
+    time.sleep(_PR_CLOSE_DELAY)
+
+    if action == "closed" and pr.merged:
+        action = "merged"
+
+    msg = f"{{}} {action} this PR"
+    slack_helper.mention_in_message(channel_id, sender, msg)
+
+    try:
+        slack.conversations_archive(channel=channel_id)
+    except SlackApiError as e:
+        error = f"{pr.html_url} is `{action}`, but failed to archive <#{channel_id}>"
+        debug.log(f"{error}: `{e.response['error']}`")

@@ -13,6 +13,7 @@ import users
 
 # PR channel names in Slack: "<prefix>_<number>_<title>".
 _CHANNEL_PREFIX = os.getenv("SLACK_CHANNEL_PREFIX", "_pr")
+
 # Visibility of PR channels in Slack: "public" (default) or "private".
 _IS_PRIVATE = os.getenv("SLACK_CHANNEL_VISIBILITY") or ""
 
@@ -112,8 +113,28 @@ def impersonate_in_reply(
         return ""
 
 
+def lookup_channel(pr_url: str, action: str) -> str:
+    """Return the ID of a Slack channel that represents a GitHub PR.
+
+    This function waits up to a few seconds for the PR's Slack message to
+    exist, because GitHub events are asynchronous. For example: when a PR is
+    re/opened, some initialization events may arrive before the "opened" event.
+
+    Args:
+        pr_url: URL of the GitHub PR.
+        action: GitHub PR event action.
+
+    Returns:
+        Channel ID, or "" if not found.
+    """
+    channel_id = data_helper.lookup_github_link_details(pr_url)
+    if not channel_id:
+        debug.log(f"{pr_url} is `{action}`, but its Slack channel ID not found")
+    return channel_id
+
+
 def _lookup_message(comment_url: str) -> str | None:
-    """Return the ID (timestamp) of a Slack message representing a GitHub PR review.
+    """Return the ID (timestamp) of a Slack message that represents a GitHub PR review.
 
     This function waits up to a few seconds for the PR review's Slack message
     to exist, because GitHub events are asynchronous. For example: when a PR
