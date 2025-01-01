@@ -86,18 +86,34 @@ def _on_pr_opened(action: str, pr, sender) -> None:
     if pr.draft:
         return
 
-    slack_channel.initialize_for_github_pr(action, pr, sender)
+    channel = slack_channel.initialize_for_github_pr(action, pr, sender)
 
     # Keep an AutoKitteh session running as long as the PR is alive.
-    filter = "event_type == 'pull_request' && data.number == " + pr.number
-    github_subs = autokitteh.subscribe("github_conn", filter=filter)
+    filter = f"event_type == 'pull_request' && data.number == {pr.number}"
+    subs = [autokitteh.subscribe("github_conn", filter=filter)]
+
+    filter = "(event_type == 'message' || event_type.startswith('member_'))"
+    filter += f" && data.event.channel == {channel}"
+    subs.append(autokitteh.subscribe("slack_conn", filter=filter))
+
+    filter = f"event_type == 'reaction_added' && data.event.item.channel == {channel}"
+    subs.append(autokitteh.subscribe("slack_conn", filter=filter))
+
     while True:
-        data = autokitteh.next_event([github_subs])
-        print("Received GitHub PR event:", data.action)
-        if data.action in ("closed", "converted_to_draft"):
-            _parse_github_pr_event(data)
-            autokitteh.unsubscribe(github_subs)
-            break
+        data = autokitteh.next_event(subs)
+
+        # GitHub PR event.
+        if hasattr(data, "action"):
+            print("Received GitHub PR event:", data.action)
+            if data.action in ("closed", "converted_to_draft"):
+                _parse_github_pr_event(data)
+                for sub in subs:
+                    autokitteh.unsubscribe(sub)
+                break
+
+        # Slack event.
+        else:
+            print("Received Slack event:", data.event.type)
 
 
 def _on_pr_closed(data) -> None:
