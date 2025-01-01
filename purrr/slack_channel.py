@@ -32,20 +32,19 @@ def initialize_for_github_pr(action: str, pr, sender) -> str:
     print(json.dumps(pr, indent=2, sort_keys=True))
 
     name = f"{pr.number}_{slack_helper.normalize_channel_name(pr.title)}"
-    channel = slack_helper.create_channel(name)
-    if not channel:
+    channel_id = slack_helper.create_channel(name)
+    if not channel_id:
         _report_creation_error(pr, sender.login)
 
-    _set_topic(pr, channel)
-    _set_description(pr, channel)
-    _set_bookmarks(pr, channel)
-    _post_messages(action, pr, sender, channel)
+    _set_topic(pr, channel_id)
+    _set_description(pr, channel_id)
+    _set_bookmarks(pr, channel_id)
+    _post_messages(action, pr, sender, channel_id)
 
     # TODO: Map between the GitHub PR and the Slack channel ID, for 2-way event syncs.
 
-    # TODO: Finally, add all the participants in the PR to this channel.
-
-    return channel
+    _add_users(channel_id, users.github_pr_participants(pr))
+    return channel_id
 
 
 def _report_creation_error(pr, github_username) -> None:
@@ -110,3 +109,28 @@ def _post_messages(action: str, pr, sender, channel_id: str) -> None:
 
     # TODO: Also post a message summarizing check states (updated
     # later based on "workflow_job" and "workflow_run" events).
+
+
+def _add_users(channel_id: str, github_users: list[str]) -> None:
+    """Invite all the participants (up to 1000) in a GitHub PR to a Slack channel."""
+    slack_users = [users.github_username_to_slack_user_id(u) for u in github_users]
+    slack_users = [user for user in slack_users if user]  # Ignore unrecognized users.
+
+    # Also ignore users who opted out of Purrr. They will still be mentioned
+    # in the channel, but as non-members they won't be notified about it.
+    slack_users = [u for u in slack_users if not data_helper.slack_opted_out(u)]
+    if not slack_users:
+        return
+
+    users = ",".join(slack_users)
+    try:
+        slack.conversations_invite(channel=channel_id, users=users, force=True)
+    except SlackApiError as e:
+        if e.response["error"] == "already_in_channel":
+            return
+
+        error = f"Failed to add {len(slack_users)} Slack user(s) to channel "
+        error += f"<#{channel_id}>: `{e.response['error']}`"
+        for e in e.response.get("errors", []):
+            error += f"\n- <@{e.user}> - `{e.error}`"
+        debug.log(error)

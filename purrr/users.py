@@ -132,6 +132,30 @@ def _github_users() -> list[github.NamedUser.NamedUser]:
         return []
 
 
+def github_pr_participants(pr) -> list[str]:
+    """Return all the participants in the given GitHub PR.
+
+    Args:
+        pr: GitHub PR data.
+
+    Returns:
+        List of usernames (author/reviewers/assignees),
+        guaranteed to be sorted and without repetitions.
+    """
+    usernames = []
+
+    # Author.
+    if pr.user.type == "User":
+        usernames.append(pr.user.login)
+
+    # Specific reviewers (not teams) + assignees.
+    for user in pr.requested_reviewers + pr.assignees:
+        if user.type == "User" and user.login not in usernames:
+            usernames.append(user.login)
+
+    return sorted(usernames)
+
+
 def github_username_to_slack_user(github_username: str) -> dict:
     """Convert a GitHub username to Slack user data (empty in case of errors)."""
     slack_user_id = github_username_to_slack_user_id(github_username)
