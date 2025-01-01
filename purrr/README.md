@@ -7,6 +7,9 @@ categories: ["DevOps"]
 
 # Pull Request Review Reminder (Purrr)
 
+> [!NOTE]
+> This project is currently under construction.
+
 Purrr integrates GitHub and Slack seamlessly, to streamline code reviews and
 cut down the turnaround time to merge pull requests.
 
