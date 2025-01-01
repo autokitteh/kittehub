@@ -37,7 +37,7 @@ def _parse_github_pr_event(data) -> None:
 
         # A pull request was converted to a draft.
         case "converted_to_draft":
-            _on_pr_converted_to_draft(data)
+            _on_pr_converted_to_draft(data.action, data.pull_request, data.sender)
         # A draft pull request was marked as ready for review.
         case "ready_for_review":
             _on_pr_ready_for_review(data.action, data.pull_request, data.sender)
@@ -156,16 +156,18 @@ def _on_pr_reopened(action: str, pr, sender) -> None:
     _on_pr_opened(action, pr, sender)
 
 
-def _on_pr_converted_to_draft(data) -> None:
+def _on_pr_converted_to_draft(action: str, pr, sender) -> None:
     """A pull request was converted to a draft.
 
     For more information, see "Changing the stage of a pull request":
     https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/changing-the-stage-of-a-pull-request
 
     Args:
-        data: GitHub event data.
+        action: GitHub PR event action.
+        pr: GitHub PR data.
+        sender: GitHub user who triggered the event.
     """
-    pass  # TODO: Implement this function.
+    slack_channel.archive(action, pr, sender)
 
 
 def _on_pr_ready_for_review(action: str, pr, sender) -> None:

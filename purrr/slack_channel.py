@@ -145,6 +145,8 @@ def _add_users(channel_id: str, github_users: list[str]) -> None:
 def archive(action: str, pr, sender) -> None:
     """Archive a Slack channel that represents a GitHub PR.
 
+    This function is called when a PR is closed or converted to a draft.
+
     Args:
         action: GitHub PR event action.
         pr: GitHub PR data.
@@ -160,14 +162,18 @@ def archive(action: str, pr, sender) -> None:
     # (e.g. a PR closure comment) before archiving the channel.
     time.sleep(_PR_CLOSE_DELAY)
 
-    if action == "closed" and pr.merged:
-        action = "merged"
+    if action == "closed":
+        if pr.merged:
+            action = "merged"
+        action += " this PR"
+    else:
+        action = "converted this PR to a draft"
 
-    msg = f"{{}} {action} this PR"
-    slack_helper.mention_in_message(channel_id, sender, msg)
+    slack_helper.mention_in_message(channel_id, sender, f"{{}} {action}")
 
     try:
         slack.conversations_archive(channel=channel_id)
     except SlackApiError as e:
+        action = action.replace(" this PR", "")
         error = f"{pr.html_url} is `{action}`, but failed to archive <#{channel_id}>"
         debug.log(f"{error}: `{e.response['error']}`")
