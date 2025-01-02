@@ -4,7 +4,6 @@ from autokitteh.slack import slack_client
 import github
 from slack_sdk.errors import SlackApiError
 
-
 import debug
 import data_helper
 import github_helper
@@ -21,7 +20,7 @@ def _email_to_github_user_id(email: str) -> str:
         return users[0].login
     else:
         error = f"GitHub user search results: {users.totalCount} users"
-        debug.log(error + f" with the email address `{email}`")
+        debug.log(f"{error} with the email address `{email}`")
         return ""
 
 
@@ -114,8 +113,8 @@ def format_slack_user_for_github(slack_user_id: str) -> str:
         return github_ref
 
     # Optimization: cache unsuccessful results too (i.e. external collaborators).
-    error = f"Slack user <@{slack_user_id}>: found {len(users)} "
-    debug.log(error + "GitHub org members with the same full name")
+    error = f"Slack user <@{slack_user_id}>: found {len(users)}"
+    debug.log(f"{error} GitHub org members with the same full name")
     data_helper.cache_github_reference(slack_user_id, profile["real_name"])
 
     # If all else fails, return the Slack user's full name.
@@ -127,9 +126,33 @@ def _github_users() -> list[github.NamedUser.NamedUser]:
     try:
         return list(gh.get_organization(github_helper.ORG_NAME).get_members())
     except github.GithubException as e:
-        error = "Failed to list GitHub members in the organization "
-        debug.log(error + f"`{github_helper.ORG_NAME}`:\n```{e}```")
+        error = "Failed to list GitHub members in the organization"
+        debug.log(f"{error} `{github_helper.ORG_NAME}`:\n```{e}```")
         return []
+
+
+def github_pr_participants(pr) -> list[str]:
+    """Return all the participants in the given GitHub PR.
+
+    Args:
+        pr: GitHub PR data.
+
+    Returns:
+        List of usernames (author/reviewers/assignees),
+        guaranteed to be sorted and without repetitions.
+    """
+    usernames = []
+
+    # Author.
+    if pr.user.type == "User":
+        usernames.append(pr.user.login)
+
+    # Specific reviewers (not teams) + assignees.
+    for user in pr.requested_reviewers + pr.assignees:
+        if user.type == "User" and user.login not in usernames:
+            usernames.append(user.login)
+
+    return sorted(usernames)
 
 
 def github_username_to_slack_user(github_username: str) -> dict:
