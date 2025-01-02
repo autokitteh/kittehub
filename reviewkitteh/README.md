@@ -32,4 +32,4 @@ Once deployed, the workflow is triggered by a GitHub pull request event and cont
 
 ## Self-Hosted Deployment
 
-Follow the [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.

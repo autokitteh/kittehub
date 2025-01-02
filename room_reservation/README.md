@@ -52,4 +52,4 @@ The list of meeting rooms is stored in a Google Sheet with the following format:
 
 ## Self-Hosted Deployment
 
-Follow the [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
