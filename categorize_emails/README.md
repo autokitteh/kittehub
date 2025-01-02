@@ -35,7 +35,7 @@ For more details, refer to [this blog post](https://autokitteh.com/technical-blo
 
 ## Self-Hosted Deployment
 
-Follow the [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 
 ## Trigger Workflow
 
