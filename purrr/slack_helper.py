@@ -113,19 +113,19 @@ def impersonate_in_reply(
         return ""
 
 
-def lookup_channel(pr_url: str, action: str) -> str:
+def lookup_channel(pr_url: str, action: str) -> str | None:
     """Return the ID of a Slack channel that represents a GitHub PR.
 
-    This function waits up to a few seconds for the PR's Slack message to
-    exist, because GitHub events are asynchronous. For example: when a PR is
-    re/opened, some initialization events may arrive before the "opened" event.
+    This function waits up to a few seconds for the PR's Slack message to exist,
+    because GitHub events are asynchronous. For example: when a PR is re/opened,
+    some "review_requested" events may arrive before the "opened" event.
 
     Args:
         pr_url: URL of the GitHub PR.
         action: GitHub PR event action.
 
     Returns:
-        Channel ID, or "" if not found.
+        Channel ID, or None if not found.
     """
     channel_id = data_helper.lookup_github_link_details(pr_url)
     if not channel_id:
@@ -145,7 +145,7 @@ def _lookup_message(comment_url: str) -> str | None:
         comment_url: URL of the GitHub PR comment to reply to.
 
     Returns:
-        Message's thread timestamp, or "" if not found.
+        Message's thread timestamp, or None if not found.
     """
     thread_ts = data_helper.lookup_github_link_details(comment_url)
     if not thread_ts:

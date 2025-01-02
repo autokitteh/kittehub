@@ -49,7 +49,7 @@ def initialize_for_github_pr(action: str, pr, sender) -> str:
 
     # TODO: Map between the GitHub PR and the Slack channel ID, for 2-way event syncs.
 
-    _add_users(channel_id, users.github_pr_participants(pr))
+    add_users(channel_id, users.github_pr_participants(pr))
     return channel_id
 
 
@@ -113,7 +113,7 @@ def _post_messages(action: str, pr, sender, channel_id: str) -> None:
     # later based on "workflow_job" and "workflow_run" events).
 
 
-def _add_users(channel_id: str, github_users: list[str]) -> None:
+def add_users(channel_id: str, github_users: list[str]) -> None:
     """Invite all the participants in a GitHub PR to a Slack channel."""
     slack_users = [users.github_username_to_slack_user_id(u) for u in github_users]
     slack_users = [user for user in slack_users if user]  # Ignore unrecognized users.
@@ -124,7 +124,7 @@ def _add_users(channel_id: str, github_users: list[str]) -> None:
     if not slack_users:
         return
 
-    # https://api.slack.com/methods/conversations.invite
+    # Limit the number of users per https://api.slack.com/methods/conversations.invite
     if len(slack_users) > 1000:
         slack_users = slack_users[:1000]
 
