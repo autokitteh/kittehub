@@ -20,16 +20,14 @@ For more details, refer to [this blog post](https://autokitteh.com/technical-blo
 
 ## Cloud Usage (Recommended)
 
-1. Initialize your connections through the UI.
-2. Navigate to the "TRIGGERS" tab in your project settings.
-3. Find the "receive_http_get" trigger under the "Actions" column.
-4. Click "Edit".
-5. Copy the provided webhook URL.
-6. Test the webhook by sending a curl request with the webhook URL.
+1. Initialize your connections through the UI
+2. Edit the "receive_http_get" trigger, in the "TRIGGERS" tab, under the "Actions" column
+3. Copy the provided webhook URL
+4. Test the webhook by sending a curl request with the webhook URL
       ```shell
       curl -i "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
       ```
-7. Send yourself a new email to validate the connection.
+5. Send yourself a new email to validate the connection
 
 
 > [!IMPORTANT]
@@ -37,45 +35,7 @@ For more details, refer to [this blog post](https://autokitteh.com/technical-blo
 
 ## Self-Hosted Deployment
 
-### Prerequisites
-
-- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
-- Set up required integrations:
-  - [Gmail](https://docs.autokitteh.com/integrations/google)
-  - [Slack](https://docs.autokitteh.com/integrations/slack)
-  - [ChatGPT](https://docs.autokitteh.com/integrations/chatgpt)
-
-### Installation Steps
-
-1. Clone the repository:
-   ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   cd kittehub/categorize_emails
-   ```
-
-2. Start the AutoKitteh server:
-   ```shell
-   ak up --mode dev
-   ```
-
-3. Deploy the project:
-   ```shell
-   ak deploy --manifest autokitteh.yaml
-   ```
-
-   The output will show your connection IDs, which you'll need for the next step. Look for lines like:
-   ```shell
-   [exec] create_connection "categorize_emails/gmail_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
-   ```
-   
-   In this example, `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
-
-4. Initialize your connections using the CLI:
-   ```shell
-   ak connection init gmail_connection <connection ID>
-   ak connection init slack_connection <connection ID>
-   ak connection init chatgpt_connection <connection ID>
-   ```
+Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 
 ## Trigger Workflow
 

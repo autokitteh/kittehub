@@ -19,7 +19,7 @@ This project implements a break-glass request workflow that allows users to subm
 ## Cloud Usage (Recommended)
 
 1. Initialize your connections through the UI
-2. Set the `APPROVAL_CHANNEL` environment variable to a Slack channel where the AutoKitteh app is invited
+2. Set the `APPROVAL_CHANNEL` project variable to a Slack channel where the AutoKitteh app is invited
 3. Deploy the project
 
 ## Trigger Workflow
