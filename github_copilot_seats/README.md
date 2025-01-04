@@ -1,29 +1,33 @@
 ---
-title: Unregister non active users from Copilot
-description: If Copilot was not used in a preceding period by users, the workflow automatically unregisters and notifies them. Users can ask for their subscription to be reinstated.
+title: Cancel GitHub Copilot access for inactive users
+description: If Copilot was not used in a preceding period by users, unsubscribe and notify them in Slack. Users can ask for their subscription to be reinstated.
 integrations: ["githubcopilot", "slack"]
 categories: ["DevOps"]
 ---
 
-# GitHub Copilot Registration Pruning
+# GitHub Copilot Seat Pruning
 
-This automation searches daily for all users in a GitHub organization that are actively using Copilot.
-If Copilot was not used in a preceding period, it automatically unregisters them, and then notifies them.
-Users can then optionally ask for their subscription to be reinstated.
+This automation enumerates once a day all the users in the GitHub organization
+that have access to [Copilot](https://github.com/features/copilot). If any of
+them haven't used it in a preceding period of time, it automatically marks
+their seat for cancellation in the next billing cycle, and notifies them in a
+Slack DM.
 
-## Before Deploying This AutoKitteh Project:
+Users can then optionally respond and ask for the seat to be reassigned back
+to them.
 
-- Set the `GITHUB_ORG` in the project's vars.
-- Set the `IDLE_USAGE_THRESHOLD` in the project's vars:
-  - (e.g., `4320` for 72 hours)
-  - (e.g., `25` for 25 minutes)
-- Set the `LOGINS` in the project's vars (optional).
-- Set the `LOG_CHANNEL` in the project's vars to the Slack channel name/ID you want to post to.
+## Before Deploying This AutoKitteh Project
+
+Set/modify these optional project variables:
+
+- `IDLE_HOURS_THRESHOLD` (default = 72 hours)
+- `MANAGED_LOGINS` (default = no one = manage all org users)
+- `SLACK_LOG_CHANNEL` (default = `"copilot-log"`, `""` = no logging in Slack)
 
 ## Slack Usage
 
-- `/autokitteh prune-idle-copilot-seats` invokes the automation immediately.
-- `/autokitteh find-idle-copilot-seats` displays the potentially idle seats.
+You may use the Slack application's slash command(s) with one of these text
+triggers:
 
-> [!WARNING]
-> This example currently works only with a [Personal Access Token](https://docs.autokitteh.com/integrations/github/connection/#personal-access-token-pat), specifically a [classic token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
+- `prune-idle-copilot-seats` - invokes the daily automation immediately
+- `find-idle-copilot-seats` - displays the potentially idle seats

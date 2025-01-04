@@ -6,15 +6,13 @@ version: v1
 project:
   name: github_copilot_seats
   vars:
-    - name: GITHUB_ORG
-      value: autokitteh
-    - name: IDLE_USAGE_THRESHOLD
-      value: 10 # 72 hours
-    - # If not empty, only manage GitHub Copilot subscriptions to the specified users, separated by commas.
-      name: LOGINS
+    - name: IDLE_HOURS_THRESHOLD
+      value: 72
+    - # Optional: manage GitHub Copilot subscriptions only for these users, separated by commas.
+      name: MANAGED_LOGINS
       value: ""
-    - name: LOG_CHANNEL
-      value: log
+    - name: SLACK_LOG_CHANNEL
+      value: copilot-log
   connections:
     - name: github_conn
       integration: github
