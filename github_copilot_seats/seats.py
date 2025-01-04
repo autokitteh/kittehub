@@ -100,7 +100,7 @@ def prune_idle_seat(seat: dict[str, str]) -> None:
         case "reinstate":
             report(github_login, "reinstate")
             copilot.add_seats([github_login])
-            msg = "You have been reinstated to the Copilot program"
+            msg = "You have been reinstated to the Copilot program."
         case _:
             report(github_login, f"weird response: {value}")
             msg = f"Response: `{value}` not recognized."
