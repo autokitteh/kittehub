@@ -166,19 +166,13 @@ def github_username_to_slack_user(github_username: str) -> dict:
 
 
 def github_username_to_slack_user_id(github_username: str) -> str:
-    """Convert a GitHub username to a Slack user ID.
+    """Convert a GitHub username to a Slack user ID, or "" if not found.
 
     This function tries to match the email address first, and then
     falls back to matching the user's full name (case-insensitive).
 
     This function also caches both successful and failed results for
     a day, to reduce the amount of API calls, especially to Slack.
-
-    Args:
-        github_username: GitHub username.
-
-    Returns:
-        Slack user ID, or "" if not found.
     """
     # Don't even check GitHub teams, only individual users.
     if "/" in github_username:
@@ -216,11 +210,9 @@ def github_username_to_slack_user_id(github_username: str) -> str:
 
     for user in _slack_users():
         profile = user.get("profile", {})
-        slack_names = (
-            profile.get("real_name", "").lower(),
-            profile.get("real_name_normalized", "").lower(),
-        )
-        if github_name in slack_names:
+        real_name = profile.get("real_name", "").lower()
+        normalized_name = profile.get("real_name_normalized", "").lower()
+        if github_name in (real_name, normalized_name):
             slack_user_id = user.get("id", "")
             data_helper.cache_slack_user_id(github_username, slack_user_id)
             return slack_user_id

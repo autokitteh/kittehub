@@ -1,117 +1,114 @@
-from datetime import datetime, timezone, timedelta
-import json
+from datetime import datetime, timedelta, timezone
 import os
-from typing import Any
+from pathlib import Path
 
 import autokitteh
 from autokitteh.github import github_client
 from autokitteh.slack import slack_client
 
-from helpers import github_username_to_slack_user_id
+from users import github_username_to_slack_user_id
 
 
-ORG_NAME = os.getenv("github_conn__target_name")
-IDLE_USAGE_THRESHOLD = int(os.getenv("IDLE_USAGE_THRESHOLD"))
-LOGINS = os.getenv("LOGINS")
-LOG_CHANNEL = os.getenv("LOG_CHANNEL")
+IDLE_HOURS_THRESHOLD = int(os.getenv("IDLE_HOURS_THRESHOLD", "72"))
+MANAGED_LOGINS = os.getenv("MANAGED_LOGINS")
 
-logins = LOGINS.split(",") if LOGINS else []
 github = github_client("github_conn")
-slack = slack_client("slack_conn")
-
-org = github.get_organization(ORG_NAME)
+org = github.get_organization(os.getenv("github_conn__target_name"))
 copilot = org.get_copilot()
 
-
-def prune_idle_seats() -> list[dict]:
-    """Prunes idle GitHub Copilot users based on their last activity time."""
-    seats = find_idle_seats()
-    for seat in seats:
-        autokitteh.start(loc="seats.py:engage_seat", data=seat)
-    return seats
+slack = slack_client("slack_conn")
 
 
-def find_idle_seats() -> list[dict]:
-    """Identifies idle GitHub Copilot users based on their last activity time."""
-    seats = copilot.get_seats()
-    t = datetime.now(timezone.utc)
+def find_idle_seats(prune: bool = False) -> list[dict[str, str]]:
+    """Identifies idle GitHub Copilot users based on their last activity time.
+
+    If `prune` is set to `True`, it also cancels their seat assignments and
+    interacts with the users asynchronously to confirm this action.
+    """
     idle_seats = []
-
-    for seat in seats:
-        if logins and seat.assignee.login not in logins:
-            print(f"skipping {seat.assignee.login}")
+    for seat in copilot.get_seats():
+        # If the project is limited to specific org users, ignore the rest.
+        managed_logins = MANAGED_LOGINS.split(",") if MANAGED_LOGINS else []
+        if managed_logins and seat.assignee.login not in managed_logins:
+            print(f"Skipping unmanaged user: {seat.assignee.login}")
             continue
 
-        delta = t - seat.last_activity_at
-        is_idle = delta >= timedelta(minutes=IDLE_USAGE_THRESHOLD)
+        # Was the assigned seat being used recently?
+        now = datetime.now(timezone.utc)
+        delta = now - seat.last_activity_at
+        is_active = delta < timedelta(hours=IDLE_HOURS_THRESHOLD)
 
-        comparison = ">=" if is_idle else "<"
-        status = f"{seat.assignee.login}: {t} - {seat.last_activity_at} = {delta} {comparison} {IDLE_USAGE_THRESHOLD} minutes"
+        comparison = "<" if is_active else ">="
+        status = f"{seat.assignee.login}: {now} - {seat.last_activity_at} = "
+        status += f"{delta} {comparison} {IDLE_HOURS_THRESHOLD} hours"
         print(status)
 
-        if is_idle:
-            # Convert CopilotSeat object to a dictionary
-            seat_dict = {
-                "assignee": {"login": seat.assignee.login},
-                "last_activity_at": seat.last_activity_at.isoformat(),
-            }
-            idle_seats.append(seat_dict)
+        if is_active:
+            continue
+
+        # Convert the non-serializable "CopilotSeat" object into a simple dictionary.
+        simple_seat = {
+            "assignee_login": seat.assignee.login,
+            "last_activity_at": seat.last_activity_at.isoformat(),
+        }
+        idle_seats.append(simple_seat)
+
+        # Interact with the user asynchronously in a child workflow.
+        if prune:
+            autokitteh.start(loc="seats.py:prune_idle_seat", data=simple_seat)
 
     return idle_seats
 
 
-def engage_seat(seat: dict[str, Any]) -> None:
-    """Engages a GitHub user assigned to a seat by identifying their corresponding Slack user and initiating a workflow.
+def prune_idle_seat(seat: dict[str, str]) -> None:
+    """Interacts via Slack with a GitHub user assigned to an idle Copilot seat.
 
-    Note:
-        This is designed to run as a child workflow using:
-        autokitteh.start(loc="seats.py:engage_seat", data={"seat": seat})
+    Note - this function runs as a child workflow, by calling:
+    autokitteh.start(loc="filename.py:function_name", data={...})
 
     Args:
-        seat (dict): Contains details about the assigned GitHub user.
+        seat: Username and last activity timestamp of the GitHub user to which
+            the Copilot seat is assigned.
     """
-    github_login = seat["assignee"]["login"]
-    # FOR TESTING ONLY; REMOVE AFTER TESTING
-    if github_login != "pashafateev":
-        return
-    report(github_login, "engaging")
+    github_login = seat["assignee_login"]
+    report(github_login, "removing seat")
+    copilot.remove_seats([github_login])
 
     slack_id = github_username_to_slack_user_id(github_login)
     if not slack_id:
-        print(f"No slack user found for GitHub user {github_login}")
+        print(f"No Slack user found for GitHub user {github_login}")
         return
 
-    copilot.remove_seats([github_login])
+    report(github_login, "notifying user")
 
-    # Loads a predefined message (blocks) from a JSON file and posts it to the user's Slack
-    with open("msg.json") as file:
-        msg = json.load(file)
-    slack.chat_postMessage(channel=slack_id, blocks=msg["blocks"])
+    # Load a blocks-based interactive message template
+    # from a JSON file and post it to the user's Slack.
+    slack.chat_postMessage(channel=slack_id, blocks=Path("msg.json").read_text())
 
-    # Subscribes to Slack interaction events, waiting for the user's response
-    s = autokitteh.subscribe(
-        "slack_conn", f'data.type == "block_actions" && data.user.id == "{slack_id}"'
-    )
+    # Subscribe to Slack interaction events, waiting for the user's response.
+    filter = f"event_type = 'interaction' && data.user.id == '{slack_id}'"
+    subscription = autokitteh.subscribe("slack_conn", filter)
 
-    # Retrieves the value from the user's response in the Slack event
-    value = autokitteh.next_event(s)["actions"][0]["value"]
+    # Retrieve the value from the user's response in the Slack event.
+    value = autokitteh.next_event(subscription)["actions"][0]["value"]
 
-    # Based on the user's response, it either confirms the action or reinstates the seat
-    if value == "ok":
-        slack.chat_postMessage(channel=slack_id, text="Okey dokey!")
-        report(github_login, "ok")
-    elif value == "reinstate":
-        report(github_login, "reinstate")
-        copilot.add_seats([github_login])
-        slack.chat_postMessage(
-            channel=slack_id, text="You have been reinstated to the Copilot program."
-        )
-    else:
-        report(github_login, f"weird response: {value}")
-        slack.chat_postMessage(
-            channel=slack_id, text=f"Response: {value} not recognized."
-        )
+    # The user's response either confirms the action or reinstates the seat.
+    match value:
+        case "ok":
+            report(github_login, "ok")
+            msg = "Okey dokey!"
+        case "reinstate":
+            report(github_login, "reinstate")
+            copilot.add_seats([github_login])
+            msg = "You have been reinstated to the Copilot program"
+        case _:
+            report(github_login, f"weird response: {value}")
+            msg = f"Response: `{value}` not recognized."
+
+    slack.chat_postMessage(channel=slack_id, text=msg)
 
 
 def report(github_login: str, msg: str) -> None:
-    slack.chat_postMessage(channel=LOG_CHANNEL, text=f"{github_login}: {msg}")
+    channel = os.getenv("SLACK_LOG_CHANNEL")
+    if channel:
+        slack.chat_postMessage(channel=channel, text=f"{github_login}: {msg}")
