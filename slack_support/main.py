@@ -1,11 +1,12 @@
+from datetime import datetime, UTC
 import os
-from datetime import datetime
 
 import autokitteh
 from autokitteh.slack import slack_client
 
-import gemini
 import directory
+import gemini
+
 
 HELP_REQUEST_TIMEOUT_MINUTES = int(os.getenv("HELP_REQUEST_TIMEOUT_MINUTES"))
 
@@ -44,24 +45,23 @@ If not taken or resolved, I will remind you in {HELP_REQUEST_TIMEOUT_MINUTES}m.
 
     # From this point on we are interested in any message that is added to the thread.
     # Further below we'll consume the messages and act on them using `next_event`.
-    s = autokitteh.subscribe(
-        "myslack",
-        f'data.type == "message" && data.thread_ts == "{event.data.ts}" && data.text.startsWith("!")',
-    )
+    filter = "data.type == 'message' && data.thread_ts == "
+    filter += f"'{event.data.ts}' && data.text.startsWith('!')"
+    s = autokitteh.subscribe("myslack", filter)
 
     taken_by = None
-    start_time = datetime.now()
+    start_time = datetime.now(UTC)
 
     while True:
         msg = autokitteh.next_event(s, timeout=60)
 
         if not msg:  # timeout
-            dt = (datetime.now() - start_time).total_seconds()
+            dt = (datetime.now(UTC) - start_time).total_seconds()
             print(f"timeout, dt={dt}")
 
             if not taken_by and dt >= HELP_REQUEST_TIMEOUT_MINUTES * 60:
                 send(f"Reminder: {mentions}, please respond.")
-                start_time = datetime.now()
+                start_time = datetime.now(UTC)
             continue
 
         cmd = msg.text.strip()[1:]

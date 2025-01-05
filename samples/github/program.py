@@ -16,6 +16,7 @@ import random
 
 from autokitteh.github import github_client
 
+
 # https://docs.github.com/en/rest/reactions/reactions#about-reactions
 REACTIONS = ["+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", "eyes"]
 

@@ -4,8 +4,8 @@ from autokitteh.slack import slack_client
 import github
 from slack_sdk.errors import SlackApiError
 
-import debug
 import data_helper
+import debug
 import github_helper
 
 

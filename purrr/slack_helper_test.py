@@ -1,3 +1,5 @@
+"""Unit tests for the "slack_helper" module."""
+
 import unittest
 
 import slack_helper

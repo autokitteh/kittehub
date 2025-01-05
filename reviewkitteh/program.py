@@ -7,10 +7,10 @@ current state of the pull request. Every 15 seconds, it also reads a random
 name from a Google Sheet and pages that person in the Slack channel.
 """
 
-from datetime import datetime
+from datetime import datetime, UTC
 import os
-import time
 import random
+import time
 
 from autokitteh.github import github_client
 from autokitteh.google import google_sheets_client
@@ -59,4 +59,4 @@ def on_github_pull_request(event):
 
 
 def log(msg):
-    print(f"[{datetime.now()}] {msg}")
+    print(f"[{datetime.now(UTC)}] {msg}")

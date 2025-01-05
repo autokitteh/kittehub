@@ -137,8 +137,8 @@ def add_users(channel_id: str, github_users: list[str]) -> None:
 
         error = f"Failed to add {len(slack_users)} Slack user(s) to channel "
         error += f"<#{channel_id}>: `{e.response['error']}`"
-        for e in e.response.get("errors", []):
-            error += f"\n- <@{e.user}> - `{e.error}`"
+        for err in e.response.get("errors", []):
+            error += f"\n- <@{err.user}> - `{err.error}`"
         debug.log(error)
 
 

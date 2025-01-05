@@ -5,7 +5,7 @@ API documentation:
 - https://docs.autokitteh.com/integrations/google/calendar/events
 """
 
-from datetime import UTC, datetime
+from datetime import datetime, UTC
 
 from autokitteh.google import google_calendar_client
 from googleapiclient.errors import HttpError

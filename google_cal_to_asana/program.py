@@ -1,10 +1,11 @@
-"""This program creates a new Asana task when a new event is created in Google Calendar."""
+"""Create a new Asana task when a new event is created in Google Calendar."""
 
 import os
 
 import asana
 from asana.rest import ApiException
 from autokitteh.asana import asana_client
+
 
 ASANA_PROJECT_GID = os.getenv("ASANA_PROJECT_GID")
 

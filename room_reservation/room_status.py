@@ -1,13 +1,13 @@
 """Check the status of a specific room for the next hour."""
 
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, UTC
 
 import autokitteh
 from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
 from googleapiclient.errors import HttpError
 
-from util import get_email_from_slack_command, get_room_list
+import util
 
 
 def on_slack_slash_command(event):
@@ -17,9 +17,9 @@ def on_slack_slash_command(event):
 
     # Extract the email address from the Slack command text, which is formatted like:
     # "<@USER_ID> <mailto:test@example.com|test@example.com>".
-    room = get_email_from_slack_command(event.data.text)
+    room = util.get_email_from_slack_command(event.data.text)
 
-    if room not in get_room_list():
+    if room not in util.get_room_list():
         err = f"Error: `{room}` not found in the list of rooms"
         slack.chat_postMessage(channel=channel_id, text=err)
 

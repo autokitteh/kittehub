@@ -1,17 +1,24 @@
-"""This program provides functions to handle GitHub workflows that interact across multiple repositories.
-It defines triggers that automatically start workflows in specific repositories when workflows in other
-repositories are completed.
+"""Handle GitHub workflows that interact across multiple repositories.
+
+This program defines triggers that automatically start workflows in specific
+repositories when workflows in other repositories are completed.
 
 This program supports several types of triggers:
-1. Cross-repo trigger: Initiates a workflow in repository B when a workflow in repository A completes.
-2. Fan-out trigger: Initiates workflows in repositories B and C upon the completion of a workflow in repository A.
-3. OR trigger: Initiates a workflow in repository C if a workflow in either repository A or B completes.
-4. Fan-in trigger: Initiates a workflow in repository C only when workflows in both repositories A and B complete.
+1. Cross-repo trigger: Initiates a workflow in repository B when a workflow in
+   repository A completes.
+2. Fan-out trigger: Initiates workflows in repositories B and C upon the
+   completion of a workflow in repository A.
+3. OR trigger: Initiates a workflow in repository C if a workflow in either
+   repository A or B completes.
+4. Fan-in trigger: Initiates a workflow in repository C only when workflows in
+   both repositories A and B complete.
 """
 
 import os
+
 import autokitteh
 from autokitteh.github import github_client
+
 
 REPO_A = os.getenv("REPO_A")
 REPO_B = os.getenv("REPO_B")
@@ -24,7 +31,7 @@ github = github_client("github_conn")
 
 
 def on_cross_repo(_):
-    """Cross-repo trigger (completion of workflow in repo A triggers workflow in repo B)."""
+    """Cross-repo trigger (workflow completion in repo A triggers workflow in B)."""
     subscribe_to_event([REPO_A])
     trigger_workflow(REPO_B, B_WORKFLOW_FILE)
 

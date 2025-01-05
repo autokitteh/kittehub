@@ -1,6 +1,6 @@
 """This program adds new Auth0 users to HubSpot as contacts."""
 
-from datetime import UTC, datetime
+from datetime import datetime, UTC
 import os
 
 from autokitteh.auth0 import auth0_client
@@ -17,7 +17,8 @@ hubspot = hubspot_client("hubspot_conn")
 def check_for_new_users(event):
     """Workflow entrypoint.
 
-    Looks up new Auth0 users in the last `HOURS` hours and adds them to HubSpot as contacts.
+    Looks up new Auth0 users in the last `HOURS` hours,
+    and adds them to HubSpot as contacts.
     """
     start, end = _get_time_range(LOOKUP_HOURS)
     query = f"created_at:[{start} TO {end}]"

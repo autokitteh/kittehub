@@ -79,6 +79,6 @@ def on_slack_interaction(event):
     if event.data.actions[0]["value"] == "abort":
         return
 
-    # This workflow's starting point is a retry of the failed task in the aborted workflow.
+    # This workflow's starting point is a retry of the failed task in the aborted one.
     i = int(event.data.actions[0]["action_id"].split()[-1])
     run_tasks(i, event.data.user.id)

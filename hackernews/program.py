@@ -1,11 +1,11 @@
-"""Monitor Hacker News for new articles on a specific topic, and post updates to a Slack channel."""
+"""Monitor Hacker News for new articles on a specific topic, post updates to Slack."""
 
 import os
-import requests
 import time
 import urllib.parse
 
 from autokitteh.slack import slack_client
+import requests
 
 
 API_URL = "http://hn.algolia.com/api/v1/search_by_date?tags=story&page=0&query="
@@ -16,6 +16,7 @@ slack = slack_client("slack_connection")
 
 def on_slack_command(event):
     """Workflow's entry-point.
+
     Extracts a topic from a Slack command, monitors for new articles,
     and posts updates to `SLACK_CHANNEL`.
     """
@@ -27,8 +28,8 @@ def on_slack_command(event):
     current_articles = set()
     fetch_articles(topic, current_articles)
 
-    # NOTE: For low-traffic topics, it might take a while for new articles to be published,
-    # so users may experience delays in receiving notifications.
+    # NOTE: For low-traffic topics, it might take a while for new articles to
+    # be published, so users may experience delays in receiving notifications.
     while True:
         all_articles = set(current_articles)
         fetch_articles(topic, all_articles)

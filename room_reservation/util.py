@@ -11,5 +11,7 @@ def get_room_list():
 
 def get_email_from_slack_command(text):
     """Extract the email address from the Slack command text, which is formatted like:
-    "<@USER_ID> <mailto:test@example.com|test@example.com>"."""
+
+    "<@USER_ID> <mailto:test@example.com|test@example.com>".
+    """
     return text.split("|")[-1].strip(">")

@@ -1,11 +1,11 @@
-"""Parse GPX files when uploaded to an S3 bucket, and insert the data into a SQLite database."""
+"""Parse GPX files when uploaded to an S3 bucket, and insert into a SQLite database."""
 
 from contextlib import closing
 from io import BytesIO
 import json
 import os
 import sqlite3
-import xml.etree.ElementTree as xml
+import xml.etree.ElementTree as Xml
 
 import autokitteh
 from autokitteh.aws import boto3_client
@@ -64,7 +64,7 @@ trkpt_tag = "{http://www.topografix.com/GPX/1/1}trkpt"
 @autokitteh.activity
 def parse_gpx(track_id, data):
     io = BytesIO(data)
-    root = xml.parse(io).getroot()
+    root = Xml.parse(io).getroot()
     return [
         {
             "track_id": track_id,

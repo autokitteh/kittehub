@@ -13,7 +13,7 @@ def send_requests(base_url):
     print("\n>>> Sending HTTP requests with an OAuth bearer token")
 
     url = urljoin(base_url, "bearer")
-    token = "my_bearer_token"
+    token = "my_bearer_token"  # noqa: S105
     headers = {"Authorization": "Bearer " + token}
     resp = requests.get(url, headers=headers)
     _print_response_details(resp)

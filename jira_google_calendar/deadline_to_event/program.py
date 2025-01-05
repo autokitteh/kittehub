@@ -1,5 +1,4 @@
-"""
-This program receives Jira events and creates Google Calendar events.
+"""This program receives Jira events and creates Google Calendar events.
 
 Scenario:
     Initiating a procedure that requires collaboration and coordination,

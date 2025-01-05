@@ -1,30 +1,31 @@
-"""
-This program demonstrates a real-life workflow that integrates Gmail, ChatGPT, and Slack.
+"""A real-life workflow that integrates Gmail, ChatGPT, and Slack:
 
-Workflow:
 1. Trigger: Detect a new email in Gmail.
-2. Categorize: Use ChatGPT to read and categorize the email (e.g., technical work, marketing, sales).
+2. Categorize: Use ChatGPT to read and categorize the email
+   (e.g., technical work, marketing, sales).
 3. Notify: Send a message to the corresponding Slack channel based on the category.
 4. Label: Add a label to the email in Gmail.
 """
 
 import base64
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 import os
 import time
 
 import autokitteh
-from autokitteh import google, openai, slack
+from autokitteh.google import gmail_client
+from autokitteh.openai import openai_client
+from autokitteh.slack import slack_client
 
 
 POLL_INTERVAL = float(os.getenv("POLL_INTERVAL"))
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
 
 
-gmail_client = google.gmail_client("my_gmail").users()
-slack_client = slack.slack_client("my_slack")
+gmail = gmail_client("my_gmail").users()
+slack = slack_client("my_slack")
 processed_message_ids = set()
-start_time = datetime.now(timezone.utc).timestamp()
+start_time = datetime.now(UTC).timestamp()
 
 
 def on_http_get(event):
@@ -46,7 +47,7 @@ def _poll_inbox():
 
 
 def _process_email(message_id: str, start_time: datetime):
-    message = gmail_client.messages().get(userId="me", id=message_id).execute()
+    message = gmail.messages().get(userId="me", id=message_id).execute()
     email_timestamp = float(message["internalDate"]) / 1000
 
     if email_timestamp < start_time:
@@ -64,7 +65,7 @@ def _process_email(message_id: str, start_time: datetime):
         print("Could not categorize email.")
         return
 
-    slack_client.chat_postMessage(channel=channel, text=email_content)
+    slack.chat_postMessage(channel=channel, text=email_content)
 
     # Add label to email
     label_id = _get_label_id(channel) or _create_label(channel)
@@ -72,7 +73,7 @@ def _process_email(message_id: str, start_time: datetime):
         return
 
     body = {"addLabelIds": [label_id]}
-    gmail_client.messages().modify(userId="me", id=message_id, body=body).execute()
+    gmail.messages().modify(userId="me", id=message_id, body=body).execute()
 
 
 def _parse_email(message: dict):
@@ -95,12 +96,12 @@ def _create_label(label_name: str) -> str:
         "messageListVisibility": "show",
         "name": label_name,
     }
-    created_label = gmail_client.labels().create(userId="me", body=label).execute()
+    created_label = gmail.labels().create(userId="me", body=label).execute()
     return created_label.get("id", None)
 
 
 def _get_label_id(label_name: str) -> str:
-    labels_response = gmail_client.labels().list(userId="me").execute()
+    labels_response = gmail.labels().list(userId="me").execute()
     labels = labels_response.get("labels", [])
     for label in labels:
         if label["name"] == label_name:
@@ -110,7 +111,7 @@ def _get_label_id(label_name: str) -> str:
 
 def get_new_inbox_messages():
     query = "in:inbox -in:drafts"
-    return gmail_client.messages().list(userId="me", q=query, maxResults=10).execute()
+    return gmail.messages().list(userId="me", q=query, maxResults=10).execute()
 
 
 @autokitteh.activity
@@ -121,19 +122,19 @@ def _categorize_email(email_content: str) -> str:
         The name of the Slack channel to send a message to as a string.
         If the channel is not in the provided list, returns None.
     """
-    client = openai.openai_client("my_chatgpt")
+    client = openai_client("my_chatgpt")
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": f"""Categorize the following email based on its
-                topic and suggest a channel to post it in from the 
-                provided list. The output should be one of the provided 
-                channels and nothing else.
-                Email Content: {email_content} Channels: {SLACK_CHANNELS}
-                Output example: {SLACK_CHANNELS[0]}""",
+                "content": (
+                    "Categorize the following email based on its topic and suggest a "
+                    "channel to post it in from the provided list. The output should "
+                    "be one of the channels in {SLACK_CHANNELS} and nothing else, "
+                    "for example: {SLACK_CHANNELS[0]}\n\nEmail content: {email_content}"
+                ),
             },
         ],
     )
