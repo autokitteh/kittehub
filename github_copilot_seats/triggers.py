@@ -19,7 +19,7 @@ def on_slack_slash_command(event) -> None:
             find_seats = False
 
     if find_seats:
-        idle_seats = seats.find_idle_seats(prune)
+        idle_seats = seats.find_idle_seats(prune=prune)
         action = "Pruned" if prune else "Found"
         msg = f"{action} {len(idle_seats)} idle seats for these users: "
         msg += ", ".join(_get_logins(idle_seats))

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, UTC
 import os
 from pathlib import Path
 
@@ -19,7 +19,7 @@ copilot = org.get_copilot()
 slack = slack_client("slack_conn")
 
 
-def find_idle_seats(prune: bool = False) -> list[dict[str, str]]:
+def find_idle_seats(*, prune: bool = False) -> list[dict[str, str]]:
     """Identifies idle GitHub Copilot users based on their last activity time.
 
     If `prune` is set to `True`, it also cancels their seat assignments and
@@ -34,7 +34,7 @@ def find_idle_seats(prune: bool = False) -> list[dict[str, str]]:
             continue
 
         # Was the assigned seat being used recently?
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         delta = now - seat.last_activity_at
         is_active = delta < timedelta(hours=IDLE_HOURS_THRESHOLD)
 
