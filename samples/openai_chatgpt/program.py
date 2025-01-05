@@ -47,13 +47,22 @@ def on_http_get(event):
 
     # Example 2: more verbose interaction with ChatGPT,
     # including the user's text as part of the conversation.
-    contents = [
-        "You are a poetic assistant, skilled in explaining complex engineering concepts.",
-        "Compose a Shakespearean sonnet about the importance of reliability, scalability, and durability, in distributed workflows.",
-    ]
     msgs = [
-        {"role": "system", "content": contents[0]},
-        {"role": "user", "content": body or contents[1]},
+        {
+            "role": "system",
+            "content": (
+                "You are a poetic assistant, skilled in "
+                "explaining complex engineering concepts."
+            ),
+        },
+        {
+            "role": "user",
+            "content": body
+            or (
+                "Compose a Shakespearean sonnet about the importance of reliability, "
+                "scalability, and durability, in distributed workflows."
+            ),
+        },
     ]
 
     resp = chatgpt_client.chat.completions.create(model=MODEL, messages=msgs)

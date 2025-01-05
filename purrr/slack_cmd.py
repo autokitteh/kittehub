@@ -114,9 +114,9 @@ def _status(data, args: list[str]):
     """PR status command handler."""
     # TODO: If the Slack channel belongs to a PR, the arg is optional.
     if len(args) != 2:
-        msg = "when called outside of a PR channel, this command requires exactly 1 argument - "
-        msg += "an ID of a GitHub PR (`<org>/<repo>/<number>`), or the PR's full URL"
-        _error(data, args[0], msg)
+        msg = "when called outside of a PR channel, this command requires exactly "
+        msg += "1 argument - an ID of a GitHub PR (`<org>/<repo>/<number>`), "
+        _error(data, args[0], msg + "or the PR's full URL")
         return
 
     error = "Sorry, this command is not implemented yet"
@@ -127,9 +127,9 @@ def _approve(data, args: list[str]):
     """Approve command."""
     # TODO: If the Slack channel belongs to a PR, the arg is optional.
     if len(args) != 2:
-        msg = "when called outside of a PR channel, this command requires exactly 1 argument - "
-        msg += "an ID of a GitHub PR (`<org>/<repo>/<number>`), or the PR's full URL"
-        _error(data, args[0], msg)
+        msg = "when called outside of a PR channel, this command requires exactly "
+        msg += "1 argument - an ID of a GitHub PR (`<org>/<repo>/<number>`), "
+        _error(data, args[0], msg + "or the PR's full URL")
         return
 
     error = "Sorry, this command is not implemented yet"

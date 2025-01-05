@@ -1,7 +1,7 @@
 """Demonstration of AutoKitteh's Gemini integration.
 
-A single entry-point function is implemented, it sends a couple of requests to the Gemini API, and prints the responses
-in the AutoKitteh session log.
+A single entry-point function is implemented, it sends a couple of requests
+to the Gemini API, and prints the responses in the AutoKitteh session log.
 """
 
 from autokitteh.google import gemini_client

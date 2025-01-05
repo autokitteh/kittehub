@@ -12,11 +12,12 @@ Workflow:
        and justification for the request.
     4. AutoKitteh sends a notification to the SRE (Site Reliability Engineering) team
        with an approve/deny message, including the details of the request.
-    5. The SRE team reviews the request and makes a decision to approve or deny the request.
+    5. The SRE team reviews the request and makes a decision to approve or deny the
+       request.
     6. AutoKitteh sends a message to the developer with the decision, notifying them
        whether the request was approved or denied.
 
-The program integrates with Jira to verify ticket existence and ensure that the requester
+The program integrates with Jira to verify ticket existence and ensure the requester
 is the assignee of the ticket. It also uses Slack for communication and notifications
 throughout the process.
 """

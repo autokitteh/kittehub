@@ -1,4 +1,4 @@
-"""Parse GPX files when uploaded to an S3 bucket, and insert the data into a SQLite database."""
+"""Parse GPX files when uploaded to an S3 bucket, and insert into a SQLite database."""
 
 from contextlib import closing
 from io import BytesIO

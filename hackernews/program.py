@@ -1,4 +1,4 @@
-"""Monitor Hacker News for new articles on a specific topic, and post updates to a Slack channel."""
+"""Monitor Hacker News for new articles on a specific topic, post updates to Slack."""
 
 import os
 import time
@@ -27,8 +27,8 @@ def on_slack_command(event):
     current_articles = set()
     fetch_articles(topic, current_articles)
 
-    # NOTE: For low-traffic topics, it might take a while for new articles to be published,
-    # so users may experience delays in receiving notifications.
+    # NOTE: For low-traffic topics, it might take a while for new articles to
+    # be published, so users may experience delays in receiving notifications.
     while True:
         all_articles = set(current_articles)
         fetch_articles(topic, all_articles)

@@ -204,7 +204,7 @@ FakeGithubUser = collections.namedtuple("FakeGithubUser", ["name", "login"])
 
 
 class MarkdownSlackToGithubUserMentionsTest(unittest.TestCase):
-    """Unit tests for user mentions in the "markdown" module's "slack_to_github" function."""
+    """Unit tests for user mentions in the "slack_to_github" function."""
 
     def setUp(self):
         super().setUp()

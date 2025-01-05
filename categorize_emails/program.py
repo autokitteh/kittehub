@@ -1,9 +1,9 @@
 """
-This program demonstrates a real-life workflow that integrates Gmail, ChatGPT, and Slack.
+A real-life workflow that integrates Gmail, ChatGPT, and Slack:
 
-Workflow:
 1. Trigger: Detect a new email in Gmail.
-2. Categorize: Use ChatGPT to read and categorize the email (e.g., technical work, marketing, sales).
+2. Categorize: Use ChatGPT to read and categorize the email
+   (e.g., technical work, marketing, sales).
 3. Notify: Send a message to the corresponding Slack channel based on the category.
 4. Label: Add a label to the email in Gmail.
 """

@@ -45,10 +45,9 @@ If not taken or resolved, I will remind you in {HELP_REQUEST_TIMEOUT_MINUTES}m.
 
     # From this point on we are interested in any message that is added to the thread.
     # Further below we'll consume the messages and act on them using `next_event`.
-    s = autokitteh.subscribe(
-        "myslack",
-        f'data.type == "message" && data.thread_ts == "{event.data.ts}" && data.text.startsWith("!")',
-    )
+    filter = "data.type == 'message' && data.thread_ts == "
+    filter += f"'{event.data.ts}' && data.text.startsWith('!')"
+    s = autokitteh.subscribe("myslack", filter)
 
     taken_by = None
     start_time = datetime.now()

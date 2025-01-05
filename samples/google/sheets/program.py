@@ -79,7 +79,8 @@ def _read_values(id):
 
     for i, row in enumerate(zip(col_a, formatted_col_b, unformatted_col_b)):
         data_type, formatted, unformatted = row
-        text = f"Row {i + 1}: {data_type} = formatted `{formatted!r}`, unformatted `{unformatted!r}`"
+        text = f"Row {i + 1}: {data_type} = formatted "
+        text += f"`{formatted!r}`, unformatted `{unformatted!r}`"
         print(text)
 
 

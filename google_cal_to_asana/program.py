@@ -1,4 +1,4 @@
-"""This program creates a new Asana task when a new event is created in Google Calendar."""
+"""Create a new Asana task when a new event is created in Google Calendar."""
 
 import os
 

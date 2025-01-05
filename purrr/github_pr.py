@@ -59,7 +59,8 @@ def _parse_github_pr_event(data) -> None:
         case "unassigned":
             _on_pr_unassigned(data)
 
-        # The title or body of a pull request was edited, or the base branch was changed.
+        # The title or body of a pull request was edited,
+        # or the base branch was changed.
         case "edited":
             _on_pr_edited(data)
         # A pull request's head branch was updated.

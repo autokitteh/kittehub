@@ -45,7 +45,8 @@ def to_table_row(project_dir: Path, metadata: dict) -> str:
 def insert_rows_to_table(readme_file: Path, new_rows: list[str]) -> None:
     """Insert rows into the table section of the README file."""
     md = readme_file.read_text(encoding="utf-8")
-    table = "-->\n| Name | Description | Integration |\n| :--- | :---------- | :---------- |\n"
+    table = "-->\n| Name | Description | Integration |\n"
+    table += "| :--- | :---------- | :---------- |\n"
 
     for row in new_rows:
         table += row
