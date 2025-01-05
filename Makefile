@@ -1,7 +1,7 @@
-# Add "test" once we have unit tests
-all: deps format lint # test
+all: deps lint format test
 
 deps:
+	python -m pip install --upgrade pip
 	python -m pip install -r requirements.txt
 
 format: deps
@@ -11,6 +11,6 @@ lint: deps
 	ruff check --fix --output-format full .
 
 test: deps
-	pytest -v
+	pytest -v --ignore=purrr .
 
 .PHONY: all deps format lint test
