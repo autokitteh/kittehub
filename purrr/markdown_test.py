@@ -2,8 +2,8 @@ import collections
 import unittest
 from unittest.mock import MagicMock
 
-import users
 import markdown
+import users
 
 
 class MarkdownGithubToSlackTest(unittest.TestCase):

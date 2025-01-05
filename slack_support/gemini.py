@@ -1,7 +1,8 @@
-import os
 import json
+import os
 
 import google.generativeai as genai
+
 
 # How do i know if this is "picklable" or not? It has no return value? Do I need to run this every time?
 # Is this running in an activity?

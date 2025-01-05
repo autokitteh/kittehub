@@ -25,7 +25,7 @@ import os
 from pathlib import Path
 
 import autokitteh
-from autokitteh.atlassian import jira_client, get_base_url
+from autokitteh.atlassian import get_base_url, jira_client
 from autokitteh.slack import slack_client
 from requests.exceptions import HTTPError
 

@@ -1,12 +1,12 @@
 """List all the available rooms for the next half hour."""
 
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, UTC
 
 from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
 from googleapiclient.errors import HttpError
 
-from util import get_room_list
+import util
 
 
 def on_slack_slash_command(event):
@@ -21,7 +21,7 @@ def on_slack_slash_command(event):
     # Iterate over the list of rooms, notify the user about
     # each room which is available in the next half hour.
     available = False
-    for room in sorted(get_room_list()):
+    for room in sorted(util.get_room_list()):
         print(f"Checking upcoming events in: {room}")
         try:
             events = gcal.list(

@@ -6,6 +6,7 @@ import asana
 from asana.rest import ApiException
 from autokitteh.asana import asana_client
 
+
 ASANA_PROJECT_GID = os.getenv("ASANA_PROJECT_GID")
 
 api_client = asana_client("asana_conn")

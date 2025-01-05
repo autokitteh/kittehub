@@ -16,6 +16,7 @@ It merely showcases various illustrative, annotated, reusable examples.
 
 from autokitteh.openai import openai_client
 
+
 MODEL = "gpt-4o-mini"
 
 chatgpt_client = openai_client("chatgpt_conn")

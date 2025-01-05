@@ -8,7 +8,9 @@ file to receive "scheduler" events, and uses constant values defined in the
 
 from datetime import datetime, timedelta, timezone
 import os
+
 from autokitteh.github import github_client
+
 
 # Set in "autokitteh.yaml"
 GITHUB_OWNER = os.getenv("GITHUB_OWNER")

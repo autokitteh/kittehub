@@ -1,11 +1,12 @@
-import os
 from datetime import datetime
+import os
 
 import autokitteh
 from autokitteh.slack import slack_client
 
-import gemini
 import directory
+import gemini
+
 
 HELP_REQUEST_TIMEOUT_MINUTES = int(os.getenv("HELP_REQUEST_TIMEOUT_MINUTES"))
 

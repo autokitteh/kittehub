@@ -5,7 +5,7 @@ https://docs.aws.amazon.com/health/
 https://aws.amazon.com/blogs/mt/tag/aws-health-api/
 """
 
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, UTC
 import json
 import os
 import re

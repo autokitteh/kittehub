@@ -9,7 +9,7 @@ This program assumes that the calendar entries have these fields:
 - Description: their Atlassian account ID
 """
 
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, UTC
 import os
 
 import autokitteh

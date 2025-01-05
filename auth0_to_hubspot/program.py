@@ -1,6 +1,6 @@
 """This program adds new Auth0 users to HubSpot as contacts."""
 
-from datetime import UTC, datetime
+from datetime import datetime, UTC
 import os
 
 from autokitteh.auth0 import auth0_client

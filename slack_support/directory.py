@@ -1,6 +1,8 @@
-import os
 from collections import namedtuple
+import os
+
 from autokitteh.google import google_sheets_client
+
 
 DIRECTORY_GOOGLE_SHEET_ID = os.getenv("DIRECTORY_GOOGLE_SHEET_ID")
 

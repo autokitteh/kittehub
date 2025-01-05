@@ -1,11 +1,11 @@
 """Monitor Hacker News for new articles on a specific topic, and post updates to a Slack channel."""
 
 import os
-import requests
 import time
 import urllib.parse
 
 from autokitteh.slack import slack_client
+import requests
 
 
 API_URL = "http://hn.algolia.com/api/v1/search_by_date?tags=story&page=0&query="

@@ -10,8 +10,10 @@ This program supports several types of triggers:
 """
 
 import os
+
 import autokitteh
 from autokitteh.github import github_client
+
 
 REPO_A = os.getenv("REPO_A")
 REPO_B = os.getenv("REPO_B")
