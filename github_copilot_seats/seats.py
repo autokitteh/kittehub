@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, UTC
+import json
 import os
 from pathlib import Path
 
@@ -83,7 +84,8 @@ def prune_idle_seat(seat: dict[str, str]) -> None:
 
     # Load a blocks-based interactive message template
     # from a JSON file and post it to the user's Slack.
-    slack.chat_postMessage(channel=slack_id, blocks=Path("msg.json").read_text())
+    blocks = json.loads(Path("message.json").read_text())["blocks"]
+    slack.chat_postMessage(channel=slack_id, blocks=blocks)
 
     # Subscribe to Slack interaction events, waiting for the user's response.
     filter = f"event_type = 'interaction' && data.user.id == '{slack_id}'"
