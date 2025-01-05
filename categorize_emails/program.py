@@ -13,15 +13,17 @@ import os
 import time
 
 import autokitteh
-from autokitteh import google, openai, slack
+from autokitteh.google import gmail_client
+from autokitteh.openai import openai_client
+from autokitteh.slack import slack_client
 
 
 POLL_INTERVAL = float(os.getenv("POLL_INTERVAL"))
 SLACK_CHANNELS = ["demos", "engineering", "ui"]
 
 
-gmail_client = google.gmail_client("my_gmail").users()
-slack_client = slack.slack_client("my_slack")
+gmail = gmail_client("my_gmail").users()
+slack = slack_client("my_slack")
 processed_message_ids = set()
 start_time = datetime.now(UTC).timestamp()
 
@@ -45,7 +47,7 @@ def _poll_inbox():
 
 
 def _process_email(message_id: str, start_time: datetime):
-    message = gmail_client.messages().get(userId="me", id=message_id).execute()
+    message = gmail.messages().get(userId="me", id=message_id).execute()
     email_timestamp = float(message["internalDate"]) / 1000
 
     if email_timestamp < start_time:
@@ -63,7 +65,7 @@ def _process_email(message_id: str, start_time: datetime):
         print("Could not categorize email.")
         return
 
-    slack_client.chat_postMessage(channel=channel, text=email_content)
+    slack.chat_postMessage(channel=channel, text=email_content)
 
     # Add label to email
     label_id = _get_label_id(channel) or _create_label(channel)
@@ -71,7 +73,7 @@ def _process_email(message_id: str, start_time: datetime):
         return
 
     body = {"addLabelIds": [label_id]}
-    gmail_client.messages().modify(userId="me", id=message_id, body=body).execute()
+    gmail.messages().modify(userId="me", id=message_id, body=body).execute()
 
 
 def _parse_email(message: dict):
@@ -94,12 +96,12 @@ def _create_label(label_name: str) -> str:
         "messageListVisibility": "show",
         "name": label_name,
     }
-    created_label = gmail_client.labels().create(userId="me", body=label).execute()
+    created_label = gmail.labels().create(userId="me", body=label).execute()
     return created_label.get("id", None)
 
 
 def _get_label_id(label_name: str) -> str:
-    labels_response = gmail_client.labels().list(userId="me").execute()
+    labels_response = gmail.labels().list(userId="me").execute()
     labels = labels_response.get("labels", [])
     for label in labels:
         if label["name"] == label_name:
@@ -109,7 +111,7 @@ def _get_label_id(label_name: str) -> str:
 
 def get_new_inbox_messages():
     query = "in:inbox -in:drafts"
-    return gmail_client.messages().list(userId="me", q=query, maxResults=10).execute()
+    return gmail.messages().list(userId="me", q=query, maxResults=10).execute()
 
 
 @autokitteh.activity
@@ -120,7 +122,7 @@ def _categorize_email(email_content: str) -> str:
         The name of the Slack channel to send a message to as a string.
         If the channel is not in the provided list, returns None.
     """
-    client = openai.openai_client("my_chatgpt")
+    client = openai_client("my_chatgpt")
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
