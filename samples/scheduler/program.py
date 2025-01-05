@@ -1,12 +1,11 @@
-"""
-This program demonstrates AutoKitteh's scheduler capabilities.
+"""This program demonstrates AutoKitteh's scheduler capabilities.
 
 It implements a single entry-point function, configured in the "autokitteh.yaml"
 file to receive "scheduler" events, and uses constant values defined in the
 "autokitteh.yaml" manifest for each AutoKitteh environment.
 """
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, UTC
 import os
 
 from autokitteh.github import github_client
@@ -23,7 +22,6 @@ github = github_client("github_conn")
 
 def on_cron_trigger(_):
     """Handles the AutoKitteh cron schedule trigger."""
-
     # Fetch open pull requests that are not drafts or WIP
     repo = github.get_repo(f"{GITHUB_OWNER}/{GITHUB_REPO}")
     active_prs = [
@@ -34,7 +32,7 @@ def on_cron_trigger(_):
         and "wip" not in pr.title.lower()
     ]
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     opened_cutoff = now - timedelta(days=int(OPENED_CUTOFF))
     update_cutoff = now - timedelta(days=int(UPDATE_CUTOFF))
 

@@ -23,7 +23,7 @@ def load() -> dict[str, list[Person]]:  # topic -> list of people
 
     ppl = [Person(v[0], v[1], v[2].split(",")) for v in vs]
 
-    topics = set([topic for person in ppl for topic in person.topics])
+    topics = {topic for person in ppl for topic in person.topics}
 
     return {
         topic: [person for person in ppl if topic in person.topics] for topic in topics

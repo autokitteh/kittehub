@@ -1,6 +1,4 @@
-"""
-This script mirrors messages between Slack and Discord channels using
-AutoKitteh's Slack and Discord clients.
+"""Mirror messages between Slack and Discord channels using.
 
 Discord documentation:
 - https://discordpy.readthedocs.io/
@@ -45,10 +43,11 @@ def on_slack_message(event):
 
 @client.event
 async def on_ready():
-    """An asynchronous event triggered when the Discord bot
-    successfully connects. It fetches the Discord channel by ID and sends
-    the latest message received from Slack to the channel, then closes the
-    client connection."""
+    """An asynchronous event triggered when the Discord bot successfully connects.
+
+    It fetches the Discord channel by ID and sends the latest message received
+    from Slack to the channel, then closes the client connection.
+    """
     try:
         channel = await client.fetch_channel(DISCORD_CHANNEL_ID)
     except discord.DiscordException as e:

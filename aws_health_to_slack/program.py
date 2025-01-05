@@ -67,11 +67,11 @@ def _aws_health_events() -> list[dict]:
         resp = aws.describe_events(filter=filter)
         events = resp.get("events", [])
 
-        nextToken = resp.get("nextToken")
-        while nextToken:
-            resp = aws.describe_events(filter=filter, nextToken=nextToken)
+        next_token = resp.get("nextToken")
+        while next_token:
+            resp = aws.describe_events(filter=filter, nextToken=next_token)
             events += resp.get("events", [])
-            nextToken = resp.get("nextToken")
+            next_token = resp.get("nextToken")
 
         return events
 
@@ -97,11 +97,11 @@ def _affected_aws_entities(events: list[dict]) -> list[dict]:
         resp = aws.describe_affected_entities(filter=filter)
         entities = resp.get("entities", [])
 
-        nextToken = resp.get("nextToken")
-        while nextToken:
-            resp = aws.describe_affected_entities(filter=filter, nextToken=nextToken)
+        next_token = resp.get("nextToken")
+        while next_token:
+            resp = aws.describe_affected_entities(filter=filter, nextToken=next_token)
             entities += resp.get("entities", [])
-            nextToken = resp.get("nextToken")
+            next_token = resp.get("nextToken")
 
         return entities
     except Exception as e:

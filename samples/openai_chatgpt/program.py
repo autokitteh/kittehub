@@ -23,8 +23,7 @@ chatgpt_client = openai_client("chatgpt_conn")
 
 
 def on_http_get(event):
-    """
-    Entry-point function for handling HTTP GET requests in this workflow.
+    """Entry-point function for handling HTTP GET requests in this workflow.
 
     Example usage:
     - URL: "http://localhost:9980/webhooks/<webhook_slug>"

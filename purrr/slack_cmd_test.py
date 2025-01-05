@@ -1,3 +1,5 @@
+"""Unit tests for the "slack_cmd" module."""
+
 from datetime import datetime
 import unittest
 from unittest.mock import MagicMock
@@ -10,8 +12,8 @@ import slack_cmd
 class SlackCmdTest(unittest.TestCase):
     """Unit tests for the "slack_cmd" module."""
 
-    def __init__(self, methodName="runTest"):
-        super().__init__(methodName)
+    def __init__(self, method_name="runTest"):
+        super().__init__(method_name)
         self.data = {
             "channel_id": "purr-debug",
             "user_id": "user",
@@ -105,7 +107,9 @@ class SlackCmdTest(unittest.TestCase):
         slack_cmd.slack.chat_postEphemeral.assert_called_once_with(
             channel=event.data.channel_id,
             user=event.data.user_id,
-            text=":no_bell: You're already opted out of Purrr since: 0001-01-01 00:00:00",
+            text=(
+                ":no_bell: You're already opted out of Purrr since: 0001-01-01 00:00:00"
+            ),
         )
 
     def test_on_slack_slash_command_with_second_opt_out(self):

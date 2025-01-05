@@ -1,5 +1,4 @@
-"""
-A real-life workflow that integrates Gmail, ChatGPT, and Slack:
+"""A real-life workflow that integrates Gmail, ChatGPT, and Slack:
 
 1. Trigger: Detect a new email in Gmail.
 2. Categorize: Use ChatGPT to read and categorize the email
@@ -9,7 +8,7 @@ A real-life workflow that integrates Gmail, ChatGPT, and Slack:
 """
 
 import base64
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 import os
 import time
 
@@ -24,7 +23,7 @@ SLACK_CHANNELS = ["demos", "engineering", "ui"]
 gmail_client = google.gmail_client("my_gmail").users()
 slack_client = slack.slack_client("my_slack")
 processed_message_ids = set()
-start_time = datetime.now(timezone.utc).timestamp()
+start_time = datetime.now(UTC).timestamp()
 
 
 def on_http_get(event):
@@ -128,12 +127,12 @@ def _categorize_email(email_content: str) -> str:
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": f"""Categorize the following email based on its
-                topic and suggest a channel to post it in from the 
-                provided list. The output should be one of the provided 
-                channels and nothing else.
-                Email Content: {email_content} Channels: {SLACK_CHANNELS}
-                Output example: {SLACK_CHANNELS[0]}""",
+                "content": (
+                    "Categorize the following email based on its topic and suggest a "
+                    "channel to post it in from the provided list. The output should "
+                    "be one of the channels in {SLACK_CHANNELS} and nothing else, "
+                    "for example: {SLACK_CHANNELS[0]}\n\nEmail content: {email_content}"
+                ),
             },
         ],
     )

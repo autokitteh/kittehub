@@ -1,3 +1,5 @@
+"""Unit tests for the "markdown" module."""
+
 import collections
 import unittest
 from unittest.mock import MagicMock
@@ -7,7 +9,7 @@ import users
 
 
 class MarkdownGithubToSlackTest(unittest.TestCase):
-    """Unit tests for the "markdown" module's "github_to_slack" function."""
+    """Unit tests for the "github_to_slack" function."""
 
     def test_trivial(self):
         self.assertEqual(markdown.github_to_slack("", ""), "")
@@ -127,7 +129,7 @@ class MarkdownGithubToSlackTest(unittest.TestCase):
 
 
 class MarkdownSlackToGithubTest(unittest.TestCase):
-    """Unit tests for the "markdown" module's "slack_to_github" function."""
+    """Unit tests for the "slack_to_github" function."""
 
     def test_trivial(self):
         self.assertEqual(markdown.slack_to_github(""), "")

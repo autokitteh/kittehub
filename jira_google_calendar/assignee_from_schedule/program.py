@@ -1,5 +1,4 @@
-"""
-This program assigns Atlassian Jira issues based on a shared Google Calendar.
+"""This program assigns Atlassian Jira issues based on a shared Google Calendar.
 
 The shared Google Calendar defines a 27/4 on-call rotation.
 How to create it: https://support.google.com/calendar/answer/37095

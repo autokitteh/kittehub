@@ -71,13 +71,13 @@ def _read_values(id):
     """
     # Default value render option: "FORMATTED_VALUE".
     resp = sheet.get(spreadsheetId=id, range="A1:B6").execute()
-    col_a, formatted_col_b = list(zip(*resp.get("values", [])))
+    col_a, formatted_col_b = list(zip(*resp.get("values", []), strict=True))
 
     ufv = "UNFORMATTED_VALUE"
     resp = sheet.get(spreadsheetId=id, range="A1:B6", valueRenderOption=ufv).execute()
-    unformatted_col_b = [v for _, v in resp.get("values", [])]
+    unform_col_b = [v for _, v in resp.get("values", [])]
 
-    for i, row in enumerate(zip(col_a, formatted_col_b, unformatted_col_b)):
+    for i, row in enumerate(zip(col_a, formatted_col_b, unform_col_b, strict=True)):
         data_type, formatted, unformatted = row
         text = f"Row {i + 1}: {data_type} = formatted "
         text += f"`{formatted!r}`, unformatted `{unformatted!r}`"

@@ -16,6 +16,7 @@ slack = slack_client("slack_connection")
 
 def on_slack_command(event):
     """Workflow's entry-point.
+
     Extracts a topic from a Slack command, monitors for new articles,
     and posts updates to `SLACK_CHANNEL`.
     """

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, UTC
 import os
 
 import autokitteh
@@ -50,18 +50,18 @@ If not taken or resolved, I will remind you in {HELP_REQUEST_TIMEOUT_MINUTES}m.
     s = autokitteh.subscribe("myslack", filter)
 
     taken_by = None
-    start_time = datetime.now()
+    start_time = datetime.now(UTC)
 
     while True:
         msg = autokitteh.next_event(s, timeout=60)
 
         if not msg:  # timeout
-            dt = (datetime.now() - start_time).total_seconds()
+            dt = (datetime.now(UTC) - start_time).total_seconds()
             print(f"timeout, dt={dt}")
 
             if not taken_by and dt >= HELP_REQUEST_TIMEOUT_MINUTES * 60:
                 send(f"Reminder: {mentions}, please respond.")
-                start_time = datetime.now()
+                start_time = datetime.now(UTC)
             continue
 
         cmd = msg.text.strip()[1:]
