@@ -27,6 +27,10 @@ jobs:
         run: |
           ruff check --output-format github .
           ruff format --check .
+      - name: Verify README.md is up to date
+        run: |
+          python update_projects_table.py
+          git diff --name-only --exit-code README.md
       # (Enable this step once we have unit tests)
       # - name: Test with pytest
       #   run: pytest -v
