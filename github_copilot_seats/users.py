@@ -40,7 +40,7 @@ def github_username_to_slack_user_id(github_username: str) -> str:
         real_name = profile.get("real_name", "").lower()
         normalized_name = profile.get("real_name_normalized", "").lower()
         if github_name in (real_name, normalized_name):
-            return user.id
+            return user.get("id", "")
 
     return ""
 
