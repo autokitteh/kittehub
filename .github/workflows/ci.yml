@@ -34,6 +34,6 @@ jobs:
 
       - name: Verify README.md is up to date
         run: |
-          # If this check fails, run the Python script manually, and add README.md to this PR
+          # If this check fails, run "python update_projects_table.py", and add "README.md" to this PR.
           python update_projects_table.py
-          git diff --exit-code README.md
+          git diff --name-only --exit-code README.md
