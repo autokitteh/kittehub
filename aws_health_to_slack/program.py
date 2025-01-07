@@ -58,7 +58,8 @@ def _aws_health_events() -> list[dict]:
     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/health/client/describe_events_for_organization.html
     """
     try:
-        mins = int((os.getenv("TRIGGER_INTERVAL") or "1m")[:-1]) # Remove unit suffix and parse as int
+        # Remove the unit suffix ("m") and parse as an integer.
+        mins = int((os.getenv("TRIGGER_INTERVAL") or "1m")[:-1])
         prev_check = datetime.now(UTC) - timedelta(minutes=mins)
         filter = {"lastUpdatedTimes": [{"from": prev_check}]}
 
