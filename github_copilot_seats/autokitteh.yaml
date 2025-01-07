@@ -8,11 +8,12 @@ project:
   vars:
     - name: IDLE_HOURS_THRESHOLD
       value: 72
-    - # Optional: manage GitHub Copilot subscriptions only for these users, separated by commas.
-      name: MANAGED_LOGINS
+    # Optional: manage GitHub Copilot subscriptions only for these users, separated by commas.
+    - name: MANAGED_LOGINS
       value: ""
+    # Optional: Slack channel name or ID, for debugging.
     - name: SLACK_LOG_CHANNEL
-      value: copilot-log
+      value: ""
   connections:
     - name: github_conn
       integration: github

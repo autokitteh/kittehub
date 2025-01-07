@@ -7,10 +7,10 @@ categories: ["DevOps"]
 
 # GitHub Copilot Seat Pruning
 
-This automation runs daily to list all the users in the GitHub organization who have access to [Copilot](https://github.com/features/copilot). If any of
-them haven't used it in a preceding period of time, it marks
-their seat for cancellation in the next billing cycle, and notifies them in a
-Slack DM.
+This automation runs daily to list all the users in the GitHub organization
+who have access to [Copilot](https://github.com/features/copilot). If any of
+them haven't used it in a preceding period of time, it marks their seat for
+cancellation in the next billing cycle, and notifies them in a Slack DM.
 
 Users can then optionally respond and ask for the seat to be reassigned back
 to them.
@@ -21,7 +21,7 @@ Set/modify these optional project variables:
 
 - `IDLE_HOURS_THRESHOLD` (default = 72 hours)
 - `MANAGED_LOGINS` (default = no one = manage all org users)
-- `SLACK_LOG_CHANNEL` (default = `"copilot-log"`, `""` = no logging in Slack)
+- `SLACK_LOG_CHANNEL` (channel name or ID, default = none)
 
 ## Slack Usage
 

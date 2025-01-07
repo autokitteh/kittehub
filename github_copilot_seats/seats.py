@@ -10,11 +10,12 @@ from autokitteh.slack import slack_client
 from users import github_username_to_slack_user_id
 
 
+GITHUB_ORG_NAME = os.getenv("github_conn__target_name") or ""
 IDLE_HOURS_THRESHOLD = int(os.getenv("IDLE_HOURS_THRESHOLD", "72"))
 MANAGED_LOGINS = os.getenv("MANAGED_LOGINS")
 
 github = github_client("github_conn")
-org = github.get_organization(os.getenv("github_conn__target_name"))
+org = github.get_organization(GITHUB_ORG_NAME)
 copilot = org.get_copilot()
 
 slack = slack_client("slack_conn")
@@ -64,8 +65,9 @@ def find_idle_seats(*, prune: bool = False) -> list[dict[str, str]]:
 def prune_idle_seat(seat: dict[str, str]) -> None:
     """Interacts via Slack with a GitHub user assigned to an idle Copilot seat.
 
-    Note - this function runs as a child workflow, by calling:
-    autokitteh.start(loc="filename.py:function_name", data={...})
+    Note:
+        This function is designed to run as a child workflow, by calling:
+        autokitteh.start(loc="seats.py:prune_idle_seat", data={...})
 
     Args:
         seat: Username and last activity timestamp of the GitHub user to which
