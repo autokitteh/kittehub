@@ -20,7 +20,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Slack notify on Confluence page created](./confluence_to_slack/) | When Confluence page is created the user will be notified on Slack | confluence, slack |
 | [Parse a file in S3 and insert to database](./data_pipeline/) | Triggered by a new GPX file on an S3 bucket, the pipeline code will parse the GPX file and insert it into a database. | aws, http, sqlite3 |
 | [Github Actions](./github_actions/) | GitHub workflows that interact across multiple repositories | github |
-| [Unregister non active users from Copilot](./github_copilot_seats/) | If Copilot was not used in a preceding period by users, the workflow automatically unregisters and notifies them. Users can ask for their subscription to be reinstated. | githubcopilot, slack |
+| [Cancel GitHub Copilot access for inactive users](./github_copilot_seats/) | If Copilot was not used in a preceding period by users, unsubscribe and notify them in Slack. Users can ask for their subscription to be reinstated. | githubcopilot, slack |
 | [Google Calendar To Asana](./google_cal_to_asana/) | Creates Asana tasks based on Google Calendar events | calendar, asana |
 | [Create Jira ticket from Google form](./google_forms_to_jira/) | Trigger by HTTP request, continue polling Google forms, and create Jira ticket based on the form's data | forms, http, jira |
 | [Hacker News Alerts in Slack ](./hackernews/) | Track Hacker News articles by topic and send updates to Slack | slack |
