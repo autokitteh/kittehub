@@ -2,5 +2,6 @@ pytest
 ruff
 
 autokitteh
+google-auth
 PyGithub
 slack-sdk
