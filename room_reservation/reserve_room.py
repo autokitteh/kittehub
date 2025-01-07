@@ -32,7 +32,7 @@ def on_slack_slash_command(event):
         slack.chat_postMessage(channel=channel_id, text=err)
         return
 
-    user = slack.users_profile_get(user=data.user_id).get("profile")
+    user = slack.users_profile_get(user=data.user_id).get("profile", {})
 
     now = datetime.now(UTC)
     in_5_minutes = now + timedelta(minutes=5)

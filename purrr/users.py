@@ -1,7 +1,7 @@
 """User-related helper functions across GitHub and Slack."""
 
 from autokitteh.slack import slack_client
-import github
+from github import NamedUser, GithubException
 from slack_sdk.errors import SlackApiError
 
 import data_helper
@@ -106,7 +106,11 @@ def format_slack_user_for_github(slack_user_id: str) -> str:
         debug.log(f"Slack user <@{slack_user_id}>: `real_name` not found in profile")
         return "Someone"
 
-    users = [user for user in _github_users() if user.name.lower() == slack_name]
+    users = []
+    for user in _github_users():
+        if user.name and user.name.lower() == slack_name:
+            users.append(user)
+
     if len(users) == 1:
         github_ref = "@" + users[0].login
         data_helper.cache_github_reference(slack_user_id, github_ref)
@@ -121,11 +125,11 @@ def format_slack_user_for_github(slack_user_id: str) -> str:
     return profile["real_name"]
 
 
-def _github_users() -> list[github.NamedUser.NamedUser]:
+def _github_users() -> list[NamedUser.NamedUser]:
     """Return a list of all GitHub users in the organization."""
     try:
         return list(gh.get_organization(github_helper.ORG_NAME).get_members())
-    except github.GithubException as e:
+    except GithubException as e:
         error = "Failed to list GitHub members in the organization"
         debug.log(f"{error} `{github_helper.ORG_NAME}`:\n```{e}```")
         return []
@@ -217,8 +221,9 @@ def github_username_to_slack_user_id(github_username: str) -> str:
             profile.get("real_name_normalized", "").lower(),
         )
         if github_name in slack_names:
-            data_helper.cache_slack_user_id(github_username, user.id)
-            return user.id
+            slack_user_id = user.get("id", "")
+            data_helper.cache_slack_user_id(github_username, slack_user_id)
+            return slack_user_id
 
     # Optimization: cache unsuccessful results too (i.e. external users).
     debug.log(f"GitHub user {gh_user_link}: email & name not found in Slack")

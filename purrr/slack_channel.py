@@ -128,9 +128,9 @@ def add_users(channel_id: str, github_users: list[str]) -> None:
     if len(slack_users) > 1000:
         slack_users = slack_users[:1000]
 
-    users = ",".join(slack_users)
+    user_ids = ",".join(slack_users)
     try:
-        slack.conversations_invite(channel=channel_id, users=users, force=True)
+        slack.conversations_invite(channel=channel_id, users=user_ids, force=True)
     except SlackApiError as e:
         if e.response["error"] == "already_in_channel":
             return

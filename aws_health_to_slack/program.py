@@ -8,7 +8,6 @@ https://aws.amazon.com/blogs/mt/tag/aws-health-api/
 from datetime import datetime, timedelta, UTC
 import json
 import os
-import re
 
 import autokitteh
 from autokitteh.aws import boto3_client
@@ -16,7 +15,7 @@ from autokitteh.google import google_id, google_sheets_client
 from autokitteh.slack import slack_client
 
 
-url = os.getenv("GOOGLE_SHEET_URL")
+URL = os.getenv("GOOGLE_SHEET_URL") or ""
 
 
 def on_schedule(_):
@@ -44,7 +43,7 @@ def on_schedule(_):
 def _read_google_sheet() -> dict[str, str]:
     """Read mapping of project tags to Slack channels from Google Sheet."""
     sheets = google_sheets_client("google_sheets_connection").spreadsheets().values()
-    rows = sheets.get(spreadsheetId=google_id(url), range="A:B").execute()
+    rows = sheets.get(spreadsheetId=google_id(URL), range="A:B").execute()
     return {row[0].strip(): row[1].strip() for row in rows.get("values", [])}
 
 
@@ -59,7 +58,7 @@ def _aws_health_events() -> list[dict]:
     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/health/client/describe_events_for_organization.html
     """
     try:
-        mins = int(re.match(r"(\d+)m", os.getenv("TRIGGER_INTERVAL")).group(1))
+        mins = int((os.getenv("TRIGGER_INTERVAL") or "1m")[:-1])
         prev_check = datetime.now(UTC) - timedelta(minutes=mins)
         filter = {"lastUpdatedTimes": [{"from": prev_check}]}
 
@@ -111,7 +110,7 @@ def _affected_aws_entities(events: list[dict]) -> list[dict]:
 
 def _post_slack_message(channel, project, entity: dict, affecting_events: list[dict]):
     if not channel:
-        print(f"Error: project {project!r} not found in {url}")
+        print(f"Error: project {project!r} not found in {URL}")
 
     text = f"This AWS resource:\n```\n{json.dumps(entity, indent=4)}\n```"
     text += "\nis affected by these AWS Health events:"

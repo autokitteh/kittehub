@@ -1,6 +1,6 @@
 """This program adds new Auth0 users to HubSpot as contacts."""
 
-from datetime import datetime, UTC
+from datetime import datetime, timedelta, UTC
 import os
 
 from autokitteh.auth0 import auth0_client
@@ -8,7 +8,7 @@ from autokitteh.hubspot import hubspot_client
 from hubspot.crm.contacts import SimplePublicObjectInput
 
 
-LOOKUP_HOURS = int(os.getenv("HOURS"))
+LOOKUP_HOURS = int(os.getenv("HOURS") or "24")
 
 auth0 = auth0_client("auth0_conn")
 hubspot = hubspot_client("hubspot_conn")
@@ -29,7 +29,7 @@ def check_for_new_users(event):
 def _get_time_range(hours):
     """Calculate start and end times for user lookup."""
     now = datetime.now(UTC)
-    start_time = now - datetime.timedelta(hours=hours)
+    start_time = now - timedelta(hours=hours)
     return (start_time.isoformat() + "Z", now.isoformat() + "Z")
 
 
