@@ -1,7 +1,8 @@
 """User-related helper functions across GitHub and Slack."""
 
 from autokitteh.slack import slack_client
-from github import NamedUser, GithubException
+from github import GithubException
+from github import NamedUser
 from slack_sdk.errors import SlackApiError
 
 import data_helper
