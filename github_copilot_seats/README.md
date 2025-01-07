@@ -7,9 +7,8 @@ categories: ["DevOps"]
 
 # GitHub Copilot Seat Pruning
 
-This automation enumerates once a day all the users in the GitHub organization
-that have access to [Copilot](https://github.com/features/copilot). If any of
-them haven't used it in a preceding period of time, it automatically marks
+This automation runs daily to list all the users in the GitHub organization who have access to [Copilot](https://github.com/features/copilot). If any of
+them haven't used it in a preceding period of time, it marks
 their seat for cancellation in the next billing cycle, and notifies them in a
 Slack DM.
 
