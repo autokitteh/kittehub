@@ -9,7 +9,7 @@ import requests
 
 
 API_URL = "http://hn.algolia.com/api/v1/search_by_date?tags=story&page=0&query="
-POLLING_INTERVAL_SECS = int(os.getenv("POLLING_INTERVAL_SECS"))
+POLLING_INTERVAL_SECS = int(os.getenv("POLLING_INTERVAL_SECS") or "120")
 
 slack = slack_client("slack_connection")
 

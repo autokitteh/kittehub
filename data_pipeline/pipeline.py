@@ -65,13 +65,17 @@ trkpt_tag = "{http://www.topografix.com/GPX/1/1}trkpt"
 def parse_gpx(track_id, data):
     io = BytesIO(data)
     root = Xml.parse(io).getroot()
-    return [
-        {
-            "track_id": track_id,
-            "n": i,
-            "lat": float(elem.get("lat")),
-            "lng": float(elem.get("lon")),
-            "height": float(elem.findtext(".//")),
-        }
-        for i, elem in enumerate(root.findall(".//" + trkpt_tag))
-    ]
+    records = []
+
+    for i, elem in enumerate(root.findall(".//" + trkpt_tag)):
+        records.append(
+            {
+                "track_id": track_id,
+                "n": i,
+                "lat": float(elem.get("lat", "0")),
+                "lng": float(elem.get("lon", "0")),
+                "height": float(elem.findtext(".//") or "0"),
+            }
+        )
+
+    return records
