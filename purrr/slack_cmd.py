@@ -36,6 +36,7 @@ def on_slack_slash_command(event):
 
     if args[0] in _COMMANDS:
         _COMMANDS[args[0]].handler(data, args)
+        return
 
     error = f"Error: unrecognized Purrr command: `{args[0]}`"
     slack.chat_postEphemeral(channel=data.channel_id, user=data.user_id, text=error)

@@ -1,2 +1,6 @@
 pytest
 ruff
+
+autokitteh
+PyGithub
+slack-sdk

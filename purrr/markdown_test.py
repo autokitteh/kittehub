@@ -2,7 +2,7 @@
 
 import collections
 import unittest
-from unittest.mock import MagicMock
+from unittest import mock
 
 import markdown
 import users
@@ -93,9 +93,9 @@ class MarkdownGithubToSlackTest(unittest.TestCase):
             "  •  111\n          ◦   222\n          ◦   333\n  •  444",
         )
 
-    def test_user_mentions(self):
-        users.github_username_to_slack_user_id = MagicMock()
-        users.github_username_to_slack_user_id.side_effect = ["U123", None, None]
+    @mock.patch.object(users, "github_username_to_slack_user_id", autospec=True)
+    def test_user_mentions(self, mock_func):
+        mock_func.side_effect = ["U123", None, None]
 
         # Slack user found.
         self.assertEqual(
@@ -182,11 +182,11 @@ class MarkdownSlackToGithubTest(unittest.TestCase):
         self.assertEqual(markdown.slack_to_github("<url|>"), "[](url)")
         self.assertEqual(markdown.slack_to_github("<url>"), "<url>")
 
-    def test_channel(self):
-        markdown._slack_channel_name = MagicMock()
-        markdown._slack_channel_name.return_value = "channel"
-        markdown._slack_team_id = MagicMock()
-        markdown._slack_team_id.return_value = "TEAM_ID"
+    @mock.patch.object(markdown, "_slack_team_id", autospec=True)
+    @mock.patch.object(markdown, "_slack_channel_name", autospec=True)
+    def test_channel(self, mock_channel_name, mock_team_id):
+        mock_channel_name.return_value = "channel"
+        mock_team_id.return_value = "TEAM_ID"
 
         self.assertEqual(
             markdown.slack_to_github("<#C123>"),
@@ -205,72 +205,57 @@ class MarkdownSlackToGithubTest(unittest.TestCase):
 FakeGithubUser = collections.namedtuple("FakeGithubUser", ["name", "login"])
 
 
+@mock.patch.object(users, "_slack_user_info", autospec=True)
+@mock.patch.object(users, "_github_users", autospec=True)
+@mock.patch.object(users, "_email_to_github_user_id", autospec=True)
 class MarkdownSlackToGithubUserMentionsTest(unittest.TestCase):
     """Unit tests for user mentions in the "slack_to_github" function."""
 
-    def setUp(self):
-        super().setUp()
-
-        self._slack_user_info = users._slack_user_info
-        users._slack_user_info = MagicMock()
-
-        self.__email_to_github_user_id = users._email_to_github_user_id
-        users._email_to_github_user_id = MagicMock()
-
-        self._github_users = users._github_users
-        users._github_users = MagicMock()
-
-    def tearDown(self):
-        users._github_users = self._github_users
-        users._email_to_github_user_id = self.__email_to_github_user_id
-        users._slack_user_info = self._slack_user_info
-        super().tearDown()
-
-    def test_slack_user_info_error(self):
-        users._slack_user_info.return_value = {}
+    def test_slack_user_info_error(self, mock_email, mock_github, mock_slack):
+        mock_slack.return_value = {}
         self.assertEqual(markdown.slack_to_github("<@U123>"), "Someone")
 
-    def test_email_and_name_not_found_in_slack_profile(self):
-        users._slack_user_info.return_value = {"profile": {"foo": "bar"}}
+    def test_email_and_name_not_found_in_slack_profile(
+        self, mock_email, mock_github, mock_slack
+    ):
+        mock_slack.return_value = {"profile": {"foo": "bar"}}
         self.assertEqual(markdown.slack_to_github("<@U123>"), "Someone")
 
-    def test_named_and_unnamed_slack_apps(self):
-        users._slack_user_info.side_effect = [
+    def test_named_and_unnamed_slack_apps(self, mock_email, mock_github, mock_slack):
+        mock_slack.side_effect = [
             {"is_bot": True, "profile": {"real_name": "Mr. Robot"}},
             {"is_bot": True},
         ]
         self.assertEqual(markdown.slack_to_github("<@U123>"), "Mr. Robot")
         self.assertEqual(markdown.slack_to_github("<@U123>"), "Some Slack app")
 
-    def test_match_by_email(self):
-        users._slack_user_info.return_value = {"profile": {"email": "me@test.com"}}
-        users._email_to_github_user_id.return_value = "username"
+    def test_match_by_email(self, mock_email, mock_github, mock_slack):
+        mock_slack.return_value = {"profile": {"email": "me@test.com"}}
+        mock_email.return_value = "username"
         self.assertEqual(markdown.slack_to_github("<@U123>"), "@username")
 
-    def test_match_by_name(self):
-        users._slack_user_info.return_value = {
+    def test_match_by_name(self, mock_email, mock_github, mock_slack):
+        mock_slack.return_value = {
             "profile": {"email": "me@test.com", "real_name": "John Doe"}
         }
-        users._email_to_github_user_id.return_value = ""
-        users._github_users.return_value = [
-            FakeGithubUser("John Doe", "username"),
-        ]
+        mock_email.return_value = ""
+        mock_github.return_value = [FakeGithubUser("John Doe", "username")]
         self.assertEqual(markdown.slack_to_github("<@U123>"), "@username")
 
-    def test_no_matches_by_name(self):
-        users._slack_user_info.return_value = {
+    def test_no_matches_by_name(self, mock_email, mock_github, mock_slack):
+        mock_slack.return_value = {
             "profile": {"email": "me@test.com", "real_name": "John Doe"}
         }
-        users._email_to_github_user_id.return_value = ""
-        users._github_users.return_value = []
+        mock_email.return_value = ""
+        mock_github.return_value = []
         self.assertEqual(markdown.slack_to_github("<@U123>"), "John Doe")
 
-    def test_too_many_matches_by_name(self):
-        users._slack_user_info.return_value = {
+    def test_too_many_matches_by_name(self, mock_email, mock_github, mock_slack):
+        mock_slack.return_value = {
             "profile": {"email": "me@test.com", "real_name": "John Doe"}
         }
-        users._email_to_github_user_id.return_value = ""
-        users._github_users.return_value = [
+        mock_email.return_value = ""
+        mock_github.return_value = [
             FakeGithubUser("John Doe", "username1"),
             FakeGithubUser("john doe", "username2"),
             FakeGithubUser("JOHN DOE", "username3"),
