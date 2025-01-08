@@ -4,9 +4,10 @@ This script showcases two basic operations with the HubSpot API:
 creating a new contact and listing all deals. 
 """
 
-from autokitteh.hubspot import hubspot_client
 from hubspot.crm.contacts import SimplePublicObjectInputForCreate
 from hubspot.crm.contacts.exceptions import ApiException
+
+from autokitteh.hubspot import hubspot_client
 
 hubspot = hubspot_client("hubspot_conn")
 
