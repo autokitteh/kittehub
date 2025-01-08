@@ -13,7 +13,7 @@ ignore = ["D213", "S113", "S311", "S314", "S4"]
 force-sort-within-sections = true
 lines-after-imports = 2
 order-by-type = false
-known-third-party = ["discord", "github"]
+known-third-party = ["discord", "github", "hubspot"]
 
 force-single-line = true
 single-line-exclusions = ["autokitteh.atlassian", "autokitteh.google", "datetime", "typing"]

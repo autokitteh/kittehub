@@ -8,6 +8,7 @@ from autokitteh.hubspot import hubspot_client
 from hubspot.crm.contacts import SimplePublicObjectInputForCreate
 from hubspot.crm.contacts.exceptions import ApiException
 
+
 hubspot = hubspot_client("hubspot_conn")
 
 
