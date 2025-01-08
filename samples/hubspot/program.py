@@ -1,7 +1,7 @@
 """Demonstration of AutoKitteh's HubSpot integration.
 
 This script showcases two basic operations with the HubSpot API:
-creating a new contact and listing all deals. 
+creating a new contact and listing all deals.
 """
 
 from hubspot.crm.contacts import SimplePublicObjectInputForCreate
