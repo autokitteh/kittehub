@@ -30,7 +30,7 @@ jobs:
           ruff format --check .
 
       - name: Test with pytest
-        run: AUTOKITTEH_UNIT_TEST=1 pytest -v .
+        run: pytest -v .
 
       - name: Verify README.md is up to date
         run: |

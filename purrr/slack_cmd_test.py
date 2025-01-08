@@ -5,6 +5,7 @@ import unittest
 from unittest import mock
 
 import autokitteh
+from slack_sdk.web.client import WebClient
 
 import slack_cmd
 
@@ -16,7 +17,7 @@ fake_data = {
 }
 
 
-@mock.patch.object(slack_cmd, "slack", autospec=True)
+@mock.patch.object(slack_cmd, "slack", spec=WebClient)
 @mock.patch.object(slack_cmd, "data_helper", autospec=True)
 class SlackCmdTest(unittest.TestCase):
     """Unit tests for the "slack_cmd" module."""

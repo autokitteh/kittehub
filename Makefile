@@ -11,6 +11,6 @@ lint: deps
 	ruff check --fix --output-format full .
 
 test: deps
-	AUTOKITTEH_UNIT_TEST=1 pytest -v .
+	pytest -v .
 
 .PHONY: all deps format lint test

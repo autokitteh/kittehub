@@ -16,7 +16,7 @@ order-by-type = false
 known-third-party = ["discord", "github"]
 
 force-single-line = true
-single-line-exclusions = ["autokitteh.atlassian", "autokitteh.google", "datetime", "typing"]
+single-line-exclusions = ["autokitteh", "autokitteh.atlassian", "autokitteh.google", "datetime", "typing"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

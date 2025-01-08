@@ -4,8 +4,17 @@ import collections
 import unittest
 from unittest import mock
 
-import markdown
-import users
+from autokitteh import github, slack
+
+
+# This is needed before calling "import markdown" to avoid "ConnectionInitError"
+# when initializing these clients in Purrr modules, due to the lack of AutoKitteh
+# environment variables. This is also the reason for the "noqa" comments below.
+github.github_client = mock.MagicMock()
+slack.slack_client = mock.MagicMock()
+
+import markdown  # noqa: E402
+import users  # noqa: E402
 
 
 class MarkdownGithubToSlackTest(unittest.TestCase):
