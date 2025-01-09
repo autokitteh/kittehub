@@ -22,55 +22,40 @@ API details:
 1. Create a new contact in HubSpot with predefined details.
 2. Retrieve and list all deals from HubSpot, displaying their IDs and names.
 
-## Deployment & Configuration
+## Cloud Usage (Recommended)
 
-### Cloud Usage
-
-- Initialize your connection with HubSpot through the UI
-
-### Self-Hosted Server
-
-#### Prerequisites
-
-- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
-
-#### Installation Steps
-
-1. Clone the repository:
-   ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   cd kittehub/samples/hubspot
-   ```
-
-2. Start the AutoKitteh server:
-   ```shell
-   ak up --mode dev
-   ```
-
-3. Deploy the project:
-   ```shell
-   ak deploy --manifest autokitteh.yaml
-   ```
-
-   The output will show your connection IDs, which you'll need for the next step. Look for lines like:
-   ```shell
-   [exec] create_connection "hubspot/hubspot_conn": con_01jh2gx9jce6jr436fsz43g5zf created
-   ```
-   
-   In this example, `con_01jh2gx9jce6jr436fsz43g5zf` is the connection ID.
-
-4. Initialize your connections using the CLI:
-   ```shell
-   ak connection init <connection ID>
-   ```
+- Initialize your connection through the UI.
+2. Edit the trigger of the workflow you want to trigger, in the "TRIGGERS" tab, under the "Actions" column.
+3. Copy the provided webhook URL.
+4. Send the webhook with a curl GET or POST request, depending on the selected webhook.
+   - For create_contact_webhook:
+      ```shell
+         curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}?email=email&firstname=name&lastname=name"
+      ```
+   - For list_deals_webhook:
+      ```shell
+         curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
+      ```
 
 ## Trigger Workflow
 
-The workflow is triggered by sending an HTTP GET request.
+Trigger the workflow using the webhook URL. Refer to the [Cloud Usage](#cloud-usage-recommended) section for detailed steps.
+
+### Steps to Retrieve the Webhook URL
+
+- The webhook URL is provided in the output of the `ak deploy` command.
+- Run the following command to retrieve the URL:
+  ```shell
+  ak trigger get <trigger name or ID>
+  ```
 
 > [!TIP]
 > The workflow can also be triggered manually by clicking the "Run" button in the UI. Ensure the function you want to run is set as the entrypoint.
 
 > [!IMPORTANT]
 > Ensure that the connection with HubSpot is properly initialized before the workflow starts running.
+
+### Self-Hosted Server
+
+Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 

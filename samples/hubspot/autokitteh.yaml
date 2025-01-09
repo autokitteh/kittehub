@@ -8,11 +8,11 @@ project:
   - name: hubspot_conn
     integration: hubspot
   triggers:
-  - name: createWH
-    event_type: '*'
-    webhook: {}
+  - name: create_contact_webhook
+    type: webhook
+    event_type: post
     call: program.py:create_contact
-  - name: listWH
-    event_type: '*'
-    webhook: {}
+  - name: list_deals_webhook
+    type: webhook
+    event_type: get
     call: program.py:list_deals
