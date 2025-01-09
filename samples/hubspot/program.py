@@ -32,7 +32,6 @@ def create_contact(event):
 
 
 def list_deals(event):
-    # Retrieve all deals from HubSpot
     all_deals = hubspot.crm.deals.get_all()
     for deal in all_deals:
         print(f"Deal ID: {deal.id}, Deal Name: {deal.properties.get('dealname')}")
