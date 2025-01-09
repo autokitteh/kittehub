@@ -11,6 +11,6 @@ lint: deps
 	ruff check --fix --output-format full .
 
 test: deps
-	pytest -v --ignore=purrr .
+	pytest -v .
 
 .PHONY: all deps format lint test
