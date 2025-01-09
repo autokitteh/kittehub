@@ -27,8 +27,8 @@ class TestSlackCmd:
     @pytest.fixture
     def mock_data_helper(self, mocker):
         import slack_cmd
-        yield mocker.patch.object(slack_cmd, "data_helper", autospec=True)
-        return
+
+        return mocker.patch.object(slack_cmd, "data_helper", autospec=True)
 
     def test_help_text(self):
         import slack_cmd
