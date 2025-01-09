@@ -16,7 +16,7 @@ model = genai.GenerativeModel(
 
 
 def extract_topic(text: str, topics: set[str]) -> str:
-    prompt = f"""Topics: {', '.join(topics)}
+    prompt = f"""Topics: {", ".join(topics)}
 Is the following text a request for help with one of these topics?
 Example responses:
 If a request for help and a topic from the list: {{"help": true, "topic": "cats" }}

@@ -46,7 +46,7 @@ def create_channel(name: str) -> str:
         except SlackApiError as e:
             if e.response["error"] != "name_taken":
                 error = f"Failed to create {visibility} Slack channel `{n}`"
-                debug.log(f"{error}: `{e.response["error"]}`")
+                debug.log(f"{error}: `{e.response['error']}`")
                 return ""
 
 
@@ -109,7 +109,7 @@ def impersonate_in_reply(
     except SlackApiError as e:
         error = f"Failed to post {'reply' if ts else 'message'} "
         error += f"as <@{user['id']}> in <#{channel_id}>"
-        debug.log(f"{error}: `{e.response["error"]}`")
+        debug.log(f"{error}: `{e.response['error']}`")
         return ""
 
 
@@ -201,7 +201,7 @@ def mention_in_reply(channel_id: str, comment_url: str, github_user, msg: str) -
         return resp["ts"]
     except SlackApiError as e:
         error = f"Failed to post {'reply' if ts else 'message'} in <#{channel_id}>"
-        debug.log(f"{error}: `{e.response["error"]}`")
+        debug.log(f"{error}: `{e.response['error']}`")
         return ""
 
 
