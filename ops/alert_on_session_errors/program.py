@@ -60,6 +60,6 @@ def _log_error(session):
     print(data)
 
     pid, did = session["projectId"], session["deploymentId"]
-    path = f"/projects/{pid}/deployments/{did}/sessions/{session["sessionId"]}"
+    path = f"/projects/{pid}/deployments/{did}/sessions/{session['sessionId']}"
     msg = f"Error in AutoKitteh session: {urljoin(UI_BASE_URL, path)}\n```{data}```"
     slack.chat_postMessage(channel=SLACK_CHANNEL, text=msg)
