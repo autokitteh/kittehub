@@ -15,7 +15,7 @@ import users
 _CHANNEL_PREFIX = os.getenv("SLACK_CHANNEL_PREFIX", "_pr")
 
 # Visibility of PR channels in Slack: "public" (default) or "private".
-_IS_PRIVATE = os.getenv("SLACK_CHANNEL_VISIBILITY") or ""
+_IS_PRIVATE = os.getenv("SLACK_CHANNEL_VISIBILITY", "")
 
 shared_client = slack_client("slack_conn")
 

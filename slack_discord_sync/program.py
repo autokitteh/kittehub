@@ -17,8 +17,8 @@ from autokitteh import slack
 import discord
 
 
-DISCORD_CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID"))
-SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
+DISCORD_CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID", ""))
+SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID", "")
 
 # Discord intents that enable the bot to read message content
 intents = discord.Intents.default()

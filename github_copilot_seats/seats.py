@@ -10,7 +10,7 @@ from autokitteh.slack import slack_client
 from users import github_username_to_slack_user_id
 
 
-GITHUB_ORG_NAME = os.getenv("github_conn__target_name") or ""
+GITHUB_ORG_NAME = os.getenv("github_conn__target_name", "")
 IDLE_HOURS_THRESHOLD = int(os.getenv("IDLE_HOURS_THRESHOLD", "72"))
 MANAGED_LOGINS = os.getenv("MANAGED_LOGINS")
 
