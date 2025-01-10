@@ -26,7 +26,7 @@ project:
     # While an incident is ongoing, re-check at a shorter interval.
     - name: PING_HOURS
       value: 1
-    # Send incident alerts on this Slack channel name/ID.
+    # Send incident alerts to this Slack channel name/ID.
     - name: SLACK_CHANNEL
       value: autokitteh-alerts
 
