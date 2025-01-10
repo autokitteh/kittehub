@@ -67,7 +67,7 @@ Also follow the instructions in the [Cloud Usage](#cloud-usage) section above.
 
 You can add this project's configuration and code to existing projects, or run
 it in parallel to them. Either way, all matching triggers in AutoKitteh will
-receive each conformant event.
+receive all the events that match the specified criteria.
 
 You can also duplicate or extend this mechanism to handle multiple events and
 connections in a single project. AutoKitteh sessions are isolated from each
