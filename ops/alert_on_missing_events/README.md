@@ -7,10 +7,10 @@ categories: ["Ops"]
 
 # Alert on Missing Events
 
-Send alerts when AutoKitteh doesn't receive certain events in time. This is a
-detection tool for incidents due to missing updates from monitored services.
+Send alerts when AutoKitteh doesn't receive certain events in time.
 
-Possible causes for example:
+This is a detection tool for incidents due to missing updates from
+monitored services. Possible root-causes for example:
 
 - The monitored service is down / local network outage
 - The integration's callback URL has been modified
