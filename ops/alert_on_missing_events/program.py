@@ -1,4 +1,7 @@
-"""Send alerts when AutoKitteh doesn't receive certain events in time."""
+"""Send alerts when AutoKitteh doesn't receive certain events in time.
+
+See the configuration and deployment instructions in the README.md file.
+"""
 
 from datetime import datetime, timedelta, UTC
 import os

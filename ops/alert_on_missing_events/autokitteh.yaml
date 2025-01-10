@@ -12,7 +12,7 @@ project:
     # name of the monitored service below!
     - name: CONN_NAME
       value: monitored_service_conn
-    # This should be identical/equivalent to the "event_type"
+    # Must be identical/equivalent to the "event_type"
     # and/or "filter" fields of the trigger below!
     - name: EVENT_FILTER
       value: ""
@@ -31,16 +31,17 @@ project:
       value: autokitteh-alerts
 
   connections:
-    # Set the "integration" field to the name of the integration that you want to monitor.
+    # Set the "integration" field to the name of
+    # the integration that you want to monitor.
     - name: monitored_service_conn
-      integration: ""
+      integration: jira
     - name: slack_conn
       integration: slack
 
   triggers:
     - name: monitor_trigger
-      connection: monitored_service
-      # Set this CEL expression to match only the events you want to monitor.
-      # Also set the EVENT_FILTER project variable above accordingly.
-      filter: event_type == 'TODO' && data.TODO == 'TODO'
+      connection: monitored_service_conn
+      # Set this CEL expression to match the events you want to monitor.
+      # Also set the "EVENT_FILTER" project variable above accordingly!
+      filter: event_type == 'TODO' && data.TODO['TODO'] == 'TODO'
       call: program.py:on_monitor_trigger
