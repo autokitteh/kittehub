@@ -1,6 +1,6 @@
-# This YAML file is a declarative manifest that describes
-# the setup of an AutoKitteh project that sends alerts when
-# AutoKitteh doesn't receive certain events in time.
+# This YAML file is a declarative manifest that describes the
+# setup of an AutoKitteh project that sends Slack alerts when
+# AutoKitteh doesn't receive certain Jira events in time.
 
 version: v1
 
@@ -16,23 +16,16 @@ project:
     # and/or "filter" fields of the trigger below!
     - name: EVENT_FILTER
       value: ""
-    # Human-readable description of the events that
-    # should be received, displayed in alert messages.
     - name: EVENT_DESCRIPTION
       value: ""
-    # It's OK not to receive events up to this amount of time.
     - name: TIMEOUT_HOURS
       value: 24
-    # While an incident is ongoing, re-check at a shorter interval.
     - name: PING_HOURS
       value: 1
-    # Send incident alerts to this Slack channel name/ID.
     - name: SLACK_CHANNEL
       value: autokitteh-alerts
 
   connections:
-    # Set the "integration" field to the name of
-    # the integration that you want to monitor.
     - name: monitored_service_conn
       integration: jira
     - name: slack_conn

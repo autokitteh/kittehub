@@ -1,4 +1,4 @@
-"""Send alerts when AutoKitteh doesn't receive certain events in time.
+"""Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time.
 
 See the configuration and deployment instructions in the README.md file.
 """
@@ -28,6 +28,7 @@ def on_monitor_trigger(event):
     # Wait for the next conformant event from the monitored service.
     sub = autokitteh.subscribe(CONN_NAME, filter=EVENT_FILTER)
     data = autokitteh.next_event(sub, timeout=timedelta(hours=TIMEOUT_HOURS))
+    incident_detected = data is None
 
     # The monitored service hasn't sent us a conformant event for TIMEOUT_HOURS.
     # Send a Slack alert once every PING_HOURS, until the incident is resolved.
@@ -38,7 +39,10 @@ def on_monitor_trigger(event):
 
         data = autokitteh.next_event(sub, timeout=timedelta(hours=PING_HOURS))
 
-    # All clear, the monitored service is sending us conformant events still/again.
-    # Note that another "on_monitor_trigger" workflow is starting to run now, in a
-    # separate AutoKitteh session, waiting for the next event/incident.
+    # All clear, the monitored service is sending us events still/again.
+    # Note that another "on_monitor_trigger" workflow is starting to run now,
+    # in a separate AutoKitteh session, waiting for the next event/incident.
     autokitteh.unsubscribe(sub)
+    if incident_detected:
+        msg = f":relieved: Event received again now: {description}"
+        slack.chat_postMessage(channel=SLACK_CHANNEL, text=msg)

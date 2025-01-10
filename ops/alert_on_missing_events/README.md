@@ -1,6 +1,6 @@
 ---
-title: Alert on missing events
-description: Send alerts when AutoKitteh doesn't receive certain events in time
+title: Alert on missing Jira events
+description: Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time
 integrations: ["Jira", "Slack"]
 categories: ["Ops"]
 ---
@@ -26,12 +26,11 @@ events, and resends reminder alerts at a shorter interval.
 1. Import/upload the project
 2. Initialize your connections
 
-> [!TIP] The default monitored service is Jira. If you want to monitor a
-> different service:
+> [!TIP] If you want to monitor a different service than Jira:
 >
 > 1. Delete the `monitored_service_conn` connection
-> 2. Recreate a new connection with the same name, and select the desired
->    integration
+> 2. Recreate a new connection with the same name,
+>    and select the desired integration
 > 3. Delete the `monitor_trigger` trigger
 > 4. Recreate a new trigger, select the new `monitored_service_conn`
 >    connection from step 2, and configure it
