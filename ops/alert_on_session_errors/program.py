@@ -13,8 +13,8 @@ import requests
 from requests import exceptions
 
 
-API_BASE_URL = os.getenv("AUTOKITTEH_API_BASE_URL", "https://api.autokitteh.cloud")
-UI_BASE_URL = os.getenv("AUTOKITTEH_UI_BASE_URL", "https://app.autokitteh.cloud")
+API_BASE_URL = os.getenv("AUTOKITTEH_API_BASE_URL", "")
+UI_BASE_URL = os.getenv("AUTOKITTEH_UI_BASE_URL", "")
 JWT = os.getenv("AUTOKITTEH_AUTH_TOKEN", "")
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "")
 
@@ -44,8 +44,7 @@ def _list_sessions_with_errors():
 
     resp = requests.post(url, headers=headers, json={"stateType": 3}, timeout=10)
     print(f"API call's Round Trip Time: {resp.elapsed}")
-    if not resp.ok:
-        resp.raise_for_status()
+    resp.raise_for_status()
 
     try:
         return resp.json().get("sessions", [])

@@ -22,17 +22,19 @@ to look for sessions that ended with an error status in the previous minute.
 
 1. Generate a personal API auth token in the web UI:
 
-   1. Click your user icon in the bottom-left corner of the page
-   2. Click the "Client Setup" menu option to go to that page
-   3. Click the "Generate Token" button, and copy the generated
-      [JWT](https://jwt.io/)
+   - Click your user icon in the bottom-left corner of the page
+   - Click the "Client Setup" menu option to go to that page
+   - Click the "Generate Token" button, and copy the generated
+     [JWT](https://jwt.io/)
 
 2. Import/upload the project
 3. Initialize your connections
 4. Set/modify these project variables:
 
-   - `AUTOKITTEH_API_BASE_URL` (default = `https://api.autokitteh.cloud`)
-   - `AUTOKITTEH_UI_BASE_URL` (default = `https://app.autokitteh.cloud`)
+   - `AUTOKITTEH_API_BASE_URL` (default = `https://api.autokitteh.cloud`,
+     use `http://localhost:9980` for self-hosted servers)
+   - `AUTOKITTEH_UI_BASE_URL` (default = `https://app.autokitteh.cloud`,
+     use `http://localhost:9982` for self-hosted servers)
    - `AUTOKITTEH_AUTH_TOKEN`: the API auth token generated in step 1 above
    - `SLACK_CHANNEL`: send alert messages to this Slack channel name/ID
      (default = `autokitteh-alerts`)
