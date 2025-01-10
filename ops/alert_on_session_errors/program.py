@@ -35,6 +35,7 @@ def on_monitor_schedule(event):
 
     print(f"Found {count} sessions with new errors")
 
+
 def _list_sessions_with_errors():
     url = urljoin(API_BASE_URL, "autokitteh.sessions.v1.SessionsService/List")
     headers = {"Content-Type": "application/json"}
