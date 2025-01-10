@@ -15,7 +15,7 @@ from autokitteh.google import google_id, google_sheets_client
 from autokitteh.slack import slack_client
 
 
-URL = os.getenv("GOOGLE_SHEET_URL") or ""
+URL = os.getenv("GOOGLE_SHEET_URL", "")
 
 
 def on_schedule(_):
@@ -59,7 +59,7 @@ def _aws_health_events() -> list[dict]:
     """
     try:
         # Remove the unit suffix ("m") and parse as an integer.
-        mins = int((os.getenv("TRIGGER_INTERVAL") or "1m")[:-1])
+        mins = int((os.getenv("TRIGGER_INTERVAL", "1m"))[:-1])
         prev_check = datetime.now(UTC) - timedelta(minutes=mins)
         filter = {"lastUpdatedTimes": [{"from": prev_check}]}
 

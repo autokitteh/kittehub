@@ -4,7 +4,7 @@ import os
 from autokitteh.google import google_sheets_client
 
 
-DIRECTORY_GOOGLE_SHEET_ID = os.getenv("DIRECTORY_GOOGLE_SHEET_ID")
+DIRECTORY_GOOGLE_SHEET_ID = os.getenv("DIRECTORY_GOOGLE_SHEET_ID", "")
 
 gsheets = google_sheets_client("mygsheets")
 

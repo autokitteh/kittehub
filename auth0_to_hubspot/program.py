@@ -8,7 +8,7 @@ from autokitteh.hubspot import hubspot_client
 from hubspot.crm.contacts import SimplePublicObjectInput
 
 
-LOOKUP_HOURS = int(os.getenv("HOURS") or "24")
+LOOKUP_HOURS = int(os.getenv("HOURS", "24"))
 
 auth0 = auth0_client("auth0_conn")
 hubspot = hubspot_client("hubspot_conn")
