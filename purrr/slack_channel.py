@@ -35,7 +35,7 @@ def initialize_for_github_pr(action: str, pr, sender) -> str:
         ID of the created Slack channel.
     """
     print(f"Creating Slack channel for {pr.html_url} (PR event action: {action})")
-    print(json.dumps(pr, indent=2, sort_keys=True))
+    print(json.dumps(pr, indent=4, sort_keys=True))
 
     name = f"{pr.number}_{slack_helper.normalize_channel_name(pr.title)}"
     channel_id = slack_helper.create_channel(name)

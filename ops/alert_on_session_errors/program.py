@@ -55,7 +55,7 @@ def _list_sessions_with_errors():
 
 
 def _log_error(session):
-    data = json.dumps(session, indent=True)
+    data = json.dumps(session, indent=4)
     print(data)
 
     pid, did = session["projectId"], session["deploymentId"]

@@ -60,7 +60,8 @@ events, and resends reminder alerts at a shorter interval.
 Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment)
 to deploy the project on a self-hosted server.
 
-Also follow the instructions in the [Cloud Usage](#cloud-usage) section above.
+Also follow the relevant instructions in the [Cloud Usage](#cloud-usage)
+section above.
 
 ### Advanced Usage
 
