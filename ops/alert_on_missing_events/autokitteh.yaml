@@ -1,6 +1,6 @@
-# This YAML file is a declarative manifest that describes the
-# setup of an AutoKitteh project that sends Slack alerts when
-# AutoKitteh doesn't receive certain Jira events in time.
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that sends Slack alerts when AutoKitteh
+# doesn't receive certain Jira events in time.
 
 version: v1
 
