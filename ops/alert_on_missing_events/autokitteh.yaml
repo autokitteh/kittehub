@@ -22,7 +22,7 @@ project:
       value: 24
     - name: PING_HOURS
       value: 1
-    - name: SLACK_CHANNEL
+    - name: SLACK_CHANNEL_NAME_OR_ID
       value: autokitteh-alerts
 
   connections:

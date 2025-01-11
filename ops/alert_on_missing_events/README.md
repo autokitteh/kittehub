@@ -50,7 +50,7 @@ events, and resends reminder alerts at a shorter interval.
      (default = `24` hours)
    - `PING_HOURS`: while an incident is ongoing, re-check at a shorter interval
      (default = `1` hour)
-   - `SLACK_CHANNEL`: send incident alerts to this Slack channel name/ID
+   - `SLACK_CHANNEL_NAME_OR_ID`: send incident alerts to this Slack channel
      (default = `autokitteh-alerts`)
 
 5. Deploy the project

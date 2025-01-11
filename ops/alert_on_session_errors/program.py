@@ -16,7 +16,7 @@ from requests import exceptions
 API_BASE_URL = os.getenv("AUTOKITTEH_API_BASE_URL", "")
 UI_BASE_URL = os.getenv("AUTOKITTEH_UI_BASE_URL", "")
 JWT = os.getenv("AUTOKITTEH_AUTH_TOKEN", "")
-SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "")
+SLACK_CHANNEL = os.getenv("SLACK_CHANNEL_NAME_OR_ID", "")
 
 slack = slack_client("slack_conn")
 

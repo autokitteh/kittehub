@@ -18,7 +18,7 @@ def on_slack_command(event):
     """Workflow's entry-point.
 
     Extracts a topic from a Slack command, monitors for new articles,
-    and posts updates to `SLACK_CHANNEL`.
+    and posts updates to the same Slack channel.
     """
     topic = event.data.text.split(" ", 1)[-1].strip()
     slack.chat_postMessage(

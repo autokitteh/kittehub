@@ -8,12 +8,12 @@ project:
 
   vars:
     - name: AUTOKITTEH_API_BASE_URL
-      value: "https://api.autokitteh.cloud"
+      value: https://api.autokitteh.cloud
     - name: AUTOKITTEH_UI_BASE_URL
-      value: "https://app.autokitteh.cloud"
+      value: https://app.autokitteh.cloud
     - name: AUTOKITTEH_AUTH_TOKEN
       value: ""
-    - name: SLACK_CHANNEL
+    - name: SLACK_CHANNEL_NAME_OR_ID
       value: autokitteh-alerts
 
   connections:
