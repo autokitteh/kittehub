@@ -2,74 +2,60 @@
 
 GitHub API documentation:
 - https://docs.github.com/en/apps/github-marketplace/listing-an-app-on-github-marketplace/configuring-a-webhook-to-notify-you-of-plan-changes
-
-HTTP API documentation:
-- https://docs.autokitteh.com/integrations/http/events
-
-Slack API documentation:
-- https://docs.autokitteh.com/integrations/slack/python
+- https://docs.github.com/en/webhooks/webhook-events-and-payloads#marketplace_purchase
+- https://docs.github.com/en/webhooks/webhook-events-and-payloads#ping
 """
+
+import hashlib
+import hmac
+import json
+import os
+
+import autokitteh
+from autokitteh.slack import slack_client
 
 
 def on_webhook_notification(event):
-    # TODO:
+    """Handle GitHub Marketplace webhook notifications."""
+    headers = event.data.headers
+
+    secret = os.getenv("GITHUB_WEBHOOK_SECRET", "")
+    signature = headers.get("X-Hub-Signature-256", "")
+    _verify_signature(event.data.body.bytes, secret, signature)
+
+    # https://docs.github.com/en/webhooks/webhook-events-and-payloads#delivery-headers
+    msg = f"*GitHub Marketplace event:* `{headers.get('X-Github-Event', '???')}`\n"
+    msg += f"(Resource ID `{headers.get('X-Github-Hook-Installation-Target-Id')}`, "
+    msg += f"webhook ID `{headers.get('X-Github-Hook-Id')}`, "
+    msg += f"event ID `{headers.get('X-Github-Delivery')}`)\n"
+
     # https://docs.github.com/en/webhooks/webhook-events-and-payloads#marketplace_purchase
     # https://docs.github.com/en/webhooks/webhook-events-and-payloads#ping
-    # https://docs.github.com/en/webhooks/webhook-events-and-payloads#delivery-headers
-    # https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries
+    msg += f"```{json.dumps(event.data.body.json, indent=4)}```"
 
-    # Headers example:
-    # Content-Type      application/x-www-form-urlencoded
-    # X-Github-Event    ping
-    # X-Github-Hook-Id  500801516
-    # X-Github-Hook-Installation-Target-Id    18932
-    # X-Github-Hook-Installation-Target-Type  marketplace::listing
-    # X-Hub-Signature      sha1=.....
-    # X-Hub-Signature-256  sha256=.....
-    for key in sorted(event.data.headers):
-        print(f"{key}: {event.data.headers[key]}")
+    channel = os.getenv("SLACK_CHANNEL_NAME_OR_ID", "")
+    slack_client("slack_conn").chat_postMessage(channel=channel, text=msg)
 
-    # JSON payload example:
-    # {
-    #     "zen": "Encourage flow.",
-    #     "hook_id": 500801516,
-    #     "hook": {
-    #         "type": "Marketplace::Listing",
-    #         "id": 500801516,
-    #         "name": "web",
-    #         "active": true,
-    #         "events": [
-    #             "*"
-    #         ],
-    #         "config": {
-    #             "content_type": "form",
-    #             "secret": "********",
-    #             "url": "https://autokitteh.ngrok.dev/webhooks/2HvQPkQndqa4anbNEp3xfP",
-    #             "insecure_ssl": "0"
-    #         },
-    #         "updated_at": "2024-09-09T19:10:16Z",
-    #         "created_at": "2024-09-09T19:10:16Z",
-    #         "marketplace_listing_id": 18932
-    #     },
-    #     "sender": {
-    #         "login": "daabr",
-    #         "id": 32577337,
-    #         "node_id": "MDQ6VXNlcjMyNTc3MzM3",
-    #         "avatar_url": "https://avatars.githubusercontent.com/u/32577337?v=4",
-    #         "gravatar_id": "",
-    #         "url": "https://api.github.com/users/daabr",
-    #         "html_url": "https://github.com/daabr",
-    #         "followers_url": "https://api.github.com/users/daabr/followers",
-    #         "following_url": "https://api.github.com/users/daabr/following{/other_user}",
-    #         "gists_url": "https://api.github.com/users/daabr/gists{/gist_id}",
-    #         "starred_url": "https://api.github.com/users/daabr/starred{/owner}{/repo}",
-    #         "subscriptions_url": "https://api.github.com/users/daabr/subscriptions",
-    #         "organizations_url": "https://api.github.com/users/daabr/orgs",
-    #         "repos_url": "https://api.github.com/users/daabr/repos",
-    #         "events_url": "https://api.github.com/users/daabr/events{/privacy}",
-    #         "received_events_url": "https://api.github.com/users/daabr/received_events",
-    #         "type": "User",
-    #         "site_admin": false
-    #     }
-    # }
-    print(event.data.body)
+
+@autokitteh.activity
+def _verify_signature(payload: bytes, secret: str, signature: str):
+    """Verify that the payload was sent from GitHub by validating its SHA-256 signature.
+
+    Based on:
+    https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries
+
+    Args:
+        payload: Original request body to verify.
+        secret: GitHub Marketplace webhook secret of the GitHub app.
+        signature: HTTP header received from GitHub ("X-Hub-Signature-256").
+
+    Raises:
+        RuntimeError: If the signature is missing or doesn't match the expected value.
+    """
+    if not signature:
+        raise RuntimeError("'X-Hub-Signature-256' HTTP header is missing!")
+
+    hash = hmac.new(secret.encode("utf-8"), msg=payload, digestmod=hashlib.sha256)
+    expected = "sha256=" + hash.hexdigest()
+    if not hmac.compare_digest(expected, signature):
+        raise RuntimeError("Request signatures didn't match!")
