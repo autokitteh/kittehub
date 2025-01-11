@@ -52,4 +52,4 @@ ak auth create-token
 Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment)
 to deploy the project on a self-hosted server.
 
-Also follow the instructions in the [Cloud Usage](#cloud-usage) section above.
+Also follow steps 3-4 in the [Cloud Usage](#cloud-usage) section above.
