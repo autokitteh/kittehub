@@ -1,14 +1,5 @@
 # This YAML file is a declarative manifest that describes the setup of
 # an AutoKitteh project that announces new Confluence pages in Slack.
-#
-# Before deploying this AutoKitteh project:
-# - Set the "CONFLUENCE_SPACE_KEY" in the trigger's filter expression
-# - Set "FILTER_LABEL" for event filtering during runtime
-#   ("" = disable this runtime check)
-# - Set "SLACK_CHANNEL" to the Slack channel name/ID you want to post to
-#
-# After creating this AutoKitteh project by applying this file,
-# initialize its Confluence and Slack connections.
 
 version: v1
 
@@ -17,10 +8,10 @@ project:
   vars:
     - name: FILTER_LABEL
       value: ""
-    - name: SLACK_CHANNEL
+    - name: SLACK_CHANNEL_NAME_OR_ID
       value: ""
     - name: SNIPPET_LENGTH
-      value: "150"
+      value: 150
   connections:
     - name: confluence_connection
       integration: confluence

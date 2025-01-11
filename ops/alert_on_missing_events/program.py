@@ -17,7 +17,7 @@ EVENT_DESCRIPTION = os.getenv("EVENT_DESCRIPTION", "")
 TIMEOUT_HOURS = int(os.getenv("TIMEOUT_HOURS", "24"))
 PING_HOURS = int(os.getenv("PING_HOURS", "1"))
 
-SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "")
+SLACK_CHANNEL = os.getenv("SLACK_CHANNEL_NAME_OR_ID", "")
 
 
 def on_monitor_trigger(event):
