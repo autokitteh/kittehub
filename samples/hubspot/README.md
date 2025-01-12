@@ -36,7 +36,7 @@ API details:
            -d firstname=Kitty \
            -d lastname=Meowington
       ```
-   - For list_deals_webhook:
+   - For `list_deals_webhook`:
       ```shell
          curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
       ```
