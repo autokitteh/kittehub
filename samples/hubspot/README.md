@@ -19,8 +19,8 @@ API details:
 
 ## How It Works
 
-1. Create a new contact in HubSpot with predefined details.
-2. Retrieve and list all deals from HubSpot, displaying their IDs and names.
+1. Create a new contact in HubSpot with predefined details
+2. Retrieve and list all deals from HubSpot, displaying their IDs and names
 
 ## Cloud Usage (Recommended)
 
