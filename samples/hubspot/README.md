@@ -54,10 +54,7 @@ Trigger the workflow using the webhook URL. Refer to the [Cloud Usage](#cloud-us
   ```
 
 > [!TIP]
-> The workflow can also be triggered manually by clicking the "Run" button in the UI. Ensure the function you want to run is set as the entrypoint.
-
-> [!IMPORTANT]
-> Ensure that the connection with HubSpot is properly initialized before the workflow starts running.
+> The list_deals workflow can also be triggered manually by clicking the "Run" button in the UI. Ensure list_deals is set as the entrypoint.
 
 ### Self-Hosted Server
 

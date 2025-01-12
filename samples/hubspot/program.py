@@ -5,7 +5,7 @@ creating a new contact and listing all deals.
 """
 
 from autokitteh.hubspot import hubspot_client
-from hubspot.crm.contacts import SimplePublicObjectInputForCreate
+from hubspot.crm import contacts
 
 
 hubspot = hubspot_client("hubspot_conn")
@@ -17,7 +17,9 @@ def create_contact(event):
         "firstname": event.data.url.query.get("firstname", "Kitty"),
         "lastname": event.data.url.query.get("lastname", "Meowington"),
     }
-    contact_input = SimplePublicObjectInputForCreate(properties=contact_properties)
+    contact_input = contacts.SimplePublicObjectInputForCreate(
+        properties=contact_properties
+    )
 
     response = hubspot.crm.contacts.basic_api.create(
         simple_public_object_input_for_create=contact_input
