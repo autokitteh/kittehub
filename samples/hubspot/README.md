@@ -27,7 +27,8 @@ API details:
 1. Initialize your connection through the UI
 2. Edit the trigger of the workflow you want to trigger, in the "TRIGGERS" tab, under the "Actions" column.
 3. Copy the provided webhook URL.
-4. Send the webhook with a curl GET or POST request, depending on the selected webhook.
+4. Send GET or POST requests to the webhook of your choice:
+
    - For create_contact_webhook:
       ```shell
          curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}?email=email&firstname=name&lastname=name"
