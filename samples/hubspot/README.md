@@ -24,7 +24,7 @@ API details:
 
 ## Cloud Usage (Recommended)
 
-- Initialize your connection through the UI.
+1. Initialize your connection through the UI
 2. Edit the trigger of the workflow you want to trigger, in the "TRIGGERS" tab, under the "Actions" column.
 3. Copy the provided webhook URL.
 4. Send the webhook with a curl GET or POST request, depending on the selected webhook.
