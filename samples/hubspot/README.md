@@ -31,7 +31,10 @@ API details:
 
    - For create_contact_webhook:
       ```shell
-         curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}?email=email&firstname=name&lastname=name"
+      curl "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
+           -d email=meow@autokitteh.com \
+           -d firstname=Kitty \
+           -d lastname=Meowington
       ```
    - For list_deals_webhook:
       ```shell
