@@ -29,7 +29,7 @@ API details:
 3. Copy the provided webhook URL.
 4. Send GET or POST requests to the webhook of your choice:
 
-   - For create_contact_webhook:
+   - For `create_contact_webhook`:
       ```shell
       curl "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
            -d email=meow@autokitteh.com \
