@@ -26,10 +26,10 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Hacker News Alerts in Slack ](./hackernews/) | Track Hacker News articles by topic and send updates to Slack | slack |
 | [JIRA Assignee From Google Calendar Workflow](./jira_google_calendar/assignee_from_schedule/) | Set Assignee in Jira ticket to the person currently on-call | jira, calendar |
 | [Create calendar due date event for Jira ticket](./jira_google_calendar/deadline_to_event/) | When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline | calendar, jira |
-| [Alert on missing Jira events](./ops/alert_on_missing_events/) | Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time | Jira, Slack |
-| [Alert on session errors](./ops/alert_on_session_errors/) | Send Slack alerts when AutoKitteh sessions end due to errors | Slack |
 | [Pull Request Review Reminder (Purrr)](./purrr/) | Streamline code reviews and cut down turnaround time to merge pull requests | GitHub, Google Sheets, Slack |
 | [Quickstart](./quickstart/) | Sample for quickstart | http |
+| [Alert on missing Jira events](./reliability/alert_on_missing_events/) | Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time | Jira, Slack |
+| [Alert on session errors](./reliability/alert_on_session_errors/) | Send Slack alerts when AutoKitteh sessions end due to errors | Slack |
 | [Monitor PR until completion in Slack](./reviewkitteh/) | Create a Slack channel for each PR, update team leads until completion | slack, github, sheets |
 | [Ad-hoc room reservation via Slack](./room_reservation/) | Ad-hoc room reservation via Slack slash commands | slack, calendar |
 | [Jira](./samples/atlassian/jira/) | Samples using Jira APIs | jira |

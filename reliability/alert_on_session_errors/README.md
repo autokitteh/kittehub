@@ -2,7 +2,7 @@
 title: Alert on session errors
 description: Send Slack alerts when AutoKitteh sessions end due to errors
 integrations: ["Slack"]
-categories: ["Ops"]
+categories: ["Reliability"]
 ---
 
 # Alert on Session Errors
@@ -36,7 +36,7 @@ to look for sessions that ended with an error status in the previous minute.
    - `AUTOKITTEH_UI_BASE_URL` (default = `https://app.autokitteh.cloud`,
      use `http://localhost:9982` for self-hosted servers)
    - `AUTOKITTEH_AUTH_TOKEN`: the API auth token generated in step 1 above
-   - `SLACK_CHANNEL`: send alert messages to this Slack channel name/ID
+   - `SLACK_CHANNEL_NAME_OR_ID`: send alert messages to this Slack channel
      (default = `autokitteh-alerts`)
 
 5. Deploy the project

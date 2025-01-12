@@ -2,7 +2,7 @@
 title: Alert on missing Jira events
 description: Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time
 integrations: ["Jira", "Slack"]
-categories: ["Ops"]
+categories: ["Reliability"]
 ---
 
 # Alert on Missing Events
@@ -50,7 +50,7 @@ events, and resends reminder alerts at a shorter interval.
      (default = `24` hours)
    - `PING_HOURS`: while an incident is ongoing, re-check at a shorter interval
      (default = `1` hour)
-   - `SLACK_CHANNEL`: send incident alerts to this Slack channel name/ID
+   - `SLACK_CHANNEL_NAME_OR_ID`: send alert messages to this Slack channel
      (default = `autokitteh-alerts`)
 
 5. Deploy the project
