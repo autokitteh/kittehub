@@ -38,7 +38,7 @@ API details:
       ```
    - For `list_deals_webhook`:
       ```shell
-         curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
+         curl "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
       ```
 
 ## Trigger Workflow
