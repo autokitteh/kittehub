@@ -27,7 +27,7 @@ to look for sessions that ended with an error status in the previous minute.
    - Click the "Generate Token" button, and copy the generated
      [JWT](https://jwt.io/)
 
-2. Import/upload the project
+2. Navigate to this project in the web UI
 3. Initialize your connections
 4. Set/modify these project variables:
 
@@ -43,13 +43,13 @@ to look for sessions that ended with an error status in the previous minute.
 
 ### Self-Hosted Usage
 
-Generate a personal API auth token, by running this CLI command:
+1. Generate a personal API auth token, by running this CLI command:
 
-```shell
-ak auth create-token
-```
+   ```shell
+   ak auth create-token
+   ```
 
-Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment)
-to deploy the project on a self-hosted server.
+2. Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment)
+   to deploy the project on a self-hosted server
 
-Also follow steps 3-4 in the [Cloud Usage](#cloud-usage) section above.
+3. Follow steps 3-4 in the [Cloud Usage](#cloud-usage) section above
