@@ -23,12 +23,15 @@ This workflow automates notifications to a Slack channel whenever a new Confluen
 
 ### Cloud Usage (Recommended)
 
-1. Initialize your connections through the UI
+1. Initialize your connections
 2. Navigate to the "TRIGGERS" tab and under the "Actions" column click "Edit"
-3. Update the "CONFLUENCE_SPACE_KEY" variable with the space key of the Confluence space you want to monitor
-4. (Optional) Update the "FILTER_LABEL" variable with the label of the Confluence page you want to monitor
-5. Update the "SLACK_CHANNEL" variable with the name of the Slack channel you want to send messages to
-6. Deploy the project
+3. Update the "CONFLUENCE_SPACE_KEY" placeholder in the filter string, with the ID of the Confluence space you want to monitor
+4. Set/modify these project variables:
+
+   - `FILTER_LABEL` (optional): a specific Confluence page label you limit this project to
+   - `SLACK_CHANNEL_NAME_OR_ID`: the Slack channel you want to send messages to
+
+5. Deploy the project
 
 > [!IMPORTANT]
 > Ensure all connections (Atlassian Confluence, Slack) are properly initialized before the workflow starts running.

@@ -18,7 +18,7 @@ import discord
 
 
 DISCORD_CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID", ""))
-SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID", "")
+SLACK_CHANNEL = os.getenv("SLACK_CHANNEL_NAME_OR_ID", "")
 
 # Discord intents that enable the bot to read message content
 intents = discord.Intents.default()
@@ -32,7 +32,7 @@ slack_message = None
 
 
 def on_discord_message(event):
-    slack_api.chat_postMessage(channel=SLACK_CHANNEL_ID, text=event.data["content"])
+    slack_api.chat_postMessage(channel=SLACK_CHANNEL, text=event.data["content"])
 
 
 def on_slack_message(event):

@@ -8,9 +8,9 @@ project:
   name: slack_discord_sync
   vars:
     - name: DISCORD_CHANNEL_ID
-      value: 
-    - name: SLACK_CHANNEL_ID
-      value: 
+      value: ""
+    - name: SLACK_CHANNEL_NAME_OR_ID
+      value: ""
   connections:
     - name: discord_conn
       integration: discord
