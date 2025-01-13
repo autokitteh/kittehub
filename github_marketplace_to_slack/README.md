@@ -23,7 +23,8 @@ Configure the GitHub app's webhook in the GitHub Marketplace:
 - **Content type:** `application/json`
 - **Secret:** a random string of text with high entropy, save for later
 
-Don't click the "Create/Update webhook" button yet.
+> [!IMPORTANT]
+> Don't click the "Create/Update webhook" button yet.
 
 ### Cloud Usage
 
