@@ -1,0 +1,22 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates integration with Asana.
+
+version: v1
+
+project:
+  name: asana_sample
+  vars:
+    - name: WORKSPACE_GID
+      value:
+  connections:
+    - name: asana_conn
+      integration: asana
+  triggers:  
+    - name: create_task_webhook
+      type: webhook
+      event_type: get
+      call: program.py:create_task
+    - name: update_task_webhook
+      type: webhook
+      event_type: get
+      call: program.py:update_task
