@@ -10,7 +10,7 @@ import asana
 api_client = asana_client("asana_conn")
 client = asana.TasksApi(api_client)
 
-WORKSPACE_GID = os.getenv("WORKSPACE_GID")
+WORKSPACE_GID = os.getenv("WORKSPACE_GID", "")
 
 
 def create_task(event):
