@@ -40,6 +40,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Gmail](./samples/google/gmail/) | Samples using Gmail APIs | gmail |
 | [Google Sheets](./samples/google/sheets/) | Samples using Google Sheets APIs | sheets |
 | [HTTP](./samples/http/) | Samples using HTTP requests and webhooks | http |
+| [HubSpot](./samples/hubspot/) | Simple usage of the HubSpot API | hubspot |
 | [OpenAI ChatGPT](./samples/openai_chatgpt/) | Samples using chatGPT APIs | chatgpt |
 | [Runtime Events](./samples/runtime_events/) | Samples using events in AutoKitteh - subscribe(), next_event(), unsubscribe() | autokitteh |
 | [Scheduler](./samples/scheduler/) | Samples using cron scheduler for workflows | scheduler |
