@@ -13,9 +13,9 @@ hubspot = hubspot_client("hubspot_conn")
 
 def create_contact(event):
     contact_properties = {
-        "email": event.data.url.query.get("email", "meow@autokitteh.com"),
-        "firstname": event.data.url.query.get("firstname", "Kitty"),
-        "lastname": event.data.url.query.get("lastname", "Meowington"),
+        "email": event.data.body.form.get("email", "meow@autokitteh.com"),
+        "firstname": event.data.body.form.get("firstname", "Kitty"),
+        "lastname": event.data.body.form.get("lastname", "Meowington"),
     }
     contact_input = contacts.SimplePublicObjectInputForCreate(
         properties=contact_properties
