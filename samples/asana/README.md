@@ -25,7 +25,7 @@ API details:
 ## Cloud Usage (Recommended)
 
  1. Initialize your connection through the UI
- 2. Initialize the `WORKSPACE_GID` variable,to get it log in asana and visit this URL https://app.asana.com/api/1.0/workspaces
+ 2. Update the `WORKSPACE_GID` variable with the gid value from the response after logging into Asana and visiting https://app.asana.com/api/1.0/workspaces
  3. Edit the trigger of the workflow you want to trigger, in the "TRIGGERS" tab, under the "Actions" column
  4. Copy the provided webhook URL
  5. Send GET request to the webhook of your choice
