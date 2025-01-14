@@ -1,8 +1,4 @@
-"""Demonstration of AutoKitteh's Asana integration.
-
-This script interacts with the Asana API to manage tasks, including creating new ones
-and updating existing tasks.
-"""
+“”“Demonstrates AutoKitteh’s Asana integration for managing tasks via the Asana API.”””
 
 import os
 
