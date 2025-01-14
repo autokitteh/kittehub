@@ -44,7 +44,6 @@ API details:
             -d name_suffixe=<added_name>
        ```
 
-
 ## Self-Hosted Deployment
 
 Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
