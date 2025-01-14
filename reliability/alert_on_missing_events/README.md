@@ -23,10 +23,10 @@ events, and resends reminder alerts at a shorter interval.
 
 ### Cloud Usage
 
-1. Import/upload the project
-2. Initialize your connections
+1. Initialize your connections
 
-> [!TIP] If you want to monitor a different service than Jira:
+> [!TIP]
+> If you want to monitor a different service than Jira:
 >
 > 1. Delete the `monitored_service_conn` connection
 > 2. Recreate a new connection with the same name,
@@ -35,12 +35,12 @@ events, and resends reminder alerts at a shorter interval.
 > 4. Recreate a new trigger, select the new `monitored_service_conn`
 >    connection from step 2, and configure it
 
-3. Edit the trigger
+2. Edit the trigger
 
    - Specifically, select an `Event Type` and/or set the CEL expression in
      the `Filter` field to match only the events you want to monitor
 
-4. Set/modify these project variables:
+3. Set/modify these project variables:
 
    - `EVENT_FILTER`: must be identical/equivalent to the `Event Type` and/or
      `Filter` fields of the trigger in step 2!
@@ -53,7 +53,7 @@ events, and resends reminder alerts at a shorter interval.
    - `SLACK_CHANNEL_NAME_OR_ID`: send alert messages to this Slack channel
      (default = `autokitteh-alerts`)
 
-5. Deploy the project
+4. Deploy the project
 
 ### Self-Hosted Usage
 
