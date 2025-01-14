@@ -64,3 +64,7 @@ Also follow the relevant instructions in the Cloud Usage section above.
 ## Testing
 
 https://docs.github.com/en/apps/github-marketplace/using-the-github-marketplace-api-in-your-app/testing-your-app
+
+Payload reference documentation:
+- https://docs.github.com/en/webhooks/webhook-events-and-payloads#marketplace_purchase
+- https://docs.github.com/en/webhooks/webhook-events-and-payloads#ping
