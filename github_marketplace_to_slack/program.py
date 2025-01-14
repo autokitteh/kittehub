@@ -16,7 +16,11 @@ from autokitteh.slack import slack_client
 
 
 def on_webhook_notification(event):
-    """Handle GitHub Marketplace webhook notifications."""
+    """Handle GitHub Marketplace webhook notifications.
+
+    Args:
+        event: Incoming HTTP request data.
+    """
     headers = event.data.headers
 
     secret = os.getenv("GITHUB_WEBHOOK_SECRET", "")

@@ -18,66 +18,48 @@ This allows you to handle [marketplace_purchase](https://docs.github.com/en/apps
 Configure the GitHub app's webhook in the GitHub Marketplace:
 `https://github.com/marketplace/YOUR-APP-NAME/hook`
 
-- **Payload URL:** _(you will set this later, see steps 3 and 6 in the_
+- **Payload URL:** _(you will set this later, based on step 2 in the_
   _[Cloud Usage](#cloud-usage) section below)_
 - **Content type:** `application/json`
-- **Secret:** a random string of text with high entropy, save for later
+- **Secret:** a random string of text with high entropy _(save it for later,_
+  _in step 3 in the [Cloud Usage](#cloud-usage) section below)_
 
 > [!IMPORTANT]
-> Don't click the "Create/Update webhook" button yet.
+> Do not click the "Create/Update webhook" button, and do not close this
+> browser tab yet - you will need to get back here later, in step 5 in the
+> [Cloud Usage](#cloud-usage) section below
 
 ### Cloud Usage
 
-1. Import/upload the project
-2. Initialize your connections
-3. Edit the trigger:
+1. Initialize your connections
+2. Copy the webhook trigger's URL (for step 5 below):
 
-   - Copy the generated webhook URL for step 6 later
-   - No need to actually change anything
+   - Hover over the trigger's (i) icon
+   - Click the copy icon net to the webhook URL
+   - (Detailed instructions
+     [here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
 
-4. Set/modify these project variables:
+3. Set/modify these project variables:
 
    - `GITHUB_WEBHOOK_SECRET`: the secret value from the
      [GitHub Webhook](#github-webhook) section above
    - `SLACK_CHANNEL_NAME_OR_ID`: send notifications to this Slack channel
      name/ID (default = `github-marketplace`)
 
-5. Deploy the project
-6. Finish the webhook configuration from the [GitHub Webhook](#github-webhook)
-   section above:
+4. Deploy the project
+5. Finish the GitHub webhook configuration from the
+   [GitHub Webhook](#github-webhook) section above:
 
-   - Set the **payload URL** to the one you copied from the trigger in step 3
+   - Set the **Payload URL** to the one you copied from the trigger in step 2
      above
    - Click the "Create/Update webhook" button
 
 ### Self-Hosted CLI Usage
 
-1. Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment)
-   to deploy the project on a self-hosted server
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment)
+to deploy the project on a self-hosted server
 
-2. Follow step 2 in the [Cloud Usage](#cloud-usage) section above
-
-3. _CLI alternative for step 3 in the [Cloud Usage](#cloud-usage) section above:_
-   look for the following line in the output of the `ak deploy` command, and
-   copy the URL path for the last step:
-
-```
-[!!!!] trigger "webhook_notification" created, webhook path is "/webhooks/SLUG"
-```
-
-> [!TIP]
-> If you don't see the output of `ak deploy` anymore, you can run this command
-> instead, and use the `webhook_slug` from the output:
->
-> ```shell
-> ak trigger get webhook_notification --project github_marketplace_to_slack -J
-> ```
-
-4. Follow steps 4-6 in the [Cloud Usage](#cloud-usage) section above
-
-> [!IMPORTANT]
-> The host address in the payload URL in step 6 must be public, not
-> `http://localhost:9980`, see https://docs.autokitteh.com/config/http_tunneling
+Also follow the relevant instructions in the Cloud Usage section above.
 
 ## Testing
 
