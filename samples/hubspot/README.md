@@ -56,7 +56,7 @@ Trigger the workflow using the webhook URL. Refer to the [Cloud Usage](#cloud-us
 > [!TIP]
 > The list_deals workflow can also be triggered manually by clicking the "Run" button in the UI. Ensure list_deals is set as the entrypoint.
 
-### Self-Hosted Server
+## Self-Hosted Server
 
 Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 
