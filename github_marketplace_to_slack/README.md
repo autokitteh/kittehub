@@ -25,9 +25,9 @@ Configure the GitHub app's webhook in the GitHub Marketplace:
   _in step 3 in the [Cloud Usage](#cloud-usage) section below)_
 
 > [!IMPORTANT]
-> Do not click the "Create/Update webhook" button, and do not close this
-> browser tab yet - you will need to get back here later, in step 5 in the
-> [Cloud Usage](#cloud-usage) section below
+> Do not click the "Create/Update webhook" button and keep this
+> browser tab open. You will need to return here later, in step 5 of the
+> [Cloud Usage](#cloud-usage) section below.
 
 ### Cloud Usage
 
