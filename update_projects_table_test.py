@@ -11,6 +11,7 @@ class TestExtractMetadata:
 
     @pytest.fixture
     def tmp_file(self, tmp_path):
+        """Thin wrapper over "tmp_path" to create and delete a temporary file."""
         fp = tmp_path / "tmp_file"
         yield fp
         fp.unlink()
