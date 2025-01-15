@@ -1,35 +1,38 @@
 ---
-title: Monitor PR until completion in Slack
-description: Create a Slack channel for each PR, update team leads until completion
-integrations: ["slack", "github", "sheets"]
+title: ReviewKitteh
+description: Monitor a GitHub PR in Slack until it's closed
+integrations: ["github", "sheets", "slack"]
 categories: ["DevOps"]
 ---
 
-# GitHub Pull Request to Slack Workflow
+# ReviewKitteh
 
 This project automates the process of listening for GitHub pull request events and posting updates to a Slack channel. The workflow tracks the state of the pull request and meows at random people from a Google Sheet in the Slack channel.
 
 ## How It Works
 
-1.	Receive GitHub pull request events (opened or reopened)
-2.	Post updates to Slack with an initial message and dynamic updates as the pull request’s status changes
-3.	Page team members by selecting a random person from a Google Sheet every 15 seconds and notifying them in Slack
-4.	Conclude workflow when the pull request is closed or merged
+1. Receive [GitHub pull request events](https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request) (opened or reopened)
+2. Post updates to Slack with an initial message and dynamic updates as the pull request’s status changes
+3. Page team members by selecting a random person from a Google Sheet every 15 seconds and notifying them in Slack
+4. Conclude workflow when the pull request is closed or merged
 
-## Cloud Usage (Recommended)
+## Cloud Usage
 
-1. Initialize your connections through the UI
-2. Set the `CHANNEL_ID`, `ORG_DOMAIN`, and `SHEET_ID` project variables in the "VARIABLES" tab
+1. Initialize your connections (GitHub, Google Sheets, Slack)
+2. Set the `SLACK_CHANNEL_ID`, `GOOGLE_SHEET_ID`, and `ORG_DOMAIN` project variables
 
-> [!IMPORTANT]
-> Must be a Slack channel ID, not a Slack channel name.
+   > [!IMPORTANT]
+   > The Slack channel must be an ID, not a name.
 
 3. Deploy the project
 
 ## Trigger Workflow
 
-Once deployed, the workflow is triggered by a GitHub pull request event and continues to run, updating Slack until the pull request is closed or merged.
+> [!IMPORTANT]
+> Ensure all the connections (GitHub, Google Sheets, Slack) are properly initialized; otherwise the workflow will raise a `ConnectionInitError`.
+
+Once deployed, the workflow is triggered when a GitHub pull request is (re)opened, and continues to run, updating Slack until the pull request is closed or merged.
 
 ## Self-Hosted Deployment
 
-Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.

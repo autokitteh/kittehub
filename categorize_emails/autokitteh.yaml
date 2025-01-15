@@ -1,17 +1,16 @@
-# This YAML file is a declarative manifest that describes the setup of
-# an AutoKitteh sample project that demonstrates integration with 
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh sample project that demonstrates integration with 
 # Gmail, ChatGPT, and Slack.
-#
-# After applying this file, initialize this AutoKitteh project's
-# ChatGPT, Gmail, and Slack connections.
 
 version: v1
 
 project:
   name: categorize_emails
+
   vars:
     - name: POLL_INTERVAL
       value: 10
+
   connections:
     - name: my_chatgpt
       integration: chatgpt
@@ -19,6 +18,7 @@ project:
       integration: gmail
     - name: my_slack
       integration: slack
+
   triggers:
     - name: receive_http_get
       type: webhook
