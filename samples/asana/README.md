@@ -38,18 +38,18 @@ API details:
 
 `create_task`:
 
-       ```shell
-       curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" 
-       ```
+```shell
+curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" 
+```
 
 `update_task`:
 
-       ```shell
-       curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
-            -d task_gid=<task_gid> \
-            -d new_due_date=<new_date> \
-            -d name_suffixe=<added_name>
-       ```
+```shell
+curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
+       -d task_gid=<task_gid> \
+       -d new_due_date=<new_date> \
+       -d name_suffixe=<added_name>
+```
 
 ## Self-Hosted Deployment
 
