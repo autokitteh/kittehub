@@ -27,10 +27,10 @@ def create_task(event):
 
 def update_task(event):
     """Updates an Asana task's name and due date."""
-    query = event.data.body.form
-    task_gid = query.get("task_gid")
-    new_due_date = query.get("new_due_date", "2025-01-20")
-    new_name_suffix = query.get("name_suffix", " - Updated by AutoKitteh")
+    form = event.data.body.form
+    task_gid = form.get("task_gid")
+    new_due_date = form.get("new_due_date", "2025-01-20")
+    new_name_suffix = form.get("name_suffix", " - Updated by AutoKitteh")
 
     task = client.get_task(task_gid, {"opt_fields": "name,assignee,due_on,tags"})
     print(f"Current Task: {task}")
