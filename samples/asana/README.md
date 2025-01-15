@@ -25,7 +25,7 @@ API details:
 ## Cloud Usage (Recommended)
 
  1. Initialize your connection through the UI
- 2.  Copy the webhook trigger's URL (for step 5 below):
+ 2. Copy the webhook trigger's URL (for the [Trigger Workflows](#trigger-workflows) section below):
 
     - Hover over the trigger's (i) icon for the webhook you want to use
     - Click the copy icon next to the webhook URL for your selected trigger
