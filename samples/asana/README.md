@@ -41,7 +41,9 @@ API details:
        ```shell
        curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" 
        ```
-- For `update_task`:
+
+`update_task`:
+
        ```shell
        curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
             -d task_gid=<task_gid> \
