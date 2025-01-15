@@ -36,7 +36,8 @@ API details:
 
 ## Trigger Workflows
 
-- For `create_task`:
+`create_task`:
+
        ```shell
        curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" 
        ```
