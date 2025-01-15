@@ -66,7 +66,7 @@ def _parse_github_pr_event(data) -> None:
             _on_pr_edited(data.action, data.pull_request, data.changes, data.sender)
         # A pull request's head branch was updated.
         case "synchronize":
-            _on_pr_synchronized(data)
+            _on_pr_synchronized(data.action, data.pull_request, data.sender)
 
         # TODO: locked, unlocked
 
@@ -370,6 +370,12 @@ def _on_pr_edited(action: str, pr, changes, sender) -> None:
     if not channel:
         return
 
+    # PR base branch was changed.
+    if "base" in changes:
+        msg = "{} changed the base branch from "
+        msg += "`{changes.base.ref}` to `{pr.base.ref}`"
+        slack_helper.mention_in_message(channel, sender, msg)
+
     # PR description was changed.
     if "body" in changes:
         if pr.body:
@@ -389,19 +395,24 @@ def _on_pr_edited(action: str, pr, changes, sender) -> None:
         slack_helper.rename_channel(channel, name)
 
 
-def _on_pr_synchronized(data) -> None:
+def _on_pr_synchronized(action: str, pr, sender) -> None:
     """A pull request's head branch was updated.
 
     For example, the head branch was updated from the base
     branch or new commits were pushed to the head branch.
 
     Args:
-        data: GitHub event data.
+        action: GitHub PR event action.
+        pr: GitHub PR data.
+        sender: GitHub user who triggered the event.
     """
     # Don't do anything if there isn't an active Slack channel anyway.
-    channel = _lookup_channel(data.pull_request, data.action)
+    channel = _lookup_channel(pr, action)
     if not channel:
         return
+
+    msg = "{} updated the head branch (see the [PR commits]({pr.url}/commits))"
+    slack_helper.mention_in_message(channel, sender, msg)
 
 
 def _lookup_channel(pr, action: str) -> str | None:
