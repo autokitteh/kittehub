@@ -33,6 +33,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Alert on session errors](./reliability/alert_on_session_errors/) | Send Slack alerts when AutoKitteh sessions end due to errors | Slack |
 | [Monitor PR until completion in Slack](./reviewkitteh/) | Create a Slack channel for each PR, update team leads until completion | slack, github, sheets |
 | [Ad-hoc room reservation via Slack](./room_reservation/) | Ad-hoc room reservation via Slack slash commands | slack, calendar |
+| [Asana](./samples/asana/) | Simple usage of the Asana API | asana |
 | [Jira](./samples/atlassian/jira/) | Samples using Jira APIs | jira |
 | [GitHub](./samples/github/) | Samples using GitHub APIs | github |
 | [Google Calendar](./samples/google/calendar/) | Samples using Google Calendar APIs | calendar |
