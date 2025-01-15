@@ -34,7 +34,7 @@ API details:
 
  3. Update the `WORKSPACE_GID` project variable with the `gid` value from the response after logging into Asana and visiting https://app.asana.com/api/1.0/workspaces
 
-## Trigger Workflow
+## Trigger Workflows
 
 - For `create_task`:
        ```shell
