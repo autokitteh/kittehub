@@ -18,5 +18,5 @@ project:
       call: program.py:create_task
     - name: update_task_webhook
       type: webhook
-      event_type: get
+      event_type: post
       call: program.py:update_task
