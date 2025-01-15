@@ -39,7 +39,7 @@ Read-only template: https://docs.google.com/spreadsheets/d/1PalmLwSZOPW9k668_jU-
 ## Trigger Workflow
 
 > [!IMPORTANT]
-> Ensure all the connections (AWS, Google Sheets, Slack) are properly initialized; otherwise workflows will raise a `ConnectionInitError`.
+> Ensure all the connections (AWS, Google Sheets, Slack) are properly initialized; otherwise the workflow will raise a `ConnectionInitError`.
 >
 > Also ensure the `GOOGLE_SHEET_URL` project variable is configured correctly, and the Google Sheet is properly formatted; otherwise the workflow may not work as expected.
 
