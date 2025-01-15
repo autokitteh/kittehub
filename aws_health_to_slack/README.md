@@ -11,6 +11,11 @@ Announce AWS health events in Slack channels, based on resource ownership data i
 
 This leverages the AWS Health API to fetch events, and Google Sheets to map AWS project tags to Slack channels.
 
+API documentation:
+
+- https://docs.aws.amazon.com/health/
+- https://aws.amazon.com/blogs/mt/tag/aws-health-api/
+
 ## How It Works
 
 1. Poll the AWS Health API once a minute to detect new events
