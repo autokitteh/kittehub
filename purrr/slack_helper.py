@@ -50,6 +50,30 @@ def create_channel(name: str) -> str:
                 return ""
 
 
+def rename_channel(channel_id: str, name: str) -> None:
+    """Safely rename a Slack channel.
+
+    If the name is already taken, add a numeric suffix to it.
+
+    Args:
+        channel_id: Slack channel ID.
+        name: Desired (and valid) name of the channel.
+    """
+    suffix = 0
+    while True:
+        suffix += 1
+        n = _CHANNEL_PREFIX + "_" + name if suffix == 1 else f"{name}_{suffix}"
+        try:
+            shared_client.conversations_rename(channel=channel_id, name=n)
+            print(f"Renamed Slack channel to {n!r} ({channel_id})")
+            return
+        except SlackApiError as e:
+            if e.response["error"] != "name_taken":
+                error = f"Failed to rename Slack channel <#{channel_id}> to `{n}`"
+                debug.log(f"{error}: `{e.response['error']}`")
+                return
+
+
 def impersonate_in_message(channel_id: str, github_user, msg: str) -> str:
     """Post a message to a Slack channel, on behalf of a GitHub user.
 

@@ -3,6 +3,7 @@
 import autokitteh
 
 import data_helper
+import markdown
 import slack_channel
 import slack_helper
 import users
@@ -62,7 +63,7 @@ def _parse_github_pr_event(data) -> None:
         # The title or body of a pull request was edited,
         # or the base branch was changed.
         case "edited":
-            _on_pr_edited(data)
+            _on_pr_edited(data.action, data.pull_request, data.changes, data.sender)
         # A pull request's head branch was updated.
         case "synchronize":
             _on_pr_synchronized(data)
@@ -259,7 +260,7 @@ def _on_pr_review_requested_team(team, sender, channel: str) -> None:
         sender: GitHub user who triggered the event.
         channel: PR's Slack channel ID.
     """
-    msg = f"{{}} requested a review from the <{team.html_url}|{team.name}> team"
+    msg = f"{{}} added the <{team.html_url}|{team.name}> team as a reviewer"
     slack_helper.mention_in_message(channel, sender, msg)
 
 
@@ -322,7 +323,7 @@ def _on_pr_review_request_removed_team(team, sender, channel: str) -> None:
         sender: GitHub user who triggered the event.
         channel: PR's Slack channel ID.
     """
-    msg = f"removed the request for review by the <{team.html_url}|{team.name}> team"
+    msg = f"removed the <{team.html_url}|{team.name}> team as a reviewer"
     slack_helper.mention_in_message(channel, sender, "{} " + msg)
 
 
@@ -355,18 +356,37 @@ def _on_pr_unassigned(data) -> None:
     _on_pr_review_request_removed_person(assignee, sender, channel, "assignee")
 
 
-def _on_pr_edited(data) -> None:
+def _on_pr_edited(action: str, pr, changes, sender) -> None:
     """The title or body of a pull request was edited, or the base branch was changed.
 
     Args:
-        data: GitHub event data.
+        action: GitHub PR event action.
+        pr: GitHub PR data.
+        changes: Changed title/body in the PR.
+        sender: GitHub user who triggered the event.
     """
     # Don't do anything if there isn't an active Slack channel anyway.
-    channel = _lookup_channel(data.pull_request, data.action)
+    channel = _lookup_channel(pr, action)
     if not channel:
         return
 
-    pass  # TODO: Implement this function.
+    # PR description was changed.
+    if "body" in changes:
+        if pr.body:
+            msg = "{} updated the PR description:\n\n"
+            msg += markdown.github_to_slack(pr.body, pr.html_url)
+        else:
+            msg = "{} deleted the PR description"
+
+        slack_helper.mention_in_message(channel, sender, msg)
+
+    # PR title was changed.
+    if "title" in changes:
+        msg = f"{{}} edited the PR title to: `{pr.title}`"
+        slack_helper.mention_in_message(channel, sender, msg)
+
+        name = f"{pr.number}_{slack_helper.normalize_channel_name(pr.title)}"
+        slack_helper.rename_channel(channel, name)
 
 
 def _on_pr_synchronized(data) -> None:
@@ -382,8 +402,6 @@ def _on_pr_synchronized(data) -> None:
     channel = _lookup_channel(data.pull_request, data.action)
     if not channel:
         return
-
-    pass  # TODO: Implement this function.
 
 
 def _lookup_channel(pr, action: str) -> str | None:
