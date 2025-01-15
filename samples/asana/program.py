@@ -1,4 +1,4 @@
-“”“Demonstrates AutoKitteh’s Asana integration for managing tasks via the Asana API.”””
+"""Demonstrates AutoKitteh’s Asana integration for managing tasks via the Asana API."""
 
 import os
 
