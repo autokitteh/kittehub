@@ -32,7 +32,7 @@ API details:
     - (Detailed instructions
       [here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
 
- 3. Update the `WORKSPACE_GID` variable with the gid value from the response after logging into Asana and visiting https://app.asana.com/api/1.0/workspaces
+ 3. Update the `WORKSPACE_GID` project variable with the `gid` value from the response after logging into Asana and visiting https://app.asana.com/api/1.0/workspaces
  5. Send the request to the webhook. For details see [trigger workflow](#trigger-workflow)
 
 ## Trigger Workflow
