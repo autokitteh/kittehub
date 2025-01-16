@@ -22,7 +22,7 @@ OWNERSHIP_DATA = os.getenv("GOOGLE_SHEET_URL", "")
 slack = slack_client("slack_conn")
 
 
-def on_schedule(event):
+def on_schedule(_):
     """Workflow's entry-point, triggered at the beginning of every minute."""
     slack_channels = _read_google_sheet()
     events = _aws_health_events()
@@ -90,7 +90,7 @@ def _aws_health_events() -> list[dict]:
 def _affected_aws_entities(events: list[dict]) -> list[dict]:
     """List all AWS entities affected by the given AWS Health events.
 
-    API Reference:
+    API reference:
     https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/health/client/describe_affected_entities.html
     """
     try:
@@ -114,7 +114,9 @@ def _affected_aws_entities(events: list[dict]) -> list[dict]:
         return []
 
 
-def _post_slack_message(channel, project, entity: dict, affecting_events: list[dict]):
+def _post_slack_message(
+    channel: str, project: str, entity: dict, affecting_events: list[dict]
+):
     if not channel:
         print(f"Error: project tag {project!r} not found in {OWNERSHIP_DATA}")
 

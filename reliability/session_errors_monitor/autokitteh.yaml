@@ -12,6 +12,7 @@ project:
     - name: AUTOKITTEH_UI_BASE_URL
       value: https://app.autokitteh.cloud
     - name: AUTOKITTEH_AUTH_TOKEN
+      secret: true
       value: ""
     - name: SLACK_CHANNEL_NAME_OR_ID
       value: autokitteh-alerts

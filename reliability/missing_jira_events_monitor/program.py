@@ -20,7 +20,7 @@ PING_HOURS = int(os.getenv("PING_HOURS", "1"))
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL_NAME_OR_ID", "")
 
 
-def on_monitor_trigger(event):
+def on_monitor_trigger(_):
     """Handle an incoming event from a monitored service."""
     start_time = datetime.now(UTC)
     slack = slack_client(CONN_NAME)

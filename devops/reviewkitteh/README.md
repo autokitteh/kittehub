@@ -31,7 +31,7 @@ This project automates the process of listening for GitHub pull request events a
 > [!IMPORTANT]
 > Ensure all the connections (GitHub, Google Sheets, Slack) are properly initialized; otherwise the workflow will raise a `ConnectionInitError`.
 
-Once deployed, the workflow is triggered when a GitHub pull request is (re)opened, and continues to run, updating Slack until the pull request is closed or merged.
+After the project is deployed, the workflow is triggered when a GitHub pull request is (re)opened, and continues to run, updating Slack until the pull request is closed or merged.
 
 ## Self-Hosted Deployment
 
