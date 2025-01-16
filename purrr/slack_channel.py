@@ -162,10 +162,9 @@ def archive(action: str, pr, sender) -> None:
     # (e.g. a PR closure comment) before archiving the channel.
     time.sleep(_PR_CLOSE_DELAY)
 
-    if action == "closed":
+    if action == "closed this PR":
         if pr.merged:
-            action = "merged"
-        action += " this PR"
+            action = "merged this PR"
     else:
         action = "converted this PR to a draft"
 
