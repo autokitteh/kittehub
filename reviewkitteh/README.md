@@ -22,7 +22,7 @@ This project automates the process of listening for GitHub pull request events a
 2. Set the `SLACK_CHANNEL_ID`, `GOOGLE_SHEET_ID`, and `ORG_DOMAIN` project variables
 
    > [!IMPORTANT]
-   > The Slack channel must be an ID, not a name.
+   > Use the Slack channel ID (e.g., `C01ABCD2EFG`), not the name (e.g., `#general`).
 
 3. Deploy the project
 

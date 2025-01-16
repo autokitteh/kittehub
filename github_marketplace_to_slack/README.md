@@ -13,7 +13,7 @@ This allows you to handle [marketplace_purchase](https://docs.github.com/en/apps
 
 ## How It Works
 
-1. Receive notifications from GitHuhb Marketplace:
+1. Receive notifications from GitHub Marketplace:
 
    - [`marketplace_purchase`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#marketplace_purchase)
    - [`ping`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#ping)
