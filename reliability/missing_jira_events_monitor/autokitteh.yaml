@@ -5,7 +5,7 @@
 version: v1
 
 project:
-  name: alert_on_missing_events
+  name: missing_jira_events_monitor
 
   vars:
     # This should be identical to the connection

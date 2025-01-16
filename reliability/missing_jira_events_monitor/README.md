@@ -1,11 +1,11 @@
 ---
-title: Alert on missing Jira events
+title: Missing Jira events monitor
 description: Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time
 integrations: ["Jira", "Slack"]
 categories: ["Reliability"]
 ---
 
-# Alert on Missing Jira Events
+# Missing Jira Events Monitor
 
 Send alerts when AutoKitteh doesn't receive certain Jira events in time.
 
@@ -15,7 +15,8 @@ This is a detection tool for incidents due to missing updates from monitored ser
 - The integration's callback URL has been modified
 - The connection's event watches have expired
 
-While an incident is ongoing, the workflow continues to wait for the desired events, and resends reminder alerts at a shorter interval.
+> [!NOTE]
+> While an incident is ongoing, the workflow continues to wait for the desired events, and resends reminder alerts at a shorter interval.
 
 ## Cloud Usage
 
@@ -52,14 +53,14 @@ While an incident is ongoing, the workflow continues to wait for the desired eve
 
 Trigger the monitored service (Jira) to send a relevant event to the project's webhook.
 
-## Self-Hosted Deployment
-
-Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
-
-Also follow the relevant instructions in the [Cloud Usage](#cloud-usage) section above.
-
 ## Advanced Usage
 
 You can add this project's configuration and code to existing projects, or run it in parallel to them. Either way, all matching triggers in AutoKitteh will receive all the events that match the specified criteria.
 
 You can also duplicate or extend this mechanism to handle multiple events and connections in a single project. AutoKitteh sessions are isolated from each other.
+
+## Self-Hosted Deployment
+
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+
+Also follow the relevant instructions in the [Cloud Usage](#cloud-usage) section above.

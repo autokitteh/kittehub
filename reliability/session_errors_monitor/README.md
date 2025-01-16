@@ -1,11 +1,11 @@
 ---
-title: Alert on session errors
+title: AutoKitteh session errors monitor
 description: Send Slack alerts when AutoKitteh sessions end due to errors
 integrations: ["Slack"]
 categories: ["Reliability"]
 ---
 
-# Alert on Session Errors
+# AutoKitteh Session Errors Monitor
 
 Send Slack alerts when AutoKitteh sessions end due to errors.
 
@@ -38,6 +38,10 @@ It gets triggered by the AutoKitteh scheduler every minute, on the minute, to lo
 > Ensure the Slack connection is properly initialized; otherwise the workflow will raise a `ConnectionInitError`.
 >
 > Also ensure the project variables are configured correctly; otherwise the workflow may not work as expected.
+
+After the project is deployed, the workflow runs automatically at the beginning of every minute.
+
+You may modify this by modifying the `TRIGGER_INTERVAL` project variable and the `schedule` field in the trigger.
 
 Test the trigger by running any other AutoKitteh workflow that ends with an error.
 
