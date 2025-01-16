@@ -1,89 +1,57 @@
 ---
-title: AWS Health to Slack
-description: Monitor AWS health events
+title: AWS Health monitor
+description: Announce AWS Health events in Slack channels, based on resource ownership data in a Google Sheet
 integrations: ["aws", "slack", "sheets"]
-categories: ["DevOps"]
+categories: ["Reliability"]
 ---
 
-# Announce AWS Health Events in Slack
+# AWS Health Monitor
 
-This project automates the process of announcing AWS health events in Slack based on resource ownership listed in a Google Sheet. It leverages AWS Health API to fetch events and Google Sheets to map projects to Slack channels. This is not meant to be a complete solution but a solid starting point.
+Announce AWS health events in Slack channels, based on resource ownership data in a Google Sheet.
+
+This leverages the AWS Health API to fetch events, and Google Sheets to map AWS project tags to Slack channels.
+
+API documentation:
+
+- https://docs.aws.amazon.com/health/
+- https://aws.amazon.com/blogs/mt/tag/aws-health-api/
 
 ## How It Works
 
-1. Fetches AWS Health events from AWS API.
-2. Reads project-to-Slack-channel mappings from a Google Sheet.
-3. Posts relevant health events to the corresponding Slack channels based on the Google Sheet data.
-
-## Cloud Usage (Recommended)
-
-1. Initialize your connections through the UI
-2. Configure your Google Sheet mapping (see [Google Sheets Configuration](#google-sheets-configuration) below)
-3. Deploy the project
+1. Poll the AWS Health API once a minute to detect new events
+2. Read tag-to-Slack-channel mappings from a Google Sheet
+3. Post relevant health events to the corresponding Slack channels, based on step 2
 
 ## Google Sheets Configuration
 
-The default Google Sheet format for mapping projects to Slack channels:
+The Google Sheet format for mapping project tags to Slack channels:
 
-| Project Tag | Slack Channel      |
-|-------------|--------------------|
-| clubs       | clubs_team         |
-| diamonds    | diamonds_alerts    |
-| hearts      | hearts_oncall      |
-| spades      | C12345678          |
+| Project Tag | Slack Channel   |
+| :---------- | :-------------- |
+| clubs       | clubs_team      |
+| diamonds    | diamonds_alerts |
+| hearts      | hearts_oncall   |
+| spades      | C12345678       |
 
-This table represents how each project is linked to a specific Slack channel, guiding where health events will be posted.
+Read-only template: https://docs.google.com/spreadsheets/d/1PalmLwSZOPW9k668_jU-wFI5xCj88a4mDfNUtJAupMQ/
 
-> [!NOTE]
-> You can configure your own project-to-Slack-channel mappings by either:
-> - Cloud/UI: Navigate to the Variables tab in your project settings and update the `GOOGLE_SHEET_URL` value
-> - Self-hosted (VSCode / CLI): Modify the Google Sheet URL in the [`autokitteh.yaml`](autokitteh.yaml) file
+## Cloud Usage
+
+1. Initialize your connections (AWS, Google Sheets, Slack)
+2. Set the `GOOGLE_SHEET_URL` project variable (based on the [Google Sheets Configuration](#google-sheets-configuration) section above)
+3. Deploy the project
 
 ## Trigger Workflow
 
-The workflow runs automatically every minute after deployment. You can modify this interval:
-- Cloud/UI: Navigate to the Variables tab in your project settings and update the `SCHEDULE_INTERVAL` value
-- Self-hosted (VSCode / CLI): Modify the schedule interval in the [`autokitteh.yaml`](autokitteh.yaml) file
-
 > [!IMPORTANT]
-> Ensure all connections (AWS, Google Sheets, and Slack) are properly initialized before the workflow starts running.
+> Ensure all the connections (AWS, Google Sheets, Slack) are properly initialized; otherwise the workflow will raise a `ConnectionInitError`.
+>
+> Also ensure the `GOOGLE_SHEET_URL` project variable is configured correctly, and the Google Sheet is properly formatted; otherwise the workflow may not work as expected.
+
+The workflow runs automatically every minute, on the minute, after deployment.
+
+You may modify this by modifying the `TRIGGER_INTERVAL` project variable and the `schedule` field in the trigger.
 
 ## Self-Hosted Deployment
 
-#### Prerequisites
-- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
-- Set up required integrations:
-  - [Google Sheets](https://docs.autokitteh.com/integrations/google)
-  - [Slack](https://docs.autokitteh.com/integrations/slack)
-  - AWS Health API
-
-#### Installation Steps
-1. Clone the repository:
-   ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   cd kittehub/aws_health_to_slack
-   ```
-
-2. Start the AutoKitteh server:
-   ```shell
-   ak up --mode dev
-   ```
-
-3. Deploy the project:
-   ```shell
-   ak deploy --manifest autokitteh.yaml
-   ```
-
-   The output will show your connection IDs, which you'll need for the next step. Look for lines like:
-   ```shell
-   [exec] create_connection "aws_health_slack/google_sheets_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
-   ```
-   
-   In this example, `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
-
-4. Initialize your connections using the CLI:
-   ```shell
-   ak connection init aws_connection <connection ID>
-   ak connection init google_sheets_connection <connection ID>
-   ak connection init slack_connection <connection ID>
-   ```
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.

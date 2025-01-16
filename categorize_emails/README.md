@@ -1,13 +1,13 @@
 ---
-title: Slack notify on categorized email
-description: Categorizes incoming emails and notifies relevant Slack channels by integrating Gmail, ChatGPT, and Slack
-integrations: ["gmail", "slack", "chatgpt"]
-categories: ["Office Automation"]
+title: Email categorization and notification
+description: Categorize incoming emails and notify relevant Slack channels
+integrations: ["gmail", "chatgpt", "slack"]
+categories: ["AI", "Office Automation"]
 ---
 
-# Email Categorization and Notification Workflow
+# Email Categorization and Notification
 
-This project automates the process of categorizing incoming emails and notifying relevant Slack channels by integrating Gmail, ChatGPT, and Slack. It is not meant to be a 100% complete project, but rather a solid starting point.
+Categorize incoming emails and notify relevant Slack channels by integrating Gmail, ChatGPT, and Slack. It is not meant to be a 100% complete project, but rather a solid starting point.
 
 ## How It Works
 
@@ -18,39 +18,29 @@ This project automates the process of categorizing incoming emails and notifying
 
 For more details, refer to [this blog post](https://autokitteh.com/technical-blog/from-inbox-to-slack-automating-email-categorization-and-notifications-with-ai/).
 
-## Cloud Usage (Recommended)
+## Cloud Usage
 
-1. Initialize your connections through the UI
-2. Edit the "receive_http_get" trigger, in the "TRIGGERS" tab, under the "Actions" column
-3. Copy the provided webhook URL
-4. Test the webhook by sending a curl request with the webhook URL
-      ```shell
-      curl -i "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
-      ```
-5. Send yourself a new email to validate the connection
-
-
-> [!IMPORTANT]
-> Ensure all connections (Gmail, Slack, and ChatGPT) are properly initialized before the workflow starts running.
-
-## Self-Hosted Deployment
-
-Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+1. Initialize your connections (ChatGPT, Gmail, Slack)
+2. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+3. Deploy the project
 
 ## Trigger Workflow
 
-Trigger the workflow using the webhook URL. Refer to the [Cloud Usage](#cloud-usage-recommended) section for detailed steps.
+> [!IMPORTANT]
+> Ensure all the connections (ChatGPT, Gmail, Slack) are properly initialized; otherwise the workflow will raise a `ConnectionInitError`.
 
-### Steps to Retrieve the Webhook URL
+1. Start a long-running AutoKitteh session by sending an HTTP GET request to the webhook URL from step 2 in the [Cloud Usage](#cloud-usage) section above:
 
-- The webhook URL is provided in the output of the `ak deploy` command.
-- Run the following command to retrieve the URL:
-  ```shell
-  ak trigger get <trigger name or ID>
-  ```
+   ```shell
+   curl -i "${WEBHOOK_URL}"
+   ```
 
-> [!TIP]
-> The trigger name can be found in the `autokitteh.yaml` file.
+2. Send yourself a new email
+3. Wait up to 10 seconds for the workflow's polling loop to detect it
+
+## Self-Hosted Deployment
+
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 
 ## Known Limitations
 

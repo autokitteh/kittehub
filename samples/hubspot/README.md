@@ -1,5 +1,5 @@
 ---
-title: HubSpot
+title: HubSpot sample
 description: Simple usage of the HubSpot API
 integrations: ["hubspot"]
 categories: ["Samples"]
@@ -22,41 +22,34 @@ API details:
 1. Create a new contact in HubSpot with predefined details
 2. Retrieve and list all deals from HubSpot, displaying their IDs and names
 
-## Cloud Usage (Recommended)
+## Cloud Usage
 
-1. Initialize your connection through the UI
-2. Edit the trigger of the workflow you want to trigger, in the "TRIGGERS" tab, under the "Actions" column.
-3. Copy the provided webhook URL.
-4. Send GET or POST requests to the webhook of your choice:
-
-   - For `create_contact_webhook`:
-      ```shell
-      curl "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
-           -d email=meow@autokitteh.com \
-           -d firstname=Kitty \
-           -d lastname=Meowington
-      ```
-   - For `list_deals_webhook`:
-      ```shell
-         curl "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
-      ```
+1. Initialize your HubSpot connection
+2. Copy the webhook URLs from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
 
 ## Trigger Workflow
 
-Trigger the workflow using the webhook URL. Refer to the [Cloud Usage](#cloud-usage-recommended) section for detailed steps.
+> [!IMPORTANT]
+> Ensure the HubSpot connection is properly initialized; otherwise the workflow will raise a `ConnectionInitError`.
 
-### Steps to Retrieve the Webhook URL
+Send HTTP GET and POST requests to the webhook URLs from step 2 in the [Cloud Usage](#cloud-usage) section above.
 
-- The webhook URL is provided in the output of the `ak deploy` command.
-- Run the following command to retrieve the URL:
-  ```shell
-  ak trigger get <trigger name or ID>
-  ```
+For `create_contact_webhook`:
+
+```shell
+curl -i -X POST "${WEBHOOK_URL}" -d email=meow@autokitteh.com \
+     -d firstname=Kitty -d lastname=Meowington
+```
+
+For `list_deals_webhook`:
+
+```shell
+curl -i "${WEBHOOK_URL}"
+```
 
 > [!TIP]
-> The list_deals workflow can also be triggered manually by clicking the "Run" button in the UI. Ensure list_deals is set as the entrypoint.
+> The `list_deals` workflow can also be triggered manually by clicking the "Run" button in the UI, and setting the `list_deals` function as the entry point.
 
-## Self-Hosted Server
+## Self-Hosted Deployment
 
-Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
-
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.

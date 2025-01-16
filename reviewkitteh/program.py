@@ -17,9 +17,9 @@ from autokitteh.google import google_sheets_client
 from autokitteh.slack import slack_client
 
 
-CHANNEL_ID = os.getenv("CHANNEL_ID", "")
+CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID", "")
+SHEET_ID = os.getenv("GOOGLE_SHEET_ID", "")
 ORG_DOMAIN = os.getenv("ORG_DOMAIN", "")
-SHEET_ID = os.getenv("SHEET_ID", "")
 
 github = github_client("github_conn")
 googlesheets = google_sheets_client("googlesheets_conn").spreadsheets().values()
