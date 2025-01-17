@@ -10,7 +10,7 @@ from autokitteh.github import github_client
 import github
 
 
-# Indexes in the following lists.
+# Indexes in the following lists, used throughout this module.
 A = 0
 B = 1
 C = 2
@@ -32,13 +32,12 @@ WORKFLOWS = [
 gh = github_client("github_conn")
 
 
-def dispatch_workflow_manually(event) -> None:
+def dispatch_workflow_manually(event: dict[str, str]) -> None:
     """Dispatch a workflow manually, for testing purposes.
 
     You may specify an optional index (default = 0 = workflow A).
     """
-    wf = int(event["index"]) if "index" in event else A
-    _dispatch_workflow(wf)
+    _dispatch_workflow(int(event.get("index", A)))
 
 
 def cross_repo(_) -> None:
@@ -77,7 +76,7 @@ def or_reduction(_) -> None:
     _dispatch_workflow(C)
 
 
-def fan_in(_):
+def fan_in(_) -> None:
     """All-to-one fan-in demo (A and B --> C)."""
     subs = [_subscribe_to_events(A), _subscribe_to_events(B)]
 
@@ -127,7 +126,7 @@ def _dispatch_workflow(wf: int, ref: str = "main", inputs: dict = None) -> None:
 
     Args:
         wf: Workflow index (0-2).
-        ref: Git reference (e.g. "main").
+        ref: Git reference, should be the default branch (e.g. "main").
         inputs: Keys and values configured in the workflow file. The maximum
             number of properties is 10. Any default properties configured in
             the workflow file will be used when inputs are omitted.
