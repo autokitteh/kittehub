@@ -10,10 +10,7 @@ categories: ["DevOps"]
 Orchestrate GitHub workflows with advanced scenarios across multiple repositories:
 
 - Cross-repo (A &rarr; B &rarr; C &rarr; A &rarr; B &rarr; C)
-
-  > [!NOTE]
-  > GitHub's own workflow orchestration is limited to [chaining up to 4 workflows](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run).
-
+  - (GitHub's own workflow orchestration is limited to [chaining up to 4 workflows](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run))
 - Fan-out (A &rarr; B and C in parallel)
 - Any-to-one reduction (first of A or B &rarr; C)
 - All-to-one fan-in (A and B &rarr; C)
