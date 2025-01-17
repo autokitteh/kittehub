@@ -27,7 +27,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Hacker News Alerts in Slack ](./hackernews/) | Track Hacker News articles by topic and send updates to Slack | slack |
 | [JIRA Assignee From Google Calendar Workflow](./jira_google_calendar/assignee_from_schedule/) | Set Assignee in Jira ticket to the person currently on-call | jira, calendar |
 | [Create calendar due date event for Jira ticket](./jira_google_calendar/deadline_to_event/) | When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline | calendar, jira |
-| [Pull Request Review Reminder (Purrr)](./purrr/) | Streamline code reviews and cut down turnaround time to merge pull requests | GitHub, Google Sheets, Slack |
+| [Pull Request Review Reminder (Purrr)](./purrr/) | Streamline code reviews and cut down turnaround time to merge pull requests | github, sheets, slack |
 | [Quickstart](./quickstart/) | Sample for quickstart | http |
 | [Alert on missing Jira events](./reliability/alert_on_missing_events/) | Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time | Jira, Slack |
 | [Alert on session errors](./reliability/alert_on_session_errors/) | Send Slack alerts when AutoKitteh sessions end due to errors | Slack |
@@ -38,7 +38,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [GitHub](./samples/github/) | Samples using GitHub APIs | github |
 | [Google Calendar](./samples/google/calendar/) | Samples using Google Calendar APIs | calendar |
 | [Google Forms](./samples/google/forms/) | Samples using Google Forms APIs | forms |
-| [Gemini](./samples/google/gemini/) | Simple usage of the Gemini API | gemini |
+| [Gemini](./samples/google/gemini/) | Simple usage of the Gemini API | googlegemini |
 | [Gmail](./samples/google/gmail/) | Samples using Gmail APIs | gmail |
 | [Google Sheets](./samples/google/sheets/) | Samples using Google Sheets APIs | sheets |
 | [HTTP](./samples/http/) | Samples using HTTP requests and webhooks | http |
