@@ -1,7 +1,7 @@
 ---
 title: Gemini
 description: Simple usage of the Gemini API
-integrations: ["gemini"]
+integrations: ["googlegemini"]
 categories: ["Samples"]
 ---
 
@@ -74,4 +74,3 @@ The workflow is triggered by sending an HTTP GET request.
 
 > [!IMPORTANT]
 > Ensure that the connection with Gemini is properly initialized before the workflow starts running.
-
