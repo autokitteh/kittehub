@@ -414,25 +414,6 @@ def _on_pr_synchronized(action: str, pr, sender) -> None:
     msg = "{} updated the head branch (see the [PR commits]({pr.url}/commits))"
     slack_helper.mention_in_message(channel, sender, msg)
 
-    # # TODO: Update channel bookmark titles.
-    # pr = data.pull_request
-    #
-    # bookmark_id = "TODO"
-    # title = "Conversation (%d)" % (pr.comments + pr.review_comments)
-    # slack.bookmarks_edit(bookmark_id, channel, title = title)
-    #
-    # bookmark_id = "TODO"
-    # title = "Commits (%d)" % pr.commits
-    # slack.bookmarks_edit(bookmark_id, channel, title = title)
-    #
-    # bookmark_id = "TODO"
-    # title = "Files changed (%d)" % pr.changed_files
-    # slack.bookmarks_edit(bookmark_id, channel, title = title)
-    #
-    # bookmark_id = "TODO"
-    # title = "Diffs (+%d -%d)" % (pr.additions, pr.deletions)
-    # slack.bookmarks_edit(bookmark_id, channel, title = title)
-
 
 def _lookup_channel(pr, action: str) -> str | None:
     """Return the ID of a Slack channel that represents a GitHub PR.
