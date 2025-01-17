@@ -30,8 +30,8 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Create calendar due date event for Jira ticket](./jira_google_calendar/deadline_to_event/) | When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline | calendar, jira |
 | [Quickstart](./quickstart/) | Sample for quickstart | http |
 | [AWS Health monitor](./reliability/aws_health_monitor/) | Announce AWS Health events in Slack channels, based on resource ownership data in a Google Sheet | aws, slack, sheets |
-| [Missing Jira events monitor](./reliability/missing_jira_events_monitor/) | Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time | Jira, Slack |
-| [AutoKitteh session errors monitor](./reliability/session_errors_monitor/) | Send Slack alerts when AutoKitteh sessions end due to errors | Slack |
+| [Missing Jira events monitor](./reliability/missing_jira_events_monitor/) | Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time | jira, slack |
+| [AutoKitteh session errors monitor](./reliability/session_errors_monitor/) | Send Slack alerts when AutoKitteh sessions end due to errors | autokitteh, slack |
 | [Ad-hoc room reservation via Slack](./room_reservation/) | Ad-hoc room reservation via Slack slash commands | slack, calendar |
 | [Asana](./samples/asana/) | Simple usage of the Asana API | asana |
 | [Jira](./samples/atlassian/jira/) | Samples using Jira APIs | jira |
