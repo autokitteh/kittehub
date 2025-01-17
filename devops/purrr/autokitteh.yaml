@@ -11,7 +11,7 @@ project:
   vars:
     # Temporary (easy to debug, but not scalable) replacement for Redis/Valkey.
     - name: DATA_SHEET_URL
-      value: ""
+      value: TBD
     # PR channel names in Slack: "<prefix>_<number>_<title>".
     - name: SLACK_CHANNEL_PREFIX
       value: _pr
