@@ -52,10 +52,10 @@ def cross_repo(_) -> None:
     for wf in [B, C, A, B, C]:
         sub = _subscribe_to_events(wf)
         _dispatch_workflow(wf)
-        print(f"Waiting until workflow {chr(65+wf)} completes")
+        print(f"Waiting until workflow {chr(65 + wf)} completes")
         autokitteh.next_event(sub)
         autokitteh.unsubscribe(sub)
-        print(f"Workflow {chr(65+wf)} completed")
+        print(f"Workflow {chr(65 + wf)} completed")
 
 
 def fan_out(_) -> None:
@@ -135,7 +135,7 @@ def _dispatch_workflow(wf: int, ref: str = "main", inputs: dict = None) -> None:
     repo = gh.get_repo(REPOS[wf])
     workflow = _get_workflow(repo, WORKFLOWS[wf])
     if workflow.create_dispatch(ref, inputs or {}):
-        print(f"Workflow {chr(65+wf)} dispatched")
+        print(f"Workflow {chr(65 + wf)} dispatched")
     else:
         print("Failed to create a 'workflow_dispatch' event")
 
