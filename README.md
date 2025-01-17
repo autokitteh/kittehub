@@ -14,12 +14,12 @@ demonstrate basic system features, integration APIs, and best practices.
 | Name | Description | Integration |
 | :--- | :---------- | :---------- |
 | [Copy Auth0 Users to HubSpot](./auth0_to_hubspot/) | Periodically add new Auth0 users to HubSpot as contacts | auth0, hubspot |
-| [AWS Health monitor](./aws_health_to_slack/) | Announce AWS Health events in Slack channels, based on resource ownership data in a Google Sheet | aws, slack, sheets |
 | [Manage emergency AWS access requests via Slack](./break_glass/) | Submit emergency AWS access requests via Slack, which are then approved or denied based on a set of predefined conditions | aws, slack |
 | [Email categorization and notification](./categorize_emails/) | Categorize incoming emails and notify relevant Slack channels | gmail, chatgpt, slack |
 | [Slack notify on Confluence page created](./confluence_to_slack/) | When Confluence page is created the user will be notified on Slack | confluence, slack |
 | [Parse a file in S3 and insert to database](./data_pipeline/) | Triggered by a new GPX file on an S3 bucket, the pipeline code will parse the GPX file and insert it into a database. | aws, http, sqlite3 |
 | [Pull Request Review Reminder (Purrr)](./devops/purrr/) | Streamline code reviews and cut down turnaround time to merge pull requests | github, sheets, slack |
+| [ReviewKitteh](./devops/reviewkitteh/) | Monitor a GitHub PR in Slack until it's closed | github, sheets, slack |
 | [Github Actions](./github_actions/) | GitHub workflows that interact across multiple repositories | github |
 | [Cancel GitHub Copilot access for inactive users](./github_copilot_seats/) | If Copilot was not used in a preceding period by users, unsubscribe and notify them in Slack. Users can ask for their subscription to be reinstated. | githubcopilot, slack |
 | [GitHub Marketplace to Slack](./github_marketplace_to_slack/) | Forward GitHub Marketplace notifications to Slack | GitHub, HTTP, Slack |
@@ -29,9 +29,9 @@ demonstrate basic system features, integration APIs, and best practices.
 | [JIRA Assignee From Google Calendar Workflow](./jira_google_calendar/assignee_from_schedule/) | Set Assignee in Jira ticket to the person currently on-call | jira, calendar |
 | [Create calendar due date event for Jira ticket](./jira_google_calendar/deadline_to_event/) | When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline | calendar, jira |
 | [Quickstart](./quickstart/) | Sample for quickstart | http |
-| [Alert on missing Jira events](./reliability/alert_on_missing_events/) | Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time | Jira, Slack |
-| [Alert on session errors](./reliability/alert_on_session_errors/) | Send Slack alerts when AutoKitteh sessions end due to errors | Slack |
-| [ReviewKitteh](./reviewkitteh/) | Monitor a GitHub PR in Slack until it's closed | github, sheets, slack |
+| [AWS Health monitor](./reliability/aws_health_monitor/) | Announce AWS Health events in Slack channels, based on resource ownership data in a Google Sheet | aws, slack, sheets |
+| [Missing Jira events monitor](./reliability/missing_jira_events_monitor/) | Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time | jira, slack |
+| [AutoKitteh session errors monitor](./reliability/session_errors_monitor/) | Send Slack alerts when AutoKitteh sessions end due to errors | autokitteh, slack |
 | [Ad-hoc room reservation via Slack](./room_reservation/) | Ad-hoc room reservation via Slack slash commands | slack, calendar |
 | [Asana](./samples/asana/) | Simple usage of the Asana API | asana |
 | [Jira](./samples/atlassian/jira/) | Samples using Jira APIs | jira |

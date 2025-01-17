@@ -5,7 +5,7 @@
 version: v1
 
 project:
-  name: aws_health_to_slack
+  name: aws_health_monitor
 
   vars:
     - name: GOOGLE_SHEET_URL
@@ -14,11 +14,11 @@ project:
       value: 1m
 
   connections:
-    - name: aws_connection
+    - name: aws_conn
       integration: aws
-    - name: google_sheets_connection
+    - name: sheets_conn
       integration: googlesheets
-    - name: slack_connection
+    - name: slack_conn
       integration: slack
 
   triggers:

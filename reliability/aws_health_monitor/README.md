@@ -48,7 +48,7 @@ Read-only template: https://docs.google.com/spreadsheets/d/1PalmLwSZOPW9k668_jU-
 >
 > Also ensure the `GOOGLE_SHEET_URL` project variable is configured correctly, and the Google Sheet is properly formatted; otherwise the workflow may not work as expected.
 
-The workflow runs automatically every minute, on the minute, after deployment.
+After the project is deployed, the workflow runs automatically at the beginning of every minute.
 
 You may modify this by modifying the `TRIGGER_INTERVAL` project variable and the `schedule` field in the trigger.
 
