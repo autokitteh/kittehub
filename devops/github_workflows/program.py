@@ -41,20 +41,12 @@ def dispatch_workflow_manually(event: dict[str, str]) -> None:
 
 
 def cross_repo(_) -> None:
-    """Cross-repo demo (A --> B --> C --> A --> B --> C)."""
+    """Cross-repo demo (A --> B)."""
     sub = _subscribe_to_events(A)
     print("Waiting until workflow A completes")
     autokitteh.next_event(sub)
-    autokitteh.unsubscribe(sub)
     print("Workflow A completed")
-
-    for wf in [B, C, A, B, C]:
-        sub = _subscribe_to_events(wf)
-        _dispatch_workflow(wf)
-        print(f"Waiting until workflow {chr(65 + wf)} completes")
-        autokitteh.next_event(sub)
-        autokitteh.unsubscribe(sub)
-        print(f"Workflow {chr(65 + wf)} completed")
+    _dispatch_workflow(B)
 
 
 def fan_out(_) -> None:
@@ -89,6 +81,28 @@ def fan_in(_) -> None:
         completed_workflows.add(path)
 
     _dispatch_workflow(C)
+
+
+def long_sequence(_) -> None:
+    """Long sequence demo (A --> B --> C --> A --> B --> C).
+
+    This is useful even within a single repository, because GitHub's own
+    workflow orchestration is limited to chaining no more than 4 workflows:
+    https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run
+    """
+    sub = _subscribe_to_events(A)
+    print("Waiting until workflow A completes")
+    autokitteh.next_event(sub)
+    autokitteh.unsubscribe(sub)
+    print("Workflow A completed")
+
+    for wf in [B, C, A, B, C]:
+        sub = _subscribe_to_events(wf)
+        _dispatch_workflow(wf)
+        print(f"Waiting until workflow {_index2char(wf)(wf)} completes")
+        autokitteh.next_event(sub)
+        autokitteh.unsubscribe(sub)
+        print(f"Workflow {_index2char(wf)(wf)} completed")
 
 
 def _subscribe_to_events(wf: int, conclusion: str = "success") -> str:
@@ -134,7 +148,7 @@ def _dispatch_workflow(wf: int, ref: str = "main", inputs: dict = None) -> None:
     repo = gh.get_repo(REPOS[wf])
     workflow = _get_workflow(repo, WORKFLOWS[wf])
     if workflow.create_dispatch(ref, inputs or {}):
-        print(f"Workflow {chr(65 + wf)} dispatched")
+        print(f"Workflow {_index2char(wf)(wf)} dispatched")
     else:
         print("Failed to create a 'workflow_dispatch' event")
 
@@ -146,3 +160,8 @@ def _get_workflow(repo: github.Repository, path: str) -> github.Workflow:
             return workflow
 
     raise RuntimeError(f"Workflow file not found: {path}")
+
+
+def _index2char(index: int) -> str:
+    """Convert an index (0-2) to a workflow identifier (A-C)."""
+    return chr(65 + index)
