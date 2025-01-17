@@ -35,7 +35,6 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Ad-hoc room reservation via Slack](./room_reservation/) | Ad-hoc room reservation via Slack slash commands | slack, calendar |
 | [Asana](./samples/asana/) | Simple usage of the Asana API | asana |
 | [Jira](./samples/atlassian/jira/) | Samples using Jira APIs | jira |
-| [GitHub](./samples/github/) | Samples using GitHub APIs | github |
 | [Google Calendar](./samples/google/calendar/) | Samples using Google Calendar APIs | calendar |
 | [Google Forms](./samples/google/forms/) | Samples using Google Forms APIs | forms |
 | [Gemini sample](./samples/google/gemini/) | Simple usage of the Gemini API | googlegemini |
