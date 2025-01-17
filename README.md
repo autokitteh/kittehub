@@ -18,6 +18,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Email categorization and notification](./categorize_emails/) | Categorize incoming emails and notify relevant Slack channels | gmail, chatgpt, slack |
 | [Slack notify on Confluence page created](./confluence_to_slack/) | When Confluence page is created the user will be notified on Slack | confluence, slack |
 | [Parse a file in S3 and insert to database](./data_pipeline/) | Triggered by a new GPX file on an S3 bucket, the pipeline code will parse the GPX file and insert it into a database. | aws, http, sqlite3 |
+| [GitHub workflow orchestration](./devops/github_workflows/) | Orchestrate GitHub workflows using advanced scenarios across multiple repositories | github |
 | [Pull Request Review Reminder (Purrr)](./devops/purrr/) | Streamline code reviews and cut down turnaround time to merge pull requests | github, sheets, slack |
 | [ReviewKitteh](./devops/reviewkitteh/) | Monitor a GitHub PR in Slack until it's closed | github, sheets, slack |
 | [Github Actions](./github_actions/) | GitHub workflows that interact across multiple repositories | github |
