@@ -1,5 +1,5 @@
 [tool.ruff]
-src = ["./**"]
+src = ["./**", "./devops/**", "./reliability/**"]
 target-version = "py312"
 
 [tool.ruff.lint]
