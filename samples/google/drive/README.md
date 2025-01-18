@@ -34,9 +34,11 @@ API documentation:
 > Ensure the Google Drive connection is initialized; otherwise, workflows raise `ConnectionInitError`.
 
 1. Create a new document:
+
    ```shell
    curl -i "http://localhost:9980/webhooks/<webhook-slug>"
    ```
+
 2. Monitor file changes by creating, updating, or deleting files in your connected Drive
 
 > [!NOTE]
