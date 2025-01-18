@@ -1,3 +1,5 @@
+"""This program demonstrates how to use Autokitteh's Google Drive integration to monitor changes to files."""
+
 import os
 
 from autokitteh.google import google_drive_client
@@ -5,15 +7,11 @@ from autokitteh.google import google_drive_client
 USER_EMAIL = os.getenv("USER_EMAIL")
 
 
-def on_file_updated(event):
-    print(f"File with ID {event.data['file']['id']} updated!")
+def on_file_change(event):
+    print(f"File with ID {event.data['file']['id']} has changed!")
 
 
-def on_file_deleted(event):
-    print(f"File with ID {event.data['file']['id']} deleted!")
-
-
-def create_new_document(event):
+def create_new_document(_):
     """Creates a new Google Document and optionally shares it with a specified user.
 
     If the Google Drive permission scope is limited to https://www.googleapis.com/auth/drive.file,
