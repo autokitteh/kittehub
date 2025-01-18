@@ -1,8 +1,8 @@
 ---
-title: OpenAI ChatGPT
+title: OpenAI ChatGPT sample
 description: Samples using chatGPT APIs
 integrations: ["chatgpt"]
-categories: ["Samples"]
+categories: ["AI", "Samples"]
 ---
 
 # OpenAI ChatGPT Sample
