@@ -1,36 +1,38 @@
 """Reserve a specific room for the next half hour."""
 
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, UTC
 
 import autokitteh
 from autokitteh.google import google_calendar_client
 from autokitteh.slack import slack_client
 from googleapiclient.errors import HttpError
 
-from util import get_room_list, get_email_from_slack_command
+import util
 
 
 def on_slack_slash_command(event):
-    """Entry point for the "/<app-name> reserveroom <room> <title>" Slack slash command."""
-    slack = slack_client("slack_conn")
-    channel_id = event.data.user_id  # event.data.channel_id
+    """Entry point for the "reserveroom <room> <title>" Slack slash command."""
+    data = event.data
 
-    cmd_text = event.data.text.split(maxsplit=2)
+    slack = slack_client("slack_conn")
+    channel_id = data.user_id  # DM the user who sent the command.
+
+    cmd_text = data.text.split(maxsplit=2)
 
     if len(cmd_text) < 3:
-        err = "Error: please use the following format: `/<app-name> reserveroom <room> <title>`"
+        err = f"Error: use this format: `{data.command} reserveroom <room> <title>`"
         slack.chat_postMessage(channel=channel_id, text=err)
         return
     _, room, title = cmd_text
 
-    room = get_email_from_slack_command(room)
+    room = util.get_email_from_slack_command(room)
 
-    if room not in get_room_list():
+    if room not in util.get_room_list():
         err = f"Error: `{room}` not found in the list of rooms"
         slack.chat_postMessage(channel=channel_id, text=err)
         return
 
-    user = slack.users_profile_get(user=event.data.user_id).get("profile")
+    user = slack.users_profile_get(user=data.user_id).get("profile", {})
 
     now = datetime.now(UTC)
     in_5_minutes = now + timedelta(minutes=5)

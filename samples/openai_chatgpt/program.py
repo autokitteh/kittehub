@@ -16,14 +16,14 @@ It merely showcases various illustrative, annotated, reusable examples.
 
 from autokitteh.openai import openai_client
 
+
 MODEL = "gpt-4o-mini"
 
 chatgpt_client = openai_client("chatgpt_conn")
 
 
 def on_http_get(event):
-    """
-    Entry-point function for handling HTTP GET requests in this workflow.
+    """Entry-point function for handling HTTP GET requests in this workflow.
 
     Example usage:
     - URL: "http://localhost:9980/webhooks/<webhook_slug>"
@@ -46,13 +46,22 @@ def on_http_get(event):
 
     # Example 2: more verbose interaction with ChatGPT,
     # including the user's text as part of the conversation.
-    contents = [
-        "You are a poetic assistant, skilled in explaining complex engineering concepts.",
-        "Compose a Shakespearean sonnet about the importance of reliability, scalability, and durability, in distributed workflows.",
-    ]
     msgs = [
-        {"role": "system", "content": contents[0]},
-        {"role": "user", "content": body or contents[1]},
+        {
+            "role": "system",
+            "content": (
+                "You are a poetic assistant, skilled in "
+                "explaining complex engineering concepts."
+            ),
+        },
+        {
+            "role": "user",
+            "content": body
+            or (
+                "Compose a Shakespearean sonnet about the importance of reliability, "
+                "scalability, and durability, in distributed workflows."
+            ),
+        },
     ]
 
     resp = chatgpt_client.chat.completions.create(model=MODEL, messages=msgs)

@@ -1,39 +1,29 @@
 # This YAML file is a declarative manifest that describes the setup of
 # an AutoKitteh project that manages GitHub Copilot subscriptions.
-#
-# Before deploying this AutoKitteh project:
-# - Set the "GITHUB_ORG" in the project's vars
-# - Set the "IDLE_USAGE_THRESHOLD" in the project's vars
-#   (e.g., "72h" for 72 hours)
-#   (e.g., "25m" for 25 minutes)
-# - Set the "LOGINS" in the project's vars (optional)
-# - Set the "LOG_CHANNEL" in the project's vars to the Slack channel
-#   name/ID you want to post to.
 
 version: v1
 
 project:
   name: github_copilot_seats
   vars:
-    - name: GITHUB_ORG
-      value:
-    - name: IDLE_USAGE_THRESHOLD
-      value: "72h"
-    - # If not empty, only manage GitHub Copilot subscriptions to the specified users, separated by commas.
-      name: LOGINS
+    - name: IDLE_HOURS_THRESHOLD
+      value: 72
+    # Optional: manage GitHub Copilot subscriptions only for these users, separated by commas.
+    - name: MANAGED_LOGINS
       value: ""
-    - name: LOG_CHANNEL
-      value:
+    # Optional: Slack channel name or ID, for debugging.
+    - name: SLACK_LOG_CHANNEL
+      value: ""
   connections:
-    - name: mygithub
+    - name: github_conn
       integration: github
-    - name: myslack
+    - name: slack_conn
       integration: slack
   triggers:
     - name: check_daily
       schedule: "@daily"
-      call: triggers.star:on_schedule
+      call: triggers.py:on_schedule
     - name: check_now
-      connection: myslack
+      connection: slack_conn
       event_type: slash_command
-      call: triggers.star:on_slack_slash_command
+      call: triggers.py:on_slack_slash_command

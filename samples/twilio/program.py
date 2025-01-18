@@ -15,6 +15,7 @@ import os
 
 from autokitteh.twilio import twilio_client
 
+
 FROM_PHONE_NUMBER = os.getenv("FROM_PHONE_NUMBER")
 
 t = twilio_client("twilio_conn")
@@ -37,6 +38,11 @@ def on_http_get(event):
         event (object): An event object containing the request data.
     """
     to = event.data["url"]["query"]["to"]
+
+    # Add a '+' if missing
+    if not to.startswith("+"):
+        to = f"+{to}"
+
     # Send SMS text via Twilio
     message = t.messages.create(
         from_=FROM_PHONE_NUMBER,

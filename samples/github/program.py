@@ -5,7 +5,7 @@ various GitHub webhook events, which are defined in the "autokitteh.yaml"
 manifest file. It also executes various GitHub API calls.
 
 API details:
-- REST API referene: https://docs.github.com/en/rest
+- REST API reference: https://docs.github.com/en/rest
 - PyGitHub library: https://pygithub.readthedocs.io/en/latest/index.html
 
 This program isn't meant to cover all available functions and events.
@@ -15,6 +15,7 @@ It merely showcases a few illustrative, annotated, reusable examples.
 import random
 
 from autokitteh.github import github_client
+
 
 # https://docs.github.com/en/rest/reactions/reactions#about-reactions
 REACTIONS = ["+1", "-1", "laugh", "confused", "heart", "hooray", "rocket", "eyes"]

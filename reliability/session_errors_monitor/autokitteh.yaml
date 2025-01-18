@@ -1,0 +1,29 @@
+# This YAML file is a declarative manifest that describes the setup of an
+# AutoKitteh project that sends Slack alerts when sessions end due to errors.
+
+version: v1
+
+project:
+  name: session_errors_monitor
+
+  vars:
+    - name: AUTOKITTEH_API_BASE_URL
+      value: https://api.autokitteh.cloud
+    - name: AUTOKITTEH_UI_BASE_URL
+      value: https://app.autokitteh.cloud
+    - name: AUTOKITTEH_AUTH_TOKEN
+      secret: true
+      value: ""
+    - name: SLACK_CHANNEL_NAME_OR_ID
+      value: autokitteh-alerts
+    - name: TRIGGER_INTERVAL
+      value: 1m
+
+  connections:
+    - name: slack_conn
+      integration: slack
+
+  triggers:
+    - name: monitor_schedule
+      schedule: "@every 1m"
+      call: program.py:on_monitor_schedule

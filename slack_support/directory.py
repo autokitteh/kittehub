@@ -1,8 +1,10 @@
-import os
 from collections import namedtuple
+import os
+
 from autokitteh.google import google_sheets_client
 
-DIRECTORY_GOOGLE_SHEET_ID = os.getenv("DIRECTORY_GOOGLE_SHEET_ID")
+
+DIRECTORY_GOOGLE_SHEET_ID = os.getenv("DIRECTORY_GOOGLE_SHEET_ID", "")
 
 gsheets = google_sheets_client("mygsheets")
 
@@ -21,7 +23,7 @@ def load() -> dict[str, list[Person]]:  # topic -> list of people
 
     ppl = [Person(v[0], v[1], v[2].split(",")) for v in vs]
 
-    topics = set([topic for person in ppl for topic in person.topics])
+    topics = {topic for person in ppl for topic in person.topics}
 
     return {
         topic: [person for person in ppl if topic in person.topics] for topic in topics

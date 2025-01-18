@@ -1,0 +1,30 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that integrates GitHub, Google Sheets, and Slack.
+
+version: v1
+
+project:
+  name: reviewkitteh
+
+  vars:
+    - name: SLACK_CHANNEL_ID
+      value: ""
+    - name: GOOGLE_SHEET_ID
+      value: ""
+    - name: ORG_DOMAIN
+      value: ""
+
+  connections:
+    - name: github_conn
+      integration: github
+    - name: googlesheets_conn
+      integration: googlesheets
+    - name: slack_conn
+      integration: slack
+
+  triggers:
+    - name: github_pull_request
+      connection: github_conn
+      event_type: pull_request
+      filter: data.action == "opened" || data.action == "reopened"
+      call: program.py:on_github_pull_request

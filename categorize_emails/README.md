@@ -1,72 +1,46 @@
 ---
-title: Slack notify on important Email
-description: Categorizing incoming emails and notifying relevant Slack channels by integrating Gmail, ChatGPT, and Slack
-integrations: ["gmail", "slack", "chatgpt"]
-categories: ["Office Automation"]
+title: Email categorization and notification
+description: Categorize incoming emails and notify relevant Slack channels
+integrations: ["gmail", "chatgpt", "slack"]
+categories: ["AI", "Productivity"]
 ---
 
-# Email Categorization and Notification Workflow
+# Email Categorization and Notification
 
-This project automates the process of categorizing incoming emails and notifying relevant Slack channels by integrating Gmail, ChatGPT, and Slack. It is not meant to be a 100% complete project, but rather a solid starting point.
-
-## Benefits
-
-- **Ease of Use:** Demonstrates how easy it is to connect multiple integrations into a cohesive workflow.
-- **Low Complexity:** The workflow is implemented with a minimal amount of code.
-- **Free and Open Source:** Available for use or modification to fit specific use cases. 
+Categorize incoming emails and notify relevant Slack channels by integrating Gmail, ChatGPT, and Slack. It is not meant to be a 100% complete project, but rather a solid starting point.
 
 ## How It Works
 
-- **Detect New Email**: The program monitors the Gmail inbox for new emails using the Gmail API.
-- **Categorize Email**: ChatGPT analyzes the email content and categorizes it into predefined categories.
-- **Send Slack Notification**: The program sends the categorized email content to the corresponding Slack channel using the Slack API.
-- **Label Email**: Adds a label to the processed email in Gmail for tracking.
+1. Fetch new emails from Gmail API
+2. Use ChatGPT to analyze and categorize email content
+3. Post categorized emails to relevant Slack channels
+4. Label processed emails in Gmail
 
 For more details, refer to [this blog post](https://autokitteh.com/technical-blog/from-inbox-to-slack-automating-email-categorization-and-notifications-with-ai/).
 
+## Cloud Usage
 
-### Configure integrations
+1. Initialize your connections (ChatGPT, Gmail, Slack)
+2. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+3. Deploy the project
 
-- [Gmail](https://docs.autokitteh.com/integrations/google/config)
-- [Slack](https://docs.autokitteh.com/integrations/slack/config)
+## Trigger Workflow
 
-## Setup Instructions
+> [!IMPORTANT]
+> Ensure all the connections (ChatGPT, Gmail, Slack) are properly initialized; otherwise the workflow will raise a `ConnectionInitError`.
 
-1. Install and start a
-   [self-hosted AutoKitteh server](https://docs.autokitteh.com/get_started/quickstart),
-   or use AutoKitteh Cloud
-
-2. Run these commands to deploy this project's manifest file:
+1. Start a long-running AutoKitteh session by sending an HTTP GET request to the webhook URL from step 2 in the [Cloud Usage](#cloud-usage) section above:
 
    ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   ak deploy --manifest kittehub/categorize_emails/autokitteh.yaml
+   curl -i "${WEBHOOK_URL}"
    ```
 
-3. Look for the following lines in the output of the `ak deploy` command, and
-   copy the URL paths for later:
+2. Send yourself a new email
+3. Wait up to 10 seconds for the workflow's polling loop to detect it
 
-   ```
-   [!!!!] trigger "..." created, webhook path is "/webhooks/..."
-   ```
+## Self-Hosted Deployment
 
-> [!TIP]
-> If you don't see the output of `ak deploy` anymore, you can run these
-> commands instead, and use the webhook slugs from their outputs:
->
-> ```shell
-> ak trigger get receive_http_get --project categorize_emails -J
-> ```
-
-## Usage Instructions
-
-Run the following command, replacing {your-webhook-slug} with the webhook slug from the previous step:
-
-```shell
-curl -v "http://localhost:9980/webhooks/{your-webhook-slug}"
-```
-
-Now send yourself a new email and watch the workflow do its job!
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 
 ## Known Limitations
 

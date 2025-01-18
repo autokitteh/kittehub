@@ -1,12 +1,6 @@
 # This YAML file is a declarative manifest that describes the setup
 # of an AutoKitteh project that manages via Slack ad-hoc room
 # reservations in Google Calendar.
-#
-# After creating this AutoKitteh project by applying this file,
-# initialize its Google Calendar, Google Sheets, and Slack connections.
-#
-# Before deploying this AutoKitteh project, set the GOOGLE_SHEET_ID
-# variable to point to a Google Sheet, as described in the README.md file.
 
 version: v1
 

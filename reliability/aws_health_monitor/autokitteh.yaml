@@ -1,0 +1,27 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that announces AWS Health events in Slack
+# channels, based on resource ownership data in a Google Sheet.
+
+version: v1
+
+project:
+  name: aws_health_monitor
+
+  vars:
+    - name: GOOGLE_SHEET_URL
+      value: https://docs.google.com/spreadsheets/d/1PalmLwSZOPW9k668_jU-wFI5xCj88a4mDfNUtJAupMQ/
+    - name: TRIGGER_INTERVAL
+      value: 1m
+
+  connections:
+    - name: aws_conn
+      integration: aws
+    - name: sheets_conn
+      integration: googlesheets
+    - name: slack_conn
+      integration: slack
+
+  triggers:
+    - name: every_minute
+      schedule: "@every 1m"
+      call: program.py:on_schedule

@@ -72,7 +72,7 @@ def _drafts_get(id):
         print(f"Error: `{e.reason}`")
         return
 
-    print(f"```\n{json.dumps(resp, indent=2)}\n```")
+    print(f"```\n{json.dumps(resp, indent=4)}\n```")
 
 
 def _drafts_list(query):
@@ -90,7 +90,7 @@ def _drafts_list(query):
     print(f"Result size estimate: `{resp['resultSizeEstimate']}`")
 
     for i, d in enumerate(resp.get("drafts", []), start=1):
-        print(f"{i}\n```\n{json.dumps(d, indent=2)}\n```")
+        print(f"{i}\n```\n{json.dumps(d, indent=4)}\n```")
 
     next_page_token = resp.get("nextPageToken")
     if next_page_token:
@@ -109,7 +109,7 @@ def _messages_get(id):
         print(f"Error: `{e.reason}`")
         return
 
-    print(f"```\n{json.dumps(resp, indent=2)}\n```")
+    print(f"```\n{json.dumps(resp, indent=4)}\n```")
 
 
 def _messages_list(query):
@@ -130,7 +130,7 @@ def _messages_list(query):
     print(f"Result size estimate: `{resp['resultSizeEstimate']}`")
 
     for i, m in enumerate(resp.get("messages", []), start=1):
-        print(f"{i}\n```\n{json.dumps(m, indent=2)}\n```")
+        print(f"{i}\n```\n{json.dumps(m, indent=4)}\n```")
 
     next_page_token = resp.get("nextPageToken")
     if next_page_token:

@@ -43,4 +43,5 @@ def _send_slack_message(page, html_body):
     """
 
     slack = slack_client("slack_connection")
-    slack.chat_postMessage(channel=os.getenv("SLACK_CHANNEL"), text=message)
+    channel = os.getenv("SLACK_CHANNEL_NAME_OR_ID", "")
+    slack.chat_postMessage(channel=channel, text=message)

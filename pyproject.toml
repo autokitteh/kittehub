@@ -1,0 +1,22 @@
+[tool.ruff]
+src = ["./**", "./devops/**", "./reliability/**"]
+target-version = "py312"
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/rules/
+extend-select = ["B", "C4", "D101", "D2", "D3", "DTZ", "E5", "I", "N", "PT", "PTH", "Q", "S", "UP", "W"]
+ignore = ["D213", "S101", "S113", "S311", "S314", "S4"]
+# TODO(INT-178, INT-179, INT-180): BLE, D100, S113
+# MAYBE: D4, ANN, S314, FBT, CPY, TRY
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+lines-after-imports = 2
+order-by-type = false
+known-third-party = ["asana", "discord", "github", "hubspot"]
+
+force-single-line = true
+single-line-exclusions = ["autokitteh", "autokitteh.atlassian", "autokitteh.google", "datetime", "typing"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

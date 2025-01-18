@@ -1,2 +1,8 @@
-pytest ~= 8.2
-ruff ~= 0.5
+pytest
+pytest-mock
+ruff
+
+autokitteh
+google-auth
+PyGithub
+slack-sdk

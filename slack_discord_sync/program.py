@@ -1,6 +1,4 @@
-"""
-This script mirrors messages between Slack and Discord channels using
-AutoKitteh's Slack and Discord clients.
+"""Mirror messages between Slack and Discord channels using.
 
 Discord documentation:
 - https://discordpy.readthedocs.io/
@@ -19,8 +17,8 @@ from autokitteh import slack
 import discord
 
 
-DISCORD_CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID"))
-SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
+DISCORD_CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID", ""))
+SLACK_CHANNEL = os.getenv("SLACK_CHANNEL_NAME_OR_ID", "")
 
 # Discord intents that enable the bot to read message content
 intents = discord.Intents.default()
@@ -34,7 +32,7 @@ slack_message = None
 
 
 def on_discord_message(event):
-    slack_api.chat_postMessage(channel=SLACK_CHANNEL_ID, text=event.data["content"])
+    slack_api.chat_postMessage(channel=SLACK_CHANNEL, text=event.data["content"])
 
 
 def on_slack_message(event):
@@ -45,10 +43,11 @@ def on_slack_message(event):
 
 @client.event
 async def on_ready():
-    """An asynchronous event triggered when the Discord bot
-    successfully connects. It fetches the Discord channel by ID and sends
-    the latest message received from Slack to the channel, then closes the
-    client connection."""
+    """An asynchronous event triggered when the Discord bot successfully connects.
+
+    It fetches the Discord channel by ID and sends the latest message received
+    from Slack to the channel, then closes the client connection.
+    """
     try:
         channel = await client.fetch_channel(DISCORD_CHANNEL_ID)
     except discord.DiscordException as e:

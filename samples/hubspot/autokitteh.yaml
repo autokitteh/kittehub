@@ -1,0 +1,21 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that demonstrates integration with HubSpot.
+
+version: v1
+
+project:
+  name: hubspot
+
+  connections:
+    - name: hubspot_conn
+      integration: hubspot
+
+  triggers:
+    - name: create_contact_webhook
+      type: webhook
+      event_type: post
+      call: program.py:create_contact
+    - name: list_deals_webhook
+      type: webhook
+      event_type: get
+      call: program.py:list_deals

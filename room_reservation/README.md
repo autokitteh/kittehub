@@ -7,36 +7,39 @@ categories: ["Office Automation"]
 
 # Room Reservarion
 
-In our organization, we manage meeting rooms as resources in Google Calendar:
+This project automates the process of room reservations through Slack by integrating Google Calendar, Google Sheets, and Slack. It is not meant to be a 100% complete project, but rather a solid starting point.
 
-- Each meeting room is represented by an email account
-- To reserve a room for a meeting, users can add it to the invite
+## How It Works
 
-While users can reserve rooms directly from the calendar, we wanted to add a
-Slack interface to make it even quicker to reserve a room for an immediate
-meeting within the next half hour.
+1. Receive room reservation requests from Slack commands
+2. Query Google Calendar for room availability
+3. Create calendar events for approved reservations
+4. Update room status in Google Sheets
 
-We did not configure separate slash commands in Slack. Instead, we listen for the `/autokitteh`
-command and parse the text that follows to determine the desired action. 
-The format of the commands is as follows:
+## Cloud Usage (Recommended)
+
+1. Initialize your connections through the UI
+2. Set the `GOOGLE_SHEET_ID` project variable, in the "VARIABLES" tab, to point to your Google Sheet
+3. Deploy the project
+
+## Trigger Workflow
+
+The workflow is triggered with a Slack slash command.
+### Available Commands
 
 - `/autokitteh availablerooms` - list all the available rooms
 - `/autokitteh roomstatus <room>` - check the status of a specific room
 - `/autokitteh reserveroom <room> <title>` - reserve a specific room
 
 > [!IMPORTANT]
-> If you're using Socket Mode or the open source version, replace `/autokitteh` 
-with your app's name (e.g., `/yourapp availablerooms`).
+> For self-hosted, replace `/autokitteh` with your app's name (e.g., `/yourapp availablerooms`).
 
-> [!TIP]
-> You can extend this project to add participants, set the time, etc.
+> [!NOTE]
+> Separate slash commands are not configured in Slack. Instead, the /autokitteh command is used, and the text that follows it is parsed to determine the desired action.
 
 ## Configuration
 
-Each meeting room is represented by an email account.
-
-The list of available meeting rooms is stored in a Google Sheet as a single
-column of room email addresses:
+The list of meeting rooms is stored in a Google Sheet with the following format:
 
 |     |          A          |
 | :-: | :-----------------: |
@@ -44,13 +47,9 @@ column of room email addresses:
 |  2  | `room2@example.com` |
 |  3  | `room3@example.com` |
 
-Before deploying this project, set the `GOOGLE_SHEET_ID` variable in the
-[autokitteh.yaml](./autokitteh.yaml) manifest file, to point to your Google
-Sheet.
-
 > [!TIP]
-> You can extend this project to add another column for user-friendly aliases.
+> This project can be extended to support additional features like adding participants, custom time slots, and room aliases.
 
-## AutoKitteh Integrations
+## Self-Hosted Deployment
 
-Google Calendar, Google Sheets, Slack
+Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
