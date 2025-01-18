@@ -1,15 +1,15 @@
 ---
 title: GitHub Marketplace to Slack
 description: Forward GitHub Marketplace notifications to Slack
-integrations: ["GitHub", "HTTP", "Slack"]
-categories: ["Sales"]
+integrations: ["github", "http", "slack"]
+categories: ["CRM"]
 ---
 
 # GitHub Marketplace to Slack
 
 Forward [GitHub Marketplace notifications](https://docs.github.com/en/apps/github-marketplace/listing-an-app-on-github-marketplace/configuring-a-webhook-to-notify-you-of-plan-changes) to Slack.
 
-This allows you to handle [marketplace_purchase](https://docs.github.com/en/apps/github-marketplace/using-the-github-marketplace-api-in-your-app/webhook-events-for-the-github-marketplace-api) events in your GitHub app.
+This allows you to handle [`marketplace_purchase`](https://docs.github.com/en/apps/github-marketplace/using-the-github-marketplace-api-in-your-app/webhook-events-for-the-github-marketplace-api) notifications for your GitHub app.
 
 ## How It Works
 

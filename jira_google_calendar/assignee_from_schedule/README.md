@@ -1,11 +1,11 @@
 ---
-title: JIRA Assignee From Google Calendar Workflow
-description: Set Assignee in Jira ticket to the person currently on-call
+title: Jira assignee from Google Calendar
+description: Set assignee in Jira ticket to the person currently on-call
 integrations: ["jira", "calendar"]
 categories: ["DevOps"]
 ---
 
-# JIRA Assignee From Google Calendar Workflow 
+# Jira Assignee From Google Calendar
 
 This project automates the process of assigning Jira issues based on a shared Google Calendar. The workflow checks the current on-call person from the Google Calendar and assigns newly created Jira issues to them.
 

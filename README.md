@@ -22,11 +22,11 @@ demonstrate basic system features, integration APIs, and best practices.
 | [ReviewKitteh](./devops/reviewkitteh/) | Monitor a GitHub PR in Slack until it's closed | github, sheets, slack |
 | [Github Actions](./github_actions/) | GitHub workflows that interact across multiple repositories | github |
 | [Cancel GitHub Copilot access for inactive users](./github_copilot_seats/) | If Copilot was not used in a preceding period by users, unsubscribe and notify them in Slack. Users can ask for their subscription to be reinstated. | githubcopilot, slack |
-| [GitHub Marketplace to Slack](./github_marketplace_to_slack/) | Forward GitHub Marketplace notifications to Slack | GitHub, HTTP, Slack |
+| [GitHub Marketplace to Slack](./github_marketplace_to_slack/) | Forward GitHub Marketplace notifications to Slack | github, http, slack |
 | [Google Calendar To Asana](./google_cal_to_asana/) | Creates Asana tasks based on Google Calendar events | calendar, asana |
 | [Create Jira ticket from Google form](./google_forms_to_jira/) | Trigger by HTTP request, continue polling Google forms, and create Jira ticket based on the form's data | forms, http, jira |
-| [Hacker News Alerts in Slack ](./hackernews/) | Track Hacker News articles by topic and send updates to Slack | slack |
-| [JIRA Assignee From Google Calendar Workflow](./jira_google_calendar/assignee_from_schedule/) | Set Assignee in Jira ticket to the person currently on-call | jira, calendar |
+| [Hacker News alerts in Slack ](./hackernews/) | Track Hacker News articles by topic and send updates to Slack | slack |
+| [Jira assignee from Google Calendar](./jira_google_calendar/assignee_from_schedule/) | Set assignee in Jira ticket to the person currently on-call | jira, calendar |
 | [Create calendar due date event for Jira ticket](./jira_google_calendar/deadline_to_event/) | When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline | calendar, jira |
 | [Quickstart](./quickstart/) | Sample for quickstart | http |
 | [AWS Health monitor](./reliability/aws_health_monitor/) | Announce AWS Health events in Slack channels, based on resource ownership data in a Google Sheet | aws, slack, sheets |
@@ -38,12 +38,12 @@ demonstrate basic system features, integration APIs, and best practices.
 | [GitHub](./samples/github/) | Samples using GitHub APIs | github |
 | [Google Calendar](./samples/google/calendar/) | Samples using Google Calendar APIs | calendar |
 | [Google Forms](./samples/google/forms/) | Samples using Google Forms APIs | forms |
-| [Gemini](./samples/google/gemini/) | Simple usage of the Gemini API | googlegemini |
+| [Gemini sample](./samples/google/gemini/) | Simple usage of the Gemini API | googlegemini |
 | [Gmail](./samples/google/gmail/) | Samples using Gmail APIs | gmail |
 | [Google Sheets](./samples/google/sheets/) | Samples using Google Sheets APIs | sheets |
 | [HTTP](./samples/http/) | Samples using HTTP requests and webhooks | http |
 | [HubSpot sample](./samples/hubspot/) | Simple usage of the HubSpot API | hubspot |
-| [OpenAI ChatGPT](./samples/openai_chatgpt/) | Samples using chatGPT APIs | chatgpt |
+| [OpenAI ChatGPT sample](./samples/openai_chatgpt/) | Samples using chatGPT APIs | chatgpt |
 | [Runtime Events](./samples/runtime_events/) | Samples using events in AutoKitteh - subscribe(), next_event(), unsubscribe() | autokitteh |
 | [Scheduler](./samples/scheduler/) | Samples using cron scheduler for workflows | scheduler |
 | [Slack](./samples/slack/) | Samples using Slack APIs | slack |
