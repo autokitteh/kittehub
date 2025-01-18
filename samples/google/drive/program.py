@@ -1,8 +1,9 @@
-"""This program demonstrates how to use Autokitteh's Google Drive integration to monitor changes to files."""
+"""Autokitteh's Google Drive integration to monitor changes to files."""
 
 import os
 
 from autokitteh.google import google_drive_client
+
 
 USER_EMAIL = os.getenv("USER_EMAIL")
 
@@ -15,9 +16,11 @@ def create_new_document(_):
     """Creates a new Google Document and optionally shares it with a specified user.
 
     If the Google Drive permission scope is limited to https://www.googleapis.com/auth/drive.file,
-    the app must create a new file to enable change monitoring. Note that creating a file is not
-    the only way to grant permissions; there are other options detailed here: https://developers.google.com/drive/api/guides/manage-sharing.
-    For example, when using a service account, you can share a specific file with the service account's email address.
+    the app must create a new file to enable change monitoring. Note that creating a
+    file is not the only way to grant permissions; there are other options detailed
+    here: https://developers.google.com/drive/api/guides/manage-sharing. For example,
+    when using a service account, you can share a specific file with the service
+    account's email address.
     """
     client = google_drive_client("google_drive_conn")
 

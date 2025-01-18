@@ -41,9 +41,6 @@ API documentation:
 
 2. Monitor file changes by creating, updating, or deleting files in your connected Drive
 
-> [!NOTE]
-> You will only see changes for files created by the app.
-
 ## Self-Hosted Deployment
 
 Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
