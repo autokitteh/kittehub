@@ -16,11 +16,7 @@ project:
     - name: create_new_document
       type: webhook
       call: program.py:create_new_document
-    - name: on_file_updated
+    - name: on_file_change
       connection: google_drive_conn
       event_type: change
-      call: program.py:on_file_updated
-    - name: on_file_deleted
-      connection: google_drive_conn
-      event_type: file_deleted
-      call: program.py:on_file_deleted
+      call: program.py:on_file_change
