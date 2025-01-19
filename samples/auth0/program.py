@@ -14,7 +14,7 @@ ROLE_ID = os.getenv("ROLE_ID", "")
 def assign_role(event):
     user = event.data.body.form.get("user_id")
     auth0.roles.add_users(ROLE_ID, [user])
-    print(f"Assigned role {ROLE_ID} to user {user}")
+    print(f"Assigned role {ROLE_ID!r} to user {user!r}")
 
 
 def weekly_user_growth(_):
