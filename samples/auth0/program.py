@@ -12,14 +12,18 @@ ROLE_ID = os.getenv("ROLE_ID", "")
 
 
 def assign_role(event):
-    user = event.data.body.form.get("user_id")
+    """Entry-point function for a webhook-based workflow assigning a role to a user."""
+    user = event.data.body.form.get("user_id", "")
     auth0.roles.add_users(ROLE_ID, [user])
     print(f"Assigned role {ROLE_ID!r} to user {user!r}")
 
 
 def weekly_user_growth(_):
     """Fetch and display the number of users created in the past week."""
-    one_week_ago = (datetime.now(UTC) - timedelta(days=7)).isoformat()
+    # Remove the unit suffix ("d") and parse as an integer.
+    interval_days = int((os.getenv("TIME_INTERVAL", "7d"))[:-1])
+    one_week_ago = (datetime.now(UTC) - timedelta(days=interval_days)).isoformat()
+
     query = f"created_at:[{one_week_ago} TO *]"
 
     response = auth0.users.list(q=query, search_engine="v3")

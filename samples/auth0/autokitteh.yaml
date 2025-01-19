@@ -9,6 +9,8 @@ project:
   vars:
     - name: ROLE_ID
       value: ""
+    - name: TIME_INTERVAL
+      value: 7d
 
   connections:
     - name: auth_conn
