@@ -41,7 +41,7 @@ curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
 
 `weekly_user_growth`:
 
-workflow is automatically triggered every week.
+Workflow is automatically triggered every week
 
 [!TIP]
 > The `weekly_user_growth` workflow can also be triggered manually by clicking the "Run" button in the UI, and setting the `weekly_user_growth` function as the entry point.
