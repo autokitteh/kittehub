@@ -27,4 +27,4 @@ def weekly_user_growth(_):
 
     print(f"New users in the past week: {len(new_users)}")
     for user in new_users:
-        print(f"- {user['email']} (Created At: {user['created_at']})")
+        print(f"- {user['email']} (created at: {user['created_at']})")
