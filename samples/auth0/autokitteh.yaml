@@ -2,19 +2,23 @@
 # of an AutoKitteh project that demonstrates integration with Auth0.
 
 version: v1
+
 project:
   name: auth0_sample
-  connections:
-  - name: auth_conn
-    integration: auth0
-  triggers:
-  - name: weekly
-    schedule: 0 0 * * 1
-    call: program.py:weekly_user_growth
-  - name: assign_role_webhook
-    type: webhook 
-    event_type: post
-    call: program.py:assign_role
+
   vars:
-  - name: ROLE_ID
-    value: ""
+    - name: ROLE_ID
+      value: ""
+
+  connections:
+    - name: auth_conn
+      integration: auth0
+
+  triggers:
+    - name: weekly
+      schedule: 0 0 * * 1
+      call: program.py:weekly_user_growth
+    - name: assign_role_webhook
+      type: webhook 
+      event_type: post
+      call: program.py:assign_role
