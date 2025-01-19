@@ -25,7 +25,7 @@ API details:
 
 1. Initialize your connection with Auth0
 2. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
-3. Update the `ROLE_ID` project variable with the `id` of the role you want to assign to the user
+3. Update the `ROLE_ID` project variable with the `id` of the role you want to assign to the user, e.g., `rol_fstvQ1eysK5VTkKt`
 4. Deploy the project
 
 ## Trigger Workflow
