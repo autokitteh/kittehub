@@ -25,6 +25,6 @@ def weekly_user_growth(_):
     response = auth0.users.list(q=query, search_engine="v3")
     new_users = response.get("users", [])
 
-    print(f"New Users in the Past Week: {len(new_users)}")
+    print(f"New users in the past week: {len(new_users)}")
     for user in new_users:
         print(f"- {user['email']} (Created At: {user['created_at']})")
