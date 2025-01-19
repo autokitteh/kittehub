@@ -32,7 +32,7 @@ API details:
 
 `assign_role`:
 
-send an HTTP POST request to the the webhook URL from step 2 in the [Cloud Usage](#cloud-usage) section above:
+Send an HTTP POST request to the the webhook URL from step 2 in the [Cloud Usage](#cloud-usage) section above:
 
 ```shell
 curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
