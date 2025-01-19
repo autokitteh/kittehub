@@ -17,7 +17,7 @@ def assign_role(event):
     print(f"Assigned role {ROLE_ID} to user {user}")
 
 
-def weekly_user_growth(event):
+def weekly_user_growth(_):
     """Fetch and display the number of users created in the past week."""
     one_week_ago = (datetime.now(UTC) - timedelta(days=7)).isoformat()
     query = f"created_at:[{one_week_ago} TO *]"
