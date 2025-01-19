@@ -35,8 +35,7 @@ API details:
 Send an HTTP POST request to the the webhook URL from step 2 in the [Cloud Usage](#cloud-usage) section above:
 
 ```shell
-curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
--d user_id=<user_id>
+curl -i -X POST "${WEBHOOK_URL}" -d user_id=${USER_ID}
 ```
 
 `weekly_user_growth`:
