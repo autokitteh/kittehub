@@ -1,56 +1,45 @@
----
-title: GitHub
-description: Samples using GitHub APIs
-integrations: ["github"]
-categories: ["Samples"]
----
+# GitHub
 
-# GitHub Sample
+There are various AutoKitteh projects in the Kittehub repository that demonstrate different aspects of integration with [GitHub](https://github.com).
 
-This [AutoKitteh](https://github.com/autokitteh/autokitteh) project
-demonstrates 2-way integration with [GitHub](https://github.com).
+## General Documentation
 
-The file [`program.py`](./program.py) implements multiple entry-point
-functions that are triggered by various GitHub webhook events, which are
-defined in the [`autokitteh.yaml`](./autokitteh.yaml) manifest file. It also
-executes various GitHub API calls.
+- [AutoKitteh](https://docs.autokitteh.com/integrations/github)
+- [GitHub webhook events and payloads](https://docs.github.com/en/webhooks/webhook-events-and-payloads)
+- [PyGithub](https://pygithub.readthedocs.io/en/stable/)
 
-The file [`workflow.py`](./workflow.py) demonstrates triggering GitHub
-Action workflows, and receiving workflow events.
+## GitHub Workflows
 
-> [!NOTE]  
-> The `start_github_action` trigger is commented out in the [`autokitteh.yaml`](./autokitteh.yaml) manifest because it depends on a named workflow YAML file being available in the corresponding GitHub repository. For more information, refer to the function's docstring.
+Project: [GitHub workflows](/devops/github_workflows/)
 
-GitHub API details:
+- Orchestrate GitHub workflows using advanced scenarios across multiple repositories
+- Receive [`workflow_run`](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run) webhook events
+- Send [`create_dispatch`](https://pygithub.readthedocs.io/en/stable/github_objects/Workflow.html) API calls
 
-- [REST API reference](https://docs.github.com/en/rest)
-- [Go client API](https://pkg.go.dev/github.com/google/go-github/v57/github)
+## Pull Requests
 
-It also demonstrates using a custom builtin function (`rand.intn`) to generate
-random integer numbers, based on <https://pkg.go.dev/math/rand#Rand.Intn>.
+Project: [ReviewKitteh](/devops/reviewkitteh/)
 
-This project isn't meant to cover all available functions and events. It
-merely showcases a few illustrative, annotated, reusable examples.
+- Monitor a GitHub PR in Slack until it's closed
+- Receive [`pull_request`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request) webhook events (`"opened"` and `"reopened"` actions, `"closed"` and `"merged"` states)
 
-## Instructions
+Project: [Pull Request Review Reminder (Purrr)](/devops/purrr/)
 
-1. [Configure your GitHub integration](https://docs.autokitteh.com/integrations/github).
+- Streamline code reviews and cut down turnaround time to merge pull requests
+- Manage the entire lifecycle of a PR review process by receiving and parsing these webhook events:
+  - [`pull_request`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request)
+  - [`pull_request_review`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request_review)
+  - [`pull_request_review_comment`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request_review_comment)
+  - [`pull_request_review_thread`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request_review_thread)
+  - [`issue_comment`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#issue_comment)
+- Send various PyGithub API calls
+- Parse [GitHub markdown](/devops/purrr/markdown.py) text
 
-2. Via the `ak` CLI tool, or the AutoKitteh VS Code extension, deploy the
-   `autokitteh.yaml` manifest file
+## GitHub Marketplace Webhooks
 
-## Connection Notes
+Project: [GitHub Marketplace to Slack](/github_marketplace_to_slack/)
 
-AutoKitteh supports 2 connection modes:
-
-- Personal Access Token (PAT - either fine-grained or classic) + manually-configured
-  webhook
-
-  - [Authenticating with a personal access token](https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api#authenticating-with-a-personal-access-token)
-  - [Managing your personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-  - [Setting a PAT policy for your organization](https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization)
-  - [Endpoints available for fine-grained PATs](https://docs.github.com/en/rest/authentication/endpoints-available-for-fine-grained-personal-access-tokens)
-
-- GitHub App (installed and authorized in step 1 above)
-
-  - [About using GitHub Apps](https://docs.github.com/en/apps/using-github-apps/about-using-github-apps)
+- Forward GitHub Marketplace notifications to Slack
+- Instructions for configuring GitHub Marketplace webhooks for GitHub apps
+- Receive [`marketplace_purchase`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#marketplace_purchase) notifications
+- Verify the signature authenticity of incoming notifications
