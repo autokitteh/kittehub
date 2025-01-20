@@ -69,6 +69,15 @@ class TestExtractMetadata:
         expected = {"a": "1", "b": "2", "integrations": ["c", "d"], "e": "3"}
         assert update_projects_table.extract_metadata(tmp_file) == expected
 
+    def test_non_empty_categories_field(self, tmp_file):
+        tmp_file.write_text('categories: ["a"]')
+        expected = {"categories": ["a"]}
+        assert update_projects_table.extract_metadata(tmp_file) == expected
+
+        tmp_file.write_text('categories: ["a", "b"]')
+        expected = {"categories": ["a", "b"]}
+        assert update_projects_table.extract_metadata(tmp_file) == expected
+
 
 class TestToTableRow:
     """Unit tests for the "to_table_row" function."""
