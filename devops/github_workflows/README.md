@@ -16,7 +16,7 @@ Orchestrate GitHub workflows with advanced scenarios across multiple repositorie
 - Long sequence (A &rarr; B &rarr; C &rarr; A &rarr; B &rarr; C)
 
 > [!NOTE]
-> The last scenario is useful even within a single repository, because GitHub's own workflow orchestration is limited to [chaining no more than 4 workflows](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run).
+> GitHub cannot chain more than [4 workflows](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run) automatically (when using `workflow_run` events), so the last scenario is useful even within a single repository.
 
 ## GitHub Prerequisites
 

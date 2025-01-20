@@ -86,8 +86,8 @@ def fan_in(_) -> None:
 def long_sequence(_) -> None:
     """Long sequence demo (A --> B --> C --> A --> B --> C).
 
-    This is useful even within a single repository, because GitHub's own
-    workflow orchestration is limited to chaining no more than 4 workflows:
+    Note: GitHub cannot chain more than 4 workflows (when using `workflow_run` events),
+    so this AutoKitteh demo is useful even within a single repository. See details here:
     https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_run
     """
     sub = _subscribe_to_events(A)
