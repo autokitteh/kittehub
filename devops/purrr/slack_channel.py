@@ -7,8 +7,8 @@ from slack_sdk.errors import SlackApiError
 
 import data_helper
 import debug
-import markdown
 import slack_helper
+import text_utils
 import users
 
 
@@ -105,7 +105,7 @@ def _post_messages(action: str, pr, sender, channel_id: str) -> None:
     msg = f"{{}} {action} {pr.html_url}: `{pr.title}`"
 
     if pr.body:
-        msg += "\n\n" + markdown.github_to_slack(pr.body, pr.html_url)
+        msg += "\n\n" + text_utils.github_to_slack(pr.body, pr.html_url)
 
     slack_helper.mention_in_message(channel_id, sender, msg)
 

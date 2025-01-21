@@ -33,7 +33,7 @@ Project: [Pull Request Review Reminder (Purrr)](/devops/purrr/)
   - [`pull_request_review_thread`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request_review_thread)
   - [`issue_comment`](https://docs.github.com/en/webhooks/webhook-events-and-payloads#issue_comment)
 - Send various PyGithub API calls
-- Parse [GitHub markdown](/devops/purrr/markdown.py) text
+- Parse [GitHub markdown](/devops/purrr/text_utils.py) text
 
 ## GitHub Marketplace Webhooks
 
