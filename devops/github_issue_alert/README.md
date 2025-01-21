@@ -1,6 +1,6 @@
 ---
 title: GitHub issue alert
-description: Monitors comments on GitHub issues and sends updates to Slack.
+description: Send GitHub issue comments to Slack
 integrations: ["github", "slack"]
 categories: ["DevOps"]
 ---
