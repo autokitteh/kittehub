@@ -21,6 +21,6 @@ project:
       schedule: 0 0 * * 1
       call: program.py:weekly_user_growth
     - name: assign_role_webhook
-      type: webhook 
+      type: webhook
       event_type: post
       call: program.py:assign_role

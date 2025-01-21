@@ -22,9 +22,13 @@ def weekly_user_growth(_):
     """Fetch and display the number of users created in the past week."""
     # Remove the unit suffix ("d") and parse as an integer.
     interval_days = int((os.getenv("TIME_INTERVAL", "7d"))[:-1])
-    one_week_ago = (datetime.now(UTC) - timedelta(days=interval_days)).isoformat()
+    end_time = datetime.now(UTC).replace(second=0, microsecond=0)
+    start_time = end_time - timedelta(minutes=interval_days)
 
-    query = f"created_at:[{one_week_ago} TO *]"
+    start_time_iso = start_time.isoformat().replace("+00:00", "Z")
+    end_time_iso = end_time.isoformat().replace("+00:00", "Z")
+
+    query = f"created_at:[{start_time_iso} TO {end_time_iso}]"
 
     response = auth0.users.list(q=query, search_engine="v3")
     new_users = response.get("users", [])
