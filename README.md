@@ -36,6 +36,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Asana](./samples/asana/) | Simple usage of the Asana API | asana |
 | [Jira](./samples/atlassian/jira/) | Samples using Jira APIs | jira |
 | [Google Calendar](./samples/google/calendar/) | Samples using Google Calendar APIs | calendar |
+| [Google Drive sample](./samples/google/drive/) | Samples using Google Drive APIs | drive |
 | [Google Forms](./samples/google/forms/) | Samples using Google Forms APIs | forms |
 | [Gemini sample](./samples/google/gemini/) | Simple usage of the Gemini API | googlegemini |
 | [Gmail](./samples/google/gmail/) | Samples using Gmail APIs | gmail |
