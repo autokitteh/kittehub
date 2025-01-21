@@ -6,9 +6,9 @@ import os
 from autokitteh.auth0 import auth0_client
 
 
-auth0 = auth0_client("auth_conn")
-
 ROLE_ID = os.getenv("ROLE_ID", "")
+
+auth0 = auth0_client("auth_conn")
 
 
 def assign_role(event):
