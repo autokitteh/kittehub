@@ -66,8 +66,7 @@ def insert_records(db_dsn, records):
 def create_db(db_dsn):
     code_dir = Path(__file__).absolute().parent
     schema_file = code_dir / "schema.sql"
-    with open(schema_file) as fp:
-        schema_sql = fp.read()
+    schema_sql = schema_file.read_text()
 
     with closing(sqlite3.connect(db_dsn)) as conn, conn:
         conn.executescript(schema_sql)
