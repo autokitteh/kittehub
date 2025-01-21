@@ -16,7 +16,12 @@ slack = slack_client("slack_conn")
 def on_issue_comment(event):
     """Processes a GitHub issue comment event and sends a message to Slack.
 
-    For more details on the payload structure:
+     Supported actions:
+    - Creation
+    - Editing
+    - Deletion
+
+    For more details on the payload structure, visit:
     https://docs.github.com/en/webhooks/webhook-events-and-payloads#issue_comment
     """
     comment_body = event.data.comment.body
@@ -33,7 +38,12 @@ def on_issue_comment(event):
 def on_issue_event(event):
     """Processes a GitHub issue event and sends a message to Slack.
 
-    For more details on the payload structure:
+    Supported actions:
+    - Creation
+    - Editing
+    - Closing
+
+    For more details on the payload structure, visit:
     https://docs.github.com/en/webhooks/webhook-events-and-payloads#issues
     """
     issue_title = event.data.issue.title
