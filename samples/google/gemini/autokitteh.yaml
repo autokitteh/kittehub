@@ -9,7 +9,11 @@ project:
     - name: gemini_conn
       integration: googlegemini
   triggers:
-    - name: on_http_get
+    - name: trivial_interaction
       type: webhook
       event_type: get
-      call: program.py:on_http_get
+      call: program.py:trivial_interaction
+    - name: interactive_chat
+      type: webhook
+      event_type: get
+      call: program.py:interactive_chat
