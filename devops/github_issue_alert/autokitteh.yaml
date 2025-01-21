@@ -9,7 +9,7 @@ project:
   connections:
     - name: slack_conn
       integration: slack
-    - name: GitHub_conn
+    - name: github_conn
       integration: github
 
   triggers:
