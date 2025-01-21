@@ -5,7 +5,7 @@ import os
 from autokitteh.google import google_drive_client
 
 
-USER_EMAIL = os.getenv("USER_EMAIL")
+USER_EMAIL = os.getenv("USER_EMAIL", "")
 
 
 def on_file_change(event):
