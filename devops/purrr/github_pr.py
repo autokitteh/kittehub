@@ -3,9 +3,9 @@
 import autokitteh
 
 import data_helper
-import markdown
 import slack_channel
 import slack_helper
+import text_utils
 import users
 
 
@@ -380,7 +380,7 @@ def _on_pr_edited(action: str, pr, changes, sender) -> None:
     if "body" in changes:
         if pr.body:
             msg = "{} updated the PR description:\n\n"
-            msg += markdown.github_to_slack(pr.body, pr.html_url)
+            msg += text_utils.github_to_slack(pr.body, pr.html_url)
         else:
             msg = "{} deleted the PR description"
 
