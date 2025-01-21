@@ -13,7 +13,9 @@ def extract_metadata(readme_file: Path) -> dict:
     f = readme_file.read_text(encoding="utf-8")
     metadata = {}
 
-    list_values = ("categories", "integrations")  # Others are just strings.
+    # These 2 metadata values are string lists, others are simple strings.
+    list_values = ("categories", "integrations")
+
     for k, v in re.findall(field_pattern, f, re.MULTILINE):
         metadata[k] = re.findall(r'"(.+?)"', v) if k in list_values else v
 
