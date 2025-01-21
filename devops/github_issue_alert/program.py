@@ -8,7 +8,7 @@ import os
 from autokitteh.slack import slack_client
 
 
-SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "")
+SLACK_CHANNEL = os.getenv("SLACK_CHANNEL_NAME_OR_ID", "")
 
 slack = slack_client("slack_conn")
 
