@@ -25,8 +25,8 @@ def weekly_user_growth(_):
     end_time = datetime.now(UTC).replace(second=0, microsecond=0)
     start_time = end_time - timedelta(minutes=interval_days)
 
-    start_time_iso = start_time.isoformat().replace("+00:00", "Z")
-    end_time_iso = end_time.isoformat().replace("+00:00", "Z")
+    start_time_iso = start_time.isoformat()
+    end_time_iso = end_time.isoformat()
 
     query = f"created_at:[{start_time_iso} TO {end_time_iso}]"
 
