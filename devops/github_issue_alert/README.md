@@ -17,7 +17,7 @@ This project automates notifications for GitHub issue activity by monitoring iss
 
 ## Cloud Usage
 
-1. Initialize your connections through the UI
+1. Initialize your connections (GitHub, Slack)
 2. Set the `SLACK_CHANNEL` project variable to the Slack channel where you want to receive issue alerts."
 
 ## Trigger Workflow
