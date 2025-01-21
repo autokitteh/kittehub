@@ -81,10 +81,10 @@ class TestGithubToSlack:
     def test_simple_lists(self):
         import text_utils
 
-        expect = "  •  111\n  •  222\n  •  333"
-        assert text_utils.github_to_slack("- 111\n- 222\n- 333", "") == expect
-        assert text_utils.github_to_slack("+ 111\n+ 222\n+ 333", "") == expect
-        # TODO: assert ...github_to_slack("* 111\n* 222\n* 333", "") == expect
+        expected = "  •  111\n  •  222\n  •  333"
+        assert text_utils.github_to_slack("- 111\n- 222\n- 333", "") == expected
+        assert text_utils.github_to_slack("+ 111\n+ 222\n+ 333", "") == expected
+        # TODO: assert ...github_to_slack("* 111\n* 222\n* 333", "") == expected
 
     def test_nested_lists(self):
         import text_utils
