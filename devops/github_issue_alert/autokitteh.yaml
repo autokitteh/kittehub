@@ -6,6 +6,10 @@ version: v1
 project:
   name: github_issue_alert
 
+  vars:
+    - name: SLACK_CHANNEL
+      value: github-issues
+
   connections:
     - name: slack_conn
       integration: slack
@@ -15,13 +19,9 @@ project:
   triggers:
     - name: on_issue_comment
       event_type: issue_comment
-      connection: GitHub_conn
+      connection: github_conn
       call: program.py:on_issue_comment
-    - name: on_issue_created
+    - name: on_issue_event
       event_type: issues
-      connection: GitHub_conn
-      call: program.py:on_issue_created
-
-  vars:
-    - name: SLACK_CHANNEL
-      value: GitHub_Issues
+      connection: github_conn
+      call: program.py:on_issue_event

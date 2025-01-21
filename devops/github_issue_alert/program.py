@@ -14,25 +14,26 @@ slack = slack_client("slack_conn")
 
 
 def on_issue_comment(event):
-    comment_body = event["data"]["comment"]["body"]
-    comment_action = event["data"]["action"]
-    comment_author = event["data"]["comment"]["user"]["login"] or "Unknown user"
-    issue_title = event["data"]["issue"]["title"]
+    """Processes a GitHub issue comment event and sends a message to Slack."""
+    comment_body = event.data.comment.body
+    comment_action = event.data.action
+    comment_author = event.data.comment.user.login or "Unknown user"
+    issue_title = event.data.issue.title
 
-    text = (
-        f"{comment_author} {comment_action} a comment: '{comment_body}' "
-        f"on issue '{issue_title}'"
-    )
+    text = f"{comment_author} {comment_action} a comment: '{comment_body}' "
+    text += f"on issue '{issue_title}'"
+
     slack.chat_postMessage(channel=SLACK_CHANNEL, text=text)
 
 
-def on_issue_created(event):
-    issue_title = event["data"]["issue"]["title"]
-    issue_author = event["data"]["issue"]["user"]["login"]
-    issue_body = event["data"]["issue"]["body"] or "No description provided"
+def on_issue_event(event):
+    """Processes a GitHub issue event and sends a message to Slack."""
+    issue_title = event.data.issue.title
+    issue_author = event.data.issue.user.login
+    issue_action = event.data.action
+    issue_body = event.data.issue.body or "No description provided"
 
-    text = (
-        f"{issue_author} created an issue: '{issue_title}' "
-        f"with description: '{issue_body}'"
-    )
+    text = f"{issue_author} {issue_action} an issue: '{issue_title}' "
+    text += f"with description: '{issue_body}'"
+
     slack.chat_postMessage(channel=SLACK_CHANNEL, text=text)
