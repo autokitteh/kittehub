@@ -13,10 +13,7 @@ slack = slack_client("slack_conn")
 def on_issue_comment(event):
     """Processes a GitHub issue comment event and sends a message to Slack.
 
-     Supported actions:
-    - Creation
-    - Editing
-    - Deletion
+     Supported actions: created, edited, deleted
 
     For more details on the payload structure, visit:
     https://docs.github.com/en/webhooks/webhook-events-and-payloads#issue_comment
