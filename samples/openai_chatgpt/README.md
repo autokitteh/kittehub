@@ -45,7 +45,7 @@ curl -i -X POST "${WEBHOOK_URL}" -H "Content-Type: text/plain" -d "Meow"
 
 ## Self-Hosted Deployment
 
-Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 
 > [!NOTE]
 > The [`autokitteh.yaml`](autokitteh.yaml) manifest file includes HTTP request filtering. You can modify or remove this filter as needed.
