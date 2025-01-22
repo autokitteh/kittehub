@@ -5,7 +5,6 @@ integrations: ["http"]
 categories: ["Samples"]
 ---
 
-
 # Quickstart
 
 Basic tutorial workflow.
@@ -42,6 +41,7 @@ Basic tutorial workflow.
 
    > [!NOTE]
    > This command runs the workflow in a loop, instead of printing a single message:
+   >
    > ```python
    > for i in range(iterations):
    >    print(f"Loop iteration: {i + 1} of {iterations}")

@@ -5,7 +5,6 @@ integrations: ["gmail"]
 categories: ["Samples"]
 ---
 
-
 # Gmail Sample
 
 This AutoKitteh project demonstrates 2-way integration with

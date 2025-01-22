@@ -26,7 +26,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [GitHub Marketplace to Slack](./github_marketplace_to_slack/) | Forward GitHub Marketplace notifications to Slack | github, http, slack |
 | [Google Calendar To Asana](./google_cal_to_asana/) | Creates Asana tasks based on Google Calendar events | calendar, asana |
 | [Create Jira ticket from Google form](./google_forms_to_jira/) | Trigger by HTTP request, continue polling Google forms, and create Jira ticket based on the form's data | forms, http, jira |
-| [Hacker News alerts in Slack ](./hackernews/) | Track Hacker News articles by topic and send updates to Slack | slack |
+| [Hacker News alerts in Slack](./hackernews/) | Track Hacker News articles by topic and send updates to Slack | slack |
 | [Jira assignee from Google Calendar](./jira_google_calendar/assignee_from_schedule/) | Set assignee in Jira ticket to the person currently on-call | jira, calendar |
 | [Create calendar due date event for Jira ticket](./jira_google_calendar/deadline_to_event/) | When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline | calendar, jira |
 | [Quickstart](./quickstart/) | Sample for quickstart | http |

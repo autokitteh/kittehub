@@ -19,27 +19,27 @@ API details:
 
 ## How It Works
 
-1. Create a new task in asana 
+1. Create a new task in asana
 2. Update the name and the due date of an existing task
 
 ## Cloud Usage (Recommended)
 
- 1. Initialize your connection through the UI
- 2. Copy the webhook trigger's URL (for the [Trigger Workflows](#trigger-workflows) section below):
+1. Initialize your connection through the UI
+2. Copy the webhook trigger's URL (for the [Trigger Workflows](#trigger-workflows) section below):
 
-    - Hover over the trigger's (i) icon for the webhook you want to use
-    - Click the copy icon next to the webhook URL for your selected trigger
-    - (Detailed instructions
-      [here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+   - Hover over the trigger's (i) icon for the webhook you want to use
+   - Click the copy icon next to the webhook URL for your selected trigger
+   - (Detailed instructions
+     [here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
 
- 3. Update the `WORKSPACE_GID` project variable with the `gid` value from the response after logging into Asana and visiting https://app.asana.com/api/1.0/workspaces
+3. Update the `WORKSPACE_GID` project variable with the `gid` value from the response after logging into Asana and visiting https://app.asana.com/api/1.0/workspaces
 
 ## Trigger Workflows
 
 `create_task`:
 
 ```shell
-curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" 
+curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
 ```
 
 `update_task`:

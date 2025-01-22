@@ -66,7 +66,6 @@ It appends questions to a form, and handles two event types: form changes
    watched by the Google Forms connection (use the URL path from step 4
    above instead of `/webhooks/...`):
 
-
    ```shell
    curl -i "http://localhost:9980/webhooks/..."
    ```

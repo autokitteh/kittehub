@@ -13,7 +13,7 @@ This project automates the process of logging Discord messages to a Google Sheet
 - **Detect Discord Message:** The program listens for new message events in a Discord server using the Discord API.
 - **Log Message to Google Sheets:** The message author's username and content are appended to the designated range in a Google Sheets document using the Google Sheets API.
 
-## Installation and Usage 
+## Installation and Usage
 
 > [!NOTE]
 > This sample currently works only on the local version of AutoKitteh and is not compatible with the cloud version.
@@ -55,6 +55,7 @@ ak up --mode dev
    ```shell
    ak deploy --manifest autokitteh.yaml
    ```
+
    The output of this command will be important for initializing connections in the following step if you're using the CLI.
 
    For example, for each configured connection, you will see a line that looks similar to the one below:
@@ -67,7 +68,7 @@ ak up --mode dev
 
 ### Initialize Connections
 
-> [!IMPORTANT] 
+> [!IMPORTANT]
 > `googlesheets_conn` and `discord_conn` need to be initialized using the IDs from the previous step.
 
 Using the connection IDs from the previous step, run these commands:

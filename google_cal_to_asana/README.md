@@ -5,7 +5,6 @@ integrations: ["calendar", "asana"]
 categories: ["Office Automation"]
 ---
 
-
 # Google Calendar to Asana Task Creation Workflow
 
 This project creates Asana tasks based on Google Calendar events.
@@ -37,7 +36,7 @@ Google Calendar:
    [self-hosted AutoKitteh server](https://docs.autokitteh.com/get_started/quickstart),
    or use AutoKitteh Cloud.
 
-2.	Mandatory for self-hosted servers (preconfigured in AutoKitteh Cloud):
+2. Mandatory for self-hosted servers (preconfigured in AutoKitteh Cloud):
 
    - [Enable Google connections to use OAuth 2.0](https://docs.autokitteh.com/integrations/google/config)
    - [Enable Asana connections](https://docs.autokitteh.com/integrations/asana/connection)
@@ -52,8 +51,8 @@ Google Calendar:
 4. Set the `ASANA_PROJECT_GID` variable in this project's
    [autokitteh.yaml](./autokitteh.yaml) manifest file.
 
-   >[!TIP]
-   > You can find the GID in the URL of the Asana project. It is the part after `/0/`. For example, in `https://app.asana.com/0/your_project_gid/list`, `your_project_gid`.
+> [!TIP]
+> You can find the GID in the URL of the Asana project. It is the part after `/0/`. For example, in `https://app.asana.com/0/your_project_gid/list` it's `your_project_gid`.
 
 5. Run this command to deploy this project's manifest file:
 

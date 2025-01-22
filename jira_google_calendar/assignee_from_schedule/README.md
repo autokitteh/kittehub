@@ -11,9 +11,9 @@ This project automates the process of assigning Jira issues based on a shared Go
 
 ## How It Works
 
-1.	Receive new Jira issue in the designated Jira project
-2.	Check the shared Google Calendar to identify the current on-call person
-3.	Assign the newly created Jira issue to the current on-call person
+1. Receive new Jira issue in the designated Jira project
+2. Check the shared Google Calendar to identify the current on-call person
+3. Assign the newly created Jira issue to the current on-call person
 
 ## Cloud Usage (Recommended)
 
