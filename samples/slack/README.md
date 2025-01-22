@@ -45,6 +45,7 @@ merely showcases a few illustrative, annotated, reusable examples.
 
 > [!IMPORTANT]
 > Self-hosted users who set up their Slack App using https://docs.autokitteh.com/integrations/slack/connection will have their commands registered as expected. If you set up your app differently, your registered commands may vary.
+
 > [!NOTE]
 > Ensure the Slack app is added to the relevant channel for these events to trigger the workflow.
 
