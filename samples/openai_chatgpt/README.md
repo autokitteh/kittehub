@@ -14,19 +14,10 @@ API documentation:
 - [OpenAI developer platform](https://platform.openai.com/)
 - [Python client API](https://github.com/openai/openai-python)
 
-## How It Works
-
-1. Receive text input via HTTP POST requests
-2. Send the input to ChatGPT's API for processing
-3. Print the AI-generated response and token usage statistics
-
 ## Cloud Usage
 
 1. Initialize your OpenAI ChatGPT connection
-2. Copy the webhook trigger's URL:
-   - Hover over the trigger's (i) icon
-   - Click the copy icon next to the webhook URL
-   - (Detailed instructions [here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+2. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
 3. Deploy project
 
 ## Trigger Workflow
