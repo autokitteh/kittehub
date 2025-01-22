@@ -37,11 +37,11 @@ merely showcases a few illustrative, annotated, reusable examples.
 
 ## Trigger Workflow
 
-1. Mention the Slack app in a message (e.g., "Hi @autokitteh") to trigger a response
-2. Interact with a Slack block element (e.g., click a button or select from a dropdown)
-3. Send a message or reply in a Slack channel
-4. Add a reaction (emoji) to a message in Slack
-5. Use a registered slash command (e.g., `/autokitteh <channel name or ID>`)
+- Mention the Slack app in a message (e.g., "Hi @autokitteh") to trigger a response
+- Interact with a Slack block element (e.g., click a button or select from a dropdown)
+- Send a message or reply in a Slack channel
+- Add a reaction (emoji) to a message in Slack
+- Use a registered slash command (e.g., `/autokitteh <channel name or ID>`)
 > [!IMPORTANT]  
 > Self-hosted users who set up their Slack App using https://docs.autokitteh.com/integrations/slack/connection will have their commands registered as expected. If you set up your app differently, your registered commands may vary.
 > [!NOTE]
