@@ -13,15 +13,15 @@ This example showcases functionality to assign roles to users within Auth0 and r
 
 API details:
 
--[Auth0 API](https://auth0-python.readthedocs.io/en/latest/readme_content.html)
--[Python AUTH0 library](https://github.com/auth0/auth0-python/blob/master/EXAMPLES.md#connections)
+- [Auth0 API](https://auth0-python.readthedocs.io/en/latest/readme_content.html)
+- [Python AUTH0 library](https://github.com/auth0/auth0-python/blob/master/EXAMPLES.md#connections)
 
 ## How It Works
 
 1. Assign Roles to Users: Automatically assign roles to users based on their IDs.
 2. Fetch Weekly User Growth: Retrieve and display the number of new users created in the past week.
 
-## Cloud Usage 
+## Cloud Usage
 
 1. Initialize your connection with Auth0
 2. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))

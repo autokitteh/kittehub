@@ -1,5 +1,5 @@
 ---
-title: Hacker News alerts in Slack 
+title: Hacker News alerts in Slack
 description: Track Hacker News articles by topic and send updates to Slack
 integrations: ["slack"]
 categories: ["Productivity"]
@@ -30,26 +30,30 @@ This project monitors Hacker News for new articles matching a specific topic, fe
 #### Installation Steps
 
 1. Clone the repository:
+
    ```shell
    git clone https://github.com/autokitteh/kittehub.git
    cd kittehub/hackernews
    ```
 
 2. Start the AutoKitteh server:
+
    ```shell
    ak up --mode dev
    ```
 
 3. Deploy the project:
+
    ```shell
    ak deploy --manifest autokitteh.yaml
    ```
 
    The output will show your connection IDs, which you'll need for the next step. Look for lines like:
+
    ```shell
    [exec] create_connection "hackernews_alert/slack_connection": con_01je39d6frfdtshstfg5qpk8sz created
    ```
-   
+
    In this example, `con_01je39d6frfdtshstfg5qpk8sz` is the connection ID.
 
 4. Initialize your connections using the CLI:

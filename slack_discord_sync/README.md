@@ -13,7 +13,7 @@ This project automates the process of mirroring messages between Slack and Disco
 - **Detect Discord and Slack Messages:** The program listens for new message events in Discord or Slack.
 - **Mirror Messages:** When a message is sent in one platform, it is immediately forwarded to the corresponding channel on the other platform.
 
-## Installation and Usage 
+## Installation and Usage
 
 > [!NOTE]
 > This sample currently works only on the local version of AutoKitteh and is not compatible with the cloud version.
@@ -55,6 +55,7 @@ ak up --mode dev
    ```shell
    ak deploy --manifest autokitteh.yaml
    ```
+
    The output of this command will be important for initializing connections in the following step if you're using the CLI.
 
    For example, for each configured connection, you will see a line that looks similar to the one below:
@@ -67,7 +68,7 @@ ak up --mode dev
 
 ### Initialize Connections
 
-> [!IMPORTANT] 
+> [!IMPORTANT]
 > `slack_conn` and `discord_conn` need to be initialized using the IDs from the previous step.
 
 Using the connection IDs from the previous step, run these commands:
