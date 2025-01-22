@@ -22,7 +22,7 @@ This project automates notifications for GitHub issue activity by monitoring iss
 
 ## Trigger Workflow
 
-Once deployed, the workflow is triggered by the creation of a new GitHub issue or any comment activity (created, edited, or deleted) on an issue. The relevant details are sent as notifications to the specified Slack channel.
+Once deployed, the workflow is triggered by the creation of a new GitHub issue or any comment activity on an issue, including creation, editing, or deletion.
 
 ## Self-Hosted Deployment
 
