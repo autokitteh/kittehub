@@ -33,6 +33,7 @@ merely showcases a few illustrative, annotated, reusable examples.
 ## Cloud Usage
 
 1. Initialize your connection with Slack
+2. Deploy project
 
 ## Trigger Workflow
 
