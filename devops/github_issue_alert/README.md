@@ -26,4 +26,4 @@ Once deployed, the workflow is triggered by the creation of a new GitHub issue o
 
 ## Self-Hosted Deployment
 
-Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.

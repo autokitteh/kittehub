@@ -7,7 +7,7 @@ project:
   name: github_issue_alert
 
   vars:
-    - name: SLACK_CHANNEL
+    - name: SLACK_CHANNEL_NAME_OR_ID
       value: github-issues
 
   connections:
