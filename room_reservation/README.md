@@ -25,6 +25,7 @@ This project automates the process of room reservations through Slack by integra
 ## Trigger Workflow
 
 The workflow is triggered with a Slack slash command.
+
 ### Available Commands
 
 - `/autokitteh availablerooms` - list all the available rooms

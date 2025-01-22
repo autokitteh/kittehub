@@ -57,4 +57,3 @@ Outgoing API calls:
    ```
 
 4. Check the Google Sheet for updates and the responses from the webhook (if applicable).
-

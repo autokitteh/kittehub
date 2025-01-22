@@ -62,11 +62,11 @@ See [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_acces
 - [Create SNS topic](https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html)
 - [Give the bucket permission to publish to the SNS topic][ap]
 - Create a subscription to the SNS topic
-    - Select `HTTPS` protocol
-    - In the `Endpoint`, write the domain from ngrok and the HTTP trigger path.
-      For example `https://e7c499cae8d9.ngrok.app/http/pipeline/new_object`
-- Send a confirmation to the subscription. 
-   This will trigger the workflow and you should be able to see the subscription URL in the `ak` logs.
+  - Select `HTTPS` protocol
+  - In the `Endpoint`, write the domain from ngrok and the HTTP trigger path.
+    For example `https://e7c499cae8d9.ngrok.app/http/pipeline/new_object`
+- Send a confirmation to the subscription.
+  This will trigger the workflow and you should be able to see the subscription URL in the `ak` logs.
 
 ```
 ak session log --prints-only
@@ -124,19 +124,19 @@ ak session log --prints-only
 There's a `Makefile` for common operation
 
 You can run the pipeline locally and test it.
-- Initialize the database
-    - `make init-db`
-- Run `ak --mode dev` and set the AWS keys and database DSN (see above)
-    - `make vars`
-- Deploy the workflow
-    - `make deploy`
-- Trigger the workflow
-    - Make sure there's a GPX file in your bucket. I'll assume the bucket name is `miki-hikes` and the file is `hike-1.gpx`
-    - Edit `example-sns-event.json` and set the bucket name and the file name in the embedded `Message` JSON.
-    - `make trigger`
-- View the `ak` logs in its console and the workflow logs
-    - `make logs`
 
+- Initialize the database
+  - `make init-db`
+- Run `ak --mode dev` and set the AWS keys and database DSN (see above)
+  - `make vars`
+- Deploy the workflow
+  - `make deploy`
+- Trigger the workflow
+  - Make sure there's a GPX file in your bucket. I'll assume the bucket name is `miki-hikes` and the file is `hike-1.gpx`
+  - Edit `example-sns-event.json` and set the bucket name and the file name in the embedded `Message` JSON.
+  - `make trigger`
+- View the `ak` logs in its console and the workflow logs
+  - `make logs`
 
 ### Debugging
 

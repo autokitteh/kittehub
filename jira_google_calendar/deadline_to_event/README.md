@@ -11,9 +11,9 @@ This project automates the process of creating Google Calendar events based on J
 
 ## How It Works
 
-1.	Receive new Jira issue creation
-2.	Create Google Calendar event using Jira issue details like due date and description
-3.	Notify attendees when the event is added to Google Calendar
+1. Receive new Jira issue creation
+2. Create Google Calendar event using Jira issue details like due date and description
+3. Notify attendees when the event is added to Google Calendar
 
 ## Cloud Usage (Recommended)
 
