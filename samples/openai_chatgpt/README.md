@@ -32,7 +32,7 @@ API documentation:
 ## Trigger Workflow
 
 > [!IMPORTANT]
-> Ensure the OpenAI integration is initialized with a valid API key; otherwise, workflows will raise `ConnectionInitError`.
+> Ensure the OpenAI ChatGPT integration is initialized with a valid API key; otherwise, workflows will raise `ConnectionInitError`.
 
 Send an HTTP POST request to trigger the workflow:
 
