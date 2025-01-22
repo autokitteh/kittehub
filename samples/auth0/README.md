@@ -43,7 +43,7 @@ curl -i -X POST "${WEBHOOK_URL}" -d user_id=${USER_ID}
 
 Workflow is automatically triggered every week
 
-[!TIP]
+> [!TIP]
 > The `weekly_user_growth` workflow can also be triggered manually by clicking the "Run" button in the UI, and setting the `weekly_user_growth` function as the entry point.
 
 ## Self-Hosted Deployment
