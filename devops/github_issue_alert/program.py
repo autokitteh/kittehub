@@ -1,7 +1,4 @@
-"""Monitors GitHub issue creation and comment activity.
-
-Sending the notifications to Slack to keep teams updated.
-"""
+"""Monitors GitHub issue creation and comment activity."""
 
 import os
 
