@@ -1,0 +1,27 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that monitors comments on GitHub issues.
+
+version: v1
+
+project:
+  name: github_issue_alert
+
+  vars:
+    - name: SLACK_CHANNEL
+      value: github-issues
+
+  connections:
+    - name: slack_conn
+      integration: slack
+    - name: github_conn
+      integration: github
+
+  triggers:
+    - name: on_issue_comment
+      event_type: issue_comment
+      connection: github_conn
+      call: program.py:on_issue_comment
+    - name: on_issue_event
+      event_type: issues
+      connection: github_conn
+      call: program.py:on_issue_event

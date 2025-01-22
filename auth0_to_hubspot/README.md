@@ -20,11 +20,10 @@ This project adds new Auth0 users to HubSpot as contacts, on a recurring basis.
 
 1. Initialize your connections through the UI
 2. (Optional) Configure the `HOURS` variable to set the time range for new users to fetch.
+3. Deploy the project
 
 > [!NOTE]
 > To sync the schedule with the lookup time, update the schedule in the “TRIGGERS” tab. The default "Cron expression" is `@every 24h`.
-
-3. Deploy the project
 
 ## Trigger Workflow
 
