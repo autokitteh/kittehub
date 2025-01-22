@@ -22,7 +22,7 @@ API documentation:
 
 ## Cloud Usage
 
-1. Initialize your OpenAI connection
+1. Initialize your OpenAI ChatGPT connection
 2. Copy the webhook trigger's URL:
    - Hover over the trigger's (i) icon
    - Click the copy icon next to the webhook URL
