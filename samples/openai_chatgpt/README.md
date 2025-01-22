@@ -7,39 +7,45 @@ categories: ["AI", "Samples"]
 
 # OpenAI ChatGPT Sample
 
-This [AutoKitteh](https://github.com/autokitteh/autokitteh) project
-demonstrates integration with [ChatGPT](https://chat.openai.com).
+This project demonstrates integration with ChatGPT for text generation and response analysis. It showcases how to make API calls to ChatGPT and track token usage statistics.
 
-The file [`program.py`](./program.py) implements a single entry-point
-function, which is configured in the [`autokitteh.yaml`](./autokitteh.yaml)
-manifest file as the receiver of HTTP events.
-
-It sends a couple of requests to the ChatGPT API, and prints the responses
-back to the user, as well as ChatGPT token usage stats.
-
-API details:
+API documentation:
 
 - [OpenAI developer platform](https://platform.openai.com/)
 - [Python client API](https://github.com/openai/openai-python)
 
-This project isn't meant to cover all available functions and events. It
-merely showcases a few illustrative, annotated, reusable examples.
+## How It Works
 
-## Instructions
+1. Receive text input via HTTP POST requests
+2. Send the input to ChatGPT's API for processing
+3. Return the AI-generated response and token usage statistics
 
-1. Follow instructions [here](https://platform.openai.com/docs/quickstart) to set up your OpenAI API account.
+## Cloud Usage
 
-2. Via the `ak` CLI tool, or the AutoKitteh WebUI, initialize the OpenAI connection and provide the API key generated in step 1.
+1. Initialize your OpenAI connection
+2. Copy the webhook trigger's URL:
+   - Hover over the trigger's (i) icon
+   - Click the copy icon next to the webhook URL
+   - (Detailed instructions [here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+3. Deploy project
 
-3. Via the `ak` CLI tool, or the AutoKitteh VS Code extension, deploy the `autokitteh.yaml` manifest file.
+## Trigger Workflow
 
-4. Once deployed, the program is ready to receive HTTP POST requests. You can test the program by sending a POST request to the endpoint as shown below:
+> [!IMPORTANT]
+> Ensure the OpenAI integration is initialized with a valid API key; otherwise, workflows will raise `ConnectionInitError`.
 
-   ```shell
-   curl -X POST "http://localhost:9980/webhooks/<webhook_slug>" -H "Content-Type: text/plain" -d "Meow"
-   ```
+Send an HTTP POST request to trigger the workflow:
 
-5. You can modify the request body in the curl command to send custom text and observe how ChatGPT responds with dynamic content.
+```shell
+curl -X POST "http://localhost:9980/webhooks/<webhook_slug>" -H "Content-Type: text/plain" -d "Meow"
+```
+
+> [!TIP]
+> You can modify the request body to send custom text and observe ChatGPT's dynamic responses.
+
+## Self-Hosted Deployment
+
+Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 
 > [!NOTE]
-> The [`autokitteh.yaml`](autokitteh.yaml) manifest file is set up to filter incoming HTTP requests. You can modify or remove this filter as needed.
+> The [`autokitteh.yaml`](autokitteh.yaml) manifest file includes HTTP request filtering. You can modify or remove this filter as needed.
