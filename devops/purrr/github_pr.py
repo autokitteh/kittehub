@@ -5,6 +5,7 @@ import autokitteh
 import data_helper
 import slack_channel
 import slack_helper
+import text_utils
 import users
 
 
@@ -62,10 +63,10 @@ def _parse_github_pr_event(data) -> None:
         # The title or body of a pull request was edited,
         # or the base branch was changed.
         case "edited":
-            _on_pr_edited(data)
+            _on_pr_edited(data.action, data.pull_request, data.changes, data.sender)
         # A pull request's head branch was updated.
         case "synchronize":
-            _on_pr_synchronized(data)
+            _on_pr_synchronized(data.action, data.pull_request, data.sender)
 
         # TODO: locked, unlocked
 
@@ -203,58 +204,64 @@ def _on_pr_review_requested(data) -> None:
     Args:
         data: GitHub event data.
     """
-    pr = data.pull_request
-
     # Don't do anything if there isn't an active Slack channel anyway.
-    if pr.draft or pr.state != "open":
-        return
-    channel_id = slack_helper.lookup_channel(pr.html_url, data.action)
-    if not channel_id:
+    channel = _lookup_channel(data.pull_request, data.action)
+    if not channel:
         return
 
     if data.requested_reviewer:
-        _on_pr_review_requested_person(data, channel_id)
+        reviewer = data.requested_reviewer
+        _on_pr_review_requested_person(reviewer, data.sender, channel, "reviewer")
     if data.requested_team:
-        _on_pr_review_requested_team(data.requested_team, data.sender, channel_id)
+        _on_pr_review_requested_team(data.requested_team, data.sender, channel)
 
 
-def _on_pr_review_requested_person(data, channel_id: str) -> None:
+def _on_pr_review_requested_person(reviewer, sender, channel: str, role: str) -> None:
     """Review by a person was requested for a pull request.
 
     Args:
-        data: GitHub event data.
-        channel_id: PR's Slack channel ID.
+        reviewer: GitHub user requested as a reviewer.
+        sender: GitHub user who triggered the event.
+        channel: PR's Slack channel ID.
+        role: "reviewer" or "assignee".
     """
-    reviewer = users.format_github_user_for_slack(data.requested_reviewer)
-    msg = f"{{}} requested a review from {reviewer}"
-    slack_helper.mention_in_message(channel_id, data.sender, msg)
+    slack_reviewer = users.format_github_user_for_slack(reviewer)
+    self_added = reviewer.login == sender.login
+    person = "themselves" if self_added else slack_reviewer
+    article = "a" if role == "reviewer" else "an"  # "assignee"
 
-    if not reviewer.startswith("<@"):
+    msg = f"{{}} added {person} as {article} {role}"
+    slack_helper.mention_in_message(channel, sender, msg)
+
+    if not slack_reviewer.startswith("<@"):
         return  # Not a real Slack user ID.
 
     # Remove the "<@" and ">" affixes from the Slack user mention to get the user ID.
-    reviewer = reviewer[2:-1]
+    slack_reviewer = slack_reviewer[2:-1]
 
-    if data_helper.slack_opted_out(reviewer):
+    if data_helper.slack_opted_out(slack_reviewer):
         return
 
-    slack_channel.add_users(channel_id, [reviewer])
+    slack_channel.add_users(channel, [reviewer.login])
 
-    # DM the reviewer with a reference to the Slack channel.
-    msg = f"{{}} requests that you review a PR: <#{channel_id}>"
-    slack_helper.mention_in_message(reviewer, data.sender, msg)
+    if self_added:
+        return
+
+    # DM the reviewer a reference to the Slack channel.
+    msg = f"{{}} added you as {article} {role} to a PR: <#{channel}>"
+    slack_helper.mention_in_message(slack_reviewer, sender, msg)
 
 
-def _on_pr_review_requested_team(team, sender, channel_id: str) -> None:
+def _on_pr_review_requested_team(team, sender, channel: str) -> None:
     """Review by a team was requested for a pull request.
 
     Args:
-        team: GitHub team that was requested as a reviewer.
+        team: GitHub team requested as a reviewer.
         sender: GitHub user who triggered the event.
-        channel_id: PR's Slack channel ID.
+        channel: PR's Slack channel ID.
     """
-    msg = f"{{}} requested a review from the <{team.html_url}|{team.name}> team"
-    slack_helper.mention_in_message(channel_id, sender, msg)
+    msg = f"{{}} added the <{team.html_url}|{team.name}> team as a reviewer"
+    slack_helper.mention_in_message(channel, sender, msg)
 
 
 def _on_pr_review_request_removed(data) -> None:
@@ -263,39 +270,44 @@ def _on_pr_review_request_removed(data) -> None:
     Args:
         data: GitHub event data.
     """
-    pr = data.pull_request
-
     # Don't do anything if there isn't an active Slack channel anyway.
-    if pr.draft or pr.state != "open":
-        return
-    channel_id = slack_helper.lookup_channel(pr.html_url, data.action)
-    if not channel_id:
+    channel = _lookup_channel(data.pull_request, data.action)
+    if not channel:
         return
 
     if data.requested_reviewer:
-        _on_pr_review_request_removed_person(data, channel_id)
+        reviewer = data.requested_reviewer
+        _on_pr_review_request_removed_person(reviewer, data.sender, channel, "reviewer")
     if data.requested_team:
-        _on_pr_review_request_removed_team(data.requested_team, data.sender, channel_id)
+        _on_pr_review_request_removed_team(data.requested_team, data.sender, channel)
 
 
-def _on_pr_review_request_removed_person(data, channel_id: str) -> None:
+def _on_pr_review_request_removed_person(
+    reviewer, sender, channel: str, role: str
+) -> None:
     """A request for review by a person was removed from a pull request.
 
     Args:
-        data: GitHub event data.
-        channel_id: PR's Slack channel ID.
+        reviewer: GitHub user requested as a reviewer.
+        sender: GitHub user who triggered the event.
+        channel: PR's Slack channel ID.
+        role: "reviewer" or "assignee".
     """
-    reviewer = users.format_github_user_for_slack(data.requested_reviewer)
-    msg = f"{{}} removed the request for review by {reviewer}"
-    slack_helper.mention_in_message(channel_id, data.sender, msg)
+    slack_reviewer = users.format_github_user_for_slack(reviewer)
+    self_added = reviewer.login == sender.login
+    person = "themselves" if self_added else slack_reviewer
+    article = "a" if role == "reviewer" else "an"  # "assignee"
 
-    if not reviewer.startswith("<@"):
+    msg = f"{{}} removed {person} as {article} {role}"
+    slack_helper.mention_in_message(channel, sender, msg)
+
+    if not slack_reviewer.startswith("<@"):
         return  # Not a real Slack user ID.
 
     # Remove the "<@" and ">" affixes from the Slack user mention to get the user ID.
-    reviewer = reviewer[2:-1]
+    slack_reviewer = slack_reviewer[2:-1]
 
-    if data_helper.slack_opted_out(reviewer):
+    if data_helper.slack_opted_out(slack_reviewer):
         return
 
     # TODO: Remove the reviewer from the Slack channel.
@@ -303,16 +315,16 @@ def _on_pr_review_request_removed_person(data, channel_id: str) -> None:
     # TODO: Remove the review request DM.
 
 
-def _on_pr_review_request_removed_team(team, sender, channel_id: str) -> None:
+def _on_pr_review_request_removed_team(team, sender, channel: str) -> None:
     """A request for review by a team was removed from a pull request.
 
     Args:
         team: GitHub team that was requested as a reviewer.
         sender: GitHub user who triggered the event.
-        channel_id: PR's Slack channel ID.
+        channel: PR's Slack channel ID.
     """
-    msg = f"removed the request for review by the <{team.html_url}|{team.name}> team"
-    slack_helper.mention_in_message(channel_id, sender, "{} " + msg)
+    msg = f"removed the <{team.html_url}|{team.name}> team as a reviewer"
+    slack_helper.mention_in_message(channel, sender, "{} " + msg)
 
 
 def _on_pr_assigned(data) -> None:
@@ -322,10 +334,11 @@ def _on_pr_assigned(data) -> None:
         data: GitHub event data.
     """
     # Don't do anything if there isn't an active Slack channel anyway.
-    if data.pull_request.draft or data.pull_request.state != "open":
+    channel = _lookup_channel(data.pull_request, data.action)
+    if not channel:
         return
 
-    pass  # TODO: Implement this function.
+    _on_pr_review_requested_person(data.assignee, data.sender, channel, "assignee")
 
 
 def _on_pr_unassigned(data) -> None:
@@ -335,36 +348,79 @@ def _on_pr_unassigned(data) -> None:
         data: GitHub event data.
     """
     # Don't do anything if there isn't an active Slack channel anyway.
-    if data.pull_request.draft or data.pull_request.state != "open":
+    channel = _lookup_channel(data.pull_request, data.action)
+    if not channel:
         return
 
-    pass  # TODO: Implement this function.
+    assignee, sender = data.assignee, data.sender
+    _on_pr_review_request_removed_person(assignee, sender, channel, "assignee")
 
 
-def _on_pr_edited(data) -> None:
+def _on_pr_edited(action: str, pr, changes, sender) -> None:
     """The title or body of a pull request was edited, or the base branch was changed.
 
     Args:
-        data: GitHub event data.
+        action: GitHub PR event action.
+        pr: GitHub PR data.
+        changes: Changed title/body in the PR.
+        sender: GitHub user who triggered the event.
     """
     # Don't do anything if there isn't an active Slack channel anyway.
-    if data.pull_request.draft or data.pull_request.state != "open":
+    channel = _lookup_channel(pr, action)
+    if not channel:
         return
 
-    pass  # TODO: Implement this function.
+    # PR base branch was changed.
+    if "base" in changes:
+        msg = "{} changed the base branch from "
+        msg += "`{changes.base.ref}` to `{pr.base.ref}`"
+        slack_helper.mention_in_message(channel, sender, msg)
+
+    # PR description was changed.
+    if "body" in changes:
+        if pr.body:
+            msg = "{} updated the PR description:\n\n"
+            msg += text_utils.github_to_slack(pr.body, pr.html_url)
+        else:
+            msg = "{} deleted the PR description"
+
+        slack_helper.mention_in_message(channel, sender, msg)
+
+    # PR title was changed.
+    if "title" in changes:
+        msg = f"{{}} edited the PR title to: `{pr.title}`"
+        slack_helper.mention_in_message(channel, sender, msg)
+
+        name = f"{pr.number}_{slack_helper.normalize_channel_name(pr.title)}"
+        slack_helper.rename_channel(channel, name)
 
 
-def _on_pr_synchronized(data) -> None:
+def _on_pr_synchronized(action: str, pr, sender) -> None:
     """A pull request's head branch was updated.
 
     For example, the head branch was updated from the base
     branch or new commits were pushed to the head branch.
 
     Args:
-        data: GitHub event data.
+        action: GitHub PR event action.
+        pr: GitHub PR data.
+        sender: GitHub user who triggered the event.
     """
     # Don't do anything if there isn't an active Slack channel anyway.
-    if data.pull_request.draft or data.pull_request.state != "open":
+    channel = _lookup_channel(pr, action)
+    if not channel:
         return
 
-    pass  # TODO: Implement this function.
+    msg = "{} updated the head branch (see the [PR commits]({pr.url}/commits))"
+    slack_helper.mention_in_message(channel, sender, msg)
+
+
+def _lookup_channel(pr, action: str) -> str | None:
+    """Return the ID of a Slack channel that represents a GitHub PR.
+
+    Return None the PR is inactive or the channel ID is not found.
+    """
+    if pr.draft or pr.state != "open":
+        return None
+
+    return slack_helper.lookup_channel(pr.html_url, action)

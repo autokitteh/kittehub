@@ -1,0 +1,53 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that orchestrates GitHub workflows using
+# advanced scenarios across multiple repositories.
+
+version: v1
+
+project:
+  name: github_actions
+
+  vars:
+    - name: REPO_A
+      value: owner/repo-1
+    - name: REPO_B
+      value: owner/repo-2
+    - name: REPO_C
+      value: owner/repo-3
+
+    - name: WORKFLOW_A
+      value: .github/workflows/workflow-1.yml
+    - name: WORKFLOW_B
+      value: .github/workflows/workflow-2.yml
+    - name: WORKFLOW_C
+      value: .github/workflows/workflow-3.yml
+
+  connections:
+    - name: github_conn
+      integration: github
+
+  triggers:
+    - name: cross_repo
+      type: webhook
+      event_type: get
+      call: program.py:cross_repo
+
+    - name: fan_out
+      type: webhook
+      event_type: get
+      call: program.py:fan_out
+
+    - name: or_reduction
+      type: webhook
+      event_type: get
+      call: program.py:or_reduction
+
+    - name: fan_in
+      type: webhook
+      event_type: get
+      call: program.py:fan_in
+
+    - name: long_sequence
+      type: webhook
+      event_type: get
+      call: program.py:long_sequence

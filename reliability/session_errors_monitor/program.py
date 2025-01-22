@@ -21,10 +21,12 @@ SLACK_CHANNEL = os.getenv("SLACK_CHANNEL_NAME_OR_ID", "")
 slack = slack_client("slack_conn")
 
 
-def on_monitor_schedule(event):
+def on_monitor_schedule(_):
     """Triggered at the beginning of every minute, so it covers the previous one."""
     end_time = datetime.now(UTC).replace(second=0, microsecond=0)
-    start_time = end_time - timedelta(minutes=1)
+    # Remove the unit suffix ("m") and parse as an integer.
+    interval = int((os.getenv("TRIGGER_INTERVAL", "1m"))[:-1])
+    start_time = end_time - timedelta(minutes=interval)
 
     count = 0
     for session in reversed(_list_sessions_with_errors()):
