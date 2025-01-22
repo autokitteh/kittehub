@@ -37,7 +37,7 @@ API documentation:
 Send an HTTP POST request to trigger the workflow:
 
 ```shell
-curl -X POST "http://localhost:9980/webhooks/<webhook_slug>" -H "Content-Type: text/plain" -d "Meow"
+curl -i -X POST "${WEBHOOK_URL}" -H "Content-Type: text/plain" -d "Meow"
 ```
 
 > [!TIP]
