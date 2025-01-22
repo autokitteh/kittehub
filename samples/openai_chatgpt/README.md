@@ -18,7 +18,7 @@ API documentation:
 
 1. Receive text input via HTTP POST requests
 2. Send the input to ChatGPT's API for processing
-3. Return the AI-generated response and token usage statistics
+3. Print the AI-generated response and token usage statistics
 
 ## Cloud Usage
 
