@@ -12,7 +12,7 @@ This project automates notifications for GitHub issue activity by monitoring iss
 ## How It Works
 
 1. Monitor GitHub for new issue creation or comment activity (created, edited, or deleted)
-2. Automatically trigger the workflow to process the event and format the information
+2. Trigger the workflow to process the event and format the information
 3. Send the details as a notification to the designated Slack channel
 
 ## Cloud Usage
