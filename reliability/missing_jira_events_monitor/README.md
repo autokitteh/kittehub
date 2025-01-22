@@ -22,13 +22,13 @@ This is a detection tool for incidents due to missing updates from monitored ser
 
 1. Initialize your connections (Jira, Slack)
 
-   > [!TIP]
-   > If you want to monitor a different service than Jira:
-   >
-   > 1. Delete the `monitored_service_conn` connection
-   > 2. Recreate a new connection with the same name, and select the desired integration
-   > 3. Delete the `monitor_trigger` trigger
-   > 4. Recreate a new trigger, select the new `monitored_service_conn` connection from step 2, and configure it
+> [!TIP]
+> If you want to monitor a different service than Jira:
+>
+> 1. Delete the `monitored_service_conn` connection
+> 2. Recreate a new connection with the same name, and select the desired integration
+> 3. Delete the `monitor_trigger` trigger
+> 4. Recreate a new trigger, select the new `monitored_service_conn` connection from step 2, and configure it
 
 2. Edit the trigger
 
