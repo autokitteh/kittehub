@@ -1,5 +1,5 @@
 ---
-title: Slack
+title: Slack sample
 description: Samples using Slack APIs
 integrations: ["slack"]
 categories: ["Samples"]
@@ -10,7 +10,7 @@ categories: ["Samples"]
 This sample project demonstrates AutoKitteh's 2-way integration with
 [Slack](https://slack.com).
 
-The code file ([`program.py`](./program.py) implements multiple entry-point
+The code file [`program.py`](./program.py) implements multiple entry-point
 functions that are triggered by incoming Slack events, as defined in the
 [`autokitteh.yaml`](./autokitteh.yaml) manifest file. These functions also
 execute various Slack API calls.
@@ -24,39 +24,31 @@ Slack API documentation:
 This project isn't meant to cover all available functions and events. It
 merely showcases a few illustrative, annotated, reusable examples.
 
-## Instructions
+## How It Works
 
-1. Deploy the manifest file:
+1. Listen for Slack events such as mentions, slash commands, new messages, edited messages, and emoji reactions.
+2. Process the event data to extract relevant information (e.g., user, message, or action details).
+3. Send responses or updates messages in Slack channels or threads based on the event type.
 
-   ```shell
-   ak deploy --manifest samples/slack/autokitteh.yaml
-   ```
+## Cloud Usage
 
-2. Follow the instructions in the `ak` CLI tool's output:
+1. Initialize your connection with Slack
+2. Deploy project
 
-   ```
-   Connection created, but requires initialization.
-   Please run this to complete:
+## Trigger Workflow
 
-   ak connection init <connection ID>
-   ```
+- Mention the Slack app in a message (e.g., "Hi @autokitteh") to trigger a response
+- Interact with a Slack block element (e.g., click a button or select from a dropdown)
+- Send a message or reply in a Slack channel
+- Add a reaction (emoji) to a message in Slack
+- Use a registered slash command (e.g., `/autokitteh <channel name or ID>`)
 
-3. Events that this sample project responds to:
+> [!IMPORTANT]
+> Self-hosted users who set up their Slack App using https://docs.autokitteh.com/integrations/slack/connection will have their commands registered as expected. If you set up your app differently, your registered commands may vary.
 
-   - Mentions of the Slack app in messages (e.g. `Hi @autokitteh`)
-   - Slash commands registered by the Slack app
-     (`/autokitteh <channel name or ID>`)
-   - New and edited messages and replies
-   - New emoji reactions
+> [!NOTE]
+> Ensure the Slack app is added to the relevant channel for these events to trigger the workflow.
 
-## Connection Notes
+## Self-Hosted Deployment
 
-AutoKitteh supports 2 connection modes:
-
-- Slack app that uses
-  [OAuth v2](https://docs.autokitteh.com/integrations/slack/config)
-
-- Slack app that uses
-  [Socket Mode](https://docs.autokitteh.com/integrations/slack/connection)
-
-In both cases, the user authorizes the Slack app in step 3 above.
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
