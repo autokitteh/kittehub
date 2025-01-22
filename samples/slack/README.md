@@ -26,10 +26,9 @@ merely showcases a few illustrative, annotated, reusable examples.
 
 ## How It Works
 
-1. Listens for Slack events such as mentions, slash commands, new messages, edited messages, and emoji reactions.
-2. Processes the event data to extract relevant information (e.g., user, message, or action details).
-3. Sends responses or updates messages in Slack channels or threads based on the event type.
-4. The `on_slack_reaction_added` function prints event details when a reaction is added.
+1. Listen for Slack events such as mentions, slash commands, new messages, edited messages, and emoji reactions.
+2. Process the event data to extract relevant information (e.g., user, message, or action details).
+3. Send responses or updates messages in Slack channels or threads based on the event type.
 
 ## Cloud Usage
 
