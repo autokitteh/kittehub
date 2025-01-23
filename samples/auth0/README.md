@@ -33,7 +33,7 @@ API details:
 
 `assign_role`:
 
-Send an HTTP POST request to the the webhook URL from step 2 in the [Cloud Usage](#cloud-usage) section above:
+Send an HTTP POST request to the webhook URL from step 2 in the [Cloud Usage](#cloud-usage) section above:
 
 ```shell
 curl -i -X POST "${WEBHOOK_URL}" -d user_id=${USER_ID}
