@@ -35,7 +35,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [AutoKitteh session errors monitor](./reliability/session_errors_monitor/) | Send Slack alerts when AutoKitteh sessions end due to errors | autokitteh, slack |
 | [Ad-hoc room reservation via Slack](./room_reservation/) | Ad-hoc room reservation via Slack slash commands | slack, calendar |
 | [Asana](./samples/asana/) | Simple usage of the Asana API | asana |
-| [Jira](./samples/atlassian/jira/) | Samples using Jira APIs | jira |
+| [Jira sample](./samples/atlassian/jira/) | Samples using Jira APIs | jira |
 | [Auth0](./samples/auth0/) | Simple usage of the Auth0 API | auth0 |
 | [Google Calendar](./samples/google/calendar/) | Samples using Google Calendar APIs | calendar |
 | [Google Drive sample](./samples/google/drive/) | Samples using Google Drive APIs | drive |

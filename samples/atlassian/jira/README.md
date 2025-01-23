@@ -1,5 +1,5 @@
 ---
-title: Jira
+title: Jira sample
 description: Samples using Jira APIs
 integrations: ["jira"]
 categories: ["Samples"]
@@ -25,37 +25,23 @@ Python code samples:
 This program isn't meant to cover all available functions and events. It
 merely showcases a few illustrative, annotated, reusable examples.
 
-## Instructions
+## How It Works
 
-1. Deploy the manifest file:
+1. Adds a comment to a new Jira issue when it is created
+2. When the new comment is added to the issue, another comment is added with the author's name
 
-   ```shell
-   ak deploy --manifest samples/jira/autokitteh.yaml
-   ```
+## Cloud Usage
 
-2. Follow the instructions in the `ak` CLI tool's output:
+1. Initialize your connection with Jira
+2. Deploy project
 
-   ```
-   Connection created, but requires initialization.
-   Please run this to complete:
+> [!NOTE]
+> For more details on connection options and setup, visit [this guide](https://docs.autokitteh.com/integrations/atlassian/connection).
 
-   ak connection init <connection ID>
-   ```
+## Trigger Workflow
 
-3. Create a new issue in Jira, and check its comments
+- Triggered by creating a new issue.
 
-## Connection Notes
+## Self-Hosted Deployment
 
-AutoKitteh supports three connection modes:
-
-- User impersonation with:
-
-  - [API token](https://id.atlassian.com/manage-profile/security/api-tokens)
-    (available only in Atlassian Cloud)
-
-  - [Personal Access Token (PAT)](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html)
-    (available only in on-prem servers)
-
-- [OAuth 2.0 (3LO) app](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/)
-
-  - [AutoKitteh guide: configuring Atlassian integrations](https://docs.autokitteh.com/integrations/atlassian/config)
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
