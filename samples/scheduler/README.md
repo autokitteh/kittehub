@@ -32,9 +32,9 @@ any are found, it prints a message about them.
 
 ## How It Works
 
-1. Fetches open pull requests from the specified GitHub repository, excluding drafts and WIP (Work in Progress) PRs.
-2. Checks each pull request against predefined thresholds for how long it has been open (`OPENED_CUTOFF`) and when it was last updated (`UPDATE_CUTOFF`).
-3. Identifies stalled PRs that exceed these thresholds and prints their details.
+1. Fetch open pull requests from the specified GitHub repository, excluding drafts and WIP (Work in Progress) PRs
+2. Check each PR against predefined thresholds for how long it has been open (`OPENED_CUTOFF`) and when it was last updated (`UPDATE_CUTOFF`)
+3. Identify stalled PRs that exceed these thresholds and prints their details.
 
 ## Cloud Usage
 
