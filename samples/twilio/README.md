@@ -18,8 +18,8 @@ API documentation:
 ## Cloud Usage
 
 1. Initialize your Twilio connection
-2. Set the `FROM_PHONE_NUMBER` project variable
-3. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+2. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+3. Set the `FROM_PHONE_NUMBER` project variable
 4. Deploy project
 
 ## Trigger Workflow
@@ -27,7 +27,7 @@ API documentation:
 > [!IMPORTANT]
 > Ensure your Twilio connection is initialized; otherwise, the workflow will raise a `ConnectionInitError`.
 
-- Send a `GET` request to the webhook URL:
+- Send an HTTP GET request to the webhook URL from step 3 in the [Cloud Usage](#cloud-usage) section above:
 
 ```shell
 curl -i "${WEBHOOK_URL}"
