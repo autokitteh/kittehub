@@ -10,27 +10,29 @@ categories: ["Samples"]
 This sample project demonstrates AutoKitteh's integration with
 [Twilio](https://www.twilio.com).
 
-The file [`program.py`](./program.py) implements a single entry-point function
-triggered by a webhook event, as defined in the
-[`autokitteh.yaml`](./autokitteh.yaml) manifest. This function initiates sending Twilio messages.
-
-API details:
+API documentation:
 
 - [Messaging API overview](https://www.twilio.com/docs/messaging/api)
 - [Voice API overview](https://www.twilio.com/docs/voice/api)
 
-It also demonstrates using constant values which are set for each AutoKitteh
-environment in the [`autokitteh.yaml`](./autokitteh.yaml) manifest file.
+## Cloud Usage
 
-## Instructions
+1. Initialize your Twilio connection
+2. Set the `FROM_PHONE_NUMBER` project variable
+3. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+4. Deploy project
 
-1. Set the `FROM_PHONE_NUMBER` environment value
+## Trigger Workflow
 
-2. Via the `ak` CLI tool, or the AutoKitteh VS Code extension, deploy the
-   `autokitteh.yaml` manifest file
+> [!IMPORTANT]
+> Ensure your Twilio connection is initialized; otherwise, the workflow will raise a `ConnectionInitError`.
 
-## Connection Notes
+- Send a `GET` request to the webhook URL:
 
-AutoKitteh supports connecting to Twilio using either an auth token or an
-[API key](https://www.twilio.com/docs/glossary/what-is-an-api-key), which can
-be configured in the AutoKitteh WebUI.
+```shell
+curl -i "https://api.autokitteh.cloud/webhooks/<webhook-slug>"
+```
+
+## Self-Hosted Deployment
+
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
