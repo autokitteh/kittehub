@@ -1,5 +1,5 @@
 ---
-title: Scheduler
+title: Scheduler sample
 description: Samples using cron scheduler for workflows
 integrations: ["scheduler"]
 categories: ["Samples"]
@@ -30,40 +30,22 @@ any are found, it prints a message about them.
 
 - [Crontab.guru - cron schedule expression editor](https://crontab.guru/)
 
-## Setup Instructions
+## How It Works
 
-1. Install and start a
-   [self-hosted AutoKitteh server](https://docs.autokitteh.com/get_started/quickstart),
-   or use AutoKitteh Cloud
+1. Fetch open pull requests from the specified GitHub repository, excluding drafts and WIP (Work in Progress) PRs
+2. Check each PR against predefined thresholds for how long it has been open (`OPENED_CUTOFF`) and when it was last updated (`UPDATE_CUTOFF`)
+3. Identify stalled PRs that exceed these thresholds and prints their details
 
-2. Optional for self-hosted servers (preconfigured in AutoKitteh Cloud):
+## Cloud Usage
 
-   - [Enable GitHub connections to use a GitHub app](https://docs.autokitteh.com/integrations/github/config)
+1.  Initialize your connection with GitHub
+2.  Update the project variables `GITHUB_OWNER`, `GITHUB_REPO`, `OPENED_CUTOFF`, and `UPDATE_CUTOFF` to configure the repository and thresholds
+3.  Deploy project
 
-3. Run this command to clone the Kittehub repository, which contains this
-   project:
+## Trigger Workflow
 
-   ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   ```
+The workflow triggers automatically based on the configured cron job, users can customize the scheduling in the `TRIGGERS` section.
 
-4. Set these variables in this project's [autokitteh.yaml](./autokitteh.yaml)
-   manifest file:
+## Self-Hosted Deployment
 
-   - `GITHUB_OWNER` and `GITHUB_REPO`
-
-5. Run this command to deploy this project's manifest file:
-
-   ```shell
-   ak deploy --manifest kittehub/samples/scheduler/autokitteh.yaml
-   ```
-
-6. Initialize this project's connections:
-
-   - GitHub: with a GitHub app using OAuth 2.0 (based on step 2), or PATs
-     (fine-grained or classic) and/or manually-configured webhooks
-
-> [!TIP]
-> The exact CLI commands to do so (`ak connection init ...`) will appear in
-> the output of the `ak deploy` command from step 5 when you create the
-> project on the server, i.e. when you run that command for the first time.
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
