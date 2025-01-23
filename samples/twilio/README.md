@@ -30,7 +30,7 @@ API documentation:
 - Send a `GET` request to the webhook URL:
 
 ```shell
-curl -i "https://api.autokitteh.cloud/webhooks/<webhook-slug>"
+curl -i "${WEBHOOK_URL}"
 ```
 
 ## Self-Hosted Deployment
