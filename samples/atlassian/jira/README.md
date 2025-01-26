@@ -28,7 +28,7 @@ merely showcases a few illustrative, annotated, reusable examples.
 ## How It Works
 
 1. Adds a comment to a new Jira issue when it is created
-2. When the new comment is added to the issue, another comment is added with the author's name
+2. When a comment is added to an issue, another comment will be added displaying the name of the comments' author
 
 ## Cloud Usage
 
@@ -37,10 +37,6 @@ merely showcases a few illustrative, annotated, reusable examples.
 
 > [!NOTE]
 > For more details on connection options and setup, visit [this guide](https://docs.autokitteh.com/integrations/atlassian/connection).
-
-## Trigger Workflow
-
-- Triggered by creating a new issue.
 
 ## Self-Hosted Deployment
 
