@@ -46,7 +46,7 @@ Send HTTP requests to your webhook URL using any of these methods:
 2. POST request with form data:
 
    ```shell
-   curl -i -X POST "http://localhost:9980/webhooks/..." \
+   curl -i -X POST "${WEBHOOK_URL}" \
         --data project=TEST --data issuetype=Task \
         --data "summary=Test issue" \
         --data "description=Created with form data"
