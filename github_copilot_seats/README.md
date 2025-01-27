@@ -15,18 +15,22 @@ cancellation in the next billing cycle, and notifies them in a Slack DM.
 Users can then optionally respond and ask for the seat to be reassigned back
 to them.
 
-## Before Deploying This AutoKitteh Project
+## Cloud Usage
 
-Set/modify these optional project variables:
+1. Initialize your connections (Slack, Github)
+2. Set/modify these optional project variables:
+   - `IDLE_HOURS_THRESHOLD` (default = 72 hours)
+   - `MANAGED_LOGINS` (default = no one = manage all org users)
+   - `SLACK_LOG_CHANNEL` (channel name or ID, default = none)
+3. Deploy project
 
-- `IDLE_HOURS_THRESHOLD` (default = 72 hours)
-- `MANAGED_LOGINS` (default = no one = manage all org users)
-- `SLACK_LOG_CHANNEL` (channel name or ID, default = none)
+## Trigger Workflow
 
-## Slack Usage
+- Use the Slack application's slash command(s) with one of these text triggers:
+  - `prune-idle-copilot-seats` - invokes the daily automation immediately
+  - `find-idle-copilot-seats` - displays the potentially idle seats
+- on_schedule is scheduled to run daily to identify and print idle seats using the seats.find_idle_seats function
 
-You may use the Slack application's slash command(s) with one of these text
-triggers:
+## Self-Hosted Deployment
 
-- `prune-idle-copilot-seats` - invokes the daily automation immediately
-- `find-idle-copilot-seats` - displays the potentially idle seats
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
