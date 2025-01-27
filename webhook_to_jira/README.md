@@ -37,7 +37,7 @@ Send HTTP requests to your webhook URL using any of these methods:
 1. GET request with query parameters:
 
    ```shell
-   curl -i "http://localhost:9980/webhooks/..." \
+   curl -i "${WEBHOOK_URL}" \
         --url-query project=TEST --url-query issuetype=Task \
         --url-query "summary=Test issue" \
         --url-query "description=Created with HTTP GET"
