@@ -1,6 +1,11 @@
 """Unit tests for the metadata block in project README files."""
 
 from pathlib import Path
+import sys
+
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
 
 import update_projects_table
 
@@ -10,65 +15,63 @@ import pytest
 
 ROOT_PATH = Path(__file__).parent.parent
 
+
+def get_metadata_files(base_path=ROOT_PATH):
+    """Helper function to yield README files and their metadata."""
+    for readme_file in sorted(Path(base_path).rglob("README.md")):
+        metadata = update_projects_table.extract_metadata(readme_file)
+        if metadata:
+            yield readme_file, metadata
+
+
+def test_metadata_contains_all_fields():
+    for readme_file, metadata in get_metadata_files():
+        error = f"Metadata missing in README file: {readme_file}"
+        assert all(key in metadata for key in metadata_definitions.METADATA), error
+
+
+def test_metadtata_contains_at_least_1_integration():
+    for readme_file, metadata in get_metadata_files():
+        error = f"Metadata must have at least one integration: {readme_file}"
+        assert metadata["integrations"], error
+
+
+def test_metadtata_contains_at_least_1_category():
+    for readme_file, metadata in get_metadata_files():
+        error = f"Metadata must have at least one category: {readme_file}"
+        assert metadata["categories"], error
+
+
+METADATA_VALID = [
+    (metadata_definitions.ALLOWED_CATEGORIES, "categories"),
+    (metadata_definitions.ALLOWED_INTEGRATIONS, "integrations"),
+]
+
+
+@pytest.mark.parametrize(("allow_list", "metadata_type"), METADATA_VALID)
+def test_metadata_have_only_allowed_values(allow_list, metadata_type):
+    for readme_file, metadata in get_metadata_files():
+        for item in metadata[metadata_type]:
+            error = f"Invalid '{item}' in {metadata_type}: {readme_file}"
+            assert item in allow_list, error
+
+
 TEST_CATEGORIES = [
     (Path(ROOT_PATH / "devops"), "DevOps"),
     (Path(ROOT_PATH / "reliability"), "Reliability"),
     (Path(ROOT_PATH / "samples"), "Samples"),
 ]
 
-METADATA_VALID = [
-    (metadata_definitions.CATEGORIES, "categories"),
-    (metadata_definitions.INTEGRATIONS, "integrations"),
-]
 
-
-def test_metadata_block_exists():
-    """Checks for required metadata in README files."""
-    for readme_file in sorted(Path(ROOT_PATH).rglob("README.md")):
-        metadata = update_projects_table.extract_metadata(readme_file)
-
-        assert metadata, f"Metadata block is missing in the README file: {readme_file}"
-        assert all(key in metadata for key in metadata_definitions.METADATA), (
-            f"{metadata['title']} metadata missing required fields."
-        )
-        assert metadata["integrations"], (
-            f"{metadata['title']} metadata must have at least one integration."
-        )
-        assert metadata["categories"], (
-            f"{metadata['title']} metadata must have at least one category."
-        )
-
-
-@pytest.mark.parametrize(("allow_list", "metadata_type"), METADATA_VALID)
-def test_metadata_valid(allow_list, metadata_type):
-    """Checks that metadata fields contain only allowed values."""
-    for readme_file in sorted(Path(ROOT_PATH).rglob("README.md")):
-        metadata = update_projects_table.extract_metadata(readme_file)
-
-        if metadata:
-            for item in metadata[metadata_type]:
-                assert item in allow_list, (
-                    f"Invalid '{item}' in {metadata_type} in {metadata['title']}."
-                )
-
-
-@pytest.mark.parametrize(("folder_path", "categorie"), TEST_CATEGORIES)
-def test_required_categorie(folder_path, categorie):
+@pytest.mark.parametrize(("folder_path", "category"), TEST_CATEGORIES)
+def test_projects_include_required_category(folder_path, category):
     """Ensures projects in each folder include the required category."""
-    for readme_file in sorted(folder_path.rglob("README.md")):
-        metadata = update_projects_table.extract_metadata(readme_file)
-
-        if metadata:
-            message = f"{metadata['title']} Project in /{categorie}"
-            message += f" is missing the {categorie} categorie."
-            assert categorie in metadata["categories"], message
+    for readme_file, metadata in get_metadata_files(folder_path):
+        error = f"Project is missing the {category} category: {readme_file}"
+        assert category in metadata["categories"], error
 
 
-def test_sample_name():
-    for readme_file in sorted(Path(ROOT_PATH / "samples").rglob("README.md")):
-        metadata = update_projects_table.extract_metadata(readme_file)
-
-        if metadata:
-            assert metadata["title"].endswith(" sample"), (
-                "Sample projects must have the word 'sample' in the title."
-            )
+def test_sample_projects_have_correct_title_format():
+    for readme_file, metadata in get_metadata_files(ROOT_PATH / "samples"):
+        error = f"Sample projects must have 'sample' in the title: {readme_file}"
+        assert metadata["title"].endswith(" sample"), error
