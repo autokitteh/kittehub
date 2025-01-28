@@ -55,12 +55,8 @@ Send HTTP requests to your webhook URL using any of these methods:
 3. POST request with JSON (supports [all Jira issue fields](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post-request-body)):
    ```shell
    curl -i -X POST "${WEBHOOK_URL}" \
-        --json '{
-          "project": { "key": "TEST" },
-          "issuetype": { "name": "Task" },
-          "summary": "Test issue",
-          "description": "Created with JSON"
-        }'
+      -H "Content-Type: application/json" \
+      -d @path/to/your/file.json
    ```
 
 ## Self-Hosted Deployment
