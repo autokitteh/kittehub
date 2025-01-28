@@ -23,7 +23,7 @@ to them.
 
 ## Cloud Usage
 
-1. Initialize your connections (Slack, Github)
+1. Initialize your connections (GitHub, Slack)
 2. Set/modify these optional project variables:
    - `IDLE_HOURS_THRESHOLD` (default = 72 hours)
    - `MANAGED_LOGINS` (default = no one = manage all org users)
