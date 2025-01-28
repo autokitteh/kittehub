@@ -1,5 +1,5 @@
 ---
-title: Google Sheets
+title: Google Sheets sample
 description: Samples using Google Sheets APIs
 integrations: ["sheets"]
 categories: ["Samples"]
@@ -14,46 +14,25 @@ This AutoKitteh project demonstrates 2-way integration with
 
 https://docs.autokitteh.com/integrations/google/sheets/python
 
-## Setup Instructions
+## How It Works
 
-1. Install and start a
-   [self-hosted AutoKitteh server](https://docs.autokitteh.com/get_started/quickstart),
-   or use AutoKitteh Cloud
+1. Processes HTTP GET requests with a Google Sheets ID in the URL
+2. Writes various data types, including formulas, to a specified Google Sheet
+3. Reads and prints both formatted and unformatted cell values
+4. Retrieves and prints formula details and their evaluated results
 
-2. Optional for self-hosted servers (preconfigured in AutoKitteh Cloud):
+## Trigger Workflow
 
-   - [Enable Google connections to use OAuth 2.0](https://docs.autokitteh.com/integrations/google/config)
-   - [Enable Slack connections to use an OAuth v2 app](https://docs.autokitteh.com/integrations/slack/config)
+1. Copy the Google Sheets ID from the URL (the string between `/d/` and `/edit`)
 
-3. Run these commands to deploy this project's manifest file:
+2. Copy the webhook URLs from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+
+3. Make an HTTP request:
 
    ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   ak deploy --manifest kittehub/samples/google/sheets/autokitteh.yaml
+   curl -i "${WEBHOOK_URL}?id=<Google-Sheet-ID>"
    ```
 
-4. Initialize this project's connections:
+## Self-Hosted Deployment
 
-   - Google Sheets: with user impersonation using OAuth 2.0 (based on step 2),
-     or a GCP service account's JSON key
-
-> [!TIP]
-> The exact CLI commands to do so (`ak connection init ...`) will appear in
-> the output of the `ak deploy` command from step 3 when you create the
-> project on the server, i.e. when you run that command for the first time.
-
-## Usage Instructions
-
-Outgoing API calls:
-
-1. Create a new Google Sheet: https://sheets.new
-
-2. Copy the Google Sheets ID from the URL (the string between `/d/` and `/edit`).
-
-3. Make an HTTP request to the following URL format, replacing `<webhook-slug>` with your webhook identifier and `<Google-Sheets-ID>` with the ID of the Google Sheet you copied in step 2:
-
-   ```
-   http://localhost:9980/webhooks/<webhook-slug>?id=<Google-Sheets-ID>
-   ```
-
-4. Check the Google Sheet for updates and the responses from the webhook (if applicable).
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
