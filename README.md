@@ -52,7 +52,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Twilio](./samples/twilio/) | Samples using Twilio APIs | twilio |
 | [Slack bot for assistance requests with AI categorization](./slack_support/) | Slack bot request for assistance is inferred using Google's Gemini AI. The appropriate person is mentioned according to a predetermined table of expertise in a Google Doc. The person can then `!take` the request and later `!resolve` it. | slack, googlegemini |
 | [Fault tolerant workflow with manual Slack approvals](./task_chain/single_workflow/basic/) | Runs a sequence of tasks with fault tolerance. In case of failure, user can decide to terminate or retry from the point of failure. | slack |
-| [Create Jira Ticket from a Webhook data](./webhook_to_jira/) | Create Jira Ticket from a Webhook data | jira, http |
+| [Create Jira ticket from webhook data](./webhook_to_jira/) | Create Jira issues automatically from HTTP webhooks | jira, http |
 <!-- END-TABLE -->
 
 <img width="451" alt="image" src="https://github.com/user-attachments/assets/f556279f-40a4-4df2-93ef-e1838fcb9861">
