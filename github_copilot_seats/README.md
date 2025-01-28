@@ -35,7 +35,7 @@ to them.
 - Use the Slack application's slash command(s) with one of these text triggers:
   - `prune-idle-copilot-seats` - invokes the daily automation immediately
   - `find-idle-copilot-seats` - displays the potentially idle seats
-- on_schedule is scheduled to run daily to identify and print idle seats using the seats.find_idle_seats function
+- `on_schedule` is scheduled to run daily to identify and print idle seats using the `seats.find_idle_seats` function
 
 ## Self-Hosted Deployment
 
