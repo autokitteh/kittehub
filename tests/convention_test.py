@@ -69,6 +69,6 @@ def test_sample_name():
         metadata = update_projects_table.extract_metadata(readme_file)
 
         if metadata:
-            assert "sample" in metadata["title"], (
+            assert metadata["title"].endswith(" sample"), (
                 "Sample projects must have the word 'sample' in the title."
             )
