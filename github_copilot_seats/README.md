@@ -18,7 +18,7 @@ to them.
 ## How It Works
 
 1. Monitor GitHub Copilot seat assignments using a scheduled workflow
-2. Identifies idle Copilot seats based on the last activity of assigned users, comparing it to a predefined inactivity threshold (IDLE_HOURS_THRESHOLD)
+2. Identifies idle Copilot seats based on the last activity of assigned users, comparing it to a predefined inactivity threshold (`IDLE_HOURS_THRESHOLD`)
 3. If idle seats are found, interacts with users through Slack to confirm seat removal or reinstatement
 
 ## Cloud Usage
