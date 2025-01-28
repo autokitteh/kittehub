@@ -4,6 +4,7 @@ from contextlib import closing
 from io import BytesIO
 import json
 import os
+from pathlib import Path
 import sqlite3
 import xml.etree.ElementTree as Xml
 
@@ -12,6 +13,7 @@ from autokitteh.aws import boto3_client
 
 
 DB_DSN = os.getenv("DB_DSN")  # Secret
+CREATE_DB = os.getenv("CREATE_DB", "no").lower() in {"y", "yes", "true"}
 
 INSERT_SQL = """
 INSERT INTO points
@@ -26,6 +28,9 @@ def on_new_s3_object(event):
     if not event.data.body.json:
         print("Unexpected (non-JSON) content type:", event)
         return
+
+    if CREATE_DB:
+        create_db(DB_DSN)
 
     event = event.data.body.json
     print("event:", event)
@@ -56,6 +61,15 @@ def insert_records(db_dsn, records):
     with closing(sqlite3.connect(db_dsn)) as conn, conn:
         cur = conn.executemany(INSERT_SQL, records)
     return cur.rowcount
+
+
+def create_db(db_dsn):
+    code_dir = Path(__file__).absolute().parent
+    schema_file = code_dir / "schema.sql"
+    schema_sql = schema_file.read_text()
+
+    with closing(sqlite3.connect(db_dsn)) as conn, conn:
+        conn.executescript(schema_sql)
 
 
 trkpt_tag = "{http://www.topografix.com/GPX/1/1}trkpt"
