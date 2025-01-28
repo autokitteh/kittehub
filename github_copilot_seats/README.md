@@ -15,18 +15,28 @@ cancellation in the next billing cycle, and notifies them in a Slack DM.
 Users can then optionally respond and ask for the seat to be reassigned back
 to them.
 
-## Before Deploying This AutoKitteh Project
+## How It Works
 
-Set/modify these optional project variables:
+1. Monitor GitHub Copilot seat assignments using a scheduled workflow
+2. Identifies idle Copilot seats based on the last activity of assigned users, comparing it to a predefined inactivity threshold (`IDLE_HOURS_THRESHOLD`)
+3. If idle seats are found, interacts with users through Slack to confirm seat removal or reinstatement
 
-- `IDLE_HOURS_THRESHOLD` (default = 72 hours)
-- `MANAGED_LOGINS` (default = no one = manage all org users)
-- `SLACK_LOG_CHANNEL` (channel name or ID, default = none)
+## Cloud Usage
 
-## Slack Usage
+1. Initialize your connections (GitHub, Slack)
+2. Set/modify these optional project variables:
+   - `IDLE_HOURS_THRESHOLD` (default = 72 hours)
+   - `MANAGED_LOGINS` (default = no one = manage all org users)
+   - `SLACK_LOG_CHANNEL` (channel name or ID, default = none)
+3. Deploy project
 
-You may use the Slack application's slash command(s) with one of these text
-triggers:
+## Trigger Workflow
 
-- `prune-idle-copilot-seats` - invokes the daily automation immediately
-- `find-idle-copilot-seats` - displays the potentially idle seats
+- Use the Slack application's slash command(s) with one of these text triggers:
+  - `prune-idle-copilot-seats` - invokes the daily automation immediately
+  - `find-idle-copilot-seats` - displays the potentially idle seats
+- `on_schedule` is scheduled to run daily to identify and print idle seats using the `seats.find_idle_seats` function
+
+## Self-Hosted Deployment
+
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
