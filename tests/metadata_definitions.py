@@ -1,42 +1,35 @@
-"""Defines metadata schema, allowed integrations, and categories.
-
-- METADATA: Required metadata fields in README files.
-- INTEGRATIONS: List of allowed integration values.
-- CATEGORIES: List of allowed category values.
-"""
-
 METADATA = ["title", "description", "integrations", "categories"]
 
-INTEGRATIONS = [
-    "slack",
-    "hubspot",
+ALLOWED_INTEGRATIONS = (
+    "asana",
     "auth0",
     "aws",
-    "gmail",
-    "twilio",
-    "drive",
-    "sheets",
-    "docs",
     "calendar",
     "chatgpt",
     "confluence",
-    "jira",
-    "http",
-    "sqlite3",
+    "docs",
+    "drive",
+    "forms",
     "github",
     "githubcopilot",
-    "asana",
-    "forms",
+    "gmail",
     "googlegemini",
-]
+    "hubspot",
+    "http",
+    "jira",
+    "sheets",
+    "slack",
+    "sqlite3",
+    "twilio",
+)
 
-CATEGORIES = [
+ALLOWED_CATEGORIES = (
+    "AI",
+    "CRM",
     "DevOps",
+    "Durability",
+    "Office Automation",
+    "Productivity",
     "Reliability",
     "Samples",
-    "CRM",
-    "AI",
-    "Productivity",
-    "Office Automation",
-    "Durability",
-]
+)
