@@ -3,6 +3,8 @@
 from pathlib import Path
 import sys
 
+import pytest
+
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
@@ -10,7 +12,6 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 import update_projects_table
 
 import metadata_definitions
-import pytest
 
 
 ROOT_PATH = Path(__file__).parent.parent
