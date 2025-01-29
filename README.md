@@ -34,22 +34,22 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Missing Jira events monitor](./reliability/missing_jira_events_monitor/) | Send Slack alerts when AutoKitteh doesn't receive certain Jira events in time | jira, slack |
 | [AutoKitteh session errors monitor](./reliability/session_errors_monitor/) | Send Slack alerts when AutoKitteh sessions end due to errors | autokitteh, slack |
 | [Ad-hoc room reservation via Slack](./room_reservation/) | Ad-hoc room reservation via Slack slash commands | slack, calendar |
-| [Asana](./samples/asana/) | Simple usage of the Asana API | asana |
+| [Asana sample](./samples/asana/) | Simple usage of the Asana API | asana |
 | [Jira sample](./samples/atlassian/jira/) | Samples using Jira APIs | jira |
-| [Auth0](./samples/auth0/) | Simple usage of the Auth0 API | auth0 |
-| [Google Calendar](./samples/google/calendar/) | Samples using Google Calendar APIs | calendar |
+| [Auth0 sample](./samples/auth0/) | Simple usage of the Auth0 API | auth0 |
+| [Google Calendar sample](./samples/google/calendar/) | Samples using Google Calendar APIs | calendar |
 | [Google Drive sample](./samples/google/drive/) | Samples using Google Drive APIs | drive |
-| [Google Forms](./samples/google/forms/) | Samples using Google Forms APIs | forms |
+| [Google Forms sample](./samples/google/forms/) | Samples using Google Forms APIs | forms |
 | [Gemini sample](./samples/google/gemini/) | Simple usage of the Gemini API | googlegemini |
-| [Gmail](./samples/google/gmail/) | Samples using Gmail APIs | gmail |
-| [Google Sheets](./samples/google/sheets/) | Samples using Google Sheets APIs | sheets |
-| [HTTP](./samples/http/) | Samples using HTTP requests and webhooks | http |
+| [Gmail sample](./samples/google/gmail/) | Samples using Gmail APIs | gmail |
+| [Google Sheets sample](./samples/google/sheets/) | Samples using Google Sheets APIs | sheets |
+| [HTTP sample](./samples/http/) | Samples using HTTP requests and webhooks | http |
 | [HubSpot sample](./samples/hubspot/) | Simple usage of the HubSpot API | hubspot |
 | [OpenAI ChatGPT sample](./samples/openai_chatgpt/) | Samples using chatGPT APIs | chatgpt |
-| [Runtime Events](./samples/runtime_events/) | Samples using events in AutoKitteh - subscribe(), next_event(), unsubscribe() | autokitteh |
+| [Runtime Events sample](./samples/runtime_events/) | Samples using events in AutoKitteh - subscribe(), next_event(), unsubscribe() | autokitteh |
 | [Scheduler sample](./samples/scheduler/) | Samples using cron scheduler for workflows | scheduler |
 | [Slack sample](./samples/slack/) | Samples using Slack APIs | slack |
-| [Twilio](./samples/twilio/) | Samples using Twilio APIs | twilio |
+| [Twilio sample](./samples/twilio/) | Samples using Twilio APIs | twilio |
 | [Slack bot for assistance requests with AI categorization](./slack_support/) | Slack bot request for assistance is inferred using Google's Gemini AI. The appropriate person is mentioned according to a predetermined table of expertise in a Google Doc. The person can then `!take` the request and later `!resolve` it. | slack, googlegemini |
 | [Fault tolerant workflow with manual Slack approvals](./task_chain/single_workflow/basic/) | Runs a sequence of tasks with fault tolerance. In case of failure, user can decide to terminate or retry from the point of failure. | slack |
 | [Create Jira ticket from webhook data](./webhook_to_jira/) | Create Jira issues automatically from HTTP webhooks | jira, http |
