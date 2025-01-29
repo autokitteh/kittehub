@@ -18,6 +18,7 @@ ALLOWED_INTEGRATIONS = (
     "http",
     "hubspot",
     "jira",
+    "scheduler",
     "sheets",
     "slack",
     "sqlite3",
