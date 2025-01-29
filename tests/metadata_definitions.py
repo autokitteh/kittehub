@@ -3,6 +3,7 @@ METADATA = ("title", "description", "integrations", "categories")
 ALLOWED_INTEGRATIONS = (
     "asana",
     "auth0",
+    "autokitteh",
     "aws",
     "calendar",
     "chatgpt",
