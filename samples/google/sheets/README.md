@@ -30,7 +30,7 @@ https://docs.autokitteh.com/integrations/google/sheets/python
 3. Make an HTTP request:
 
    ```shell
-   curl -i "${WEBHOOK_URL}?id=<Google-Sheet-ID>"
+   curl -i "${WEBHOOK_URL}" --url-query id=<Google-Sheet-ID>
    ```
 
 ## Self-Hosted Deployment
