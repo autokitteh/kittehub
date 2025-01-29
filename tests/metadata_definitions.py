@@ -1,4 +1,4 @@
-METADATA = ["title", "description", "integrations", "categories"]
+METADATA = ("title", "description", "integrations", "categories")
 
 ALLOWED_INTEGRATIONS = (
     "asana",
