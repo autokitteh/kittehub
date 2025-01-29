@@ -42,7 +42,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Google Forms](./samples/google/forms/) | Samples using Google Forms APIs | forms |
 | [Gemini sample](./samples/google/gemini/) | Simple usage of the Gemini API | googlegemini |
 | [Gmail](./samples/google/gmail/) | Samples using Gmail APIs | gmail |
-| [Google Sheets](./samples/google/sheets/) | Samples using Google Sheets APIs | sheets |
+| [Google Sheets sample](./samples/google/sheets/) | Samples using Google Sheets APIs | sheets |
 | [HTTP](./samples/http/) | Samples using HTTP requests and webhooks | http |
 | [HubSpot sample](./samples/hubspot/) | Simple usage of the HubSpot API | hubspot |
 | [OpenAI ChatGPT sample](./samples/openai_chatgpt/) | Samples using chatGPT APIs | chatgpt |
