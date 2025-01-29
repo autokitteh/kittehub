@@ -66,7 +66,7 @@ TEST_CATEGORIES = [
 @pytest.mark.parametrize(("folder_path", "category"), TEST_CATEGORIES)
 def test_projects_include_required_category(folder_path, category):
     for readme_file, metadata in get_metadata_files(folder_path):
-        error = f"Project is missing the {category} category: {readme_file}"
+        error = f"Metadata is missing the {category!r} category: {readme_file}"
         assert category in metadata["categories"], error
 
 
