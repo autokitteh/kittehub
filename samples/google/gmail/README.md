@@ -10,49 +10,34 @@ categories: ["Samples"]
 This AutoKitteh project demonstrates 2-way integration with
 [Gmail](https://www.google.com/gmail/about/).
 
-## API Documentation
+API Documentation
 
 - https://docs.autokitteh.com/integrations/google/gmail/python
 - https://docs.autokitteh.com/integrations/google/gmail/events
 
-## Setup Instructions
+## How It Works
 
-1. Install and start a
-   [self-hosted AutoKitteh server](https://docs.autokitteh.com/get_started/quickstart),
-   or use AutoKitteh Cloud.
+1. Handles HTTP GET requests to interact with Gmail
+2. Retrieves profile details, drafts, and messages, and sends emails to the authenticated user
 
-2. Optional for self-hosted servers (preconfigured in AutoKitteh Cloud):
+## Cloude Usage
 
-   - [Enable Google connections to use OAuth 2.0](https://docs.autokitteh.com/integrations/google/config)
+1. Initialize your connection with Gmail
+2. Deploy project
 
-3. Run these commands to deploy this project's manifest file:
+## Trigger Workflow
 
-   ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   ak deploy --manifest kittehub/samples/google/gmail/autokitteh.yaml
-   ```
+Run these commands to interact with Gmail via HTTP trigger using query parameters:
 
-4. Initialize this project's connections:
+```shell
+curl -i "${WEBHOOK_URL}" --url-query cmd=get_profile
+curl -i "${WEBHOOK_URL}" --url-query cmd=list_drafts&query=optional_query
+curl -i "${WEBHOOK_URL}" --url-query cmd=get_draft&draft_id=<draft_ID>
+curl -i "${WEBHOOK_URL}" --url-query cmd=list_messages&query=optional_query
+curl -i "${WEBHOOK_URL}" --url-query cmd=get_message&message_id=<message_ID>
+curl -i "${WEBHOOK_URL}" --url-query cmd=send_message&text=<message_text>
+```
 
-   - Gmail: with user impersonation using OAuth 2.0 (based on step 2),
-     or a GCP service account's JSON key.
+## Self-Hosted Deployment
 
-> [!TIP]
-> The exact CLI commands to do so (`ak connection init ...`) will appear in
-> the output of the `ak deploy` command from step 3 when you create the
-> project on the server, i.e., when you run that command for the first time.
-
-## Usage Instructions
-
-1. Run these commands to interact with Gmail via HTTP trigger using query parameters:
-
-   ```shell
-   curl -i "http://localhost:9980/webhooks/SLUG?cmd=get_profile"
-   curl -i "http://localhost:9980/webhooks/SLUG?cmd=list_drafts&query=optional_query"
-   curl -i "http://localhost:9980/webhooks/SLUG?cmd=get_draft&draft_id=<draft_ID>"
-   curl -i "http://localhost:9980/webhooks/SLUG?cmd=list_messages&query=optional_query"
-   curl -i "http://localhost:9980/webhooks/SLUG?cmd=get_message&message_id=<message_ID>"
-   curl -i "http://localhost:9980/webhooks/SLUG?cmd=send_message&text=<message_text>"
-   ```
-
-2. View the responses in your terminal after making the requests.
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
