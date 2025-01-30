@@ -20,7 +20,7 @@ API Documentation
 1. Handles HTTP GET requests to interact with Gmail
 2. Retrieves profile details, drafts, and messages, and sends emails to the authenticated user
 
-## Cloude Usage
+## Cloud Usage
 
 1. Initialize your connection with Gmail
 2. Deploy project
