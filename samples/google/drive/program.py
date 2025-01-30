@@ -9,7 +9,10 @@ USER_EMAIL = os.getenv("USER_EMAIL", "")
 
 
 def on_file_change(event):
-    print(f"File with ID {event.data.file.id} has changed!")
+    print(f"File with ID {event.data.file_id} has changed!")
+
+def on_file_remove(event):
+    print(f"File with ID {event.data.file_id} has been removed!")
 
 
 def create_new_document(_):

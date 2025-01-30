@@ -18,5 +18,9 @@ project:
       call: program.py:create_new_document
     - name: on_file_change
       connection: google_drive_conn
-      event_type: change
+      event_type: file_change
       call: program.py:on_file_change
+    - name: on_file_remove
+      connection: google_drive_conn
+      event_type: file_remove
+      call: program.py:on_file_remove
