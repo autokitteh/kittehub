@@ -19,7 +19,7 @@ This project automates a sequence of tasks with fault tolerance. In case of fail
 
 ## Cloud Usage
 
-1. Initialize your connections (Slack)
+1. Initialize your Slack connection
 2. Deploy project
 
 ## Trigger Workflow
