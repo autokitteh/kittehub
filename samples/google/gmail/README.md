@@ -31,7 +31,7 @@ Run these commands to interact with Gmail via HTTP trigger using query parameter
 
 ```shell
 curl -i "${WEBHOOK_URL}" --url-query cmd=get_profile
-curl -i "${WEBHOOK_URL}" --url-query cmd=list_drafts&query=optional_query
+curl -i "${WEBHOOK_URL}" --url-query cmd=list_drafts [--url-query query=optional_query]
 curl -i "${WEBHOOK_URL}" --url-query cmd=get_draft&draft_id=<draft_ID>
 curl -i "${WEBHOOK_URL}" --url-query cmd=list_messages&query=optional_query
 curl -i "${WEBHOOK_URL}" --url-query cmd=get_message&message_id=<message_ID>
