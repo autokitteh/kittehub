@@ -10,74 +10,53 @@ categories: ["Samples"]
 This AutoKitteh project demonstrates 2-way usage of HTTP, with AutoKitteh
 webhooks and the Python [requests](https://requests.readthedocs.io/) library.
 
-## API Documentation
+API Documentation:
 
 - https://docs.autokitteh.com/integrations/http/python
 - https://docs.autokitteh.com/integrations/http/events
 
-## Setup Instructions
+## How It Works
 
-1. Install and start a
-   [self-hosted AutoKitteh server](https://docs.autokitteh.com/get_started/quickstart),
-   or use AutoKitteh Cloud
+1. Send Authenticated Requests - Makes HTTP requests with credentials using Basic Auth and Bearer Token
+2. Test Authentication - Tests successful and failed authentication attempts
+3. Display Results - Shows response codes, headers, and messages from the server
 
-2. Run these commands to deploy this project's manifest file:
+## Cloud Usage
 
-   ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   ak deploy --manifest kittehub/samples/http/autokitteh.yaml
-   ```
+1. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+2. Deploy the project
 
-3. Look for the following lines in the output of the `ak deploy` command, and
-   copy the URL paths for later:
-
-   ```
-   [!!!!] trigger "..." created, webhook path is "/webhooks/..."
-   ```
-
-> [!TIP]
-> If you don't see the output of `ak deploy` anymore, you can run these
-> commands instead, and use the webhook slugs from their outputs:
->
-> ```shell
-> ak trigger get receive_http_get_or_head --project http_sample -J
-> ak trigger get receive_http_post_form --project http_sample -J
-> ak trigger get receive_http_post_json --project http_sample -J
-> ak trigger get send_requests --project http_sample -J
-> ```
-
-## Usage Instructions
+## Trigger Workflow
 
 1. Run these commands to start sessions that receive GET and HEAD requests
-   (use the **1st** URL path from step 3 above):
+   (use webhook `receive_http_get_or_head`):
 
    ```shell
-   curl -i [--get] "http://localhost:9980/webhooks/SLUG1"
-   curl -i --head  "http://localhost:9980/webhooks/SLUG1"
+   curl -i [--get] "${WEBHOOK_URL}"
+   curl -i --head  "${WEBHOOK_URL}/SLUG1"
         [--url-query "key1=value1" --url-query "key2=value2"]
    ```
 
 2. Run this command to start a session that parses a URL-encoded form in a
-   POST request (use the **2nd** URL path from step 3 above):
+   POST request (use webhook `receive_http_post_form`):
 
    ```shell
-   curl -i [-X POST] "http://localhost:9980/webhooks/SLUG2" \
+   curl -i [-X POST] "${WEBHOOK_URL}/SLUG2" \
         --data key1=value1 --data key2=value2
    ```
 
 3. Run this command to start a session that parses the JSON body of a POST
-   request (use the **3rd** URL path from step 3 above):
+   request (use webhook `receive_http_post_json`):
 
    ```shell
-   curl -i [-X POST] "http://localhost:9980/webhooks/SLUG3" \
+   curl -i [-X POST] "${WEBHOOK_URL}/SLUG3" \
         --json '{"key1": "value1", "key2": "value2"}'
    ```
 
-4. Run this command to start a session that sends various requests (use the
-   **4th** URL path from step 3 above):
+4. Run this command to start a session that sends various requests (use webhook `send_requests`):
 
    ```shell
-   curl -i "http://localhost:9980/webhooks/SLUG4"
+   curl -i "${WEBHOOK_URL}/SLUG4"
    ```
 
    - Unauthenticated requests
@@ -90,3 +69,7 @@ webhooks and the Python [requests](https://requests.readthedocs.io/) library.
 
 5. Check out the resulting session logs in the AutoKitteh server for each of
    the steps above
+
+## Self-Hosted Deployment
+
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
