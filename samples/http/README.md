@@ -23,7 +23,7 @@ API Documentation:
 
 ## Cloud Usage
 
-1. Copy the webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+1. Copy the webhook URLs from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
 2. Deploy the project
 
 ## Trigger Workflow
