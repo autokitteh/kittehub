@@ -28,47 +28,43 @@ API Documentation:
 
 ## Trigger Workflow
 
-1. Run these commands to start sessions that receive GET and HEAD requests
-   (use webhook `receive_http_get_or_head`):
+Send HTTP GET and POST requests to the webhook URLs from step 2 in the [Cloud Usage](#cloud-usage) section above.
 
-   ```shell
-   curl -i [--get] "${WEBHOOK_URL}"
-   curl -i --head  "${WEBHOOK_URL}/SLUG1"
-        [--url-query "key1=value1" --url-query "key2=value2"]
-   ```
+For `receive_http_get_or_head`:
 
-2. Run this command to start a session that parses a URL-encoded form in a
-   POST request (use webhook `receive_http_post_form`):
+```shell
+curl -i [--get] "${WEBHOOK_URL}"
+curl -i --head  "${WEBHOOK_URL}"
+      [--url-query "key1=value1" --url-query "key2=value2"]
+```
 
-   ```shell
-   curl -i [-X POST] "${WEBHOOK_URL}/SLUG2" \
-        --data key1=value1 --data key2=value2
-   ```
+For `receive_http_post_form`:
 
-3. Run this command to start a session that parses the JSON body of a POST
-   request (use webhook `receive_http_post_json`):
+```shell
+curl -i [-X POST] "${WEBHOOK_URL}" \
+      --data key1=value1 --data key2=value2
+```
 
-   ```shell
-   curl -i [-X POST] "${WEBHOOK_URL}/SLUG3" \
-        --json '{"key1": "value1", "key2": "value2"}'
-   ```
+For `receive_http_post_json`:
 
-4. Run this command to start a session that sends various requests (use webhook `send_requests`):
+```shell
+curl -i [-X POST] "${WEBHOOK_URL}" \
+      --json '{"key1": "value1", "key2": "value2"}'
+```
 
-   ```shell
-   curl -i "${WEBHOOK_URL}/SLUG4"
-   ```
+For `send_requests`:
 
-   - Unauthenticated requests
-     - GET: with query parameters, HTML body, JSON body, 404 not found
-     - POST: URL-encoded form, JSON data
-   - Requests with (correct and incorrect)
-     [HTTP basic authentication](https://datatracker.ietf.org/doc/html/rfc7617)
-   - Requests with an
-     [OAuth bearer token](https://datatracker.ietf.org/doc/html/rfc6750)
+```shell
+curl -i "${WEBHOOK_URL}"
+```
 
-5. Check out the resulting session logs in the AutoKitteh server for each of
-   the steps above
+- Unauthenticated requests
+  - GET: with query parameters, HTML body, JSON body, 404 not found
+  - POST: URL-encoded form, JSON data
+- Requests with (correct and incorrect)
+  [HTTP basic authentication](https://datatracker.ietf.org/doc/html/rfc7617)
+- Requests with an
+  [OAuth bearer token](https://datatracker.ietf.org/doc/html/rfc6750)
 
 ## Self-Hosted Deployment
 
