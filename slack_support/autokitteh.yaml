@@ -12,11 +12,11 @@ project:
       # 1 | Gizmo   | U12345678 | topic1,topic2
       # 2 | George  | U87654321 | topic3
       name: DIRECTORY_GOOGLE_SHEET_ID
-      value: ""
+      value:
     - # A gemini key must be acquired from https://aistudio.google.com/app/apikey.
       name: GEMINI_API_KEY
       secret: true
-      value: ""
+      value:
     - # Time in minutes to wait for the issue to be picked up before
       # reminder.
       name: HELP_REQUEST_TIMEOUT_MINUTES
