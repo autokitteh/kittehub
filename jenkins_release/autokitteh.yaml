@@ -1,0 +1,28 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that monitors comments on GitHub issues.
+
+version: v1
+
+project:
+  name: jenkins_release
+
+  vars:
+    - name: JENKINS_URL
+      value: "<JENKINS_URL>"
+    - name: JENKINS_USER
+      value: "<USERNAME>"
+    - name: JENKINS_PASSWORD
+      value: ""
+      secret: true
+    - name: JOB_NAME
+      value: "<JOB_NAME>"
+
+  connections:
+    - name: github_conn
+      integration: github
+
+  triggers:
+    - name: on_github_push
+      event_type: push
+      connection: github_conn
+      call: program.py:on_github_push
