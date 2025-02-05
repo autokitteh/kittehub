@@ -63,6 +63,7 @@ def insert_records(db_dsn, records):
         conn.commit()
     return cur.rowcount
 
+
 @autokitteh.activity
 def create_db(db_dsn):
     code_dir = Path(__file__).absolute().parent
