@@ -12,7 +12,7 @@ import autokitteh
 from autokitteh.aws import boto3_client
 
 
-DB_DSN = os.getenv("DB_DSN")  # Secret
+DB_DSN = os.getenv("DB_DSN", "")  # Secret
 CREATE_DB = os.getenv("CREATE_DB", "no").lower() in {"y", "yes", "true"}
 
 INSERT_SQL = """
@@ -58,11 +58,12 @@ def get_s3_object(bucket, key):
 
 @autokitteh.activity
 def insert_records(db_dsn, records):
-    with closing(sqlite3.connect(db_dsn)) as conn, conn:
+    with closing(sqlite3.connect(db_dsn)) as conn:
         cur = conn.executemany(INSERT_SQL, records)
+        conn.commit()
     return cur.rowcount
 
-
+@autokitteh.activity
 def create_db(db_dsn):
     code_dir = Path(__file__).absolute().parent
     schema_file = code_dir / "schema.sql"

@@ -6,6 +6,11 @@ version: v1
 
 project:
   name: pipeline
+  vars:
+    - name: CREATE_DB
+      value:
+    - name: DB_DSN
+      value:
   connections:
     - name: aws_conn
       integration: aws
