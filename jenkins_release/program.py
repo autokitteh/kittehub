@@ -1,6 +1,12 @@
 from os import getenv
-from jenkins import Jenkins, JenkinsException
-from tenacity import retry, wait_fixed, retry_if_result, retry_if_exception
+
+from jenkins import Jenkins
+from jenkins import JenkinsException
+from tenacity import retry
+from tenacity import retry_if_exception
+from tenacity import retry_if_result
+from tenacity import wait_fixed
+
 
 JOB_NAME = getenv("JOB_NAME")
 
