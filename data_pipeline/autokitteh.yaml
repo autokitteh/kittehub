@@ -8,8 +8,9 @@ project:
   name: pipeline
   vars:
     - name: CREATE_DB
-      value:
+      value: false
     - name: DB_DSN
+      secret: true
       value:
   connections:
     - name: aws_conn
