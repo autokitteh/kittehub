@@ -1,0 +1,13 @@
+version: v1
+
+project:
+  name: ai_chatbot_assistant
+  connections:
+    - name: chatgpt_conn
+      integration: chatgpt
+    - name: github_conn
+      integration: github
+    - name: googlesheets_conn
+      integration: googlesheets
+    - name: slack_conn
+      integration: slack
