@@ -22,7 +22,7 @@ MODEL = "gpt-4o-mini"
 chatgpt_client = openai_client("chatgpt_conn")
 
 
-def on_http_get(event):
+def on_http_post(event):
     """Entry-point function for handling HTTP GET requests in this workflow.
 
     Example usage:
