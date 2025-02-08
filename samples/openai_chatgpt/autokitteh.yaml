@@ -14,4 +14,4 @@ project:
       type: webhook
       event_type: post
       filter: data.headers["Content-Type"] == "text/plain"
-      call: program.py:on_http_get
+      call: program.py:on_http_post
