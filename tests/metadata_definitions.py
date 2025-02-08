@@ -15,18 +15,23 @@ ALLOWED_INTEGRATIONS = (
     "githubcopilot",
     "gmail",
     "googlegemini",
+    "height",
     "http",
     "hubspot",
     "jira",
+    "linear",
+    "microsoft_teams",
     "scheduler",
     "sheets",
     "slack",
     "sqlite3",
     "twilio",
+    "zoom",
 )
 
 ALLOWED_CATEGORIES = (
     "AI",
+    "Compliance",
     "CRM",
     "DevOps",
     "Durability",
