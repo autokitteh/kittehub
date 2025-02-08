@@ -16,6 +16,8 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Copy Auth0 Users to HubSpot](./auth0_to_hubspot/) | Periodically add new Auth0 users to HubSpot as contacts | auth0, hubspot |
 | [Manage emergency AWS access requests via Slack](./break_glass/) | Submit emergency AWS access requests via Slack, which are then approved or denied based on a set of predefined conditions | aws, slack |
 | [Email categorization and notification](./categorize_emails/) | Categorize incoming emails and notify relevant Slack channels | gmail, chatgpt, slack |
+| [Issue tracking compliance controls](./compliance/issue_tracking/) | Audit compliance controls related to issue tracking systems | github, linear, sheets |
+| [Source control compliance controls](./compliance/source_control/) | Audit compliance controls related to source control systems | github, sheets |
 | [Slack notify on Confluence page created](./confluence_to_slack/) | When Confluence page is created the user will be notified on Slack | confluence, slack |
 | [Parse a file in S3 and insert to database](./data_pipeline/) | Triggered by a new GPX file on an S3 bucket, the pipeline code will parse the GPX file and insert it into a database. | aws, http, sqlite3 |
 | [GitHub issue alert](./devops/github_issue_alert/) | Send GitHub issue comments to Slack | github, slack |
