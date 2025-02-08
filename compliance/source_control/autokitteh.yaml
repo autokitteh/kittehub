@@ -1,0 +1,26 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that audits compliance controls related
+# to source control systems.
+
+version: v1
+
+project:
+  name: source_control_compliance
+
+  vars:
+    - name: GITHUB_REPO_NAME
+      value: autokitteh
+    - name: GITHUB_BRANCH_NAME
+      value: main
+    - name: START_DATE
+      value: 2025-01-01T00:00:00Z
+    - name: END_DATE
+      value: 2025-04-01T00:00:00Z
+    - name: GOOGLE_SHEET_ID
+      value:
+
+  connections:
+    - name: github_conn
+      integration: github
+    - name: sheets_conn
+      integration: googlesheets

@@ -1,0 +1,28 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that audits compliance controls related to issue
+# tracking systems, and cross-references with source control systems.
+
+version: v1
+
+project:
+  name: issue_tracking_compliance
+
+  vars:
+    - name: GITHUB_REPO_NAME
+      value: autokitteh
+    - name: GITHUB_BRANCH_NAME
+      value: main
+    - name: START_DATE
+      value: 2025-01-01T00:00:00Z
+    - name: END_DATE
+      value: 2025-04-01T00:00:00Z
+    - name: GOOGLE_SHEET_ID
+      value:
+
+  connections:
+    - name: github_conn
+      integration: github
+    - name: linear_conn
+      integration: linear
+    - name: sheets_conn
+      integration: googlesheets
