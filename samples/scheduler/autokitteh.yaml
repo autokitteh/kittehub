@@ -23,5 +23,5 @@ project:
 
   triggers:
     - name: daily
-      schedule: "@daily" # Same as `@midnight', `@every 1d', or `0 0 * * *'.
+      schedule: "@daily" # Same as "@midnight", "@every 1d", or "0 0 * * *".
       call: program.py:on_cron_trigger
