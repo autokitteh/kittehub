@@ -8,7 +8,7 @@ project:
 
   vars:
     - name: ROLE_ID
-      value: ""
+      value:
     - name: TIME_INTERVAL
       value: 7d
 

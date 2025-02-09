@@ -8,6 +8,7 @@ project:
   vars:
     - name: HTTPBIN_BASE_URL
       value: https://httpbin.org/
+
   triggers:
     - name: receive_http_get_or_head
       type: webhook

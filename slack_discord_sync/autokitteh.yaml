@@ -1,21 +1,24 @@
 # This YAML file is a declarative manifest that describes the setup
-# of an AutoKitteh project that mirrors messages between Slack and 
+# of an AutoKitteh project that mirrors messages between Slack and
 # Discord using AutoKitteh integrations.
- 
+
 version: v1
 
 project:
   name: slack_discord_sync
+
   vars:
     - name: DISCORD_CHANNEL_ID
-      value: ""
+      value:
     - name: SLACK_CHANNEL_NAME_OR_ID
-      value: ""
+      value:
+
   connections:
     - name: discord_conn
       integration: discord
     - name: slack_conn
       integration: slack
+
   triggers:
     - name: on_discord_message
       connection: discord_conn

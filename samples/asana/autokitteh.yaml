@@ -5,13 +5,16 @@ version: v1
 
 project:
   name: asana_sample
+
   vars:
     - name: WORKSPACE_GID
-      value: ""
+      value:
+
   connections:
     - name: asana_conn
       integration: asana
-  triggers:  
+
+  triggers:
     - name: create_task_webhook
       type: webhook
       event_type: get

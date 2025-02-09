@@ -15,9 +15,9 @@ project:
     # Must be identical/equivalent to the "event_type"
     # and/or "filter" fields of the trigger below!
     - name: EVENT_FILTER
-      value: ""
+      value:
     - name: EVENT_DESCRIPTION
-      value: ""
+      value:
     - name: TIMEOUT_HOURS
       value: 24
     - name: PING_HOURS
@@ -36,5 +36,5 @@ project:
       connection: monitored_service_conn
       # Set this CEL expression to match the events you want to monitor.
       # Also set the "EVENT_FILTER" project variable above accordingly!
-      filter: event_type == 'TODO' && data.TODO['TODO'] == 'TODO'
+      filter: event_type == "TODO" && data.TODO["TODO"] == "TODO"
       call: program.py:on_monitor_trigger
