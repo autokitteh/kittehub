@@ -8,11 +8,11 @@ project:
 
   vars:
     - name: SLACK_CHANNEL_ID
-      value: ""
+      value:
     - name: GOOGLE_SHEET_ID
-      value: ""
+      value:
     - name: ORG_DOMAIN
-      value: ""
+      value:
 
   connections:
     - name: github_conn

@@ -5,14 +5,17 @@ version: v1
 
 project:
   name: google_cal_to_asana
+
   vars:
     - name: ASANA_PROJECT_GID
       value:
+
   connections:
     - name: asana_conn
       integration: asana
     - name: google_conn
       integration: googlecalendar
+
   triggers:
     - name: gcal_event_created
       connection: google_conn

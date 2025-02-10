@@ -5,9 +5,11 @@ version: v1
 
 project:
   name: webhook_to_jira
+
   connections:
     - name: jira_conn
       integration: jira
+
   triggers:
     - name: http_get_or_post_request
       type: webhook

@@ -6,9 +6,11 @@ version: v1
 
 project:
   name: google_calendar_sample
+
   connections:
     - name: calendar_conn
       integration: googlecalendar
+
   triggers:
     - name: list_events
       type: webhook

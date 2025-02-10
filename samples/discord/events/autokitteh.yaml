@@ -6,9 +6,11 @@ version: v1
 
 project:
   name: discord_events_sample
+
   connections:
     - name: discord_conn
       integration: discord
+
   triggers:
     - name: discord_message_create
       connection: discord_conn

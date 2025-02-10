@@ -1,5 +1,5 @@
-# This YAML file is a declarative manifest that describes the setup of
-# an AutoKitteh project that monitors comments on GitHub issues.
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that monitors comments on GitHub issues.
 
 version: v1
 

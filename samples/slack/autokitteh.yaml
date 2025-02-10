@@ -6,9 +6,11 @@ version: v1
 
 project:
   name: slack_sample
+
   connections:
     - name: slack_conn
       integration: slack
+
   triggers:
     - name: slack_app_mention
       connection: slack_conn

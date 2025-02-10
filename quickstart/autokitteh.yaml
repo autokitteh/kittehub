@@ -5,6 +5,7 @@ version: v1
 
 project:
   name: quickstart
+
   triggers:
     - name: http_request
       type: webhook
