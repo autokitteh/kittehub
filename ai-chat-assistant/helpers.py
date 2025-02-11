@@ -4,7 +4,7 @@ import autokitteh
 from autokitteh.google import google_sheets_client
 
 
-sheets = google_sheets_client("googlesheets_conn")
+sheets = google_sheets_client("sheets_conn")
 
 SHEET_ID = os.getenv("SHEET_ID")
 

@@ -9,7 +9,7 @@ import helpers
 
 g = github.github_client("github_conn")
 slack = slack_client("slack_conn")
-sheets = google.google_sheets_client("googlesheets_conn")
+sheets = google.google_sheets_client("sheets_conn")
 
 
 SHEET_ID = os.getenv("SHEET_ID")
