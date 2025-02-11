@@ -2,6 +2,7 @@ version: v1
 
 project:
   name: ai_chatbot_assistant
+
   vars:
     - name: SHEET_ID
       value:
@@ -9,6 +10,7 @@ project:
       value:
     - name: REPO_NAME
       value:
+
   connections:
     - name: chatgpt_conn
       integration: chatgpt
