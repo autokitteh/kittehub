@@ -6,9 +6,11 @@ version: v1
 
 project:
   name: discord_client_sample
+
   vars:
     - name: CHANNEL_ID
-      value: 
+      value:
+
   connections:
     - name: discord_conn
       integration: discord

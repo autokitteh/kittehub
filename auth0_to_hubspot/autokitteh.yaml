@@ -1,20 +1,22 @@
-# This YAML file is a declarative manifest that describes the setup
-# of an AutoKitteh project that adds new Auth0 users to HubSpot as contacts.
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that adds new Auth0 users to HubSpot as contacts.
 
 version: v1
 
 project:
   name: auth0_to_hubspot
+
   vars:
     - name: HOURS
       value: 24
+
   connections:
     - name: auth0_conn
       integration: auth0
     - name: hubspot_conn
       integration: hubspot
+
   triggers:
     - name: daily
       schedule: "@every 24h"
       call: program.py:check_for_new_users
-

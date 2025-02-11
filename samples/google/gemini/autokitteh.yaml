@@ -5,9 +5,11 @@ version: v1
 
 project:
   name: gemini_sample
+
   connections:
     - name: gemini_conn
       integration: googlegemini
+
   triggers:
     - name: trivial_interaction
       type: webhook

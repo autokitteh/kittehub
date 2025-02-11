@@ -6,12 +6,15 @@ version: v1
 
 project:
   name: twilio_sample
+
   vars:
     - name: FROM_PHONE_NUMBER
       value:
+
   connections:
     - name: twilio_conn
       integration: twilio
+
   triggers:
     - name: http_get
       type: webhook

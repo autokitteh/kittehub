@@ -7,12 +7,14 @@ project:
   name: google_forms_to_jira
   vars:
     - name: JIRA_PROJECT_KEY
-      value: 
+      value:
+
   connections:
     - name: forms_conn
       integration: googleforms
     - name: jira_conn
       integration: jira
+
   triggers:
     - name: google_forms_response
       connection: forms_conn

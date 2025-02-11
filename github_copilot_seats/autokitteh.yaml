@@ -1,24 +1,27 @@
-# This YAML file is a declarative manifest that describes the setup of
-# an AutoKitteh project that manages GitHub Copilot subscriptions.
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that manages GitHub Copilot subscriptions.
 
 version: v1
 
 project:
   name: github_copilot_seats
+
   vars:
     - name: IDLE_HOURS_THRESHOLD
       value: 72
     # Optional: manage GitHub Copilot subscriptions only for these users, separated by commas.
     - name: MANAGED_LOGINS
-      value: ""
+      value:
     # Optional: Slack channel name or ID, for debugging.
     - name: SLACK_LOG_CHANNEL
-      value: ""
+      value:
+
   connections:
     - name: github_conn
       integration: github
     - name: slack_conn
       integration: slack
+
   triggers:
     - name: check_daily
       schedule: "@daily"

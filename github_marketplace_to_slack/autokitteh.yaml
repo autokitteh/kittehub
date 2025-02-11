@@ -10,7 +10,7 @@ project:
   vars:
     - name: GITHUB_WEBHOOK_SECRET
       secret: true
-      value: s3cr3t-p@ssw0rd
+      value:
     - name: SLACK_CHANNEL_NAME_OR_ID
       value: github-marketplace
 

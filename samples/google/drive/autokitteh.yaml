@@ -6,12 +6,15 @@ version: v1
 
 project:
   name: google_drive_sample
+
   connections:
     - name: google_drive_conn
       integration: googledrive
+
   vars:
     - name: USER_EMAIL
       value:
+
   triggers:
     - name: create_new_document
       type: webhook

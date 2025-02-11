@@ -6,14 +6,17 @@ version: v1
 
 project:
   name: break_glass
+
   vars:
     - name: APPROVAL_CHANNEL
-      value: ""
+      value:
+
   connections:
     - name: jira_connection
       integration: jira
     - name: slack_connection
       integration: slack
+
   triggers:
     - name: slack_slash_command
       connection: slack_connection

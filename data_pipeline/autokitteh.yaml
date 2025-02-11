@@ -6,9 +6,11 @@ version: v1
 
 project:
   name: pipeline
+
   connections:
     - name: aws_conn
       integration: aws
+
   triggers:
     - name: new_s3_object
       type: webhook
