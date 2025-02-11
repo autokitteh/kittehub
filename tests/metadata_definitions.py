@@ -15,13 +15,16 @@ ALLOWED_INTEGRATIONS = (
     "githubcopilot",
     "gmail",
     "googlegemini",
+    "height",
     "http",
     "hubspot",
     "jira",
+    "linear",
     "scheduler",
     "sheets",
     "slack",
     "sqlite3",
+    "zoom",
     "twilio",
 )
 
