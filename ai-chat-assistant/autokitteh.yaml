@@ -1,0 +1,22 @@
+version: v1
+
+project:
+  name: ai_chatbot_assistant
+
+  vars:
+    - name: SHEET_ID
+      value:
+    - name: SHEET_NAME
+      value:
+    - name: REPO_NAME
+      value:
+
+  connections:
+    - name: chatgpt_conn
+      integration: chatgpt
+    - name: github_conn
+      integration: github
+    - name: sheets_conn
+      integration: googlesheets
+    - name: slack_conn
+      integration: slack
