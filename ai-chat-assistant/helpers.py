@@ -37,8 +37,8 @@ def append_row_to_sheet(sheet_name: str, values: list):
         sheet_name (str): The name of the sheet (tab).
         values (list): List of tuples containing (pr_number, author, body, url).
     """
-    range_name = f"{sheet_name}!A:D"  # Use columns A-D for the 4 values
-    # Transform list of tuples into list of lists for the API
+    range_name = f"{sheet_name}!A:D"  # Use columns A-D for the 4 values.
+    # Transform list of tuples into list of lists for the API.
     formatted_values = [
         [str(comment_id), author, body, url] for comment_id, author, body, url in values
     ]
