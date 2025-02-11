@@ -65,7 +65,7 @@ def format_messages_for_slack(rows):
             f"*Author:* {author}\n"
             f"*Message:* {body}\n"
             f"*URL:* {url}\n"
-            "---"  # Add separator between messages
+            "---"  # Add separator between messages.
         )
         formatted_messages.append(message)
 
