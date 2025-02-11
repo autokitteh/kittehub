@@ -12,6 +12,7 @@ gsheets = google_sheets_client("mygsheets").spreadsheets().values()
 @dataclass
 class Person:
     """A person in the directory."""
+
     name: str
     slack_id: str
     topics: list[str]
