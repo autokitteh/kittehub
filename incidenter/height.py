@@ -1,7 +1,7 @@
 from os import getenv
-from urlparse import urljoin
 
 from autokitteh.height import height_client
+from urlparse import urljoin
 
 
 _LIST_ID = getenv("HEIGHT_LIST_ID")
