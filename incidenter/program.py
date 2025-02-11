@@ -35,7 +35,7 @@ def _start(
     zoom_url = zoom.create_meeting(f"Incident: {title}")
 
     channel = slack_client.conversations_create(
-        name=f"{_CHANNEL_PREFIX}{task["index"]}", is_private=False
+        name=f"{_CHANNEL_PREFIX}{task['index']}", is_private=False
     ).get("channel")
 
     slack_client.conversations_setTopic(
@@ -45,7 +45,7 @@ def _start(
 
     slack_client.conversations_setPurpose(
         channel=channel["id"],
-        purpose=f"Task: {task["url"]} | Zoom: {zoom_url}",
+        purpose=f"Task: {task['url']} | Zoom: {zoom_url}",
     )
 
     slack_client.conversations_invite(
@@ -57,8 +57,8 @@ def _start(
         channel=trigger_channel_id,
         thread_ts=trigger_ts,
         text=f"""⚠⚠⚠ Started incident: {title}
-Task created: {task['url']}
-Channel created: <#{channel['id']}>
+Task created: {task["url"]}
+Channel created: <#{channel["id"]}>
 Zoom: {zoom_url}
 """,
     )
