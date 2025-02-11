@@ -3,7 +3,6 @@ import os
 
 from autokitteh import github, google
 from autokitteh.slack import slack_client
-
 from helpers import get_sheets_data
 
 
@@ -13,17 +12,19 @@ sheets = google.google_sheets_client("googlesheets_conn")
 
 
 SHEET_ID = os.getenv("SHEET_ID")
+SHEET_NAME = os.getenv("SHEET_NAME")
 
 
-def find_unanswered_comments(repo_name: str, user: str):
+def find_unanswered_comments(
+    repo_name: str, user: str
+) -> list[tuple[str, str, str, str]]:
     """Entrypoint for finding unanswered comments."""
     print("Finding unanswered messages...")
-    comment_ids = get_sheets_data("Sheet1")
+    sheets_data = get_sheets_data(SHEET_NAME)
     comment_ids_set = set()
-    if "values" in comment_ids:
-        for row in comment_ids["values"]:
-            comment_ids_set.add(row[0])
-
+    if "values" in sheets_data:
+        for row in sheets_data["values"]:
+            comment_ids_set.add(int(row[0]))
     return get_github_comments(comment_ids_set, repo_name, user)
 
 
@@ -43,22 +44,17 @@ def get_github_comments(
 
     # Process each pull request
     for pr in pulls:
+        # Combine issue and inline comments
         issue_comments = list(pr.get_issue_comments())
         inline_comments = list(pr.get_comments())
-        process_comments(
-            issue_comments,
-            comment_ids_set,
-            unresponded,
-            github_user_id,
-            is_inline=False,
-        )
-        process_comments(
-            inline_comments,
-            comment_ids_set,
-            unresponded,
-            github_user_id,
-            is_inline=True,
-        )
+        for comments, is_inline in [(issue_comments, False), (inline_comments, True)]:
+            process_comments(
+                comments,
+                comment_ids_set,
+                unresponded,
+                github_user_id,
+                is_inline=is_inline,
+            )
 
     return unresponded
 
@@ -78,6 +74,7 @@ def process_comments(
         if has_been_responded_to(comment, comments, is_inline, github_user_id):
             continue
 
+        print()
         if comment.id not in comment_ids_set:
             unresponded.append(
                 (comment.id, comment.user.login, comment.body, comment.html_url)
@@ -88,7 +85,6 @@ def process_comments(
 def has_been_responded_to(
     target_comment, potential_responses, is_inline, github_user_id
 ):
-    """Check if the comment has already been responded to."""
     # Skip if comment is less than 24 hours old
     now = datetime.datetime.now(datetime.UTC)
     if now - target_comment.created_at < datetime.timedelta(hours=24):

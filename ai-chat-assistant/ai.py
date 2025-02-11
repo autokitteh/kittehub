@@ -3,26 +3,25 @@ import os
 from pathlib import Path
 
 import autokitteh
-from autokitteh.google import google_sheets_client
 from autokitteh.openai import openai_client
 from autokitteh.slack import slack_client
-
-from github_poller import find_unanswered_comments
 from helpers import append_row_to_sheet
 from helpers import format_messages_for_slack
 from helpers import get_sheets_data
+from repo_scanner import find_unanswered_comments
 
 
 chatgpt = openai_client("chatgpt_conn")
-sheets = google_sheets_client("googlesheets_conn")
 slack = slack_client("slack_conn")
 
-SHEET_ID = os.getenv("SHEET_ID")
 REPO_NAME = os.getenv("REPO_NAME")
+SHEET_ID = os.getenv("SHEET_ID")
+SHEET_NAME = os.getenv("SHEET_NAME")
 SYSTEM_PROMPT = Path("prompt.txt").read_text()
 
 
 def on_activate(_):
+    """Entrypoint for the AI chatbot assistant."""
     while True:
         print("Waiting for a message...")
         subs = [autokitteh.subscribe("slack_conn", "event_type == 'message'")]
@@ -32,20 +31,28 @@ def on_activate(_):
 
 
 def on_slack_message(data):
+    """Handle a message from Slack. This function determines the action to take.
+
+    Args:
+        data: The data from the Slack event.
+    """
     user, user_text = data["user"], data["text"]
     response = get_chatgpt_response(user_text)
 
+    # Always send initial response
+    slack.chat_postMessage(channel=user, text=response["message"])
+
     match response["action"]:
         case "list":
-            list_messages("Sheet1", user)
-        case "poll":
+            rows = get_sheets_data(SHEET_NAME)
+            message = format_messages_for_slack(rows)
+            slack.chat_postMessage(channel=user, text=message)
+        case "scan":
             comments = find_unanswered_comments(REPO_NAME, user)
-            append_row_to_sheet("Sheet1", comments)
-            message = str(comments)
-        case _:
-            message = response["message"]
-
-    slack.chat_postMessage(channel=user, text=message)
+            append_row_to_sheet(SHEET_NAME, comments)
+            rows = get_sheets_data(SHEET_NAME)
+            message = format_messages_for_slack(rows)
+            slack.chat_postMessage(channel=user, text=message)
 
 
 def get_chatgpt_response(user_text):
@@ -58,28 +65,3 @@ def get_chatgpt_response(user_text):
         ],
     )
     return json.loads(response.choices[0].message.content)
-
-
-@autokitteh.activity
-def list_messages(sheet_name: str, user: str):
-    rows = get_sheets_data(sheet_name)
-    if "values" not in rows:
-        slack.chat_postMessage(
-            channel=user,
-            text="No unanswered messages found",
-        )
-        return
-
-    final_message = format_messages_for_slack(rows)
-
-    slack.chat_postMessage(
-        channel=user,
-        text=final_message,
-        parse="mrkdwn",
-    )
-
-
-# TODO: when sheet is updated, send a message to the user. But how do I
-# differentiate between an update event and the initial polling?
-def on_new_row(event):
-    pass

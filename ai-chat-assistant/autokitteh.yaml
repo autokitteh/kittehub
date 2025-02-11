@@ -4,11 +4,11 @@ project:
   name: ai_chatbot_assistant
   vars:
     - name: SHEET_ID
-      value: "1kl6Y9vLOx6JDjcDqhEiigcnyLbzdW4avdSa4NOdegx4"
+      value:
     - name: SHEET_NAME
-      value: "Sheet1"
+      value:
     - name: REPO_NAME
-      value: "autokitteh/autokitteh"
+      value:
   connections:
     - name: chatgpt_conn
       integration: chatgpt
