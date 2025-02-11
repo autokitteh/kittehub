@@ -1,4 +1,4 @@
-from collections import namedtuple
+from dataclasses import dataclass
 import os
 
 from autokitteh.google import google_sheets_client
@@ -6,17 +6,20 @@ from autokitteh.google import google_sheets_client
 
 DIRECTORY_GOOGLE_SHEET_ID = os.getenv("DIRECTORY_GOOGLE_SHEET_ID", "")
 
-gsheets = google_sheets_client("mygsheets")
+gsheets = google_sheets_client("mygsheets").spreadsheets().values()
 
 
-Person = namedtuple("Person", ["name", "slack_id", "topics"])
+@dataclass
+class Person:
+    """A person in the directory."""
+    name: str
+    slack_id: str
+    topics: list[str]
 
 
 def load() -> dict[str, list[Person]]:  # topic -> list of people
     vs = (
-        gsheets.spreadsheets()
-        .values()
-        .get(spreadsheetId=DIRECTORY_GOOGLE_SHEET_ID, range="A1:C100")
+        gsheets.get(spreadsheetId=DIRECTORY_GOOGLE_SHEET_ID, range="A1:C100")
         .execute()
         .get("values", [])
     )
