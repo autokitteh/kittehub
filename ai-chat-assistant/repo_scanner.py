@@ -42,9 +42,9 @@ def get_github_comments(
 
     unresponded = []
 
-    # Process each pull request
+    # Process each pull request.
     for pr in pulls:
-        # Combine issue and inline comments
+        # Combine issue and inline comments.
         issue_comments = list(pr.get_issue_comments())
         inline_comments = list(pr.get_comments())
         for comments, is_inline in [(issue_comments, False), (inline_comments, True)]:
@@ -85,7 +85,7 @@ def process_comments(
 def has_been_responded_to(
     target_comment, potential_responses, is_inline, github_user_id
 ):
-    # Skip if comment is less than 24 hours old
+    # Skip if comment is less than 24 hours old.
     now = datetime.datetime.now(datetime.UTC)
     if now - target_comment.created_at < datetime.timedelta(hours=24):
         return True

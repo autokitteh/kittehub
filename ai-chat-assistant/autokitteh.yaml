@@ -16,7 +16,7 @@ project:
       integration: chatgpt
     - name: github_conn
       integration: github
-    - name: googlesheets_conn
+    - name: sheets_conn
       integration: googlesheets
     - name: slack_conn
       integration: slack

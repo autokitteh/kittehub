@@ -39,7 +39,7 @@ def on_slack_message(data):
     user, user_text = data["user"], data["text"]
     response = get_chatgpt_response(user_text)
 
-    # Always send initial response
+    # Always send initial response.
     slack.chat_postMessage(channel=user, text=response["message"])
 
     match response["action"]:
