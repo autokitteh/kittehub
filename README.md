@@ -27,6 +27,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Google Calendar To Asana](./google_cal_to_asana/) | Creates Asana tasks based on Google Calendar events | calendar, asana |
 | [Create Jira ticket from Google form](./google_forms_to_jira/) | Create and update Jira tickets automatically from Google Forms responses | forms, jira |
 | [Hacker News alerts in Slack](./hackernews/) | Track Hacker News articles by topic and send updates to Slack | slack |
+| [Incident management automation](./incidenter/) | Slack/Zoom/Height Incident Automation | slack, zoom, height |
 | [GitHub and Jenkins workflow](./jenkins_release/) | This ensures that when a commit is pushed to main, a specific Jenkins build is completed. | github |
 | [Jira assignee from Google Calendar](./jira_google_calendar/assignee_from_schedule/) | Set assignee in Jira ticket to the person currently on-call | jira, calendar |
 | [Create calendar due date event for Jira ticket](./jira_google_calendar/deadline_to_event/) | When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline | calendar, jira |
