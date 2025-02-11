@@ -5,33 +5,32 @@ from pathlib import Path
 import autokitteh
 from autokitteh.openai import openai_client
 from autokitteh.slack import slack_client
-from helpers import append_row_to_sheet
-from helpers import format_messages_for_slack
-from helpers import get_sheets_data
+
+import helpers
 from repo_scanner import find_unanswered_comments
 
-
-chatgpt = openai_client("chatgpt_conn")
-slack = slack_client("slack_conn")
 
 REPO_NAME = os.getenv("REPO_NAME")
 SHEET_ID = os.getenv("SHEET_ID")
 SHEET_NAME = os.getenv("SHEET_NAME")
 SYSTEM_PROMPT = Path("prompt.txt").read_text()
 
+chatgpt = openai_client("chatgpt_conn")
+slack = slack_client("slack_conn")
+
 
 def on_activate(_):
     """Entrypoint for the AI chatbot assistant."""
     while True:
         print("Waiting for a message...")
-        subs = [autokitteh.subscribe("slack_conn", "event_type == 'message'")]
+        subs = autokitteh.subscribe("slack_conn", "event_type == 'message'")
         data = autokitteh.next_event(subs)
         if data:
             on_slack_message(data)
 
 
 def on_slack_message(data):
-    """Handle a message from Slack. This function determines the action to take.
+    """Determine the action to take based on an incoming Slack message.
 
     Args:
         data: The data from the Slack event.
@@ -44,14 +43,14 @@ def on_slack_message(data):
 
     match response["action"]:
         case "list":
-            rows = get_sheets_data(SHEET_NAME)
-            message = format_messages_for_slack(rows)
+            rows = helpers.get_sheets_data(SHEET_NAME)
+            message = helpers.format_messages_for_slack(rows)
             slack.chat_postMessage(channel=user, text=message)
         case "scan":
             comments = find_unanswered_comments(REPO_NAME, user)
-            append_row_to_sheet(SHEET_NAME, comments)
-            rows = get_sheets_data(SHEET_NAME)
-            message = format_messages_for_slack(rows)
+            helpers.append_row_to_sheet(SHEET_NAME, comments)
+            rows = helpers.get_sheets_data(SHEET_NAME)
+            message = helpers.format_messages_for_slack(rows)
             slack.chat_postMessage(channel=user, text=message)
 
 

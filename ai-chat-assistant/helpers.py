@@ -17,7 +17,7 @@ def get_sheets_data(sheet_name: str) -> dict:
         sheet_name (str): The name of the sheet (tab).
 
     Returns:
-        list: List of tuples containing (pr_number, author, body, url).
+        dict: The data from the sheet.
     """
     range_name = f"{sheet_name}!A:D"
     return (

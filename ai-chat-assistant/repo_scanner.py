@@ -3,7 +3,8 @@ import os
 
 from autokitteh import github, google
 from autokitteh.slack import slack_client
-from helpers import get_sheets_data
+
+import helpers
 
 
 g = github.github_client("github_conn")
@@ -20,7 +21,7 @@ def find_unanswered_comments(
 ) -> list[tuple[str, str, str, str]]:
     """Entrypoint for finding unanswered comments."""
     print("Finding unanswered messages...")
-    sheets_data = get_sheets_data(SHEET_NAME)
+    sheets_data = helpers.get_sheets_data(SHEET_NAME)
     comment_ids_set = set()
     if "values" in sheets_data:
         for row in sheets_data["values"]:
@@ -74,7 +75,6 @@ def process_comments(
         if has_been_responded_to(comment, comments, is_inline, github_user_id):
             continue
 
-        print()
         if comment.id not in comment_ids_set:
             unresponded.append(
                 (comment.id, comment.user.login, comment.body, comment.html_url)
@@ -90,12 +90,12 @@ def has_been_responded_to(
     if now - target_comment.created_at < datetime.timedelta(hours=24):
         return True
 
-    # Check for emoji reactions
+    # Check for emoji reactions.
     for reaction in target_comment.get_reactions():
         if reaction.user.login == github_user_id:
             return True
 
-    # Check for comment responses
+    # Check for comment responses.
     for response in potential_responses:
         if (
             response.created_at > target_comment.created_at
@@ -104,7 +104,7 @@ def has_been_responded_to(
             if is_inline:
                 return True
 
-            # For issue comments, check for @ mentions or quotes
+            # For issue comments, check for @ mentions or quotes.
             if has_mention_or_quote(response, target_comment):
                 return True
 
@@ -119,7 +119,7 @@ def has_mention_or_quote(response, original_comment):
     if "@" + original_comment.user.login in response.body:
         return True
 
-    # Check for quote
+    # Check for quote.
     for line in response.body.splitlines():
         if line.strip().startswith(">") and original_comment.body[:30] in line:
             return True
@@ -128,7 +128,12 @@ def has_mention_or_quote(response, original_comment):
 
 
 def get_email_by_slack_user_id(user_id: str):
-    return slack.users_info(user=user_id).get("user").get("profile").get("email")
+    return (
+        slack.users_info(user=user_id)
+        .get("user", {})
+        .get("profile", {})
+        .get("email", "")
+    )
 
 
 def get_github_user_id_by_email(email: str):
