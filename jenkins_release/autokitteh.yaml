@@ -8,14 +8,14 @@ project:
 
   vars:
     - name: JENKINS_URL
-      value: "<JENKINS_URL>"
+      value:
     - name: JENKINS_USER
-      value: "<USERNAME>"
+      value:
     - name: JENKINS_PASSWORD
-      value: ""
       secret: true
+      value:
     - name: JOB_NAME
-      value: "<JOB_NAME>"
+      value:
 
   connections:
     - name: github_conn

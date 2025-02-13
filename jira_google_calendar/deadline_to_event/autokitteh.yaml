@@ -1,22 +1,18 @@
 # This YAML file is a declarative manifest that describes the setup
 # of an AutoKitteh project that creates events in Google Calendar
 # when Atlassian Jira issues are created in a specific project.
-#
-# Before deploying this AutoKitteh project, set "JIRA_PROJECT_KEY"
-# in the trigger's filter expression.
-#
-# After creating this AutoKitteh project by applying this file,
-# initialize its Jira connection.
 
 version: v1
 
 project:
   name: jira_deadline_to_google_calendar_event
+
   connections:
     - name: jira_connection
       integration: jira
     - name: google_calendar_connection
       integration: googlecalendar
+
   triggers:
     - name: jira_issue_created
       connection: jira_connection

@@ -6,15 +6,18 @@ version: v1
 
 project:
   name: pipeline
+
   vars:
     - name: CREATE_DB
       value: false
     - name: DB_DSN
       secret: true
       value:
+
   connections:
     - name: aws_conn
       integration: aws
+
   triggers:
     - name: new_s3_object
       type: webhook

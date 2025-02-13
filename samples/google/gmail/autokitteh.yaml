@@ -6,9 +6,11 @@ version: v1
 
 project:
   name: gmail_sample
+
   connections:
     - name: gmail_conn
       integration: gmail
+
   triggers:
     - name: on_http_get
       type: webhook

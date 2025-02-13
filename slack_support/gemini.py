@@ -1,18 +1,11 @@
 import json
-import os
+import re
 
-import google.generativeai as genai
+from autokitteh.google import gemini_client
 
 
-# How do i know if this is "picklable" or not? It has no return value?
-# Do I need to run this every time? Is this running in an activity?
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-# Make this run every time outside of an activity if it's in global scope?
-model = genai.GenerativeModel(
-    "gemini-1.5-flash",
-    generation_config={"response_mime_type": "application/json"},
-)
+MODEL = "gemini-1.5-flash"
+gemini = gemini_client("gemini_conn", model_name=MODEL)
 
 
 def extract_topic(text: str, topics: set[str]) -> str:
@@ -26,5 +19,14 @@ If not a request for help: {{"help": false}}
 Text to analyze:
 {text}"""
 
-    resp = json.loads(model.generate_content(prompt).text)
+    response_text = gemini.generate_content(prompt).text.strip()
+
+    # Remove markdown code block markers (```json and ```)
+    response_text = re.sub(r"^```json\n?|```$", "", response_text).strip()
+
+    try:
+        resp = json.loads(response_text)
+    except json.JSONDecodeError:
+        raise ValueError(f"Invalid JSON response: {response_text}") from None
+
     return resp.get("help"), resp.get("topic")

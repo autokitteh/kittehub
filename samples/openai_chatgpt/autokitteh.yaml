@@ -6,12 +6,14 @@ version: v1
 
 project:
   name: chatgpt_sample
+
   connections:
     - name: chatgpt_conn
       integration: chatgpt
+
   triggers:
     - name: on_http_get
       type: webhook
       event_type: post
       filter: data.headers["Content-Type"] == "text/plain"
-      call: program.py:on_http_get
+      call: program.py:on_http_post
