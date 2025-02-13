@@ -13,10 +13,6 @@ project:
       # 2 | George  | U87654321 | topic3
       name: DIRECTORY_GOOGLE_SHEET_ID
       value:
-    - # A gemini key must be acquired from https://aistudio.google.com/app/apikey.
-      name: GEMINI_API_KEY
-      secret: true
-      value:
     - # Time in minutes to wait for the issue to be picked up before
       # reminder.
       name: HELP_REQUEST_TIMEOUT_MINUTES
@@ -27,7 +23,8 @@ project:
       integration: slack
     - name: mygsheets
       integration: googlesheets
-
+    - name: gemini_conn
+      integration: googlegemini
   triggers:
     - name: slack_app_mention
       connection: myslack

@@ -1,13 +1,14 @@
 ---
-title: Slack bot for assistance requests with AI categorization
-description: Slack bot request for assistance is inferred using Google's Gemini AI. The appropriate person is mentioned according to a predetermined table of expertise in a Google Doc. The person can then `!take` the request and later `!resolve` it.
+title: AI-Driven Slack Bot for Assistance Requests
+description:
+This Slack bot automates assistance requests using Google's Gemini AI to categorize inquiries. Based on a predefined expertise table stored in a Google Sheet, the bot assigns the request to the appropriate expert. The expert can then use `!take` to claim the request and later mark it as resolved using `!resolve`.
 integrations: ["slack", "googlegemini"]
 categories: ["AI", "Office Automation"]
 ---
 
 # AI Driven Slack Support
 
-This automation implements a Slack bot to manage requests for help as a bot mentions using a durable workflow. Once a request for assistance is received, the subject of the request is inferred using Google's Gemini AI. The appropriate person is mentioned according to a predetermined table of expertise in a Google Doc. The person can then `!take` the request and later `!resolve` it. If no one picks up the request for a configurable duration, the automation will remind the person that a request is pending.
+This project automates help request management by assigning experts based on AI-inferred topics and predefined expertise. It tracks requests, allows experts to claim and resolve them, and sends reminders if unclaimed.
 
 For example, given this expertise table:
 
@@ -22,53 +23,55 @@ This would happen:
 
 ![demo](./demo.png)
 
-# Deploy
+## How It Works
 
-Requirements:
+1. Receive a help request from a user
+2. Identify the request topic using Gemini AI
+3. Assign the request to the appropriate expert based on the expertise table
+4. Confirm the expert’s acceptance of the request
+5. Track the request until the expert resolves it
+6. Remind the expert if the request remains unresolved within a set time
 
-- Slack integration is set up. See https://docs.autokitteh.com/integrations/slack.
-- Google integration is set up. See https://docs.autokitteh.com/integrations/google.
+<!-- TODO: Is this explicitly needed since it's already at the top? -->
+<!-- ## Create your Google Sheet
 
-First apply the manifest:
-
-```
-$ ak manifest apply autokitteh.yaml
-```
-
-Then, initialize the Google and Slack connections. This will authenticate them to the desired Slack workspace and Google account.
-
-```
-$ ak connection init slack_support/myslack
-$ ak connection init slack_support/mygsheets
-```
-
-Now acquire a Gemini API key from Google. Go to https://ai.google.dev/gemini-api/docs/api-key and follow the instructions.
-Set the variable in autokitteh:
-
-```
-$ ak env set --env slack_support/default --secret GEMINI_API_KEY <api-key>
-```
-
-Next, create your Google Sheet containing the schedule, it should look like this:
+Create a Google Sheet containing the expertise table; it should look like this:
 
 ```
    | A       | B         | C
 ---+---------+-----------+--------------
  1 | Gizmo   | U12345678 | topic1,topic2
  2 | George  | U87654321 | topic3
+``` -->
+
+## Cloud Usage
+
+1. Initialize your connections (Google Sheets, Google Gemini, Slack)
+2. Set the `DIRECTORY_GOOGLE_SHEET_ID` project variable, in the "VARIABLES" tab, to point to your Google Sheet
+3. (Optional) Set the `HELP_REQUEST_TIMEOUT_MINUTES` project variable, in the "VARIABLES" tab, to set the timeout for unclaimed requests
+4. Deploy project
+
+## Trigger Workflow
+
+The workflow is triggered when the bot is mentioned in a message within a channel where it is a member. For example:
+
+```
+@autokitteh help me with my cat
 ```
 
-Set the sheet ID in the autokitteh environment:
+> [!IMPORTANT]
+> For self-hosted, replace `@autokitteh` with your app's name (e.g., `@yourapp help me with my cat`).
 
-```
-$ ak env set --env slack_support/default DIRECTORY_GOOGLE_SHEET_ID <google-sheet-id>
-```
+## Self-Hosted Deployment
 
-You are ready to roll. Deploy your project:
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 
-```
-$ ak deploy --project slack_support --dir .
-```
 
-> [!NOTE]
-> This project includes a `requirements.txt` file for installing dependencies. This is relevant when using the [cloud offering](https://app.autokitteh.cloud/) or when running in [Docker mode](https://docs.autokitteh.com/get_started/start_server/#docker). If you're not using Google Gemini and want to customize this project, you can remove or modify the file as needed. Otherwise, leave it as is.
+
+
+
+
+
+
+
+
