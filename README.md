@@ -53,7 +53,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Scheduler sample](./samples/scheduler/) | Samples using cron scheduler for workflows | scheduler |
 | [Slack sample](./samples/slack/) | Samples using Slack APIs | slack |
 | [Twilio sample](./samples/twilio/) | Samples using Twilio APIs | twilio |
-| [Slack bot for assistance requests with AI categorization](./slack_support/) | Slack bot request for assistance is inferred using Google's Gemini AI. The appropriate person is mentioned according to a predetermined table of expertise in a Google Doc. The person can then `!take` the request and later `!resolve` it. | slack, googlegemini |
+| [AI-driven Slack bot for assistance requests](./slack_support/) | Automatically route help requests to the right expert based on topic analysis and expertise matching | slack, sheets, googlegemini |
 | [Fault tolerant workflow with manual Slack approvals](./task_chain/single_workflow/basic/) | Runs a sequence of tasks with fault tolerance. In case of failure, user can decide to terminate or retry from the point of failure. | slack |
 | [Create Jira ticket from webhook data](./webhook_to_jira/) | Create Jira issues automatically from HTTP webhooks | jira, http |
 <!-- END-TABLE -->
