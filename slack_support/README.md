@@ -1,5 +1,5 @@
 ---
-title: AI-Driven Slack Bot for Assistance Requests
+title: AI-driven Slack bot for assistance requests
 description: AI-powered Slack bot that automatically routes help requests to the right expert based on topic analysis and expertise matching.
 integrations: ["slack", "googlegemini"]
 categories: ["AI", "Office Automation"]
