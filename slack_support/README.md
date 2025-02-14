@@ -46,9 +46,6 @@ The workflow is triggered when the bot is mentioned in a message within a channe
 @autokitteh help me with my cat
 ```
 
-> [!IMPORTANT]
-> For self-hosted, replace `@autokitteh` with your app's name (e.g., `@yourapp help me with my cat`).
-
 When a topic matches an expert's expertise, the bot notifies them. The expert can use:
 - `!take` to claim the request
 - `!resolve` to mark it complete
