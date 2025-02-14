@@ -1,7 +1,6 @@
 ---
 title: AI-Driven Slack Bot for Assistance Requests
-description:
-This Slack bot automates assistance requests using Google's Gemini AI to categorize inquiries. Based on a predefined expertise table stored in a Google Sheet, the bot assigns the request to the appropriate expert. The expert can then use `!take` to claim the request and later mark it as resolved using `!resolve`.
+description: AI-powered Slack bot that automatically routes help requests to the right expert based on topic analysis and expertise matching.
 integrations: ["slack", "googlegemini"]
 categories: ["AI", "Office Automation"]
 ---
@@ -32,18 +31,6 @@ This would happen:
 5. Track the request until the expert resolves it
 6. Remind the expert if the request remains unresolved within a set time
 
-<!-- TODO: Is this explicitly needed since it's already at the top? -->
-<!-- ## Create your Google Sheet
-
-Create a Google Sheet containing the expertise table; it should look like this:
-
-```
-   | A       | B         | C
----+---------+-----------+--------------
- 1 | Gizmo   | U12345678 | topic1,topic2
- 2 | George  | U87654321 | topic3
-``` -->
-
 ## Cloud Usage
 
 1. Initialize your connections (Google Sheets, Google Gemini, Slack)
@@ -62,16 +49,10 @@ The workflow is triggered when the bot is mentioned in a message within a channe
 > [!IMPORTANT]
 > For self-hosted, replace `@autokitteh` with your app's name (e.g., `@yourapp help me with my cat`).
 
+When a topic matches an expert's expertise, the bot notifies them. The expert can use:
+- `!take` to claim the request
+- `!resolve` to mark it complete
+
 ## Self-Hosted Deployment
 
 Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
-
-
-
-
-
-
-
-
-
-
