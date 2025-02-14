@@ -25,6 +25,7 @@ project:
       integration: googlesheets
     - name: gemini_conn
       integration: googlegemini
+
   triggers:
     - name: slack_app_mention
       connection: myslack
