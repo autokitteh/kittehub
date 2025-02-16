@@ -32,6 +32,9 @@ curl -i -X POST "${WEBHOOK_URL}" -H "Content-Type: text/plain" -d "prompt"
 ```
 
 > [!TIP]
+> The workflow can also be triggered manually by clicking the "Run" button in the UI.
+
+> [!TIP]
 > You can modify the request body to send custom text and observe ChatGPT's dynamic responses.
 
 ## Self-Hosted Deployment
