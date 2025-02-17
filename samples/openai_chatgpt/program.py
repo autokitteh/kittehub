@@ -28,7 +28,7 @@ def on_http_post(event):
     Example usage:
     - URL: "http://localhost:9980/webhooks/<webhook_slug>"
     - Curl command:
-      curl -X POST "<URL>" -H "Content-Type: text/plain" -d " Why do cats purr?"
+      curl -X POST "<URL>" -H "Content-Type: text/plain" -d "Why do cats purr?"
 
     Args:
         event: The HTTP event containing request data.
