@@ -28,16 +28,17 @@ def on_http_post(event):
     Example usage:
     - URL: "http://localhost:9980/webhooks/<webhook_slug>"
     - Curl command:
-      curl -X POST "<URL>" -H "Content-Type: text/plain" -d "Meow"
+      curl -X POST "<URL>" -H "Content-Type: text/plain" -d "Why do cats purr?"
 
     Args:
         event: The HTTP event containing request data.
     """
-    body = event.data.body.bytes.decode("utf-8")
-    print(body)
+    body = ""
+    if event:
+        body = event.data.body.bytes.decode("utf-8")
 
     # Example 1: trivial interaction with ChatGPT.
-    msg = {"role": "user", "content": "Meow!"}
+    msg = {"role": "user", "content": body or "Meow"}
     resp = chatgpt_client.chat.completions.create(model=MODEL, messages=[msg])
 
     # For educational and debugging purposes, print ChatGPT's response
