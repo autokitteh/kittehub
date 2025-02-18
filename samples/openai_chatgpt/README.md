@@ -28,10 +28,12 @@ API documentation:
 Send an HTTP POST request to the webhook URL from step 2 in the [Cloud Usage](#cloud-usage) section above:
 
 ```shell
-curl -i -X POST "${WEBHOOK_URL}" -H "Content-Type: text/plain" -d "Meow"
+curl -i -X POST "${WEBHOOK_URL}" -H "Content-Type: text/plain" -d "prompt"
 ```
 
 > [!TIP]
+> The workflow can also be triggered manually by clicking the "Run" button in the UI.
+>
 > You can modify the request body to send custom text and observe ChatGPT's dynamic responses.
 
 ## Self-Hosted Deployment
