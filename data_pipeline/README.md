@@ -5,23 +5,20 @@ integrations: ["aws", "http", "sqlite3"]
 categories: ["DevOps"]
 ---
 
-# Parse a file in S3 and insert to database
+# ETL Pipeline From S3 to SQLite
 
 This project downloads and parses GPX files from an S3 bucket and inserts the resulting structured records into a SQLite database. It leverages AWS notifications to trigger an HTTP endpoint when new GPX files are available.
 
 ## How It Works
 
 1. Monitor S3 bucket for new GPX files
-2. Trigger SNS to notify AutoKitteh HTTP endpoint
+2. Receive SNS notification at AutoKitteh HTTP endpoint
 3. Extract file details from notification
 4. Download GPX file from S3 bucket
 5. Parse file contents into structured data
 6. Store parsed records in SQLite database
 
 ## Cloud Usage
-
-> [!IMPORTANT]
-> See the section [Detailed instructions](#detailed-instructions) for a more in depth explanation.
 
 1. Initialize your AWS connection
 2. Configure your SNS topic and S3 bucket notifications to trigger on new GPX file uploads.
@@ -30,7 +27,7 @@ This project downloads and parses GPX files from an S3 bucket and inserts the re
 ## Trigger Workflow
 
 > [!IMPORTANT]
-> Ensure all connections (AWS, HTTP, SQLite) are initialized; otherwise, the workflow will raise a `ConnectionInitError`.
+> Ensure all connections (AWS) are initialized; otherwise, the workflow will raise a `ConnectionInitError`.
 
 To trigger the workflow, upload a new GPX file to the S3 bucket (you can use `hike.gpx` from here).
 After the file is loaded, look at the session log:
