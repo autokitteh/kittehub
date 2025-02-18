@@ -7,7 +7,7 @@ categories: ["DevOps"]
 
 # Parse a file in S3 and insert to database
 
-This project automates the process of parsing GPX files from an S3 bucket and inserting the extracted data into a SQLite database. It leverages AWS notifications to trigger a HTTP endpoint that downloads and processes GPX files, translating them into structured records stored in the database.
+This project downloads and parses GPX files from an S3 bucket and inserts the resulting structured records into a SQLite database. It leverages AWS notifications to trigger an HTTP endpoint when new GPX files are available.
 
 ## How It Works
 
@@ -32,7 +32,7 @@ This project automates the process of parsing GPX files from an S3 bucket and in
 > [!IMPORTANT]
 > Ensure all connections (AWS, HTTP, SQLite) are initialized; otherwise, the workflow will raise a `ConnectionInitError`.
 
-To trigger the workflow, upload a new GPX file to the S3bucket (you can use `hike.gpx` from here).
+To trigger the workflow, upload a new GPX file to the S3 bucket (you can use `hike.gpx` from here).
 After the file is loaded, look at the session log:
 
 ```json
@@ -47,12 +47,13 @@ Follow [these detailed instructions](https://docs.autokitteh.com/get_started/dep
 
 ## Known Limitations
 
-- The current parsing mechanism is tailored for GPX files and might need adjustments for other formats.
-- Error handling is basic and may require enhancement for production environments.
+- The current parsing mechanism is tailored for GPX files and might need adjustments for other formats
+- Error handling is basic and may require enhancement for production environments
 
 ## AWS Setup
 
 Make sure you have AWS keys with read access to the S3 bucket.
+
 See [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) for more information on how to create AWS keys.
 
 ### Configuring S3 Bucket for Notifications
@@ -73,11 +74,11 @@ See [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_acces
 
 Visit the URL to confirm the subscription.
 
-### Configure The S3 Bucket to Send Notifications
+### Configure the S3 Bucket to Send Notifications
 
 See [here](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ways-to-add-notification-config-to-bucket.html).
 
-### Create The Database
+### Create the Database
 
 (Self-hosted) Pick a location for the database, say `$PWD/hikes.db`, and create the database.
 
