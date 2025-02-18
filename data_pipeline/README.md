@@ -16,7 +16,7 @@ This project downloads and parses GPX files from an S3 bucket and inserts the re
 3. Extract file details from notification
 4. Download GPX file from S3 bucket
 5. Parse file contents into structured data
-6. Store parsed records in SQLite database
+6. Insert parsed records into SQLite database
 
 ## Cloud Usage
 
