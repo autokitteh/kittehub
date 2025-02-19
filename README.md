@@ -18,7 +18,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Manage emergency AWS access requests via Slack](./break_glass/) | Submit emergency AWS access requests via Slack, which are then approved or denied based on a set of predefined conditions | aws, slack |
 | [Email categorization and notification](./categorize_emails/) | Categorize incoming emails and notify relevant Slack channels | gmail, chatgpt, slack |
 | [Slack notify on Confluence page created](./confluence_to_slack/) | When Confluence page is created the user will be notified on Slack | confluence, slack |
-| [Parse a file in S3 and insert to database](./data_pipeline/) | Automatically processes GPX files from S3 into a SQLite database, creating a seamless data pipeline from cloud storage to structured data. | aws, http, sqlite3 |
+| [ETL Pipeline From S3 to SQLite](./data_pipeline/) | Processes GPX files from S3 and inserts them into a SQLite database, creating a data pipeline from cloud to structured data | aws, http, sqlite3 |
 | [GitHub issue alert](./devops/github_issue_alert/) | Send GitHub issue comments to Slack | github, slack |
 | [GitHub workflow orchestration](./devops/github_workflows/) | Orchestrate GitHub workflows using advanced scenarios across multiple repositories | github |
 | [Pull Request Review Reminder (Purrr)](./devops/purrr/) | Streamline code reviews and cut down turnaround time to merge pull requests | github, sheets, slack |
