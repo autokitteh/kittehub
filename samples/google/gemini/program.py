@@ -12,13 +12,13 @@ MODEL = "gemini-1.5-flash"
 gemini = gemini_client("gemini_conn", model_name=MODEL)
 
 
-def trivial_interaction():
+def trivial_interaction(_):
     prompt = "say meow in different languages"
     response = gemini.generate_content(prompt)
     print(response.text)
 
 
-def interactive_chat():
+def interactive_chat(_):
     chat = gemini.start_chat(
         history=[
             {"role": "user", "parts": "Hello"},
