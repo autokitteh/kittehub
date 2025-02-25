@@ -5,6 +5,7 @@ import traceback
 
 import autokitteh
 from autokitteh.google import gmail_client
+
 import openAI_handling
 import scan_gmails
 import schemas
