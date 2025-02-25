@@ -10,7 +10,7 @@ AI_INVOICE_JSON_SCHEMA = {
                 "companyName": {"type": "string", "nullable": True},
                 "date": {"type": "string", "nullable": True},
                 "amount": {"type": "string", "nullable": True},
-                "invoiceId": {"type": "string", "nullable": True}
+                "invoiceId": {"type": "string", "nullable": True},
             },
             "required": ["companyName", "date", "amount", "invoiceId"],
             "additionalProperties": False,
@@ -19,6 +19,4 @@ AI_INVOICE_JSON_SCHEMA = {
 }
 
 # Schema for invoice detection (boolean response)
-AI_BOOLEAN_SCHEMA = {
-    "type": "text"  
-}
+AI_BOOLEAN_SCHEMA = {"type": "text"}
