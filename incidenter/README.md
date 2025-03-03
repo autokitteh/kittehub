@@ -1,6 +1,6 @@
 ---
 title: Incident management automation
-description: Connect 3 separate systems for seamless incident management
+description: Connect separate systems to have seamless incident management
 integrations: ["slack", "zoom", "height"]
 categories: ["Reliability"]
 ---
