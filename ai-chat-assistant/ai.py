@@ -1,3 +1,10 @@
+"""This module provides the main functionality for the AI chatbot assistant.
+
+It integrates with Slack and uses OpenAI's GPT model to generate responses
+based on user messages. It also interacts with Google Sheets to store and
+retrieve data.
+"""
+
 import json
 import os
 from pathlib import Path

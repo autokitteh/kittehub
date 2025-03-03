@@ -1,3 +1,5 @@
+"""Manage scheduled tasks and Slack commands for idle seat management."""
+
 from autokitteh.slack import slack_client
 
 import seats
