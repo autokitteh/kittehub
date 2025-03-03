@@ -3,6 +3,7 @@
 import json
 import time
 
+from autokitteh.slack import normalize_channel_name
 from slack_sdk.errors import SlackApiError
 
 import data_helper
@@ -37,7 +38,7 @@ def initialize_for_github_pr(action: str, pr, sender) -> str:
     print(f"Creating Slack channel for {pr.html_url} (PR event action: {action})")
     print(json.dumps(pr, indent=4, sort_keys=True))
 
-    name = f"{pr.number}_{slack_helper.normalize_channel_name(pr.title)}"
+    name = f"{pr.number}_{normalize_channel_name(pr.title)}"
     channel_id = slack_helper.create_channel(name)
     if not channel_id:
         _report_creation_error(pr, sender.login)
