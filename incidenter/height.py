@@ -1,3 +1,5 @@
+"""Interact with the Height API for creating tasks and adding messages to tasks."""
+
 from os import getenv
 
 from autokitteh.height import height_client

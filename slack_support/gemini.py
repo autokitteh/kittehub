@@ -1,3 +1,5 @@
+"""extract the topic from a given text."""
+
 import json
 
 from autokitteh.google import gemini_client

@@ -1,3 +1,5 @@
+"""Handles Slack mentions and help requests, sending reminders if unresolved."""
+
 from datetime import datetime, UTC
 import os
 

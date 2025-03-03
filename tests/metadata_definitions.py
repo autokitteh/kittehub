@@ -1,3 +1,5 @@
+"""Define metadata and allowed values for integrations and categories."""
+
 METADATA = ("title", "description", "integrations", "categories")
 
 ALLOWED_INTEGRATIONS = (
