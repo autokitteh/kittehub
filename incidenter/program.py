@@ -1,3 +1,5 @@
+"""Tracks Slack-reported incidents, integrating with Height and Zoom."""
+
 from os import getenv
 import re
 

@@ -47,7 +47,7 @@ def on_slack_command(event):
 def fetch_articles(topic, all_articles):
     encoded_query = urllib.parse.quote(topic)
     full_url = f"{API_URL}{encoded_query}"
-    hits = requests.get(full_url).json().get("hits", [])
+    hits = requests.get(full_url, timeout=10).json().get("hits", [])
 
     # Extract some of the article fields from the API response.
     for article in hits:

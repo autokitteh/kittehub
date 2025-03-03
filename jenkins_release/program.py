@@ -1,3 +1,5 @@
+"""Trigger and track Jenkins builds based on GitHub push events."""
+
 from os import getenv
 
 from jenkins import Jenkins

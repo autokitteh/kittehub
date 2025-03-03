@@ -1,3 +1,5 @@
+"""Utility functions for the room reservation app."""
+
 import os
 
 from autokitteh.google import google_sheets_client

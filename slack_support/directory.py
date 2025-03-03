@@ -1,3 +1,5 @@
+"""Directory of people and their topics."""
+
 from dataclasses import dataclass
 import os
 
