@@ -80,9 +80,14 @@ def _aws_health_events() -> list[dict]:
 
         return events
 
-    # TODO(INT-178): More specific exception handling.
-    except Exception as e:
-        print(f"Error: {e}")
+    except boto3_client.exceptions.Boto3Error as e:
+        print(f"Boto3 error: {e}")
+        return []
+    except KeyError as e:
+        print(f"Key error: {e}")
+        return []
+    except ValueError as e:
+        print(f"Value error: {e}")
         return []
 
 
@@ -109,8 +114,14 @@ def _affected_aws_entities(events: list[dict]) -> list[dict]:
             next_token = resp.get("nextToken")
 
         return entities
-    except Exception as e:
-        print(f"Error: {e}")
+    except boto3_client.exceptions.Boto3Error as e:
+        print(f"Boto3 error: {e}")
+        return []
+    except KeyError as e:
+        print(f"Key error: {e}")
+        return []
+    except ValueError as e:
+        print(f"Value error: {e}")
         return []
 
 

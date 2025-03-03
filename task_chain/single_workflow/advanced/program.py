@@ -53,7 +53,7 @@ def on_slack_slash_command(event):
 def run_retriable_task(task, user_id) -> bool:
     try:
         task()
-    except Exception as e:
+    except RuntimeError as e:
         return ask_user_retry_or_abort(task.__name__, e, user_id)
 
     message = f"Task `{task.__name__}` completed"
