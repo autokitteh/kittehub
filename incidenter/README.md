@@ -1,18 +1,20 @@
 ---
 title: Incident management automation
-description: Slack/Zoom/Height Incident Automation
+description: Connect 3 separate systems for seamless incident management
 integrations: ["slack", "zoom", "height"]
 categories: ["Reliability"]
 ---
 
 # Incident Management Automation
 
-An incident can be created by mentioning the Slack bot like so:
+An incident can be declared by mentioning the Slack bot like so:
 
 ```
 @ak incident title
 ```
 
-This will create a Zoom meeting, a Height ticket, and a Slack channel for the incident.
-In the Slack channel, incident is resolved by writing "!resolve why this was resolved". A note can be added
-to the ticket with "!note something to write home about".
+This will create a dedicated Slack channel, a dedicated Zoom meeting, and a tracking ticket in Height.
+
+Notes can be added to the Height ticket by writing `"!note <text>"` in the created Slack channel.
+
+The incident can be resolved by writing `"!resolve <reason text>"` in the created Slack channel.

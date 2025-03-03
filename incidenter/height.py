@@ -1,18 +1,17 @@
-from os import getenv
+import os
+from urllib.parse import urljoin
 
 from autokitteh.height import height_client
-from urlparse import urljoin
 
-
-_LIST_ID = getenv("HEIGHT_LIST_ID")
 
 _ROOT_URL = "https://api.height.app/"
 
-height = height_client("height")
+_HEIGHT_LIST_ID = os.getenv("HEIGHT_LIST_ID")
 
+if not _HEIGHT_LIST_ID:
+    raise ValueError("HEIGHT_LIST_ID project variable must be set")
 
-if not _LIST_ID:
-    raise ValueError("HEIGHT_LIST_ID is not set")
+height = height_client("height_conn")
 
 
 def _post(path: str, data: dict) -> dict:
@@ -25,21 +24,21 @@ def create_task(name: str, desc: str, status: str) -> dict:
     return _post(
         "tasks",
         {
-            "name": name,
             "type": "task",
+            "name": name,
             "description": desc,
             "status": status,
-            "listIds": [_LIST_ID],
+            "listIds": [_HEIGHT_LIST_ID],
         },
     )
 
 
-def add_task_message(task_id: str, msg: str):
+def add_task_message(task_id: str, msg: str) -> dict:
     return _post(
         "activities",
         {
-            "taskId": task_id,
             "type": "comment",
+            "taskId": task_id,
             "message": msg,
         },
     )
