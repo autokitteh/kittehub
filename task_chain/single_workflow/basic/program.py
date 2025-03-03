@@ -55,7 +55,7 @@ def run_retriable_task(task, user_id) -> bool:
         try:
             task()
             break
-        except Exception as e:
+        except RuntimeError as e:
             result = ask_user_retry_or_abort(task.__name__, e, user_id)
 
     if result:
