@@ -2,6 +2,7 @@ import os
 import re
 
 from autokitteh import next_event, subscribe
+from autokitteh.slack import normalize_channel_name
 from autokitteh.slack import slack_client
 
 import height
@@ -32,9 +33,9 @@ def _start(
 
     zoom_url = zoom.create_meeting(f"Incident: {title}")
 
-    channel = slack_client.conversations_create(
-        name=f"{_CHANNEL_PREFIX}{task['index']}", is_private=False
-    ).get("channel")
+    name = f"{_CHANNEL_PREFIX}{task['index']}_{normalize_channel_name(title)}"
+    resp = slack_client.conversations_create(name=name, is_private=False)
+    channel = resp.get("channel")
 
     slack_client.conversations_setTopic(
         channel=channel["id"],

@@ -1,7 +1,6 @@
 """Thin layer of logic on top of the Slack API."""
 
 import os
-import re
 
 from autokitteh.slack import slack_client
 from slack_sdk.errors import SlackApiError
@@ -227,34 +226,3 @@ def mention_in_reply(channel_id: str, comment_url: str, github_user, msg: str) -
         error = f"Failed to post {'reply' if ts else 'message'} in <#{channel_id}>"
         debug.log(f"{error}: `{e.response['error']}`")
         return ""
-
-
-def normalize_channel_name(name: str) -> str:
-    """Convert arbitrary text into a valid Slack channel name.
-
-    Args:
-        name: Desired name for a Slack channel.
-
-    Returns:
-        Valid Slack channel name.
-    """
-    if name == "":
-        return name
-
-    name = name.lower().strip()
-    name = re.sub(r"['\"]", "", name)  # Remove quotes.
-    name = re.sub(r"[^a-z0-9_-]", "-", name)  # Replace invalid characters.
-    name = re.sub(r"[_-]{2,}", "-", name)  # Remove repeating separators.
-
-    # Slack channel names are limited to 80 characters, but that's
-    # too long for comfort, so we use 50 instead. Plus, we need to
-    # leave room for a PR number prefix and a uniqueness suffix.
-    name = name[:50]
-
-    # Cosmetic tweak: remove leading and trailing hyphens.
-    if name[0] == "-":
-        name = name[1:]
-    if name[-1] == "-":
-        name = name[:-1]
-
-    return name

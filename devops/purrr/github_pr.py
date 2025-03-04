@@ -1,6 +1,7 @@
 """Handler for GitHub "pull_request" events."""
 
 import autokitteh
+from autokitteh.slack import normalize_channel_name
 
 import data_helper
 import slack_channel
@@ -391,7 +392,7 @@ def _on_pr_edited(action: str, pr, changes, sender) -> None:
         msg = f"{{}} edited the PR title to: `{pr.title}`"
         slack_helper.mention_in_message(channel, sender, msg)
 
-        name = f"{pr.number}_{slack_helper.normalize_channel_name(pr.title)}"
+        name = f"{pr.number}_{normalize_channel_name(pr.title)}"
         slack_helper.rename_channel(channel, name)
 
 
