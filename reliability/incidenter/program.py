@@ -1,4 +1,4 @@
-from os import getenv
+import os
 import re
 
 from autokitteh import next_event, subscribe
@@ -8,16 +8,14 @@ import height
 import zoom
 
 
-_CHANNEL_PREFIX = getenv("CHANNEL_PREFIX", "")
+_CHANNEL_PREFIX = os.getenv("SLACK_CHANNEL_PREFIX", "")
 
-slack_client = slack_client("slack")
-
-pattern = re.compile(r"^<.+?>\s*incident\s*(.*)")
+slack_client = slack_client("slack_conn")
 
 
 def on_slack_app_mention(event):
     # Another option is to put this straight in the trigger definition as "filter".
-    m = pattern.match(event.data.text)
+    m = re.compile(r"^<.+?>\s*incident\s*(.*)").match(event.data.text)
     if not m:
         print("irrelevant")
         return
