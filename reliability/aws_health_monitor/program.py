@@ -15,6 +15,7 @@ import autokitteh
 from autokitteh.aws import boto3_client
 from autokitteh.google import google_id, google_sheets_client
 from autokitteh.slack import slack_client
+from hubspot.crm.contacts.exceptions import ApiException
 
 
 OWNERSHIP_DATA = os.getenv("GOOGLE_SHEET_URL", "")
@@ -80,14 +81,8 @@ def _aws_health_events() -> list[dict]:
 
         return events
 
-    except boto3_client.exceptions.Boto3Error as e:
+    except ApiException as e:
         print(f"Boto3 error: {e}")
-        return []
-    except KeyError as e:
-        print(f"Key error: {e}")
-        return []
-    except ValueError as e:
-        print(f"Value error: {e}")
         return []
 
 
@@ -114,14 +109,8 @@ def _affected_aws_entities(events: list[dict]) -> list[dict]:
             next_token = resp.get("nextToken")
 
         return entities
-    except boto3_client.exceptions.Boto3Error as e:
+    except ApiException as e:
         print(f"Boto3 error: {e}")
-        return []
-    except KeyError as e:
-        print(f"Key error: {e}")
-        return []
-    except ValueError as e:
-        print(f"Value error: {e}")
         return []
 
 

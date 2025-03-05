@@ -6,6 +6,7 @@ import os
 from autokitteh.auth0 import auth0_client
 from autokitteh.hubspot import hubspot_client
 from hubspot.crm.contacts import SimplePublicObjectInput
+from hubspot.crm.contacts.exceptions import ApiException
 
 
 LOOKUP_HOURS = int(os.getenv("HOURS", "24"))
@@ -40,7 +41,7 @@ def add_new_users(users):
         try:
             hubspot.crm.contacts.basic_api.create(contact)
             print(f"Added to HubSpot: {user['email']}")
-        except hubspot.crm.contacts.exceptions.ApiException as e:
+        except ApiException as e:
             if e.status == 409:
                 print(f"Contact already exists in HubSpot: {user['email']}")
             else:
