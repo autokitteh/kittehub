@@ -1,4 +1,4 @@
-"""Directory of people and their topics."""
+"""Mapping between topics and people who are knowledgeable about them."""
 
 from dataclasses import dataclass
 import os
