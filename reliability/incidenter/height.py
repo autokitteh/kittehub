@@ -1,4 +1,4 @@
-"""Interact with the Height API for creating tasks and adding messages to tasks."""
+"""Create Height tasks and add messages to them."""
 
 import os
 from urllib.parse import urljoin
