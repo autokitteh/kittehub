@@ -1,4 +1,4 @@
-"""Provide helper functions to interact with Google Sheets and messages for Slack."""
+"""Helper functions for Google Sheets and Slack."""
 
 import os
 
