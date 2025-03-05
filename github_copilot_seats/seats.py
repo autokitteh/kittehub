@@ -1,8 +1,7 @@
 """Manage GitHub Copilot seat assignments within an organization.
 
-It identifies idle users based on their last activity
-time and can optionally prune these idle seats by interacting with the users
-via Slack.
+It identifies inactive users and prunes their seats,
+but allow the users to get them back via Slack.
 """
 
 from datetime import datetime, timedelta, UTC
