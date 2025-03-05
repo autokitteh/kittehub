@@ -1,4 +1,4 @@
-"""extract the topic from a given text."""
+"""Deduce the topic of a given text."""
 
 import json
 
