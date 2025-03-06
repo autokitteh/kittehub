@@ -1,3 +1,5 @@
+"""Deduce the topic of a given text."""
+
 import json
 
 from autokitteh.google import gemini_client

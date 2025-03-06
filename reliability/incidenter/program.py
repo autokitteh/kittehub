@@ -1,3 +1,5 @@
+"""Tracks Slack-reported incidents, integrating with Height and Zoom."""
+
 import os
 import re
 

@@ -17,7 +17,7 @@ def send_requests(base_url):
     url = urljoin(base_url, f"basic-auth/{expected_creds[0]}/{expected_creds[1]}")
 
     print("\n--- Use the expected credentials (authentication success)")
-    resp = requests.get(url, auth=expected_creds)
+    resp = requests.get(url, auth=expected_creds, timeout=10)
     _print_response_details(resp)
 
     print("\n--- Use unexpected credentials (authentication failure)")
@@ -27,7 +27,7 @@ def send_requests(base_url):
     headers = {
         "Authorization": "Basic " + base64.b64encode(unexpected_creds.encode()).decode()
     }
-    resp = requests.get(url, headers=headers)
+    resp = requests.get(url, headers=headers, timeout=10)
     _print_response_details(resp)
 
 

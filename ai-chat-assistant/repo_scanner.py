@@ -1,3 +1,9 @@
+"""Find unanswered GitHub PR comments older than 24 hours.
+
+It tracks processed comments with Google Sheets,
+and retrieves user information from Slack.
+"""
+
 import datetime
 import os
 

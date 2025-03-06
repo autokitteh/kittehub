@@ -1,3 +1,5 @@
+"""Create Zoom meetings."""
+
 from autokitteh.zoom import zoom_client
 
 

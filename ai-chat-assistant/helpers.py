@@ -1,3 +1,5 @@
+"""Helper functions for Google Sheets and Slack."""
+
 import os
 
 import autokitteh

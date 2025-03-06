@@ -1,3 +1,9 @@
+"""Manage GitHub Copilot seat assignments within an organization.
+
+It identifies inactive users and prunes their seats,
+but allow the users to get them back via Slack.
+"""
+
 from datetime import datetime, timedelta, UTC
 import json
 import os
