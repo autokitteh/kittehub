@@ -73,7 +73,7 @@ def prune_idle_seat(seat: dict[str, str]) -> None:
         seat: Username and last activity timestamp of the GitHub user to which
             the Copilot seat is assigned.
     """
-    github_login = seat["assignee_login"]
+    github_login = seat.data["assignee_login"]
     report(github_login, "removing seat")
     copilot.remove_seats([github_login])
 
@@ -90,7 +90,7 @@ def prune_idle_seat(seat: dict[str, str]) -> None:
     slack.chat_postMessage(channel=slack_id, blocks=blocks)
 
     # Subscribe to Slack interaction events, waiting for the user's response.
-    filter = f"event_type = 'interaction' && data.user.id == '{slack_id}'"
+    filter = f"event_type == 'interaction' && data.user.id == '{slack_id}'"
     subscription = autokitteh.subscribe("slack_conn", filter)
 
     # Retrieve the value from the user's response in the Slack event.
