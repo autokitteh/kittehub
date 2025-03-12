@@ -33,7 +33,6 @@ ALLOWED_CATEGORIES = (
     "CRM",
     "DevOps",
     "Durability",
-    "Office Automation",
     "Productivity",
     "Reliability",
     "Samples",
