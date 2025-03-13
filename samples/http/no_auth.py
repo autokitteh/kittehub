@@ -22,7 +22,7 @@ def _get_echo_params(base_url):
     """https://httpbin.org/#/HTTP_Methods/get_get"""
     url = urljoin(base_url, "get")
     print(f"\n--- GET {url}")
-    resp = requests.get(url, params={"key1": "value1", "key2": "value2"})
+    resp = requests.get(url, params={"key1": "value1", "key2": "value2"}, timeout=10)
     # Expected: "Content-Type" header is "application/json".
     _print_response_status_and_headers(resp)
 
@@ -40,7 +40,7 @@ def _get_html(base_url):
     """https://httpbin.org/#/Response_formats/get_html"""
     url = urljoin(base_url, "html")
     print(f"\n--- GET {url}")
-    resp = requests.get(url)
+    resp = requests.get(url, timeout=10)
     _print_response_status_and_headers(resp)
 
     # Expected text: "\u003c!DOCTYPE html\u003e\\n..."
@@ -52,7 +52,7 @@ def _get_json(base_url):
     """https://httpbin.org/#/Response_formats/get_json"""
     url = urljoin(base_url, "json")
     print(f"\n--- GET {url}")
-    resp = requests.get(url)
+    resp = requests.get(url, timeout=10)
     _print_response_status_and_headers(resp)
 
     # Expected text: same as JSON, but formatted as multiline byte text.
@@ -67,14 +67,14 @@ def _get_json(base_url):
 def _get_error(base_url):
     url = urljoin(base_url, "status/404")
     print(f"\n--- GET {url}")
-    resp = requests.get(url)
+    resp = requests.get(url, timeout=10)
     _print_response_status_and_headers(resp)  # Expected status code: 404.
 
 
 def _post_echo_form(url):
     """https://httpbin.org/#/HTTP_Methods/post_post"""
     print(f"\n--- POST {url} (form)")
-    resp = requests.post(url, data={"foo": "bar"})
+    resp = requests.post(url, data={"foo": "bar"}, timeout=10)
     # Expected: "Content-Type" header is "application/json".
     _print_response_status_and_headers(resp)
 
@@ -91,7 +91,7 @@ def _post_echo_json(url):
     print(f"\n--- POST {url} (JSON)")
 
     # Option 1: use the "json" param, without specifying content type.
-    resp = requests.post(url, json={"foo": "bar"})
+    resp = requests.post(url, json={"foo": "bar"}, timeout=10)
 
     # Option 2: use the "data" param, and specify its content type.
     # headers={"Content-Type": "application/json", ...}
