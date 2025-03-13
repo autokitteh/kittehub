@@ -1,14 +1,17 @@
 from myagents import run
 
 
-def chat(next_message, respond):
+def chat(q0, next_message, respond):
     history = []
 
     while True:
-        try:
-            q = next_message()
-        except EOFError:
-            return
+        if q0:
+            q, q0 = q0, None
+        else:
+            try:
+                q = next_message()
+            except EOFError:
+                return
 
         result = run(history, q)
 

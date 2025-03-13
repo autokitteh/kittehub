@@ -8,7 +8,7 @@ def main():
     def respond(txt):
         print(f"A: {txt}")
 
-    chat(next_message, respond)
+    chat(None, next_message, respond)
 
 
 if __name__ == "__main__":
