@@ -5,8 +5,3 @@ version: v1
 
 project:
   name: quickstart
-
-  triggers:
-    - name: http_request
-      type: webhook
-      call: program.py:on_http_request
