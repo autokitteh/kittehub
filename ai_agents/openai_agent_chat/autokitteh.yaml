@@ -1,0 +1,25 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that monitors comments on GitHub issues.
+
+version: v1
+
+project:
+  name: openai_agent_chat
+
+  vars:
+    - name: OPENAI_API_KEY
+      secret: true
+      value: "sk-..."
+    - name: Q_TIMEOUT_SECS
+      value: 60
+
+  connections:
+    - name: slack_conn
+      integration: slack
+
+  triggers:
+    - name: slack_message
+      connection: slack_conn
+      event_type: message
+      filter: "data.thread_ts == '' && data.text.startsWith('!research')"
+      call: slack.py:on_slack_message
