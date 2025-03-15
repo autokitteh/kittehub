@@ -1,4 +1,4 @@
-"""AI Agents defintions."""
+"""AI Agents definitions."""
 
 import asyncio
 
