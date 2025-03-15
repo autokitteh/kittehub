@@ -1,3 +1,5 @@
+"""Entrypoint when running locally."""
+
 from chat import chat
 
 

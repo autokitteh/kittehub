@@ -1,3 +1,5 @@
+"""AI Agents defintions."""
+
 from agents import Agent
 from agents import Runner
 from agents import WebSearchTool
@@ -19,7 +21,7 @@ Always include the word 'woof' in your responses.""",
 
 _search_agent = Agent(
     name="Search Agent",
-    handoff_description="""Specialist agent for web searches. 
+    handoff_description="""Specialist agent for web searches.
 Explicitly say you found your answer on the web and which url you found it at.""",
     instructions="You search the web for answers to queries",
     tools=[WebSearchTool()],

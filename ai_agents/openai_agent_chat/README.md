@@ -20,8 +20,13 @@ API documentation:
 2. Initialize the Slack connection.
 3. Deploy project.
 
-## Trigger Workflow
+### Trigger Workflow
 
 1. Add the AutoKitteh Slack bot into a channel.
 2. Type `!research cats`.
 3. AutoKitteh will start a thread and you can run some Q&A with it.
+
+## Local Usage
+
+1. Set the OPENAI_API_KEY environment variable.
+2. `python main.py`

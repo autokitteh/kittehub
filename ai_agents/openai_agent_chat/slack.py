@@ -1,3 +1,5 @@
+"""Entrypoint when using from AutoKitteh."""
+
 import asyncio
 
 from autokitteh import next_event, subscribe
