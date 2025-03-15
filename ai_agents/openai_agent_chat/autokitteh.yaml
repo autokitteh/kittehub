@@ -4,7 +4,7 @@
 version: v1
 
 project:
-  name: openai_agent_researcher
+  name: openai_agent_chat
 
   vars:
     - name: OPENAI_API_KEY
