@@ -10,6 +10,8 @@ categories: ["AI", "Samples"]
 This project demonstrates integration with OpenAI Agents SDK for durable Q&A session via Slack.
 This also keeps track of the discussion, so each Q&A can relate to each other.
 
+![Slack Example](./demo.png)
+
 API documentation:
 
 - [Python client SDK](https://openai.github.io/openai-agents-python/)

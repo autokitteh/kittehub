@@ -1,19 +1,17 @@
 """Entrypoint when using from AutoKitteh."""
 
-import asyncio
+from os import getenv
 
 from autokitteh import next_event, subscribe
 from autokitteh.slack import slack_client
 from chat import chat
 
 
+Q_TIMEOUT_SECS = int(getenv("Q_TIMEOUT_SECS", "30"))
+
 _prefix = "!research "
 
 slack = slack_client("slack_conn")
-
-
-loop = asyncio.new_event_loop()
-asyncio.set_event_loop(loop)
 
 
 def on_slack_message(event):
@@ -28,11 +26,13 @@ def on_slack_message(event):
     print(f"Q: {q0}")
 
     def next_message():
-        text = next_event(s).text
+        event = next_event(s, timeout=Q_TIMEOUT_SECS)
+        if event is None:
+            raise EOFError
 
-        print(f"Q: {text}")
+        print(f"Q: {event.text}")
 
-        return text
+        return event.text
 
     def respond(text):
         print(f"A: {text}")

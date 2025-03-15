@@ -10,6 +10,8 @@ project:
     - name: OPENAI_API_KEY
       secret: true
       value: "sk-..."
+    - name: Q_TIMEOUT_SECS
+      value: 60
 
   connections:
     - name: slack_conn

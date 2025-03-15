@@ -20,6 +20,7 @@ def chat(q0, next_message, respond):
             try:
                 q = next_message()
             except EOFError:
+                respond("Goodbye!")
                 return
 
         result = run(history, q)
