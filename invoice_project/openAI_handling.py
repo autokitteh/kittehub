@@ -5,11 +5,9 @@ import binascii
 import io
 import time
 
-import requests
-
 import autokitteh
+import requests
 from autokitteh.openai import openai_client
-
 
 chatgpt = openai_client("openai_conn")
 
