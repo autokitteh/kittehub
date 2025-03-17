@@ -121,7 +121,8 @@ def test_on_slack_slash_command_with_noop_opt_out(mock_data_helper):
     slack_cmd.slack.chat_postEphemeral.assert_called_once_with(
         channel=event.data.channel_id,
         user=event.data.user_id,
-        text=(":no_bell: You're already opted out of Purrr since: 0001-01-01 00:00:00"),
+        text=":no_bell: You're already opted out of Purrr since: "
+        "0001-01-01 00:00:00+00:00",
     )
 
 
