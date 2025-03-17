@@ -1,10 +1,13 @@
 """Unit tests for the "slack_cmd" module."""
 
-from datetime import datetime
+from datetime import datetime, UTC
 
 import autokitteh
 from autokitteh import github, slack
 import pytest
+
+
+MIN_UTC = datetime.min.replace(tzinfo=UTC)
 
 
 @pytest.fixture(autouse=True)
@@ -89,7 +92,7 @@ def test_on_slack_slash_command_with_noop_opt_in(mock_data_helper):
 def test_on_slack_slash_command_with_actual_opt_in(mock_data_helper):
     import slack_cmd
 
-    mock_data_helper.slack_opted_out.return_value = datetime.min
+    mock_data_helper.slack_opted_out.return_value = MIN_UTC
     slack_cmd.slack.chat_postEphemeral.reset_mock()
 
     event = autokitteh.AttrDict({"data": fake_data | {"text": "opt-in"}})
@@ -107,7 +110,7 @@ def test_on_slack_slash_command_with_actual_opt_in(mock_data_helper):
 def test_on_slack_slash_command_with_noop_opt_out(mock_data_helper):
     import slack_cmd
 
-    mock_data_helper.slack_opted_out.return_value = datetime.min
+    mock_data_helper.slack_opted_out.return_value = MIN_UTC
     slack_cmd.slack.chat_postEphemeral.reset_mock()
 
     event = autokitteh.AttrDict({"data": fake_data | {"text": "opt-out"}})
@@ -118,7 +121,8 @@ def test_on_slack_slash_command_with_noop_opt_out(mock_data_helper):
     slack_cmd.slack.chat_postEphemeral.assert_called_once_with(
         channel=event.data.channel_id,
         user=event.data.user_id,
-        text=(":no_bell: You're already opted out of Purrr since: 0001-01-01 00:00:00"),
+        text=":no_bell: You're already opted out of Purrr since: "
+        "0001-01-01 00:00:00+00:00",
     )
 
 
