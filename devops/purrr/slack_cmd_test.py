@@ -4,7 +4,6 @@ from datetime import datetime, UTC
 
 import autokitteh
 from autokitteh import github, slack
-
 import pytest
 
 
