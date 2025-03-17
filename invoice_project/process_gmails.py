@@ -3,7 +3,6 @@ import json
 import time
 import traceback
 
-import autokitteh
 from autokitteh.google import gmail_client
 
 import openAI_handling
@@ -14,7 +13,6 @@ import schemas
 gmail = gmail_client("gmail_conn").users()
 
 
-@autokitteh.activity
 def is_message_invoice(message_body, message_attachments, message_images):
     """Determine if a message contains an invoice"""
     print("Checking if message is an invoice...")

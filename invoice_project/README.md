@@ -23,6 +23,9 @@ Automate the detection and extraction of invoices from emails using Gmail and Ch
 2. Set the `POLLING_INTERVAL_MINUTES` and the `START_DATE` project variables to define the polling frequency and the start date for processing
 3. Deploy the project
 
+> [!NOTE]
+> Use the date format specified in [Google's DateTime Formatting Guide](https://developers.google.com/gmail/markup/reference/datetime-formatting)
+
 ## Trigger Workflow
 
 > [!IMPORTANT]
