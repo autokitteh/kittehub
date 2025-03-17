@@ -89,7 +89,9 @@ def test_on_slack_slash_command_with_noop_opt_in(mock_data_helper):
 def test_on_slack_slash_command_with_actual_opt_in(mock_data_helper):
     import slack_cmd
 
-    mock_data_helper.slack_opted_out.return_value = datetime.min
+    mock_data_helper.slack_opted_out.return_value = datetime.min.replace(
+        tzinfo=datetime.timezone.utc
+    )
     slack_cmd.slack.chat_postEphemeral.reset_mock()
 
     event = autokitteh.AttrDict({"data": fake_data | {"text": "opt-in"}})
@@ -107,7 +109,9 @@ def test_on_slack_slash_command_with_actual_opt_in(mock_data_helper):
 def test_on_slack_slash_command_with_noop_opt_out(mock_data_helper):
     import slack_cmd
 
-    mock_data_helper.slack_opted_out.return_value = datetime.min
+    mock_data_helper.slack_opted_out.return_value = datetime.min.replace(
+        tzinfo=datetime.timezone.utc
+    )
     slack_cmd.slack.chat_postEphemeral.reset_mock()
 
     event = autokitteh.AttrDict({"data": fake_data | {"text": "opt-out"}})
