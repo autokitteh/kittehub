@@ -1,3 +1,5 @@
+"""Invoice processing system module."""
+
 from datetime import datetime
 import os
 import time

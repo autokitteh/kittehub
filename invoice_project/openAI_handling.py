@@ -1,10 +1,14 @@
+"""Functions to create AI files, create threads, and send requests to the OpenAI API."""
+
 import base64
+import binascii
 import io
 import time
-import traceback
 
 import autokitteh
 from autokitteh.openai import openai_client
+
+import requests
 
 
 chatgpt = openai_client("openai_conn")
@@ -30,7 +34,7 @@ def create_ai_file(attachment, vector_store_id):
         message_file = chatgpt.files.create(file=file_stream, purpose="assistants")
         file_stream.close()
         return message_file
-    except Exception as e:
+    except ValueError as e:
         print(f"Error creating AI file: {str(e)}")
         return None
 
@@ -79,9 +83,8 @@ def create_thread(content, attachments, assistant, response_schema):
         if assistant_message and assistant_message.content:
             return assistant_message.content[0].text.value
 
-    except Exception as e:
-        print(f"Error in create_thread: {str(e)}")
-        traceback.print_exc()
+    except requests.exceptions.RequestException as e:
+        print(f"Network error: {str(e)}")
 
     return None
 
@@ -150,8 +153,10 @@ def send_ai_request(
                     {"type": "image_file", "image_file": {"file_id": file.id}}
                 )
                 print(f"Image added with file ID: {file.id}")
-        except Exception as e:
-            print(f"Error processing image: {str(e)}")
+        except binascii.Error as e:
+            print(f"Base64 decoding error: {str(e)}")
+        except OSError as e:
+            print(f"IO error processing image: {str(e)}")
 
     # Create thread and get response
     result = create_thread(content, attachments, assistant, response_schema)

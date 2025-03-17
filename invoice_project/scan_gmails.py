@@ -1,3 +1,8 @@
+"""Scan Gmail messages and extract content.
+
+Including subject, body, PDF attachments, and image attachments.
+"""
+
 import base64
 from datetime import datetime, UTC
 
@@ -129,7 +134,7 @@ def get_image_attachments(message):
 
                     image_files.append({"data": data_url})
 
-            except Exception as e:
+            except (KeyError, TypeError) as e:
                 print(f"Error processing image attachment: {str(e)}")
                 return  # Use return instead of continue
 

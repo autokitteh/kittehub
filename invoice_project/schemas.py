@@ -1,3 +1,5 @@
+"""This module contains JSON schemas for invoice parsing and detection."""
+
 # Schema for invoice parsing
 AI_INVOICE_JSON_SCHEMA = {
     "type": "json_schema",

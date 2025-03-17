@@ -1,3 +1,5 @@
+"""Processes Gmail messages to identify and extract invoice details."""
+
 import base64
 import json
 import time
@@ -137,7 +139,7 @@ def handle_scan(ts):
             else:
                 print(f"Message {msg['id']} is not an invoice")
 
-    except Exception as e:
+    except (scan_gmails.ScanError, json.JSONDecodeError) as e:
         print(f"Error in handle_scan: {e}")
         traceback.print_exc()
 
@@ -167,5 +169,5 @@ Subject: Invoice Processing Report
         gmail.messages().send(userId="me", body={"raw": msg}).execute()
         print("Invoice report sent successfully!")
 
-    except Exception as e:
+    except json.JSONDecodeError as e:
         print(f"Unexpected error sending invoice report: {str(e)}")
