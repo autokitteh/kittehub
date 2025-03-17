@@ -1,13 +1,13 @@
 """Unit tests for the "slack_cmd" module."""
 
-from datetime import datetime
+from datetime import datetime, UTC
 
 import autokitteh
 from autokitteh import github, slack
 import pytest
 
 
-MIN_UTC = datetime.min.replace(tzinfo=datetime.UTC)
+MIN_UTC = datetime.min.replace(tzinfo=UTC)
 
 
 @pytest.fixture(autouse=True)
