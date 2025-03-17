@@ -1,0 +1,7 @@
+# This YAML file is a declarative manifest that describes
+# the minimal setup of an AutoKitteh project.
+
+version: v1
+
+project:
+  name: quickstart
