@@ -7,7 +7,7 @@ from autokitteh import github, slack
 import pytest
 
 
-MIN_UTC = datetime.min.replace(tzinfo=datetime.utc)
+MIN_UTC = datetime.min.replace(tzinfo=datetime.UTC)
 
 
 @pytest.fixture(autouse=True)
