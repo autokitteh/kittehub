@@ -6,14 +6,18 @@ from autokitteh.google import gmail_client
 from googleapiclient.errors import HttpError
 
 
-def on_manual_run(event):
-    gmail = gmail_client("<INSERT_CONNECTION_NAME>").users()
+gmail = gmail_client("<INSERT_CONNECTION_NAME>").users()
 
-    msg = f"""From: {event.data.sender}
-    To: {event.data.recipient}
-    Subject: Meow! {event.data.subject}
 
-    {event.data.body}"""
+def on_manual_run(_):
+    profile = gmail.getProfile(userId="me").execute()
+
+    msg = f"""From: {profile["emailAddress"]}
+    To: {profile["emailAddress"]}
+    Subject: Test from AutoKitteh
+
+    Meow! Just wanted to let you know that your cat overlords are pleased with your
+    service today. Keep up the good work with the treats and belly rubs!"""
 
     msg = msg.replace("\n", "\r\n").replace("    ", "")
     msg = base64.urlsafe_b64encode(msg.encode()).decode()
