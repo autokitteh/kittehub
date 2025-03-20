@@ -1,0 +1,27 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that processes emails to detect invoices
+# and generate structured reports.
+
+version: v1
+
+project:
+  name: invoice_project
+
+  vars:
+    - name: POLLING_INTERVAL_MINUTES
+      value: 30
+    - name: START_DATE
+      value:
+
+  connections:
+    - name: gmail_conn
+      integration: gmail
+    - name: openai_conn
+      integration: chatgpt
+
+  triggers:
+    - name: process_invoices
+      type: webhook
+      call: program.py:main
+    - name: send_mail
+      type: webhook
