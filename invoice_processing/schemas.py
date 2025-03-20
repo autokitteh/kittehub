@@ -1,6 +1,6 @@
 """This module contains JSON schemas for invoice parsing and detection."""
 
-# Schema for invoice parsing
+# Schema for invoice parsing.
 AI_INVOICE_JSON_SCHEMA = {
     "type": "json_schema",
     "json_schema": {
@@ -20,5 +20,5 @@ AI_INVOICE_JSON_SCHEMA = {
     },
 }
 
-# Schema for invoice detection (boolean response)
+# Schema for invoice detection (boolean response).
 AI_BOOLEAN_SCHEMA = {"type": "text"}
