@@ -50,7 +50,7 @@ def get_mail_content(message):
 
 
 def get_subject(message):
-    """Extract subject from message headers"""
+    """Extract subject from message headers."""
     headers = message.get("payload", {}).get("headers", [])
     return next(
         (header["value"] for header in headers if header["name"].lower() == "subject"),
@@ -78,7 +78,7 @@ def process_body_part(part):
 
 
 def get_pdf_attachments(message):
-    """Extract PDF attachments from message"""
+    """Extract PDF attachments from message."""
     pdf_files = []
 
     payload = message.get("payload", {})

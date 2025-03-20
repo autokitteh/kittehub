@@ -16,10 +16,10 @@ gmail = gmail_client("gmail_conn").users()
 
 
 def is_message_invoice(message_body, message_attachments, message_images):
-    """Determine if a message contains an invoice"""
+    """Determine if a message contains an invoice."""
     print("Checking if message is an invoice...")
 
-    # Use specific instructions that clearly request a simple True/False response
+    # Use specific instructions that clearly request a simple True/False response.
     instructions = """
     You are a helper that determines if attached files are an invoice or receipt.
     IMPORTANT: Analyze all files and respond with ONLY 'True' or 'False'.
@@ -28,7 +28,7 @@ def is_message_invoice(message_body, message_attachments, message_images):
     Do not include any explanations, just True or False.
     """
 
-    # Get the raw text response from AI
+    # Get the raw text response from AI.
     is_invoice_response = openAI_handling.send_ai_request(
         message_body,
         message_attachments,
@@ -37,18 +37,18 @@ def is_message_invoice(message_body, message_attachments, message_images):
         schemas.AI_BOOLEAN_SCHEMA,
     )
 
-    # Handle response as text
+    # Handle response as text.
     if not is_invoice_response:
         print("No response received from AI")
         return False
 
-    # Parse text response - accept variations of true/yes
+    # Parse text response - accept variations of true/yes.
     cleaned_response = is_invoice_response.strip().lower()
 
-    # Check for positive responses
+    # Check for positive responses.
     true_indicators = ["true", "yes", "1", "correct", "invoice", "receipt"]
 
-    # Return True if any indicator is found in the response
+    # Return True if any indicator is found in the response.
     for indicator in true_indicators:
         if indicator in cleaned_response:
             print(f"Found '{indicator}' in response - considering this an invoice")
@@ -58,19 +58,21 @@ def is_message_invoice(message_body, message_attachments, message_images):
 
 
 def try_parse_json(response):
-    """Attempt to parse JSON response with required invoice fields"""
+    """Attempt to parse JSON response with required invoice fields."""
     try:
         parsed_json = json.loads(response)
-        required_keys = ["companyName", "date", "amount", "invoiceId"]
-        if all(key in parsed_json for key in required_keys):
-            return parsed_json
     except json.JSONDecodeError:
-        pass
-    return None
+        parsed_json = {}
+
+    required_keys = ["companyName", "date", "amount", "invoiceId"]
+    if not all(key in parsed_json for key in required_keys):
+        parsed_json = {}
+
+    return parsed_json
 
 
 def parse_invoice_to_json(message_body, message_attachments, message_images):
-    """Extract invoice details into structured JSON"""
+    """Extract invoice details into structured JSON."""
     max_retries = 3
 
     instructions = """
@@ -105,13 +107,13 @@ def parse_invoice_to_json(message_body, message_attachments, message_images):
 
         if attempt < max_retries - 1:
             print(f"Retrying invoice parsing... ({attempt + 1}/{max_retries})")
-            time.sleep(2)  # Brief pause before retry
+            time.sleep(2)  # Brief pause before retry.
 
     return None
 
 
 def handle_scan(ts):
-    """Scan emails since timestamp ts and process for invoices"""
+    """Scan emails since timestamp ts and process for invoices."""
     invoices = []
 
     try:
@@ -120,16 +122,16 @@ def handle_scan(ts):
         for idx, msg in enumerate(messages):
             print(f"Processing message {idx + 1}/{len(messages)}")
 
-            # Rate limiting
+            # Rate limiting.
             time.sleep(5)
 
-            # Check if message is an invoice
+            # Check if message is an invoice.
             is_email_invoice = is_message_invoice(
                 msg["body"], msg["attachments"], msg["images"]
             )
 
             if is_email_invoice:
-                # Parse invoice details
+                # Parse invoice details.
                 message_json_parsed = parse_invoice_to_json(
                     msg["body"], msg["attachments"], msg["images"]
                 )
@@ -147,7 +149,7 @@ def handle_scan(ts):
 
 
 def send_invoices(invoices):
-    """Send an email report with processed invoices"""
+    """Send an email report with processed invoices."""
     try:
         profile = gmail.getProfile(userId="me").execute()
 
