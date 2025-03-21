@@ -30,7 +30,7 @@ A task can be either:
   If a user explicitly specifies a time limit for a specific user, set it as such.
   Do this only if the user explicitly specifies a person to ask.
 For each task result, if applicable, default max tokens to None, unless user explicitly
-specified otherwise. User cannot be allowed to specifiy max tokens below 16.
+specified otherwise. User cannot be allowed to specify max tokens below 16.
 You can also modify an existing plan, by adding or removing searches.
 Always provide the complete plan as output along with an indication if the user
 considers it final.
@@ -45,7 +45,7 @@ _search_agent = Agent(
     instructions="""
 You are a research assistant. Given a search term, you search the web for that term and
 produce a concise summary of the results. The summary must 2-3 paragraphs and less than
-300 words. Capture the main points. Write succintly, no need to have complete sentences
+300 words. Capture the main points. Write succinctly, no need to have complete sentences
 or good grammar. This will be consumed by someone synthesizing a report, so its vital
 you capture the essence and ignore any fluff. Do not include any additional commentary
 other than the summary itself.
@@ -60,7 +60,7 @@ _report_agent = Agent(
     instructions="""
 Given a question and a set of search results, write a short summary of the findings.
 Refine the report per user's feedback.
-If the user wishes to send a slack report, use the appropiate tools to send the slack
+If the user wishes to send a slack report, use the appropriate tools to send the slack
 report to the desired user.
 """,
     model="gpt-4o",

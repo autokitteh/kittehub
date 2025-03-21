@@ -1,10 +1,7 @@
 """Entrypoint when using from AutoKitteh with Slack."""
 
-from os import getenv
-
 from autokitteh import next_event, subscribe
 from autokitteh.slack import slack_client
-import data
 from slack_sdk.errors import SlackApiError
 
 

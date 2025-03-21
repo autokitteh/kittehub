@@ -13,7 +13,7 @@ project:
       value: "research"
     - name: OPENAI_API_KEY
       secret: true
-      # Put here yout Open AI API key.
+      # Put here your Open AI API key.
       value: "sk-..."
 
   connections:

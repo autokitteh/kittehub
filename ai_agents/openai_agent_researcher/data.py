@@ -3,7 +3,7 @@
 from pydantic import BaseModel
 
 
-class ReasearchItemCommon(BaseModel):
+class ResearchItemCommon(BaseModel):
     """Common fields for research items.
 
     This is not use as a base class since there are some issues with
@@ -29,7 +29,7 @@ class SearchResearchItem(BaseModel):
     query: str
     "The search term to use for the web search."
 
-    common: ReasearchItemCommon
+    common: ResearchItemCommon
     "Common fields for research items"
 
     def __str__(self):
@@ -49,7 +49,7 @@ class AskSomeoneResearchItem(BaseModel):
     who: str
     "Who to ask the question to."
 
-    common: ReasearchItemCommon
+    common: ResearchItemCommon
     "Common fields for research items"
 
     def __str__(self):
