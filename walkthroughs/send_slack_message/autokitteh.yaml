@@ -1,0 +1,16 @@
+# This YAML file is a declarative manifest that describes
+# the minimal setup of an AutoKitteh project.
+
+version: v1
+
+project:
+  name: send_slack_message
+
+  vars:
+    - name: CHANNEL
+      value: general
+
+  connections:
+    - name: slack_conn
+      integration: slack
+    
