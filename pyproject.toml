@@ -8,7 +8,7 @@ quote-style = "double"
 [tool.ruff.lint]
 # https://docs.astral.sh/ruff/rules/
 extend-select = ["B", "BLE", "C4", "D100", "D101", "D2", "D3", "DTZ", "E5", "I", "N", "PT", "PTH", "Q", "S", "UP", "W"]
-ignore = ["D213", "S101", "S311", "S314", "I001", "S4"]
+ignore = ["D213", "S101", "S311", "S314", "S4"]
 # MAYBE: D4, ANN, S314, FBT, CPY, TRY
 
 [tool.ruff.lint.isort]
