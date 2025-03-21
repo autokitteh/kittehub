@@ -67,6 +67,8 @@ def send(x: any, who: str = None):
             _post(f"Sorry, I couldn't find the user {who}.")
             return
 
+        who = who.get("id")
+
     _post(str(x), who)
 
 

@@ -41,13 +41,13 @@ def workflow(q: str):
                 who, answer = ask(t.question, t.who, t.wait_time_in_seconds)
                 if who:
                     if not answer:
-                        send(f"{t.who} did not answer the question.")
+                        send(f"{who['real_name']} did not answer the question.")
                         answer = "No answer"
 
-                    tasks[f"According to the user {who}"] = answer
+                    tasks[f"According to the user {who['real_name']}"] = answer
                 else:
-                    tasks[f"According to the user {who}"] = (
-                        f"could not figure out which user is {who}"
+                    tasks[f"According to the user {t.who}"] = (
+                        f"could not figure out which user is {t.who}"
                     )
 
     # Summarize and report the results.
