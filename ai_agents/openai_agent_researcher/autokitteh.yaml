@@ -20,9 +20,6 @@ project:
     # We use Slack to interact with the users.
     - name: slack_conn
       integration: slack
-    # gMail connection used to sending reports to users.
-    - name: gmail_conn
-      integration: gmail
 
   triggers:
     # workflow.py:on_slack message will be triggered on every `message` event

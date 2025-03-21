@@ -40,7 +40,7 @@ class SearchResearchItem(BaseModel):
 class AskSomeoneResearchItem(BaseModel):
     """Ask someone for additional information."""
 
-    wait_time_in_seconds: int = None
+    wait_time_in_seconds: int
     "The time to wait for a response from the person."
 
     question: str
@@ -53,11 +53,9 @@ class AskSomeoneResearchItem(BaseModel):
     "Common fields for research items"
 
     def __str__(self):
-        time_limit = (
-            f"Time Limit: {self.wait_time_in_seconds} seconds"
-            if self.wait_time_in_seconds
-            else ""
-        )
+        time_limit = ""
+        if self.wait_time_in_seconds:
+            time_limit = f"Time Limit: {self.wait_time_in_seconds} seconds"
 
         return f"""{self.common}Person: {self.who}
 Question: "{self.question}"

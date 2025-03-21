@@ -12,7 +12,7 @@ _ts = None
 _subscription = None
 
 
-def init(ch, ts):
+def init(ch: str, ts: str):
     """Initialize the Slack channel and thread timestamp."""
     global _ch, _ts, _subscription
 
@@ -25,7 +25,7 @@ def init(ch, ts):
     _ts = ts
 
 
-def _lookup_user(who: str) -> any:
+def _lookup_user(who: str) -> dict[str, any]:
     user_id = who
     if who.startswith("<@"):
         user_id = who[2:-1]
@@ -47,7 +47,7 @@ def _lookup_user(who: str) -> any:
     return user
 
 
-def _post(text, user_id: str = None):
+def _post(text: str, user_id: str | None = None):
     ch, ts = _ch, _ts
     if user_id:
         ch, ts = user_id, None
@@ -56,8 +56,8 @@ def _post(text, user_id: str = None):
     slack.chat_postMessage(channel=ch, text=text, thread_ts=ts)
 
 
-def send(x: any, who: str = None):
-    print(f"send: {who} <- {x}")
+def send(content: any, who: str | None = None):
+    print(f"send: {who} <- {content}")
     if who:
         who = _lookup_user(who)
         if not who:
@@ -66,7 +66,7 @@ def send(x: any, who: str = None):
 
         who = who.get("id")
 
-    _post(str(x), who)
+    _post(str(content), who)
 
 
 def next_input():
@@ -79,7 +79,7 @@ def next_input():
     return event.text
 
 
-def ask(what: str, who: str, t: int = None) -> tuple[str, str]:
+def ask(what: str, who: str, t: int | None = None) -> tuple[str, str]:
     user = _lookup_user(who)
     if not user:
         _post(f"Sorry, I couldn't find the user {who}.")
