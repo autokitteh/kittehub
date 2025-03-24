@@ -116,7 +116,7 @@ def send_ai_request(
     )
 
     # Create vector store for file search.
-    vector_store = chatgpt.beta.vector_stores.create(name="Invoice Analysis")
+    vector_store = chatgpt.vector_stores.create(name="Invoice Analysis")
 
     # Process all files (message body and attachments).
     messages = []
