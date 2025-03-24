@@ -5,3 +5,7 @@ version: v1
 
 project:
   name: send_email
+
+  connections:
+    - name: gmail_conn
+      integration: gmail

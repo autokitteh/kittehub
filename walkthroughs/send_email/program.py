@@ -6,7 +6,7 @@ from autokitteh.google import gmail_client
 from googleapiclient.errors import HttpError
 
 
-gmail = gmail_client("<INSERT_CONNECTION_NAME>").users()
+gmail = gmail_client("gmail_conn").users()
 
 
 def on_manual_run(_):
