@@ -40,7 +40,11 @@ def _lookup_user(who: str) -> dict[str, any]:
     else:
         return None
 
-    user = slack.users_info(user=user_id).get("user")
+    try:
+        user = slack.users_info(user=user_id).get("user")
+    except SlackApiError as e:
+        print(f"error: {e}")
+        return None
 
     print(f"lookup: {who} -> {user}")
 

@@ -9,12 +9,12 @@ from agents import WebSearchTool
 from agents.model_settings import ModelSettings
 from agents.run import RunConfig
 from autokitteh import activity
+from openai import RateLimitError
+
 from data import Report
 from data import ResearchPlan
 from data import SearchResearchItem
-from openai import RateLimitError
 from tools import send_slack_report
-
 from slack import next_input
 from slack import send
 
@@ -74,20 +74,21 @@ def _run(agent: str, history: list, q: str, rc: RunConfig) -> tuple[str, list]:
     """Run the agent with the given query and history."""
     send("🤔")
 
-    try:
-        response = asyncio.run(
-            Runner.run(
-                agent,
-                history + [{"role": "user", "content": q}],
-                run_config=rc,
+    while True:
+        try:
+            response = asyncio.run(
+                Runner.run(
+                    agent,
+                    history + [{"role": "user", "content": q}],
+                    run_config=rc,
+                )
             )
-        )
 
-        return response.final_output, response.to_input_list()
-    except RateLimitError as e:
-        # In case of a rate limit error, retry after waiting for 5 seconds.
-        send(f"Rate limit error: {e}\n\nWaiting 5 seconds and retrying...")
-        sleep(5)
+            return response.final_output, response.to_input_list()
+        except RateLimitError as e:
+            # In case of a rate limit error, retry after waiting for 5 seconds.
+            send(f"Rate limit error: {e}\n\nWaiting 5 seconds and retrying...")
+            sleep(5)
 
 
 def _chat(agent, is_final, q: str):

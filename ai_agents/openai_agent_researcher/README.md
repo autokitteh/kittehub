@@ -1,7 +1,7 @@
 ---
 title: OpenAI Agent Researcher
 description: A Slack-based research agent workflow.
-integrations: ["chatgpt", "slack", "openai"]
+integrations: ["chatgpt", "slack"]
 categories: ["AI"]
 ---
 
@@ -9,47 +9,11 @@ categories: ["AI"]
 
 An interactive AI research assistant that uses OpenAI Agents to perform web searches and gather information based on user queries. Built on the durable AutoKitteh platform, this assistant communicates with users through Slack, plans research tasks, and delivers comprehensive reports with fault-tolerant execution.
 
-## Features
+API documentation:
 
-- **Interactive Planning**: Generates a research plan based on user queries
-- **Web Search Integration**: Searches the web for relevant information
-- **Human Collaboration**: Can ask specific people questions as part of the research
-- **Report Generation**: Synthesizes research findings into comprehensive reports
-- **Slack Integration**: Communicates with users through Slack
+- openai-agents: https://platform.openai.com/docs/guides/agents
 
-## Components
-
-### Core Modules
-
-- **workflow.py**: Main entry point handling the end-to-end research workflow
-- **ai.py**: Defines AI agents for planning, searching, and reporting
-- **data.py**: Contains data models for the research plan and report
-- **slack.py**: Handles Slack communication
-- **tools.py**: Defines tools for the OpenAI agents
-
-### Agents
-
-1. **PlannerAgent**: Creates a research plan from user queries
-2. **SearchAgent**: Performs web searches and summarizes results
-3. **ReporterAgent**: Synthesizes findings into a cohesive report
-
-## Setup
-
-### Prerequisites
-
-- OpenAI API key with access to GPT-4
-- Slack workspace with bot permissions
-- Access to AutoKitteh Cloud
-
-### Setup
-
-1. In the AutoKitteh Cloud UI:
-   - Configure the `OPENAI_API_KEY` project variable with your API key
-   - Configure the `INVOCATION_CMD` variable to set the command prefix (default: "research")
-2. Initialize the Slack connection through the AutoKitteh Cloud UI
-3. Deploy the project using AutoKitteh Cloud
-
-## Usage
+## How It Works
 
 1. In any Slack channel where the bot is present, use the command:
 
@@ -67,8 +31,24 @@ An interactive AI research assistant that uses OpenAI Agents to perform web sear
 
 3. The assistant can be instructed to send reports to specific users with the appropriate command.
 
-## Workflow
+## Cloud Usage
 
-1. **Planning Phase**: The PlannerAgent creates a research plan with 3-10 tasks
-2. **Execution Phase**: Tasks are executed (searches, questions to individuals)
-3. **Reporting Phase**: Results are synthesized into a report
+1. Initialize Slack connection
+2. Configure the `OPENAI_API_KEY` project variable with your API key
+3. Configure the `INVOCATION_CMD` variable to set the command prefix (default: "research")
+4. Deploy project
+
+## Trigger Workflow
+
+> [!IMPORTANT]
+> Ensure the Slack connection is initialized; otherwise, the workflow will raise a `ConnectionInitError`.
+
+In any Slack channel where the bot is present, use the command:
+
+```
+!research [your research question]
+```
+
+## Self-Hosted Deployment
+
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
