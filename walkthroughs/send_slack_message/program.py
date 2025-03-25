@@ -4,6 +4,7 @@ import os
 
 from autokitteh.slack import slack_client
 
+
 CHANNEL = os.getenv("CHANNEL")
 
 
