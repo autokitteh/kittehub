@@ -142,7 +142,7 @@ def get_image_attachments(message):
     if "parts" in payload:
         for part in payload["parts"]:
             process_part(part)
-    elif is_image(part):
+    elif is_image(payload):
         process_part(payload)
 
     return image_files

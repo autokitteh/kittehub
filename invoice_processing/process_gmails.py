@@ -141,7 +141,7 @@ def handle_scan(ts):
             else:
                 print(f"Message {msg['id']} is not an invoice")
 
-    except (scan_gmails.ScanError, json.JSONDecodeError) as e:
+    except json.JSONDecodeError as e:
         print(f"Error in handle_scan: {e}")
         traceback.print_exc()
 
