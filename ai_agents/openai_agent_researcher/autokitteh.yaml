@@ -1,0 +1,31 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that monitors comments on GitHub issues.
+
+version: v1
+
+project:
+  name: openai_agent_researcher
+
+  vars:
+    - # The invocation command to trigger the agent from slack.
+      # It will always be prefixed with '!'.
+      name: INVOCATION_CMD
+      value: "research"
+    - name: OPENAI_API_KEY
+      secret: true
+      # Put here your Open AI API key.
+      value: "sk-..."
+
+  connections:
+    # We use Slack to interact with the users.
+    - name: slack_conn
+      integration: slack
+
+  triggers:
+    # workflow.py:on_slack message will be triggered on every `message` event
+    # that is not a reply to a thread and starts with `!`.
+    - name: slack_message
+      connection: slack_conn
+      event_type: message
+      filter: "data.thread_ts == '' && data.text.startsWith('!')"
+      call: workflow.py:on_slack_message
