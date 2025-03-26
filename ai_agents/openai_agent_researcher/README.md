@@ -5,6 +5,8 @@ integrations: ["chatgpt", "slack"]
 categories: ["AI"]
 ---
 
+[Blog Post](https://autokitteh.com/technical-blog/building-stateful-ai-research-agent-with-openai-agents/)
+
 # OpenAI Agent Researcher
 
 An interactive AI research assistant that uses OpenAI Agents to perform web searches and gather information based on user queries. Built on the durable AutoKitteh platform, this assistant communicates with users through Slack, plans research tasks, and delivers comprehensive reports with fault-tolerant execution.
