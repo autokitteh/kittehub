@@ -14,9 +14,9 @@ from openai import RateLimitError
 from data import Report
 from data import ResearchPlan
 from data import SearchResearchItem
-from tools import send_slack_report
 from slack import next_input
 from slack import send
+from tools import send_slack_report
 
 
 _plan_agent = Agent(
