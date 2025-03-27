@@ -70,7 +70,7 @@ report to the desired user.
 
 
 @activity
-def _run(agent: str, history: list, q: str, rc: RunConfig) -> tuple[str, list]:
+def _run(agent: Agent, history: list, q: str, rc: RunConfig) -> tuple[str, list]:
     """Run the agent with the given query and history."""
     send("🤔")
 
