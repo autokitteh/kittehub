@@ -15,6 +15,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | :--- | :---------- | :---------- |
 | [AI chat assistant](./ai-chat-assistant/) | A Slack-based automation assistant that leverages ChatGPT to manage and respond to messages by integrating with GitHub and Google Sheets. | chatgpt, github, sheets, slack |
 | [OpenAI Agent Researcher](./ai_agents/openai_agent_researcher/) | A Slack-based research agent workflow. | chatgpt, slack |
+| [Anthropic Slack Thread TLDR](./anthropic_slack_thread_tldr/) | Summarizes a Slack thread using Claude | slack |
 | [Copy Auth0 Users to HubSpot](./auth0_to_hubspot/) | Periodically add new Auth0 users to HubSpot as contacts | auth0, hubspot |
 | [Manage emergency AWS access requests via Slack](./break_glass/) | Submit emergency AWS access requests via Slack, which are then approved or denied based on a set of predefined conditions | aws, slack |
 | [Email categorization and notification](./categorize_emails/) | Categorize incoming emails and notify relevant Slack channels | gmail, chatgpt, slack |
