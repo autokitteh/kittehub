@@ -3,7 +3,6 @@
 from os import getenv
 
 from anthropic import Anthropic
-
 from autokitteh.slack import slack_client
 
 
