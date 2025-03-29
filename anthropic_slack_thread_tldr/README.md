@@ -27,7 +27,7 @@ API documentation:
 
 1. Initialize Slack connection
 2. Configure the `ANTHROPIC_API_KEY` project variable with your API key
-3. Configure the `INVOCATION_CMD` variable to set the command prefix (default: "research")
+3. Configure the `INVOCATION_CMD` variable to set the command prefix (default: "tldr")
 4. Configure the `MAX_TOKENS` variable to limit maximum tokens per interaction (default: 1000)
 5. Deploy project
 
