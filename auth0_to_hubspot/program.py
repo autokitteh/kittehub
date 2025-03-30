@@ -53,8 +53,7 @@ def add_new_users(users):
 
 def _create_hubspot_contact(user):
     """Convert Auth0 user data to HubSpot contact format."""
-    first_name = user.get("given_name") or user.get("name", "").split(" ")[0]
-    last_name = user.get("family_name") or " ".join(user.get("name", "").split(" ")[1:])
+    first_name, last_name = extract_name(user)
 
     user_data = {
         "email": user["email"],
@@ -62,3 +61,14 @@ def _create_hubspot_contact(user):
         "lastname": last_name,
     }
     return SimplePublicObjectInput(properties=user_data)
+
+
+def extract_name(user):
+    """Extracts first and last name from user."""
+    if "given_name" in user and "family_name" in user:
+        return user["given_name"], user["family_name"]
+
+    name_parts = user.get("name", "").split()
+    first = name_parts[0] if len(name_parts) > 0 else ""
+    last = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""
+    return first, last
