@@ -1,0 +1,32 @@
+# This YAML file defines a declarative manifest for an AutoKitteh project that
+# creates Asana tasks from Google Calendar events.
+
+version: v1
+
+project:
+  name: kubernetes_sheet_dashboard
+
+  vars:
+    - name: GOOGLE_SHEET_ID
+      # value: "your_google_sheet_id"
+      value: "17fF2qaREswvLtXHP4YVAT_V0HjijC0Q3YeuXalqjS1Q"
+    - # The invocation command to trigger the agent from slack.
+      # It will always be prefixed with '!'.
+      name: SLACK_INVOCATION_CMD
+      value: "dd"
+
+  connections:
+    - name: slack
+      integration: slack
+    - name: gsheets
+      integration: googlesheets
+
+  triggers:
+    - name: poll_sheet_schedule
+      schedule: "@every 1m"
+      call: workflows.py:on_poll_sheet
+    - name: slack_message
+      connection: slack
+      event_type: message
+      filter: "data.thread_ts == '' && data.text.startsWith('!')"
+      call: workflows.py:on_slack_message
