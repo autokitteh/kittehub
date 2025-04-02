@@ -1,4 +1,4 @@
-"""Common code to chat with the agent."""
+"""Main workflow logic."""
 
 from os import getenv
 
