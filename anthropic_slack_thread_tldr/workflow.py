@@ -6,23 +6,16 @@ from anthropic import Anthropic
 from autokitteh.slack import slack_client
 
 
-_cmd = f"!{getenv('INVOCATION_CMD', 'tldr')}"
-
 slack_client = slack_client("slack")
 
 anthropic_client = Anthropic(api_key=getenv("ANTHROPIC_API_KEY"))
 
 _MAX_TOKENS = int(getenv("MAX_TOKENS", 1000))
+_MODEL = getenv("MODEL", "claude-3-5-haiku-20241022")
 
 
 def on_slack_thread_message(event):
     """Run the entire interaction with the user."""
-    text = event.data.text.strip()
-
-    if text != _cmd:
-        print("irrelevant")
-        return
-
     # `ts` is the timestamp of the message that triggered this event.
     # `thread_ts` is the timestamp of the parent message.
     ch, ts, thread_ts = event.data.channel, event.data.ts, event.data.thread_ts
@@ -55,7 +48,7 @@ def on_slack_thread_message(event):
                 ),
             }
         ],
-        model="claude-3-5-haiku-20241022",
+        model=_MODEL,
     )
 
     print(f"claude: {message}")
