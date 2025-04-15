@@ -53,7 +53,7 @@ def add_new_users(users):
 
 def _create_hubspot_contact(user):
     """Convert Auth0 user data to HubSpot contact format."""
-    first_name, last_name = extract_name(user)
+    first_name, last_name = _extract_name(user)
 
     user_data = {
         "email": user["email"],
