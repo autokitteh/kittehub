@@ -31,7 +31,10 @@ def _get_time_range(hours):
     """Calculate start and end times for user lookup."""
     now = datetime.now(UTC)
     start_time = now - timedelta(hours=hours)
-    return (start_time.isoformat() + "Z", now.isoformat() + "Z")
+
+    start_formatted = start_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+    end_formatted = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return (start_formatted, end_formatted)
 
 
 def add_new_users(users):
@@ -51,9 +54,22 @@ def add_new_users(users):
 
 def _create_hubspot_contact(user):
     """Convert Auth0 user data to HubSpot contact format."""
+    first_name, last_name = _extract_name(user)
+
     user_data = {
         "email": user["email"],
-        "firstname": user["given_name"],
-        "lastname": user["family_name"],
+        "firstname": first_name,
+        "lastname": last_name,
     }
     return SimplePublicObjectInput(properties=user_data)
+
+
+def _extract_name(user):
+    """Extracts first and last name from user."""
+    if "given_name" in user and "family_name" in user:
+        return user["given_name"], user["family_name"]
+
+    name_parts = user.get("name", "").split()
+    first = name_parts[0] if len(name_parts) > 0 else ""
+    last = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""
+    return first, last
