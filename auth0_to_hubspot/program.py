@@ -63,7 +63,7 @@ def _create_hubspot_contact(user):
     return SimplePublicObjectInput(properties=user_data)
 
 
-def extract_name(user):
+def _extract_name(user):
     """Extracts first and last name from user."""
     if "given_name" in user and "family_name" in user:
         return user["given_name"], user["family_name"]
