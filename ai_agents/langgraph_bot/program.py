@@ -75,7 +75,7 @@ def build_graph():
 
 
 @autokitteh.activity
-def on_slack_message(event):
+def on_app_mention(event):
     """Handle incoming Slack messages and respond using the LangGraph bot."""
     graph = build_graph()
 

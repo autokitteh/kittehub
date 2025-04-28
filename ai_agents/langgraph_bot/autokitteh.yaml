@@ -16,7 +16,7 @@ project:
     - name: on_message
       event_type: app_mention
       connection: slack
-      call: program.py:on_slack_message
+      call: program.py:on_app_mention
 
   vars:
     - name: GOOGLE_API_KEY

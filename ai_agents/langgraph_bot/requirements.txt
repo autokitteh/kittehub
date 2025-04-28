@@ -1,0 +1,6 @@
+langgraph
+langchain
+typing
+langchain_google_genai
+langchain-core
+langchain-tavily
