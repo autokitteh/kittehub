@@ -20,7 +20,7 @@ For example, given this expertise table:
 
 This would happen:
 
-![demo](./demo.png)
+![demo](/slack_support/demo.png)
 
 ## How It Works
 
@@ -47,6 +47,7 @@ The workflow is triggered when the bot is mentioned in a message within a channe
 ```
 
 When a topic matches an expert's expertise, the bot notifies them. The expert can use:
+
 - `!take` to claim the request
 - `!resolve` to mark it complete
 
