@@ -1,6 +1,5 @@
 """LangGraph Bot for Slack using LangGraph, Google Gemini LLM, and Google Sheet API."""
 
-import os
 from typing import Annotated, TypedDict
 
 import autokitteh
@@ -16,9 +15,6 @@ from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode
 from langgraph.prebuilt import tools_condition
 
-
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 
 slack = slack_client("slack_conn")
 sheet = google_sheets_client("sheets_conn").spreadsheets().values()
