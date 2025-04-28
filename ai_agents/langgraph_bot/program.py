@@ -2,6 +2,7 @@
 
 import os
 from typing import Annotated
+from typing_extensions import TypedDict
 
 import autokitteh
 from autokitteh.google import google_sheets_client
@@ -9,14 +10,9 @@ from autokitteh.slack import slack_client
 from langchain_core.tools import tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_tavily import TavilySearch
-from langgraph.graph import END
-from langgraph.graph import START
-from langgraph.graph import StateGraph
+from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import add_messages
-from langgraph.prebuilt import ToolNode
-from langgraph.prebuilt import tools_condition
-
-from typing_extensions import TypedDict
+from langgraph.prebuilt import ToolNode, tools_condition
 
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
