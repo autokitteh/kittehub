@@ -20,7 +20,7 @@ For example, given this expertise table:
 
 This would happen:
 
-![demo](kittehub/slack_support/demo.png)
+![demo](/slack_support/demo.png)
 
 ## How It Works
 
