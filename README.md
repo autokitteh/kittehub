@@ -14,7 +14,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | Name | Description | Integration |
 | :--- | :---------- | :---------- |
 | [AI chat assistant](./ai-chat-assistant/) | A Slack-based automation assistant that leverages ChatGPT to manage and respond to messages by integrating with GitHub and Google Sheets. | chatgpt, github, sheets, slack |
-| [LangGraph Bot with Tavily, and Google Sheets](./ai_agents/langgraph_bot/) | Slack bot built with LangGraph and powered by Gemini LLM that can search information and update Google Sheets | slack, google_sheets |
+| [LangGraph Bot with Tavily, and Google Sheets](./ai_agents/langgraph_bot/) | Slack bot built with LangGraph and powered by Gemini LLM that can search information and update Google Sheets | slack, sheets |
 | [OpenAI Agent Researcher](./ai_agents/openai_agent_researcher/) | A Slack-based research agent workflow. | chatgpt, slack |
 | [Anthropic Slack Thread TLDR](./anthropic_slack_thread_tldr/) | Summarizes a Slack thread using Claude | slack |
 | [Copy Auth0 Users to HubSpot](./auth0_to_hubspot/) | Periodically add new Auth0 users to HubSpot as contacts | auth0, hubspot |
