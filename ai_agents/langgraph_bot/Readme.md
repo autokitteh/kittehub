@@ -1,8 +1,8 @@
 ---
 title: LangGraph Bot with Tavily, and Google Sheets
 description: Slack bot built with LangGraph and powered by Gemini LLM that can search information and update Google Sheets
-integrations: ["slack", "google_sheets"]
-categories: ["AI Assistant", "Productivity"]
+integrations: ["slack", "sheets"]
+categories: ["AI", "Productivity"]
 ---
 
 # LangGraph Bot with Tavily, and Google Sheets
