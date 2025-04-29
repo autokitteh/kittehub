@@ -32,35 +32,6 @@ jobs:
       - name: Test with pytest
         run: pytest -v .
 
-      - name: Debug README changes
-        run: |
-          # Run the update script
-          python update_projects_table.py
-
-          # Capture diff to a file
-          git diff README.md > readme_changes.txt
-
-          # Output the diff to the logs
-          echo "Changes detected in README.md:"
-          cat readme_changes.txt
-
-          # Also show if there are any changes at all
-          if [ -s readme_changes.txt ]; then
-            echo "Changes detected in README.md"
-          else
-            echo "No changes detected in README.md"
-          fi
-
-          # Create artifacts directory
-          mkdir -p ./artifacts
-          cp readme_changes.txt ./artifacts/
-
-      - name: Upload diff artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: readme-diff
-          path: ./artifacts
-
       - name: Verify README.md is up to date
         run: |
           # If this check fails, run "python update_projects_table.py", and add "README.md" to this PR.
