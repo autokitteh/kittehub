@@ -14,6 +14,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | Name | Description | Integration |
 | :--- | :---------- | :---------- |
 | [AI chat assistant](./ai-chat-assistant/) | A Slack-based automation assistant that leverages ChatGPT to manage and respond to messages by integrating with GitHub and Google Sheets. | chatgpt, github, sheets, slack |
+| [LangGraph Bot with Tavily, and Google Sheets](./ai_agents/langgraph_bot/) | Slack bot built with LangGraph and powered by Gemini LLM that can search information and update Google Sheets | slack, sheets |
 | [OpenAI Agent Researcher](./ai_agents/openai_agent_researcher/) | A Slack-based research agent workflow. | chatgpt, slack |
 | [Anthropic Slack Thread TLDR](./anthropic_slack_thread_tldr/) | Summarizes a Slack thread using Claude | slack |
 | [Copy Auth0 Users to HubSpot](./auth0_to_hubspot/) | Periodically add new Auth0 users to HubSpot as contacts | auth0, hubspot |
@@ -34,7 +35,6 @@ demonstrate basic system features, integration APIs, and best practices.
 | [GitHub and Jenkins workflow](./jenkins_release/) | This ensures that when a commit is pushed to main, a specific Jenkins build is completed. | github |
 | [Jira assignee from Google Calendar](./jira_google_calendar/assignee_from_schedule/) | Set assignee in Jira ticket to the person currently on-call | jira, calendar |
 | [Create calendar due date event for Jira ticket](./jira_google_calendar/deadline_to_event/) | When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline | calendar, jira |
-| [LangGraph Bot with Tavily, and Google Sheets](./langgraph_bot/) | Slack bot built with LangGraph and powered by Gemini LLM that can search information and update Google Sheets | slack, sheets |
 | [Quickstart](./quickstart/) | Sample for quickstart | http |
 | [AWS Health monitor](./reliability/aws_health_monitor/) | Announce AWS Health events in Slack channels, based on resource ownership data in a Google Sheet | aws, slack, sheets |
 | [Incident management automation](./reliability/incidenter/) | Connect separate systems to have seamless incident management | slack, zoom, height |
