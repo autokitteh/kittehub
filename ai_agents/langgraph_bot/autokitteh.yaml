@@ -1,0 +1,25 @@
+# This YAML file defines a manifest for an AutoKitteh project that
+# creates a Langgraph bot.
+
+version: v1
+
+project:
+  name: Langgraph google Sheets Bot
+
+  connections:
+    - name: slack_conn
+      integration: slack
+    - name: sheets_conn
+      integration: googlesheets
+
+  triggers:
+    - name: on_message
+      event_type: app_mention
+      connection: slack
+      call: program.py:on_app_mention
+
+  vars:
+    - name: GOOGLE_API_KEY
+      value: ""
+    - name: TAVILY_API_KEY
+      value: ""
