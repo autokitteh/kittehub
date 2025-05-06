@@ -4,7 +4,7 @@
 version: v1
 
 project:
-  name: Langgraph google Sheets Bot
+  name: Langgraph_Bot
 
   connections:
     - name: slack_conn
@@ -15,7 +15,7 @@ project:
   triggers:
     - name: on_message
       event_type: app_mention
-      connection: slack
+      connection: slack_conn
       call: program.py:on_app_mention
 
   vars:
