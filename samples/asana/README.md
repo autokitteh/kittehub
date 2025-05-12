@@ -39,7 +39,7 @@ API details:
 `create_task`:
 
 ```shell
-curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
+curl -i "${WEBHOOK_URL}" --url-query name=<TASK_NAME>
 ```
 
 `update_task`:
