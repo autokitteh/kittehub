@@ -19,11 +19,15 @@ def on_issue_comment(event):
     https://docs.github.com/en/webhooks/webhook-events-and-payloads#issue_comment
     """
     comment_url = event.data.comment.html_url
+    comment_body = event.data.comment.body
     comment_action = event.data.action
     comment_author = event.data.comment.user.login or "Unknown user"
     issue_title = event.data.issue.title
 
-    text = f"{comment_author} {comment_action} a comment on issue '{issue_title}', "
+    text = (
+        f"{comment_author} {comment_action} a comment on issue '{issue_title}': "
+        f"{comment_body}\n. "
+    )
     text += f"View the comment here: {comment_url}."
 
     slack.chat_postMessage(channel=SLACK_CHANNEL, text=text)
