@@ -13,10 +13,11 @@ WORKSPACE_GID = os.getenv("WORKSPACE_GID", "")
 
 
 def create_task(event):
+    task_name = event.data.url.query.get("name") or "autokitteh task"
     body = {
         "data": {
             "workspace": WORKSPACE_GID,
-            "name": "autokitteh task",
+            "name": task_name,
             "assignee": "me",
         }
     }

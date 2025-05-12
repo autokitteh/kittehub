@@ -39,7 +39,7 @@ API details:
 `create_task`:
 
 ```shell
-curl -X GET "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}"
+curl -i "${WEBHOOK_URL}" --url-query name=<TASK_NAME>
 ```
 
 `update_task`:
@@ -50,6 +50,9 @@ curl -X POST "https://api.autokitteh.cloud/webhooks/{your-webhook-slug}" \
        -d new_due_date=<new_date> \
        -d name_suffixe=<added_name>
 ```
+
+> [!NOTE]
+> The `name` query parameter is optional. If not provided, it defaults to `'autokitteh task'`.
 
 ## Self-Hosted Deployment
 
