@@ -5,7 +5,6 @@ import os
 
 import autokitteh
 import paramiko
-
 import requests
 
 
@@ -43,7 +42,7 @@ def remove_spaces(file_io):
 def send_file_http(file_io, filename, url):
     file_io.seek(0)
     files = {"file": (filename, file_io)}
-    response = requests.post(url, files=files)
+    response = requests.post(url, files=files, timeout=10)
     return response.status_code, response.text
 
 
