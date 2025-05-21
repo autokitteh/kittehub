@@ -11,10 +11,10 @@ This project listens for webhook events and automatically transfers a file from 
 
 ## How It Works
 
-1. The workflow is triggered by a webhook call.
-2. It connects to a remote SFTP server and downloads a specific file.
-3. It removes all spaces from the file contents.
-4. It sends the cleaned file to a predefined HTTP endpoint.
+1. The workflow is triggered by a HTTP request.
+2. Connects to a remote SFTP server and downloads a specific file.
+3. Removes all spaces from the file contents.
+4. Sends the cleaned file to a predefined HTTP endpoint.
 
 ## Cloud Usage (Recommended)
 
