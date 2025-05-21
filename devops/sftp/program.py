@@ -46,6 +46,9 @@ def send_file_http(file_io, filename, url):
     return response.status_code, response.text
 
 
+# Use a single activity to avoid Temporal's data serialization between steps.
+# - big files boundary.
+# - Keeps a stream (not serializable) in-process.
 @autokitteh.activity
 def on_webhook_call(_):
     """Download a file via SFTP, remove spaces and upload it."""
