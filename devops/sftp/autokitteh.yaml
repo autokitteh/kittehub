@@ -1,0 +1,16 @@
+# This is a YAML file that describes the minimal setup of an AutoKitteh SFTP project.
+
+version: v1
+
+project:
+  name: SFTP_demo
+
+  triggers:
+    - name: webhook
+      type: webhook
+      event_type: get
+      call: program.py:on_webhook_call
+
+  vars:
+    - name: HTTP_TARGET
+      value: ""
