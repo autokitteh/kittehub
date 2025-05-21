@@ -8,6 +8,8 @@ categories: ["DevOps"]
 
 # Confluence To Slack Workflow 
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=confluence_to_slack)
+
 This workflow automates notifications to a Slack channel whenever a new Confluence page is created in a specified space.
 
 ## How It Works

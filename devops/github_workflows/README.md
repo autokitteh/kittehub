@@ -7,6 +7,8 @@ categories: ["DevOps"]
 
 # GitHub Workflow Orchestration
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=devops/github_workflows)
+
 Orchestrate GitHub workflows with advanced scenarios across multiple repositories:
 
 - Cross-repo (A &rarr; B)

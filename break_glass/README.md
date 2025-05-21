@@ -7,6 +7,8 @@ categories: ["DevOps"]
 
 # Break-Glass Request Workflow
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=break_glass)
+
 This project implements a break-glass request workflow that allows users to submit emergency access requests via Slack, which are then approved or denied based on a set of predefined conditions. The project integrates Slack and Jira with custom modals and messages.
 
 ## How It Works

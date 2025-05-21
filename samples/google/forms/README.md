@@ -7,6 +7,8 @@ categories: ["Samples"]
 
 # Google Forms Sample
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/google/forms)
+
 This AutoKitteh project demonstrates 2-way integration with
 [Google Forms](https://www.google.com/forms/about/).
 

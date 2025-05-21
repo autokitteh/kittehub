@@ -7,6 +7,8 @@ categories: ["Samples"]
 
 # Google Drive Sample
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/google/drive)
+
 This project automates Google Drive file monitoring and management by integrating with the Google Drive API. It demonstrates creating new documents, monitoring file changes, and handling Drive events through AutoKitteh's Google Drive integration.
 
 API documentation:
