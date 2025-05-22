@@ -102,6 +102,4 @@ def test_readme_has_correct_badge():
                 f"{type(e).__name__} - {e}"
             )
 
-    assert not errors, (
-        "README badge convention errors found:\n\n" + "\n".join(errors)
-    )
+    assert not errors, "README badge convention errors found:\n\n" + "\n".join(errors)
