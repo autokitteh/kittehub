@@ -1,3 +1,10 @@
+---
+title: Basic Discord Bot
+description: A basic Discord bot using AutoKitteh that sends a 'Meow!' message to a channel upon connection.
+integrations: ["discord"]
+categories: ["Bots", "Automation"]
+---
+
 # Basic Discord Bot with AutoKitteh
 
 [![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/discord/discord_client)
