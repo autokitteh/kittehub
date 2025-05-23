@@ -12,7 +12,11 @@ BADGE_IMG = "https://autokitteh.com/assets/autokitteh-badge.svg"
 
 DIRNAME_VALIDATOR = re.compile(r"^[a-zA-Z0-9_./-]+$")
 ROOT_PATH = Path(__file__).parent
-
+IGNORED_DIRS = [
+    ROOT_PATH / "samples/discord",
+    ROOT_PATH / "slack_discord_sync",
+    ROOT_PATH / "discord_to_spreadsheet",
+]
 
 
 def extract_metadata(readme_file: Path) -> dict:
@@ -86,8 +90,8 @@ def generate_table(root_path: Path) -> list:
     rows = []
     errors = []
     for f in sorted(root_path.rglob("README.md")):
-        if f.parent == root_path:
-            continue 
+        if f.parent == root_path or any(f.parent.is_relative_to(ignored_dir) for ignored_dir in IGNORED_DIRS):
+            continue
         try:
             if is_directory_complete(f.parent):
                 metadata = extract_metadata(f)
