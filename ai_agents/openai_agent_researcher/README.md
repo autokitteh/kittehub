@@ -9,6 +9,8 @@ categories: ["AI"]
 
 # OpenAI Agent Researcher
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=ai_agents/openai_agent_researcher)
+
 An interactive AI research assistant that uses OpenAI Agents to perform web searches and gather information based on user queries. Built on the durable AutoKitteh platform, this assistant communicates with users through Slack, plans research tasks, and delivers comprehensive reports with fault-tolerant execution.
 
 API documentation:

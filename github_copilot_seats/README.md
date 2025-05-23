@@ -7,6 +7,8 @@ categories: ["DevOps"]
 
 # GitHub Copilot Seat Pruning
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=github_copilot_seats)
+
 This automation runs daily to list all the users in the GitHub organization
 who have access to [Copilot](https://github.com/features/copilot). If any of
 them haven't used it in a preceding period of time, it marks their seat for

@@ -7,6 +7,8 @@ categories: ["Reliability"]
 
 # AutoKitteh Session Errors Monitor
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=reliability/session_errors_monitor)
+
 Send Slack alerts when AutoKitteh sessions end due to errors.
 
 This is a detection tool for incidents due to unexpected exceptions in workflows that are usually stable and dependable. It can also be used as a development and debugging tool.

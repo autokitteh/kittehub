@@ -7,6 +7,8 @@ categories: ["Reliability"]
 
 # Incident Management Automation
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=reliability/incidenter)
+
 An incident can be declared by mentioning the Slack bot like so:
 
 ```

@@ -7,6 +7,8 @@ categories: ["Samples"]
 
 # Atlassian Jira Sample
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/atlassian/jira)
+
 This [AutoKitteh](https://github.com/autokitteh/autokitteh) project
 demonstrates 2-way integration with
 [Jira](https://www.atlassian.com/software/jira/guides/).

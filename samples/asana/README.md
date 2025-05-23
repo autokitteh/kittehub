@@ -7,6 +7,8 @@ categories: ["Samples"]
 
 # Asana Sample
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/asana)
+
 The Asana sample demonstrates how to streamline task management using AutoKitteh's Asana integration.
 
 It features functionality to create tasks within a workspace and update existing ones,

@@ -7,6 +7,8 @@ categories: ["Samples"]
 
 # Slack Sample
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/slack)
+
 This sample project demonstrates AutoKitteh's 2-way integration with
 [Slack](https://slack.com).
 

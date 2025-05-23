@@ -7,6 +7,8 @@ categories: ["Reliability"]
 
 # Missing Jira Events Monitor
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=reliability/missing_jira_events_monitor)
+
 Send alerts when AutoKitteh doesn't receive certain Jira events in time.
 
 This is a detection tool for incidents due to missing updates from monitored services. Possible root-causes for example:

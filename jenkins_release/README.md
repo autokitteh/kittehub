@@ -7,6 +7,8 @@ categories: ["DevOps"]
 
 # GitHub and Jenkins Workflow
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=jenkins_release)
+
 Some jobs are sometimes required to pass, knowing that all their inputs as valid. In this case we demonstrate that by ensuring that a specific Jenkins job is retries until passing when a new push happens on main.
 
 ## How It Works

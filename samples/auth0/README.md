@@ -7,6 +7,8 @@ categories: ["Samples"]
 
 # Auth0 Sample
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/auth0)
+
 The Auth0 sample demonstrates how to streamline user and role management using AutoKitteh's Auth0 integration.
 
 This example showcases functionality to assign roles to users within Auth0 and retrieve insights into weekly user growth by querying newly created users.

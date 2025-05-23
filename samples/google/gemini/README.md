@@ -7,6 +7,8 @@ categories: ["AI", "Samples"]
 
 # Gemini Sample
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/google/gemini)
+
 This [AutoKitteh](https://github.com/autokitteh/autokitteh) project demonstrates integration with [Gemini](https://gemini.google.com) for generating content and conducting interactive chats.
 
 API documentation:

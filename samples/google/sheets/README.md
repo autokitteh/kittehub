@@ -7,6 +7,8 @@ categories: ["Samples"]
 
 # Google Sheets Sample
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/google/sheets)
+
 This AutoKitteh project demonstrates 2-way integration with
 [Google Sheets](https://workspace.google.com/products/sheets/).
 

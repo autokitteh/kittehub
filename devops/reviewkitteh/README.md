@@ -7,6 +7,8 @@ categories: ["DevOps"]
 
 # ReviewKitteh
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=devops/reviewkitteh)
+
 This project automates the process of listening for GitHub pull request events and posting updates to a Slack channel. The workflow tracks the state of the pull request and meows at random people from a Google Sheet in the Slack channel.
 
 ## How It Works

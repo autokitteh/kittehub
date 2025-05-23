@@ -7,6 +7,8 @@ categories: ["Productivity"]
 
 # Google Calendar To Asana
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=google_cal_to_asana)
+
 This project automates task creation by integrating Google Calendar and Asana.
 
 ## API Documentation

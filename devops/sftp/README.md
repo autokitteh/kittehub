@@ -7,6 +7,8 @@ categories: ["DevOps"]
 
 # SFTP demo
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=devops/sftp)
+
 This project listens for webhook events and automatically transfers a file from an SFTP server to an HTTP endpoint. It removes spaces from the file content before sending. The goal is to provide a lightweight, event-driven integration point between two systems.
 
 ## How It Works
