@@ -1,10 +1,3 @@
----
-title: Discord Events Logger
-description: Listen for Discord message events (create, update, delete) and log message activity using AutoKitteh's event system.
-integrations: ["discord", "autokitteh"]
-categories: ["Samples"]
----
-
 # Discord Events
 
 [![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/discord/events)
