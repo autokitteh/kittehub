@@ -30,7 +30,9 @@ def extract_metadata(readme_file: Path) -> dict:
         if k in list_values:
             v_stripped = v
             if v_stripped.startswith("[") and v_stripped.endswith("]"):
-                metadata[k] = [item.strip() for item in re.findall(r'"(.+?)"', v_stripped)]
+                metadata[k] = [
+                    item.strip() for item in re.findall(r'"(.+?)"', v_stripped)
+                ]
             else:
                 metadata[k] = []
         else:
@@ -60,19 +62,25 @@ def is_directory_complete(directory: Path) -> bool:
     has_readme = readme_file.is_file()
     metadata = extract_metadata(readme_file) if has_readme else {}
     complete_metadata = is_metadata_complete(metadata)
-    if (has_python_files or has_autokitteh_yaml):
+    if has_python_files or has_autokitteh_yaml:
         if complete_metadata:
             return True
         else:
-            raise ValueError(f"Directory '{directory}' contains code or YAML but has incomplete metadata in README.md.")
+            raise ValueError(
+                f"Directory '{directory}' contains code or YAML but has incomplete metadata in README.md."
+            )
     elif has_readme and not (has_python_files or has_autokitteh_yaml):
         return False  # Only README is present, that's okay
     else:
-        raise ValueError(f"Directory '{directory}' is missing required files (README.md, .py, or autokitteh.yaml).")
+        raise ValueError(
+            f"Directory '{directory}' is missing required files (README.md, .py, or autokitteh.yaml)."
+        )
+
 
 def generate_badge_html(dir_name: str) -> str:
     """Generate HTML for the badge."""
-    return f'[![{BADGE_ALT}]({BADGE_IMG})]({BADGE_URL}{dir_name})'
+    return f"[![{BADGE_ALT}]({BADGE_IMG})]({BADGE_URL}{dir_name})"
+
 
 def generate_table_row(project_dir: Path, metadata: dict, root_path: Path) -> str:
     title = metadata.get("title", "").strip()
@@ -90,7 +98,9 @@ def generate_table(root_path: Path) -> list:
     rows = []
     errors = []
     for f in sorted(root_path.rglob("README.md")):
-        if f.parent == root_path or any(f.parent.is_relative_to(ignored_dir) for ignored_dir in IGNORED_DIRS):
+        if f.parent == root_path or any(
+            f.parent.is_relative_to(ignored_dir) for ignored_dir in IGNORED_DIRS
+        ):
             continue
         try:
             if is_directory_complete(f.parent):
@@ -115,6 +125,7 @@ def generate_table(root_path: Path) -> list:
         md = re.sub("-->.+<!--", table + "<!--", md, flags=re.DOTALL)
         readme_file.write_text(md, encoding="utf-8")
     return rows, errors
+
 
 if __name__ == "__main__":
     rows, errors = generate_table(ROOT_PATH)
