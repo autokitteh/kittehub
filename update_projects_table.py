@@ -1,8 +1,7 @@
 """Extract metadata from project README files to update table in repo's README file."""
 
-import re
 import os
-import sys
+import re
 from pathlib import Path
 
 BADGE_URL = os.getenv("BADGE_URL", "https://app.autokitteh.cloud/template?name=")
@@ -67,13 +66,15 @@ def is_directory_complete(directory: Path) -> bool:
             return True
         else:
             raise ValueError(
-                f"Directory '{directory}' contains code or YAML but has incomplete metadata in README.md."
+                f"Directory '{directory}' contains code or YAML but has "
+                "incomplete metadata in README.md."
             )
     elif has_readme and not (has_python_files or has_autokitteh_yaml):
         return False  # Only README is present, that's okay
     else:
         raise ValueError(
-            f"Directory '{directory}' is missing required files (README.md, .py, or autokitteh.yaml)."
+            f"Directory '{directory}' is missing required files "
+            "(README.md, .py, or autokitteh.yaml)."
         )
 
 
@@ -91,7 +92,10 @@ def generate_table_row(project_dir: Path, metadata: dict, root_path: Path) -> st
     path = project_dir.relative_to(root_path)
     dir_name_for_badge = project_dir.relative_to(root_path).as_posix()
     badge_html_for_table = generate_badge_html(dir_name_for_badge)
-    return f"| [{title}](./{path}/)<br/>{badge_html_for_table} | {description} | {integrations} |\n"
+    return (
+        f"| [{title}](./{path}/)<br/>{badge_html_for_table} | "
+        f"{description} | {integrations} |\n"
+    )
 
 
 def generate_table(root_path: Path) -> list:
@@ -111,7 +115,7 @@ def generate_table(root_path: Path) -> list:
             else:
                 # Only README present, skip
                 continue
-        except Exception as e:
+        except (ValueError, IOError) as e:
             errors.append(f"Directory '{f.parent}': {str(e)}")
             continue
     # Insert rows into the main README table here
