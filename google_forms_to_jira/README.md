@@ -7,6 +7,8 @@ categories: ["DevOps"]
 
 # Create Jira ticket from Google form
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=google_forms_to_jira)
+
 This project automates ticket creation and updates in Jira based on Google Forms responses, enabling seamless integration between form submissions and issue tracking.
 
 ## API Documentation

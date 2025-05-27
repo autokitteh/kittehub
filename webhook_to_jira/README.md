@@ -7,6 +7,8 @@ categories: ["DevOps"]
 
 # Create Jira Ticket From Webhook Data
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=webhook_to_jira)
+
 This project automates Jira issue creation through HTTP requests. It supports multiple formats, including GET parameters, POST form data, and JSON payloads, making it adaptable to various external systems.
 
 API documentation:

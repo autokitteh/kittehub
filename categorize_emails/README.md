@@ -7,6 +7,8 @@ categories: ["AI", "Productivity"]
 
 # Email Categorization and Notification
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=categorize_emails)
+
 Categorize incoming emails and notify relevant Slack channels by integrating Gmail, ChatGPT, and Slack. It is not meant to be a 100% complete project, but rather a solid starting point.
 
 ## How It Works

@@ -7,6 +7,8 @@ categories: ["Samples"]
 
 # Runtime Event Handling Sample
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/runtime_events)
+
 [The workflow](./program.py) is triggered by an HTTP GET request with a URL
 path that ends with `/meow`.
 

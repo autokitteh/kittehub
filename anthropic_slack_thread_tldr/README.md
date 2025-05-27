@@ -7,6 +7,8 @@ categories: ["AI"]
 
 # Anthropic Slack Thread TLDR
 
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=anthropic_slack_thread_tldr)
+
 Allows Slack users to summarize a Slack thread by posting `!tldr` in a thread.
 
 API documentation:
