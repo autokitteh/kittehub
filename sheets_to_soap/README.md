@@ -2,7 +2,7 @@
 title: Google Sheets to SOAP Calculator
 description: Reads numeric values from Google Sheets and sends them to a SOAP-based calculator API
 integrations: ["sheets"]
-categories: ["Productivity", "Devops"]
+categories: ["Productivity", "DevOps"]
 ---
 
 # Google Sheets to SOAP Calculator
