@@ -1,0 +1,23 @@
+# Autokitteh configuration file for the sheets_to_soap project
+
+version: v1
+
+project:
+  name: sheets_to_soap
+  vars:
+    - name: SOAP_WSDL
+      value: http://www.dneonline.com/calculator.asmx?WSDL
+    - name: SHEET_ID
+      value:
+    - name: SHEET_RANGE
+      value:
+
+  connections:
+    - name: sheets_conn
+      integration: googlesheets
+
+  triggers:
+    - name: webhook
+      type: webhook
+      event_type: get
+      call: program.py:on_trigger
