@@ -32,7 +32,7 @@ This AutoKitteh project demonstrates how to integrate Google Sheets with a SOAP-
 
 ## Trigger Workflow
 
-Start a long-running AutoKitteh session by sending an HTTP GET request to the webhook URL from step 3 in the [Cloud Usage](#cloud-usage) section above:
+Start an AutoKitteh session by sending an HTTP GET request to the webhook URL from step 3 in the [Cloud Usage](#cloud-usage) section above:
 
 ```shell
 curl -i "${WEBHOOK_URL}"
