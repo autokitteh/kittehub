@@ -2,7 +2,6 @@
 
 from typing import Annotated, TypedDict
 
-import autokitteh
 from autokitteh.google import google_sheets_client
 from autokitteh.slack import slack_client
 from langchain_core.tools import tool
@@ -48,37 +47,38 @@ class State(TypedDict):
     messages: Annotated[list, add_messages]
 
 
-def build_graph():
-    """Build LangGraph with LLM and tools."""
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
-    search_tool = TavilySearch(max_results=2)
-    tools = [search_tool, write_to_sheet]
-    llm_with_tools = llm.bind_tools(tools)
-
-    def chatbot(state: State):
-        """Chat interaction using the LLM and available tools."""
-        messages = [{"role": "system", "content": SYSTEM_ROLE}] + state["messages"]
-        return {"messages": [llm_with_tools.invoke(messages)]}
-
-    builder = StateGraph(State)
-    builder.add_node("chatbot", chatbot)
-
-    tool_node = ToolNode(tools=tools)
-    builder.add_node("tools", tool_node)
-
-    builder.add_edge(START, "chatbot")
-    builder.add_conditional_edges("chatbot", tools_condition)
-    builder.add_edge("tools", "chatbot")
-    builder.add_edge("chatbot", END)
-
-    return builder.compile()
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+search_tool = TavilySearch(max_results=2)
+tools = [search_tool, write_to_sheet]
+llm_with_tools = llm.bind_tools(tools)
 
 
-@autokitteh.activity
+def chatbot(state: State):
+    """Chat interaction using the LLM and available tools."""
+    messages = [{"role": "system", "content": SYSTEM_ROLE}] + state["messages"]
+    return {"messages": [llm_with_tools.invoke(messages)]}
+
+
+# Compile the LangGraph here instead of inside an autokitteh activity.
+# Returning builder.compile() directly from an activity causes a pickle error
+# due to non-deterministic objects.
+
+builder = StateGraph(State)
+builder.add_node("chatbot", chatbot)
+
+tool_node = ToolNode(tools=tools)
+builder.add_node("tools", tool_node)
+
+builder.add_edge(START, "chatbot")
+builder.add_conditional_edges("chatbot", tools_condition)
+builder.add_edge("tools", "chatbot")
+builder.add_edge("chatbot", END)
+
+graph = builder.compile()
+
+
 def on_app_mention(event):
     """Handle incoming Slack messages and respond using the LangGraph bot."""
-    graph = build_graph()
-
     initial_state = {"messages": [{"role": "user", "content": event.data.text}]}
     result = graph.invoke(initial_state)
 
