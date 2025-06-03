@@ -169,4 +169,34 @@ def _messages_send(text):
 
 
 def on_gmail_mailbox_change(event):
-    pass  # TODO(ENG-1524): Implement this function.
+    """Implement new message received event logic by detecting newly added mail."""
+    try:
+        # Get history ID from the event.
+        history_id = event.data.get("history_id")
+        if not history_id:
+            return
+
+        # Get recent history to find new messages.
+        # Look back 100 IDs because Gmail batches notifications,
+        # one event may cover multiple changes.
+        history = (
+            gmail.history()
+            .list(userId="me", startHistoryId=str(int(history_id) - 100))
+            .execute()
+        )
+
+        new_message_count = 0
+        if "history" in history:
+            for history_record in history["history"]:
+                if "messagesAdded" in history_record:
+                    new_message_count += len(history_record["messagesAdded"])
+
+        if new_message_count > 0:
+            on_new_message()
+
+    except HttpError as e:
+        print(f"Error: {e.reason}")
+
+
+def on_new_message():
+    print("received new mail!")
