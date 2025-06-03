@@ -169,7 +169,7 @@ def _messages_send(text):
     print("Message sent successfully!")
 
 
-def on_gmail_mailbox_change(event):
+def on_gmail_mailbox_change(_):
     """report unread mails from last day on mailbox change."""
     try:
         one_day_ago = datetime.datetime.now(tz=datetime.UTC) - datetime.timedelta(
