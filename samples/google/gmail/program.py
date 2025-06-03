@@ -6,7 +6,6 @@ API documentation:
 """
 
 import base64
-import datetime
 import json
 
 from autokitteh.google import gmail_client
@@ -169,18 +168,35 @@ def _messages_send(text):
     print("Message sent successfully!")
 
 
-def on_gmail_mailbox_change(_):
-    """report unread mails from last day on mailbox change."""
+def on_gmail_mailbox_change(event):
+    """Implement new message received event logic by detecting newly added mail."""
     try:
-        one_day_ago = datetime.datetime.now(tz=datetime.UTC) - datetime.timedelta(
-            days=1
+        # Get history ID from the event.
+        history_id = event.data.get("history_id")
+        if not history_id:
+            return
+
+        # Get recent history to find new messages.
+        # Look back 100 IDs because Gmail batches notifications,
+        # one event may cover multiple changes.
+        history = (
+            gmail.history()
+            .list(userId="me", startHistoryId=str(int(history_id) - 100))
+            .execute()
         )
-        query = f"is:unread after:{int(one_day_ago.timestamp())}"
 
-        unread_resp = gmail.messages().list(userId="me", q=query).execute()
-        unread_count = unread_resp.get("resultSizeEstimate", 0)
+        new_message_count = 0
+        if "history" in history:
+            for history_record in history["history"]:
+                if "messagesAdded" in history_record:
+                    new_message_count += len(history_record["messagesAdded"])
 
-        print(f"Mailbox changed - {unread_count} unread messages from yesterday.")
+        if new_message_count > 0:
+            on_new_message()
 
     except HttpError as e:
         print(f"Error: {e.reason}")
+
+
+def on_new_message():
+    print("received new mail!")
