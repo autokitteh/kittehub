@@ -6,6 +6,7 @@ API documentation:
 """
 
 import base64
+import datetime
 import json
 
 from autokitteh.google import gmail_client
@@ -169,4 +170,17 @@ def _messages_send(text):
 
 
 def on_gmail_mailbox_change(event):
-    pass  # TODO(ENG-1524): Implement this function.
+    """report unread mails from last day on mailbox change."""
+    try:
+        one_day_ago = datetime.datetime.now(tz=datetime.UTC) - datetime.timedelta(
+            days=1
+        )
+        query = f"is:unread after:{int(one_day_ago.timestamp())}"
+
+        unread_resp = gmail.messages().list(userId="me", q=query).execute()
+        unread_count = unread_resp.get("resultSizeEstimate", 0)
+
+        print(f"Mailbox changed - {unread_count} unread messages from yesterday.")
+
+    except HttpError as e:
+        print(f"Error: {e.reason}")
