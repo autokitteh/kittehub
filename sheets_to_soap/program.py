@@ -2,7 +2,6 @@
 
 import os
 
-import autokitteh
 from autokitteh.google import google_sheets_client
 from zeep import Client
 
@@ -16,9 +15,6 @@ SOAP_WSDL = os.getenv("SOAP_WSDL")
 client = Client(SOAP_WSDL)
 
 
-# activity is required because zeep methods lack __name__,
-# causing AutoKitteh to fail with AttributeError.
-@autokitteh.activity
 def on_trigger(_):
     """Workflow entry point."""
     response = sheet.get(spreadsheetId=SHEET_ID, range=SHEET_RANGE).execute()
