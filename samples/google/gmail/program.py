@@ -169,9 +169,8 @@ def _messages_send(text):
 
 
 def on_gmail_mailbox_change(event):
-    """Implement new message received event logic by detecting newly added mail."""
+    """Detect newly added mail and print From, To, and Subject."""
     try:
-        # Get history ID from the event.
         history_id = event.data.get("history_id")
         if not history_id:
             return
@@ -185,18 +184,32 @@ def on_gmail_mailbox_change(event):
             .execute()
         )
 
-        new_message_count = 0
         if "history" in history:
             for history_record in history["history"]:
                 if "messagesAdded" in history_record:
-                    new_message_count += len(history_record["messagesAdded"])
-
-        if new_message_count > 0:
-            on_new_message()
+                    for message_entry in history_record["messagesAdded"]:
+                        message_id = message_entry["message"]["id"]
+                        message = (
+                            gmail.messages()
+                            .get(
+                                userId="me",
+                                id=message_id,
+                                format="metadata",
+                                metadataHeaders=["From", "To", "Subject"],
+                            )
+                            .execute()
+                        )
+                        on_new_message(message)
 
     except HttpError as e:
         print(f"Error: {e.reason}")
 
 
-def on_new_message():
-    print("received new mail!")
+def on_new_message(message):
+    headers = {
+        h["name"]: h["value"] for h in message.get("payload", {}).get("headers", [])
+    }
+    print("New Mail Received:")
+    print(f"From: {headers.get('From')}")
+    print(f"To: {headers.get('To')}")
+    print(f"Subject: {headers.get('Subject')}")
