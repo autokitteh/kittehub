@@ -1,0 +1,24 @@
+# This file is part of the MCP project, which integrates with Anthropic and Slack.
+
+version: v1
+
+project:
+  name: anthropic_mcp
+
+  connections:
+    - name: slack_conn
+      integration: slack
+
+  triggers:
+    - name: send_msg
+      event_type: message
+      connection: slack_conn
+      call: program.py:start_workflow
+
+  vars:
+    - name: ANTHROPIC_API_KEY
+      value: ""
+    - name: SERVER_URL
+      value: ""
+    - name: SLACK_CHANNEL
+      value: ""
