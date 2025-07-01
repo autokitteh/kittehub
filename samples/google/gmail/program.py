@@ -8,6 +8,7 @@ API documentation:
 import base64
 import json
 
+import autokitteh
 from autokitteh.google import gmail_client
 from googleapiclient.errors import HttpError
 
@@ -175,20 +176,23 @@ def on_gmail_mailbox_change(event):
         if not history_id:
             return
 
-        # Get recent history to find new messages.
-        # Look back 100 IDs because Gmail batches notifications,
-        # one event may cover multiple changes.
+        last_history_id = int(autokitteh.get_value("last_history_id") or "0")
+        current_history_id = int(history_id)
+
+        if current_history_id <= last_history_id:
+            return
+
         history = (
             gmail.history()
-            .list(userId="me", startHistoryId=str(int(history_id) - 100))
+            .list(userId="me", startHistoryId=str(current_history_id))
             .execute()
         )
 
         if "history" in history:
             for history_record in history["history"]:
-                if "messagesAdded" in history_record:
-                    for message_entry in history_record["messagesAdded"]:
-                        message_id = message_entry["message"]["id"]
+                if "messages" in history_record:
+                    for message_entry in history_record["messages"]:
+                        message_id = message_entry["id"]
                         message = (
                             gmail.messages()
                             .get(
@@ -200,6 +204,8 @@ def on_gmail_mailbox_change(event):
                             .execute()
                         )
                         on_new_message(message)
+
+        autokitteh.set_value("last_history_id", str(current_history_id))
 
     except HttpError as e:
         print(f"Error: {e.reason}")
