@@ -170,29 +170,40 @@ def _messages_send(text):
 
 
 def on_gmail_mailbox_change(event):
-    """Detect newly added mail and print From, To, and Subject."""
+    """Gmail Mailbox Change Event Handler.
+
+    This function acts as a custom event handler for Gmail mailbox changes
+    (triggered via Pub/Sub webhook events). Due to limitations
+    in Gmail's native history ID event handling, this
+    function detects and handles incoming emails events.
+    """
     try:
         history_id = event.data.get("history_id")
         if not history_id:
             return
 
-        last_history_id = int(autokitteh.get_value("last_history_id") or "0")
         current_history_id = int(history_id)
-
-        if current_history_id <= last_history_id:
-            return
+        last_processed_id = int(
+            autokitteh.get_value("last_processed_id") or (current_history_id - 100)
+        )
 
         history = (
             gmail.history()
-            .list(userId="me", startHistoryId=str(current_history_id))
+            .list(userId="me", startHistoryId=str(last_processed_id))
             .execute()
         )
 
         if "history" in history:
             for history_record in history["history"]:
-                if "messages" in history_record:
-                    for message_entry in history_record["messages"]:
-                        message_id = message_entry["id"]
+                record_id = int(history_record["id"])
+
+                # Skip already processed records.
+                if record_id <= last_processed_id:
+                    continue
+
+                if "messagesAdded" in history_record:
+                    for message_entry in history_record["messagesAdded"]:
+                        message_id = message_entry["message"]["id"]
                         message = (
                             gmail.messages()
                             .get(
@@ -203,9 +214,15 @@ def on_gmail_mailbox_change(event):
                             )
                             .execute()
                         )
-                        on_new_message(message)
 
-        autokitteh.set_value("last_history_id", str(current_history_id))
+                        # Only process INBOX messages (incoming).
+                        labels = message.get("labelIds", [])
+                        if "INBOX" in labels and "SENT" not in labels:
+                            on_new_message(message)
+
+        # Only update if we processed something new.
+        if current_history_id > last_processed_id:
+            autokitteh.set_value("last_processed_id", str(current_history_id))
 
     except HttpError as e:
         print(f"Error: {e.reason}")
