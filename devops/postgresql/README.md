@@ -2,7 +2,7 @@
 title: PostgreSQL connection
 description: Project showing how to connect to PostgreSQL database
 integrations: ["postgres"]
-categories: ["Samples", "DevOps"]
+categories: ["DevOps"]
 ---
 
 # PostgreSQL Sample
