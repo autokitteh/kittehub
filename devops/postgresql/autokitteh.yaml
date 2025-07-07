@@ -8,16 +8,8 @@ project:
   name: postgresql_sample
 
   vars:
-    - name: POSTGRES_HOST
-      value: localhost
-    - name: POSTGRES_PORT
-      value: "5432"
-    - name: POSTGRES_DATABASE
-      value: your_database_name
-    - name: POSTGRES_USER
-      value: your_username
-    - name: POSTGRES_PASSWORD
-      value: your_password
+    - name: DSN
+      value: "postgresql://your_username:your_password@localhost:5432/your_database_name"
 
   triggers:
     - name: database_query
