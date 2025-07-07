@@ -1,0 +1,17 @@
+# This is an example configuration file for a PostgreSQL sample project using Autokitteh.
+# It defines the project name, variables for database connection, and a trigger for executing a query
+# via a webhook.
+
+version: v1
+
+project:
+  name: postgresql_sample
+
+  vars:
+    - name: DSN
+      value: "postgresql://your_username:your_password@localhost:5432/your_database_name"
+
+  triggers:
+    - name: database_query
+      type: webhook
+      call: program.py:on_trigger
