@@ -1,4 +1,4 @@
-"""Custom Gmail event system that work as a trigger when new emails arrive."""
+"""Custom Gmail event system that works as a trigger when new emails arrive."""
 
 import autokitteh
 from autokitteh.google import gmail_client
