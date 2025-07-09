@@ -1,0 +1,19 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates how to poll for new emails
+version: v1
+
+project:
+  name: new_mail
+
+  vars:
+    - name: TIME_LIMIT_MINUTES
+      value:
+
+  connections:
+    - name: gmail_conn
+      integration: gmail
+
+  triggers:
+    - name: poll
+      schedule: "@every 15m"
+      call: program.py:poll_new_emails
