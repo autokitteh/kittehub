@@ -18,7 +18,7 @@ API Documentation
 
 ## How It Works
 
-1. Polls Gmail inbox every hour using a scheduled trigger
+1. Polls Gmail inbox every minute using a scheduled trigger (timing can be changed in trigger settings)
 2. Tracks the last known message ID to detect new emails
 3. Processes new messages by extracting headers and details
 4. Handles multiple new messages in batch processing
@@ -30,7 +30,7 @@ API Documentation
 
 ## Trigger Workflow
 
-The workflow runs automatically every hour via scheduled trigger. You can also manually trigger it:
+The workflow runs automatically every minute via scheduled trigger. You can also manually trigger it:
 
 1. Deploy the project and wait for the scheduled trigger to run
 2. Send yourself a new email
@@ -43,5 +43,5 @@ Follow [these detailed instructions](https://docs.autokitteh.com/get_started/dep
 ## Known Limitations
 
 - **Gmail mailbox polling**: the polling mechanism is basic and does not cover edge cases
-- **Scheduled trigger**: runs every hour, so there may be a delay in detecting new emails
+- **Scheduled trigger**: runs every minute, so there may be a delay in detecting new emails
 - **History ID**: due to limitations in Gmail's native history ID event handling, this project uses a custom polling approach

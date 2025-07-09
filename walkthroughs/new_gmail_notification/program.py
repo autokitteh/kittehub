@@ -22,17 +22,17 @@ def poll_new_emails(_):
         print("No messages found in inbox")
         return
 
-    newest_message_id = response["messages"][0]["id"]
+    latest_msg_id = response["messages"][0]["id"]
 
     # If this is the first run, store the latest message ID and finish.
-    last_known_id = autokitteh.get_value("last_message_id")
-    if last_known_id is None:
-        autokitteh.set_value("last_message_id", newest_message_id)
+    msg_id = autokitteh.get_value("last_msg_id")
+    if msg_id is None:
+        autokitteh.set_value("last_msg_id", latest_msg_id)
         print("First run - storing latest message ID")
         return
 
     # Collect new message IDs until we reach the previous message ID.
-    new_message_ids = []
+    new_msg_ids = []
     found_last_message = False
     current_response = response
 
@@ -41,10 +41,10 @@ def poll_new_emails(_):
 
         # Check current batch of messages.
         for msg in current_messages:
-            if msg["id"] == last_known_id:
+            if msg["id"] == msg_id:
                 found_last_message = True
                 break
-            new_message_ids.append(msg["id"])
+            new_msg_ids.append(msg["id"])
 
         if not found_last_message:
             next_page_token = current_response.get("nextPageToken")
@@ -63,11 +63,11 @@ def poll_new_emails(_):
                 break
 
     # Process new messages.
-    count = len(new_message_ids)
+    count = len(new_msg_ids)
     print(f"New emails: {count}")
 
     if count > 0:
-        for message_id in new_message_ids:
+        for message_id in new_msg_ids:
             try:
                 full_message = (
                     gmail.users().messages().get(userId="me", id=message_id).execute()
@@ -77,8 +77,8 @@ def poll_new_emails(_):
             except HttpError as e:
                 print(f"Error fetching message {message_id}: {e}")
 
-        # Update last_message_id to the newest message.
-        autokitteh.set_value("last_message_id", newest_message_id)
+        # Update last_msg_id to the newest message.
+        autokitteh.set_value("last_msg_id", latest_msg_id)
 
 
 # Triggered from the custom event handler function.

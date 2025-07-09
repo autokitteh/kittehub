@@ -1,6 +1,5 @@
 # This YAML file is a declarative manifest that describes the setup
 # of an AutoKitteh project that demonstrates how to poll for new emails
-
 version: v1
 
 project:
@@ -12,5 +11,5 @@ project:
 
   triggers:
     - name: poll
-      schedule: 0 * * * *
+      schedule: "@every 1m"
       call: program.py:poll_new_emails
