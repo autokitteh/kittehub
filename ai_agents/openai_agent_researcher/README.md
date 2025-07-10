@@ -3,6 +3,7 @@ title: OpenAI Agent Researcher
 description: A Slack-based research agent workflow.
 integrations: ["chatgpt", "slack"]
 categories: ["AI"]
+tags: ["slack_integration", "openai_integration", "interactive_workflows", "user_interactions", "activity"]
 ---
 
 [Blog Post](https://autokitteh.com/technical-blog/building-stateful-ai-research-agent-with-openai-agents/)

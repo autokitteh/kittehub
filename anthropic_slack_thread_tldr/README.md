@@ -3,6 +3,7 @@ title: Anthropic Slack Thread TLDR
 description: Summarizes a Slack thread using Claude
 integrations: ["slack"]
 categories: ["AI"]
+tags: ["anthropic_integration", "slack_integration", "user_interactions", "notifications", "webhook_handling"]
 ---
 
 # Anthropic Slack Thread TLDR

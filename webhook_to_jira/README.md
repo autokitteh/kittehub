@@ -3,6 +3,7 @@ title: Create Jira ticket from webhook data
 description: Create Jira issues automatically from HTTP webhooks
 integrations: ["jira", "http"]
 categories: ["DevOps"]
+tags: ["jira_integration", "webhook_handling", "data_processing", "notifications"]
 ---
 
 # Create Jira Ticket From Webhook Data

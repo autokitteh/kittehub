@@ -3,6 +3,7 @@ title: Slack sample
 description: Samples using Slack APIs
 integrations: ["slack"]
 categories: ["Samples"]
+tags: ["slack_integration", "interactive_workflows", "user_interactions", "AttrDict", "webhook_handling", "essential"]
 ---
 
 # Slack Sample
