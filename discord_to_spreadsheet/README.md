@@ -3,7 +3,7 @@ title: Discord to Spreadsheet Workflow
 description: Log Discord messages to a Google Sheets document automatically
 integrations: ["discord", "sheets"]
 categories: ["Productivity"]
-tags: ["discord_integration", "google_integration", "webhook_handling", "data_processing", "notifications"]
+tags: ["webhook_handling", "data_processing", "notifications"]
 ---
 
 # Discord to Spreadsheet Workflow

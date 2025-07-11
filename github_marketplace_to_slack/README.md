@@ -3,7 +3,7 @@ title: GitHub Marketplace to Slack
 description: Forward GitHub Marketplace notifications to Slack
 integrations: ["github", "http", "slack"]
 categories: ["CRM"]
-tags: ["github_integration", "slack_integration", "webhook_handling", "notifications", "data_processing"]
+tags: ["webhook_handling", "notifications", "data_processing"]
 ---
 
 # GitHub Marketplace to Slack

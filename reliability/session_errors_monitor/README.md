@@ -3,7 +3,7 @@ title: AutoKitteh session errors monitor
 description: Send Slack alerts when AutoKitteh sessions end due to errors
 integrations: ["autokitteh", "slack"]
 categories: ["Reliability"]
-tags: ["slack_integration", "monitoring", "notifications", "scheduled_tasks", "error_handling"]
+tags: ["monitoring", "notifications", "scheduled_tasks", "error_handling"]
 ---
 
 # AutoKitteh Session Errors Monitor

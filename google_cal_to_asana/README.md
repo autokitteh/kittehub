@@ -3,7 +3,7 @@ title: Google Calendar To Asana
 description: Creates Asana tasks based on Google Calendar events
 integrations: ["calendar", "asana"]
 categories: ["Productivity"]
-tags: ["google_integration", "webhook_handling", "data_processing", "notifications"]
+tags: ["webhook_handling", "data_processing", "notifications"]
 ---
 
 # Google Calendar To Asana

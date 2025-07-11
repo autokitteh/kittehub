@@ -3,7 +3,7 @@ title: Email categorization and notification
 description: Categorize incoming emails and notify relevant Slack channels
 integrations: ["gmail", "chatgpt", "slack"]
 categories: ["AI", "Productivity"]
-tags: ["activity", "google_integration", "openai_integration", "slack_integration", "webhook_handling", "long_running", "data_processing", "notifications", "monitoring"]
+tags: ["activity", "webhook_handling", "long_running", "data_processing", "notifications", "monitoring"]
 ---
 
 # Email Categorization and Notification

@@ -3,7 +3,7 @@ title: Slack-Discord Message Mirroring Workflow
 description: Automatically mirror messages between Slack and Discord channels
 integrations: ["slack", "discord"]
 categories: ["Productivity"]
-tags: ["slack_integration", "discord_integration", "webhook_handling", "notifications", "data_processing"]
+tags: ["webhook_handling", "notifications", "data_processing"]
 ---
 
 # Slack-Discord Message Mirroring Workflow

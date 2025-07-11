@@ -10,6 +10,7 @@ ALLOWED_INTEGRATIONS = (
     "calendar",
     "chatgpt",
     "confluence",
+    "discord",
     "docs",
     "drive",
     "forms",
@@ -26,8 +27,8 @@ ALLOWED_INTEGRATIONS = (
     "sheets",
     "slack",
     "sqlite3",
-    "zoom",
     "twilio",
+    "zoom",
 )
 
 ALLOWED_CATEGORIES = (
