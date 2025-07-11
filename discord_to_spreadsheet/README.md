@@ -1,3 +1,11 @@
+---
+title: Discord to Spreadsheet Workflow
+description: Log Discord messages to a Google Sheets document automatically
+integrations: ["discord", "sheets"]
+categories: ["Productivity"]
+tags: ["webhook_handling", "data_processing", "notifications"]
+---
+
 # Discord to Spreadsheet Workflow
 
 [![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=discord_to_spreadsheet)

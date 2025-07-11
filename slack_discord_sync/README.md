@@ -1,3 +1,11 @@
+---
+title: Slack-Discord Message Mirroring Workflow
+description: Automatically mirror messages between Slack and Discord channels
+integrations: ["slack", "discord"]
+categories: ["Productivity"]
+tags: ["webhook_handling", "notifications", "data_processing"]
+---
+
 # Slack-Discord Message Mirroring Workflow
 
 [![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=slack_discord_sync)
