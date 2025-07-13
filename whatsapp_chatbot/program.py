@@ -5,7 +5,6 @@ import os
 import autokitteh
 from autokitteh.openai import openai_client
 from autokitteh.twilio import twilio_client
-
 import system_prompt
 
 
