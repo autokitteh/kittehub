@@ -1,63 +1,58 @@
-# WhatsApp Chatbot
+---
+title: WhatsApp ChatGPT Bot
+description: WhatsApp chatbot that responds to messages using ChatGPT intelligence
+integrations: ["twilio", "chatgpt"]
+categories: ["AI", "Productivity"]
+---
 
-A simple WhatsApp chatbot powered by Twilio and ChatGPT integration.
+# WhatsApp ChatGPT Bot
 
-## Metadata
+This project creates a WhatsApp chatbot that responds to messages using ChatGPT by integrating Twilio's WhatsApp API with OpenAI's ChatGPT.
 
-- **Title**: WhatsApp Chatbot with ChatGPT
-- **Description**: A responsive WhatsApp chatbot that uses ChatGPT to generate intelligent responses to incoming messages via Twilio integration
-- **Integrations**: twilio, chatgpt
-- **Categories**: AI, Samples
+API documentation:
 
-## Features
-
-- Receives WhatsApp messages via Twilio webhook
-- Processes messages using ChatGPT for intelligent responses
-- Sends responses back to users via WhatsApp
-- Error handling for failed API calls
-- Configurable system prompt for chatbot personality
-
-## Setup
-
-1. **Twilio Setup**:
-   - Create a Twilio account and get your Account SID and Auth Token
-   - Set up WhatsApp Sandbox or get approved WhatsApp Business number
-   - Configure webhook URL to point to your AutoKitteh deployment
-
-2. **ChatGPT Setup**:
-   - Get OpenAI API key
-   - Configure the connection in AutoKitteh
-
-3. **Configuration**:
-   - Update the `SYSTEM_PROMPT` variable to customize chatbot behavior
-   - Ensure Twilio webhook points to your AutoKitteh trigger endpoint
+- Twilio: https://www.twilio.com/docs/whatsapp/api
+- OpenAI: https://platform.openai.com/docs/api-reference/chat
 
 ## How It Works
 
-1. User sends a WhatsApp message
-2. Twilio forwards the message to AutoKitteh via webhook
-3. The `handle_whatsapp_message` function processes the incoming message
-4. ChatGPT generates a response based on the message content
-5. Response is sent back to the user via Twilio WhatsApp API
+1. Start workflow using a webhook
+2. User sends WhatsApp message to Twilio sandbox number
+3. Twilio forwards message to webhook endpoint
+4. Chatbot processes message and generates ChatGPT response
+5. Response is sent back to user via WhatsApp
 
-## Customization
+## Cloud Usage
 
-- Modify the `SYSTEM_PROMPT` in `autokitteh.yaml` to change chatbot personality
-- Adjust ChatGPT model parameters (temperature, max_tokens) in `program.py`
-- Add conversation history storage for multi-turn conversations
-- Implement user-specific context or preferences
+1. Initialize your connections (Twilio and ChatGPT)
+2. Copy the `whatsapp_message` webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+3. Set up Twilio WhatsApp Sandbox by navigating to Twilio Console → Messaging → Try it out → Send a WhatsApp message, then follow the instructions to join the sandbox
+4. Navigate to your Twilio Console → WhatsApp → Sandbox Settings
+5. Paste the copied webhook URL in the "When a message comes in" field
+6. (Optional) Set the `FROM_NUMBER` environment variable if using a custom WhatsApp number instead of the default Twilio sandbox number.
+7. Copy the `start_chatbot` webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
+8. Set the webhook URL in your Twilio console for WhatsApp messages
+9. Deploy project
 
-## Error Handling
+## Trigger Workflow
 
-The chatbot includes error handling for:
-- Empty or malformed messages
-- ChatGPT API failures
-- Twilio messaging errors
-- General processing exceptions
+> [!IMPORTANT]
+> Ensure all connections (Twilio and ChatGPT) are initialized.
 
-## Usage
+Start a long-running AutoKitteh session by sending an HTTP request to the webhook URL from step 6 in the [Cloud Usage](#cloud-usage) section above:
 
-Once deployed and configured:
-1. Send a message to your Twilio WhatsApp number
-2. The chatbot will respond with a ChatGPT-generated message
-3. Continue the conversation naturally
+```shell
+curl -i "${WEBHOOK_URL}"
+```
+
+> [!TIP]
+> The workflow can also be triggered manually by clicking the "Run" button in the UI, and selecting start_chatbot as the entry-point function.
+
+## Self-Hosted Deployment
+
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+
+## Known Limitations
+
+- Limited to 20 message history per conversation to prevent token overflow
+- Requires Twilio WhatsApp sandbox approval for production use
