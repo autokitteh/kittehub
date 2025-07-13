@@ -5,11 +5,17 @@ import os
 import autokitteh
 from autokitteh.openai import openai_client
 from autokitteh.twilio import twilio_client
-import system_prompt
 
 
 twilio = twilio_client("twilio_conn")
 chatgpt = openai_client("chatgpt_conn")
+
+
+SYSTEM_PROMPT = """You are a helpful WhatsApp chatbot assistant. Respond in a friendly,
+        conversational tone.
+        Keep your responses concise and helpful since this is a messaging platform.
+        Be engaging and personable while providing useful information or assistance."""
+
 
 # Number from environment variable or default Twilio sandbox number.
 FROM_NUMBER = os.getenv("TWILIO_WHATSAPP_FROM", "whatsapp:+14155238886")
@@ -20,7 +26,7 @@ CHAT_HIST = {}
 def start_chatbot(_):
     """Start WhatsApp chatbot that listens for messages and responds with ChatGPT."""
     print("Starting WhatsApp chatbot - waiting for messages...")
-    webhook_sub = autokitteh.subscribe("webhook")
+    webhook_sub = autokitteh.subscribe("whatsapp_message")
 
     while True:
         webhook_event = autokitteh.next_event(webhook_sub)
@@ -63,7 +69,7 @@ def generate_chatgpt_response(sender_number, user_message):
         # Add user message to history.
         CHAT_HIST[sender_number].append({"role": "user", "content": user_message})
 
-        messages = [{"role": "system", "content": system_prompt.SYSTEM_PROMPT}]
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
         messages.extend(CHAT_HIST[sender_number])
 
         # Limit conversation history to prevent token overflow (keep last 20 messages).
