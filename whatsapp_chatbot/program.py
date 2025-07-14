@@ -5,6 +5,12 @@ import os
 import autokitteh
 from autokitteh.openai import openai_client
 from autokitteh.twilio import twilio_client
+from tenacity import retry
+from tenacity import retry_if_exception
+from tenacity import stop_after_attempt
+from tenacity import wait_exponential
+
+from twilio.base.exceptions import TwilioRestException
 
 
 twilio = twilio_client("twilio_conn")
@@ -17,8 +23,8 @@ SYSTEM_PROMPT = """You are a helpful WhatsApp chatbot assistant. Respond in a fr
         Be engaging and personable while providing useful information or assistance."""
 
 
-# Number from environment variable or default Twilio sandbox number.
-FROM_NUMBER = os.getenv("TWILIO_WHATSAPP_FROM", "whatsapp:+14155238886")
+# Number from environment variable or default Twilio number.
+FROM_NUMBER = os.getenv("FROM_NUMBER", "whatsapp:+14155238886")
 
 CHAT_HIST = {}
 
@@ -40,24 +46,21 @@ def start_chatbot(_):
             if not message_body.strip():
                 print("Empty message received, skipping")
                 continue
-
-            if "clear history" in message_body.lower():
-                clear_conversation_history(sender_number)
-                send_whatsapp_message(sender_number, "Conversation history cleared.")
-                continue
-
             try:
+                if "clear history" in message_body.lower():
+                    clear_conversation_history(sender_number)
+                    send_whatsapp_message(
+                        sender_number, "Conversation history cleared."
+                    )
+                    continue
+
                 response = generate_chatgpt_response(sender_number, message_body)
                 send_whatsapp_message(sender_number, response)
                 print(f"Response sent to {sender_number}: {response}")
 
-            except (KeyError, ValueError, AttributeError) as e:
+            except (KeyError, ValueError, AttributeError, TwilioRestException) as e:
                 print(f"Error processing message: {e}")
-                error_msg = (
-                    "Sorry, I'm having trouble processing your message. "
-                    "Please try again later."
-                )
-                send_whatsapp_message(sender_number, error_msg)
+                continue
 
 
 def generate_chatgpt_response(sender_number, user_message):
@@ -97,14 +100,25 @@ def generate_chatgpt_response(sender_number, user_message):
         return "I'm sorry, I couldn't process your request right now. Please try again."
 
 
+def retry_on_rate_limit(exception):
+    return "429" in str(exception)
+
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    retry=retry_if_exception(retry_on_rate_limit),
+    reraise=True,
+)
 def send_whatsapp_message(to_number, message):
-    """Send WhatsApp message via Twilio."""
+    """Send WhatsApp message via Twilio with retry on rate limits."""
     try:
-        message = twilio.messages.create(body=message, from_=FROM_NUMBER, to=to_number)
-        print(f"Message sent with SID: {message.sid}")
-        return message.sid
+        result = twilio.messages.create(body=message, from_=FROM_NUMBER, to=to_number)
+        print(f"Message sent with SID: {result.sid}")
+        return result.sid
     except Exception as e:
-        print(f"Error sending WhatsApp message: {e}")
+        print(f"Failed to send message: {e}")
+        print("retrying to send message...")
         raise
 
 

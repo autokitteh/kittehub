@@ -17,19 +17,22 @@ API documentation:
 ## How It Works
 
 1. Start workflow using a webhook
-2. User sends WhatsApp message to Twilio sandbox number
+2. User sends WhatsApp message to Twilio number
 3. Twilio forwards message to webhook endpoint
 4. Chatbot processes message and generates ChatGPT response
 5. Response is sent back to user via WhatsApp
+
+> [!NOTE]
+> Users can send "clear history" message at any time to reset the conversation history.
 
 ## Cloud Usage
 
 1. Initialize your connections (Twilio and ChatGPT)
 2. Copy the `whatsapp_message` webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
-3. Set up Twilio WhatsApp Sandbox by navigating to Twilio Console → Messaging → Try it out → Send a WhatsApp message, then follow the instructions to join the sandbox
-4. Navigate to your Twilio Console → WhatsApp → Sandbox Settings
+3. Set up Twilio WhatsApp by navigating to Twilio Console → Messaging → Try it out → Send a WhatsApp message, then follow the instructions to join the conversation
+4. Navigate to your Twilio Console → WhatsApp → Settings
 5. Paste the copied webhook URL in the "When a message comes in" field
-6. (Optional) Set the `FROM_NUMBER` environment variable if using a custom WhatsApp number instead of the default Twilio sandbox number.
+6. (Optional) Set the `FROM_NUMBER` environment variable if using a custom WhatsApp number instead of the default Twilio number.
 7. Copy the `start_chatbot` webhook URL from the "Triggers" tab (see the [instructions here](https://docs.autokitteh.com/get_started/deployment#webhook-urls))
 8. Set the webhook URL in your Twilio console for WhatsApp messages
 9. Deploy project
@@ -55,4 +58,4 @@ Follow [these detailed instructions](https://docs.autokitteh.com/get_started/dep
 ## Known Limitations
 
 - Limited to 20 message history per conversation to prevent token overflow
-- Requires Twilio WhatsApp sandbox approval for production use
+- Requires Twilio WhatsApp approval for production use
