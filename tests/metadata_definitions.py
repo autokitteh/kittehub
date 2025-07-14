@@ -23,6 +23,7 @@ ALLOWED_INTEGRATIONS = (
     "hubspot",
     "jira",
     "linear",
+    "postgres",
     "scheduler",
     "sheets",
     "slack",
