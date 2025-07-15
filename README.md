@@ -64,6 +64,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Fault tolerant workflow with manual Slack approvals](./task_chain/single_workflow/basic/)<br/>[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=task_chain/single_workflow/basic) | Runs a sequence of tasks with fault tolerance. In case of failure, user can decide to terminate or retry from the point of failure. | slack |
 | [Gmail new email notification](./walkthroughs/new_gmail_notification/)<br/>[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=walkthroughs/new_gmail_notification) | Poll for new emails in Gmail inbox and handle them with custom logic | gmail |
 | [Create Jira ticket from webhook data](./webhook_to_jira/)<br/>[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=webhook_to_jira) | Create Jira issues automatically from HTTP webhooks | jira, http |
+| [WhatsApp ChatGPT Bot](./whatsapp_chatbot/)<br/>[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=whatsapp_chatbot) | WhatsApp chatbot that responds to messages using ChatGPT intelligence | twilio, chatgpt |
 <!-- END-TABLE -->
 
 <img width="451" alt="image" src="https://github.com/user-attachments/assets/f556279f-40a4-4df2-93ef-e1838fcb9861">

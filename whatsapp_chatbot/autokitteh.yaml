@@ -1,0 +1,23 @@
+# Autokitteh configuration for WhatsApp Chatbot
+
+version: v1
+
+project:
+  name: whatsapp_chatbot
+
+  connections:
+    - name: twilio_conn
+      integration: twilio
+    - name: chatgpt_conn
+      integration: chatgpt
+
+  triggers:
+    - name: whatsapp_message
+      type: webhook
+    - name: start_chatbot
+      type: webhook
+      call: program.py:start_chatbot
+
+  vars:
+    - name: FROM_NUMBER
+      value: ""
