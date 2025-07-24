@@ -1,0 +1,28 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh Gmail support workflow project that monitors incoming emails,
+# analyzes them with ChatGPT, and handles support emails automatically.
+
+version: v1
+
+project:
+  name: gmail_support
+
+  connections:
+    - name: gmail_conn
+      integration: gmail
+    - name: chatgpt_conn
+      integration: chatgpt
+    - name: slack_conn
+      integration: slack
+
+  vars:
+    - name: SENDER_EMAIL
+      value:
+    - name: SLACK_CHANNEL
+      value:
+
+  triggers:
+    - name: gmail_mailbox_change
+      connection: gmail_conn
+      event_type: mailbox_change
+      call: program.py:on_new_email
