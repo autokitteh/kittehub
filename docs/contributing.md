@@ -9,7 +9,7 @@
 
 Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
 
-### create
+### Create
 
 to create the project check out [project_structure.md](project_structure.md)
 
