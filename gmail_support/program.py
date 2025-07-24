@@ -21,6 +21,8 @@ chatgpt = openai_client("chatgpt_conn")
 slack = slack_client("slack_conn")
 
 SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+if not SENDER_EMAIL:
+    raise ValueError("The environment variable 'SENDER_EMAIL' is not set or is empty.")
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#support-notifications")
 AUTO_REPLY = "Thank you for your email. We will get back to you within 2 hours"
 
