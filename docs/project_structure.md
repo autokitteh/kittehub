@@ -214,7 +214,7 @@ try to use the default connection name:
 
 ```yaml
 connections:
-  - name: <INTERGRATION>_conn
+  - name: <INTEGRATION>_conn
     integration: <INTEGRATION>
 ```
 
