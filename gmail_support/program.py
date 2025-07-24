@@ -105,7 +105,7 @@ def process_message(message_id):
             print("Email not identified as support-related")
 
     except HttpError as e:
-        print(f"Error processing message {message_id}: {e.reason}")
+        print(f"Error processing message {message_id}: {e}")
 
 
 @autokitteh.activity
