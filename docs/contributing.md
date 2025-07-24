@@ -1,7 +1,7 @@
 ## How to Contribute
 
 1. Fork the repo and clone it
-2. Create a branch: `git checkout -b <contributer_username>/<issue-number>_<short description>`
+2. Create a branch: `git checkout -b <contributor_username>/<issue-number>_<short description>`
 3. Commit your changes
 4. Push and open a Pull Request
 
