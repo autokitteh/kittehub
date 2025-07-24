@@ -65,7 +65,7 @@ def on_new_email(event):
             autokitteh.set_value("last_processed_id", str(current_history_id))
 
     except HttpError as e:
-        print(f"Error processing mailbox change: {e.reason}")
+        print(f"Error processing mailbox change: {e}")
 
 
 @autokitteh.activity
