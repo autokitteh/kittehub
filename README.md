@@ -75,4 +75,4 @@ demonstrate basic system features, integration APIs, and best practices.
 
 ## Contribute
 
-if you want to add your own project to kittehub check out [contributing.py](docs/contributing.md)
+If you want to add your own project to KitteHub, check out [contributing.md](docs/contributing.md)
