@@ -203,7 +203,7 @@ Before submitting:
 2. **Add all required files** (manifest, README, program files)
 3. **Follow naming conventions** - Use lowercase with underscores
 4. **Test thoroughly** - Ensure everything works as documented
-5. **Add projec to readme table** - Run [update_projects_table.py](../update_projects_table.py), doing so will add your project to the readme table
+5. **Add project to readme table** - Run [update_projects_table.py](../update_projects_table.py), doing so will add your project to the readme table
 6. **Submit a pull request** with a clear description
 
 ## Common Patterns
