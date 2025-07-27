@@ -13,6 +13,7 @@ title: {PROJECT_NAME} <!-- Provide a short, descriptive name for your project --
 description: {ONE_LINE_DESCRIPTION} <!-- One-line summary of what the workflow does, avoid filler words -->
 integrations: {LIST_OF_INTEGRATIONS} <!-- e.g., ["jira", "calendar"] -->
 categories: {LIST_OF_CATEGORIES} <!-- e.g., ["DevOps"] -->
+tags: {LIST_OF_TAGS} <!-- e.g., ["webhook_handling", "data_processing"] -->
 
 ---
 

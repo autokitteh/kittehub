@@ -17,7 +17,7 @@ Follow the detailed deployment guide to run AutoKitteh locally [detailed instruc
 
 ### Create
 
-To create the project check out [project_structure.md](project_structure.md).
+To understand the structure of a Kittehub project, check out the [example program](project_structure/program.py).
 
 ### Contact us
 

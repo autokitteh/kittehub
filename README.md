@@ -75,4 +75,4 @@ Kittehub contains community workflows and automations built on top of AutoKitteh
 
 ## Contribute
 
-If you want to add your own project to KitteHub, check out [contributing.md](docs/contributing.md)
+If you want to add your own project to KitteHub, check out [contributing.md](CONTRIBUTING.md)
