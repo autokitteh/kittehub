@@ -1,6 +1,6 @@
 # Contributing to KitteHub
 
-Welcome to KitteHub! This guide will help you contribute new AutoKitteh projects to our repository.
+Welcome to KitteHub! This guide will help you contribute new AutoKitteh projects to KitteHub.
 
 ## Project Structure
 
@@ -40,77 +40,14 @@ my_project/
 ├── requirements.txt
 ├── helpers.py
 ├── config.json
-└── images/
-    └── example.png
 ```
 
 ## AutoKitteh Manifest File (`autokitteh.yaml`)
 
-The `autokitteh.yaml` file is the core configuration for your project. Here are common patterns:
+The [manifest file](https://docs.autokitteh.com/develop/managing/cli#setup-with-manifest) is the core configuration for your project.
 
-### Basic Structure
-
-```yaml
-version: v1
-
-project:
-  name: your_project_name
-
-  # Optional: Project variables
-  vars:
-    - name: VARIABLE_NAME
-      value: default_value
-
-  # Integration connections
-  connections:
-    - name: connection_name
-      integration: integration_type
-
-  # Triggers for your workflow
-  triggers:
-    - name: trigger_name
-      type: webhook
-      call: program.py:function_name
-```
-
-### Common Integration Examples
-
-**Slack Integration:**
-
-```yaml
-connections:
-  - name: slack_conn
-    integration: slack
-
-triggers:
-  - name: slack_trigger
-    connection: slack_conn
-    event_type: slash_command
-    call: program.py:handle_slash_command
-```
-
-**GitHub Integration:**
-
-```yaml
-connections:
-  - name: github_conn
-    integration: github
-
-triggers:
-  - name: github_webhook
-    connection: github_conn
-    event_type: pull_request
-    call: program.py:handle_pr
-```
-
-**Scheduled Triggers:**
-
-```yaml
-triggers:
-  - name: daily_check
-    schedule: "@daily"
-    call: program.py:daily_task
-```
+> [!NOTE]
+> If you're using the cloud platform, you can export the project to get the manifest file.
 
 ## README Documentation
 
