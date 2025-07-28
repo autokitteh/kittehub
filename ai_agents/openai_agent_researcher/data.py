@@ -72,10 +72,10 @@ class ResearchPlan(BaseModel):
     """A list of tasks to perform to best answer the query."""
 
     is_final: bool
-    """If the plan is final or not"""
+    """If the plan is final or not."""
 
     explanation: str
-    """Explanation of the plan"""
+    """Explanation of the plan."""
 
     def __str__(self):
         text = f"""{self.explanation}
