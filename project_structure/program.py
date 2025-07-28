@@ -3,13 +3,13 @@
 This bot listens to Slack messages and responds to basic commands.
 """
 
-# AutoKitteh SDK - provides easy access to integrations
-# Import the specific client you need from autokitteh.{service}
+# AutoKitteh SDK - provides easy access to integrations.
+# Import the specific client you need from autokitteh.{service}.
 from autokitteh.slack import slack_client
 
 
-# Initialize the Slack client using your connection name from autokitteh.yaml
-# The connection name "slack_conn" must match what's defined in your YAML
+# Initialize the Slack client using your connection name from autokitteh.yaml.
+# The connection name "slack_conn" must match what's defined in your YAML.
 slack = slack_client("slack_conn")
 
 
@@ -22,7 +22,7 @@ def on_slack_message(event):
     print("=== New Slack Message Received ===")
 
     try:
-        # Get the important parts of the message
+        # Get the important parts of the message.
         message_text = event.data.get("text", "")
         user_id = event.data.get("user", "")
         channel_id = event.data.get("channel", "")
