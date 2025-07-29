@@ -19,7 +19,6 @@ ALLOWED_INTEGRATIONS = (
     "gmail",
     "googlegemini",
     "height",
-    "http",
     "hubspot",
     "jira",
     "linear",
