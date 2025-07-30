@@ -42,7 +42,7 @@ def extract_metadata(readme_file: Path) -> dict:
 
 def is_metadata_complete(metadata: dict) -> bool:
     """Check if required metadata fields are present and non-empty."""
-    required_keys = {"title", "description", "integrations", "categories"}
+    required_keys = {"title", "description", "categories"}
     for key in required_keys:
         value = metadata.get(key)
         if value is None:
