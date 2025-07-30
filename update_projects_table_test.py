@@ -4,9 +4,8 @@ from pathlib import Path
 import re
 from urllib.parse import urlparse
 
-import update_projects_table
-
 import pytest
+import update_projects_table
 
 
 class TestExtractMetadata:
