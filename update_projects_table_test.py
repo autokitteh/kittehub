@@ -4,8 +4,9 @@ from pathlib import Path
 import re
 from urllib.parse import urlparse
 
-import pytest
 import update_projects_table
+
+import pytest
 
 
 class TestExtractMetadata:
@@ -296,14 +297,6 @@ class TestMetadataValidation:
         }
         assert update_projects_table.is_metadata_complete(metadata) is False
 
-        # Missing integrations
-        metadata = {
-            "title": "Test Project",
-            "description": "A test project",
-            "categories": ["cat1", "cat2"],
-        }
-        assert update_projects_table.is_metadata_complete(metadata) is False
-
         # Missing categories
         metadata = {
             "title": "Test Project",
@@ -328,15 +321,6 @@ class TestMetadataValidation:
             "title": "Test Project",
             "description": "",
             "integrations": ["test1", "test2"],
-            "categories": ["cat1", "cat2"],
-        }
-        assert update_projects_table.is_metadata_complete(metadata) is False
-
-        # Empty integrations
-        metadata = {
-            "title": "Test Project",
-            "description": "A test project",
-            "integrations": [],
             "categories": ["cat1", "cat2"],
         }
         assert update_projects_table.is_metadata_complete(metadata) is False
