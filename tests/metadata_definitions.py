@@ -23,7 +23,6 @@ ALLOWED_INTEGRATIONS = (
     "jira",
     "linear",
     "postgres",
-    "scheduler",
     "sheets",
     "slack",
     "sqlite3",

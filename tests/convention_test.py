@@ -31,12 +31,6 @@ def test_metadata_contains_all_fields():
         assert all(key in metadata for key in metadata_definitions.METADATA), error
 
 
-def test_metadtata_contains_at_least_1_integration():
-    for readme_file, metadata in get_metadata_files():
-        error = f"Metadata must have at least one integration: {readme_file}"
-        assert metadata["integrations"], error
-
-
 def test_metadtata_contains_at_least_1_category():
     for readme_file, metadata in get_metadata_files():
         error = f"Metadata must have at least one category: {readme_file}"
