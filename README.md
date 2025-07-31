@@ -1,5 +1,7 @@
 # Kittehub
 
+## Overview
+
 This is a central repository of [AutoKitteh](https://github.com/autokitteh/autokitteh)
 projects for:
 
@@ -68,3 +70,9 @@ demonstrate basic system features, integration APIs, and best practices.
 <!-- END-TABLE -->
 
 <img width="451" alt="image" src="https://github.com/user-attachments/assets/f556279f-40a4-4df2-93ef-e1838fcb9861">
+
+Kittehub contains community workflows and automations built on top of AutoKitteh. You can share your automations and bring new ideas.
+
+## Contribute
+
+If you want to add your own project to KitteHub, check out [contributing.md](CONTRIBUTING.md)

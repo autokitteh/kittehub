@@ -1,0 +1,30 @@
+# Simple AutoKitteh project configuration (manifest file).
+# This is the basic setup needed for any AutoKitteh project.
+# If you're using the cloud platform, you can export the project to get this file.
+
+# Version is always required - use v1.
+version: v1
+
+# Project configuration
+project:
+  # Project name - must be unique and not use spaces.
+  name: simple_slack_bot
+
+  # Single trigger that responds to Slack messages.
+  triggers:
+    # This trigger activates when someone sends a message in Slack.
+    - name: slack_message
+
+      # Must match the connection name below.
+      connection: slack_conn
+      # Listen for any message in Slack.
+      event_type: message
+      # Function to call when a message is received.
+      call: program.py:on_slack_message
+
+  # Single connection to Slack
+  connections:
+    # Slack connection for receiving and sending messages.
+    - name: slack_conn
+      # Integration type - must be exact name.
+      integration: slack
