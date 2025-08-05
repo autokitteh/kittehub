@@ -22,9 +22,7 @@ ALLOWED_INTEGRATIONS = (
     "hubspot",
     "jira",
     "linear",
-    "postgres",
     "slack",
-    "sqlite3",
     "twilio",
     "zoom",
 )
