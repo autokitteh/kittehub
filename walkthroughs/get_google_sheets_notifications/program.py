@@ -13,5 +13,5 @@ def filter_spreadsheet_event(event):
 def on_spreadsheet_change(event):
     """Handle the event when a spreadsheet is edited."""
     file_id = event.data.get("file", {}).get("id")
-    print(f"spread sheet with the ID ({file_id}) ")
+    print(f"spreadsheet with the ID ({file_id}) ")
     print("was edited")
