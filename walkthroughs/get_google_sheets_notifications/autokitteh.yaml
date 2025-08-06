@@ -1,0 +1,17 @@
+# This YAML file is a declarative manifest that describes
+# a project that triggers events when a Google Sheets document is edited.
+
+version: v1
+
+project:
+  name: gmail
+
+  connections:
+    - name: drive_conn
+      integration: googledrive
+
+  triggers:
+    - name: on_file_change
+      event_type: file_change
+      connection: drive_conn
+      call: program.py:filter_spreadsheet_event
