@@ -18,10 +18,8 @@ API documentation:
 
 ## How It Works
 
-1. Monitor Google Drive for file change events
-2. Filter events to only include Google Sheets documents
-3. Process spreadsheet change notifications
-4. Log the file ID and change details
+1. Monitor Google Drive for a spread sheet change events
+2. Log the file ID and change details
 
 ## Cloud Usage
 

@@ -14,4 +14,5 @@ project:
     - name: on_file_change
       event_type: file_change
       connection: drive_conn
-      call: program.py:filter_spreadsheet_event
+      call: program.py:on_spreadsheet_change
+      filter: data.file.mime_type == 'application/vnd.google-apps.spreadsheet'
