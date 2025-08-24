@@ -20,6 +20,7 @@ ALLOWED_INTEGRATIONS = (
     "googlesheets",
     "height",
     "hubspot",
+    "youtube",
     "jira",
     "linear",
     "slack",

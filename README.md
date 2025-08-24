@@ -67,6 +67,7 @@ demonstrate basic system features, integration APIs, and best practices.
 | [Gmail new email notification](./walkthroughs/new_gmail_notification/)<br/>[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=walkthroughs/new_gmail_notification) | Poll for new emails in Gmail inbox and handle them with custom logic | gmail |
 | [Create Jira ticket from webhook data](./webhook_to_jira/)<br/>[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=webhook_to_jira) | Create Jira issues automatically from HTTP webhooks | jira |
 | [WhatsApp ChatGPT Bot](./whatsapp_chatbot/)<br/>[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=whatsapp_chatbot) | WhatsApp chatbot that responds to messages using ChatGPT intelligence | twilio, chatgpt |
+| [YouTube Video Notifier](./youtube_upload_notif/)<br/>[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=youtube_upload_notif) | Polls YouTube channels for new videos and sends Slack notifications | youtube, slack |
 <!-- END-TABLE -->
 
 <img width="451" alt="image" src="https://github.com/user-attachments/assets/f556279f-40a4-4df2-93ef-e1838fcb9861">

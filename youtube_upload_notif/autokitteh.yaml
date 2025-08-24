@@ -1,0 +1,26 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that polls for new YouTube videos from a specific channel.
+
+version: v1
+
+project:
+  name: youtube_video_poller
+
+  connections:
+    - name: youtube_conn
+      integration: youtube
+
+    - name: slack_conn
+      integration: slack
+
+  triggers:
+    - name: poll_for_new_videos
+      type: schedule
+      cron_expression: "*/5 * * * *"
+      call: program.py:poll_for_new_videos
+
+  vars:
+    - name: YOUTUBE_CHANNEL_NAME
+      value:
+    - name: SLACK_CHANNEL
+      value:
