@@ -5,11 +5,13 @@ import os
 
 import autokitteh
 from autokitteh.google import youtube_client
+from autokitteh.openai import openai_client
 from autokitteh.slack import slack_client
 
 
 youtube = youtube_client("youtube_conn")
 slack = slack_client("slack_conn")
+chatgpt = openai_client("chatgpt_conn")
 
 
 YT_CHANNEL_NAME = os.getenv("YOUTUBE_CHANNEL_NAME")
@@ -24,6 +26,9 @@ def poll_for_new_videos(event):
     It checks for new videos and send to slack info about any new ones found.
     """
     channel_id = get_channel_id()
+    if channel_id is None:
+        print("no channel found")
+        return
 
     search_response = (
         youtube.search()
@@ -51,6 +56,7 @@ def poll_for_new_videos(event):
     else:
         current_time = datetime.now(UTC).isoformat()
         autokitteh.set_value("last_checked_timestamp", current_time)
+        print("Will be notified about new videos.")
         return
 
     new_videos = []
@@ -86,13 +92,14 @@ def poll_for_new_videos(event):
 
 
 def get_channel_id():
-    channel_search = (
+    resp = (
         youtube.search()
         .list(part="snippet", q=YT_CHANNEL_NAME, type="channel", maxResults=1)
         .execute()
     )
 
-    return channel_search["items"][0]["snippet"]["channelId"]
+    items = resp.get("items") or []
+    return items[0]["snippet"]["channelId"] if items else None
 
 
 def create_slack_message(snippet, video_url):
