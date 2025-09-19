@@ -1,0 +1,16 @@
+version: v1
+
+project:
+  name: sync_webhook
+
+  triggers:
+    - name: first
+      type: webhook
+      call: program.py:on_first
+      is_sync: true
+
+    - name: second
+      type: webhook
+      # No call specified, this is just used to allocate a webhook URL.
+      # The script in program.py will just call `next_event` on this
+      # to detect that it's triggered.
