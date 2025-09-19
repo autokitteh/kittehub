@@ -1,6 +1,6 @@
 """A simple workflow that is triggered by a webhook."""
 
-from autokitteh import next_event, subscribe, http_outcome
+from autokitteh import http_outcome, next_event, subscribe
 
 
 def on_first(_):
