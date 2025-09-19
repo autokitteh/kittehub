@@ -6,11 +6,11 @@ from tenacity import retry
 from tenacity import retry_if_exception
 from tenacity import stop_after_attempt
 from tenacity import wait_exponential
+from twilio.base.exceptions import TwilioRestException
 
 import autokitteh
 from autokitteh.openai import openai_client
 from autokitteh.twilio import twilio_client
-from twilio.base.exceptions import TwilioRestException
 
 
 twilio = twilio_client("twilio_conn")
