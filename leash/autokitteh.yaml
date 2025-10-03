@@ -1,0 +1,62 @@
+version: v2
+
+project:
+  name: leash
+
+  vars:
+    - name: GOOGLE_SPREADSHEET_ID
+      value: "1o8MzkYzbl_YO6mvmZUFrOVz5phgXvF3W9kPhdsh8fGw"
+      description: "The ID of the Google Spreadsheet managing this automation."
+    - name: INCIDENT_DASHBOARD_WEBHOOK_URL
+      value: "http://localhost:9980/webhooks/01k6h5dkh2ezxbb3gqv8f06s4d"
+      description: |
+        The webhook URL to send incident response actions to (ack/escalate/etc).
+        This is the incident_response_webhook trigger URL, generated when the trigger is created.
+    - name: ESCALATION_DELAY_MINUTES
+      value: "15"
+      description: "The delay between escalation steps, in minutes."
+    - name: REMIND_BEFORE_ONCALL_MINUTES
+      value: "10"
+      description: "How many minutes before going oncall to remind the person."
+    - name: TZ
+      value: "America/Los_Angeles"
+      description: "The timezone to use for schedules and time calculations."
+    - name: FAIL_ON_NO_ASSIGNEE
+      value: "false"
+      description: "Whether to fail creating an incident if there is no assignee."
+    - name: TS_FORMAT
+      value: "%m-%d-%Y %H:%M"
+      description: "The datetime format to use for parsing and formatting timestamps."
+    - name: TWILIO_PHONE_NUMBER
+      value: "+17756006369"
+      description: "The Twilio phone number to send SMS messages from."
+
+  connections:
+    - name: gsheets
+      integration: googlesheets
+    - name: slack
+      integration: slack
+    - name: twilio
+      integration: twilio
+    - name: gmail
+      integration: gmail
+
+  triggers:
+    - # New incident webhook, creates a new incident from the webhook data.
+      name: new_incident_webhook
+      type: webhook
+      call: handlers.py:on_new_incident_webhook
+      # This is long running, so need to run as a durable session.
+      is_durable: true
+      # Will respond with the new incident id.
+      is_sync: true
+
+    - # Incident dashboard response webhook:
+      # - POST: consumed by the escalation loop to handle ack/resolve/escalate actions.
+      # - GET: returns the current incident status and actions.
+      name: incident_dashboard_webhook
+      type: webhook
+      call: handlers.py:on_incident_dashboard_webhook
+      is_sync: true
+      # Require authentication to avoid random people poking around.
+      is_webhook_auth_required: true
