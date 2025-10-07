@@ -1,4 +1,10 @@
-"""Leash handlers."""
+"""Triggers handlers for incident management.
+
+This module contains the AutoKitteh event handlers for processing incoming
+webhooks, including new incident creation and interactive incident dashboard
+requests. Handlers coordinate between incoming HTTP events and the incident
+management workflow.
+"""
 
 from dataclasses import replace
 
@@ -34,14 +40,15 @@ def on_incident_dashboard_webhook(event: Event):
     data = event.data
     user = data.get("user")
 
-    id = data.url.query.incident_id
-    if not id:
-        http_outcome(status_code=400, json={"error": "missing incident_id"})
+    unique_id = data.url.query.get("unique_id")
+    if not unique_id:
+        http_outcome(status_code=403, json={"error": "missing unique_id"})
         return
 
-    inc = store.get_incident(id)
+    inc = store.get_incident_by_unique_id(unique_id)
     if not inc:
-        http_outcome(status_code=404, json={"error": "incident not found"})
+        print(f"incident not found: {id}")
+        http_outcome(status_code=404, json={"error": "not found"})
         return
 
     match data.method:
@@ -54,6 +61,7 @@ def on_incident_dashboard_webhook(event: Event):
                 status_code=303,
                 headers={"Location": f"{inc.dashboard_url + '&msg=notified'}"},
             )
+            # continue normal handling below.
 
         case _:
             http_outcome(status_code=405, json={"error": "method not allowed"})
@@ -66,7 +74,7 @@ def on_incident_dashboard_webhook(event: Event):
     notify = '<button name="action" value="notify">Notify</button>'
 
     form = f"""
-        <form method="POST" action="?incident_id={inc.id}">
+        <form method="POST" action="{inc.dashboard_url}">
             {ack if inc.state == IncidentState.ASSIGNED else ""}
             {resolve}
             {take if user else ""}

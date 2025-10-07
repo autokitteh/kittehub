@@ -1,4 +1,10 @@
-"""Notifications."""
+"""Notification delivery system for incident alerts.
+
+This module handles sending notifications to contacts through multiple channels
+including email (Gmail), SMS (Twilio), and Slack messages. It initializes
+connections to these services and provides a unified interface for notifying
+contacts about incidents.
+"""
 
 import base64
 

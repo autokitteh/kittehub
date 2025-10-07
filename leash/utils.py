@@ -1,4 +1,9 @@
-"""Misc utilities."""
+"""Utility functions for date and time formatting.
+
+This module provides helper functions for working with datetime objects,
+including formatting and parsing timestamps according to the configured
+timezone and format settings.
+"""
 
 from datetime import datetime
 

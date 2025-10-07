@@ -1,7 +1,14 @@
-"""Incidents."""
+"""Core incident management logic and workflow orchestration.
+
+This module implements the incident lifecycle management including creation,
+assignment, escalation, and resolution. It handles the automatic escalation
+workflow, on-call schedule rotation, notification delivery, and processing
+of user actions from the incident dashboard.
+"""
 
 from dataclasses import replace
 from datetime import datetime, timedelta
+import secrets
 from typing import cast
 
 from autokitteh import next_event, subscribe
@@ -18,6 +25,7 @@ def _now() -> datetime:
 
 
 def create(details: str) -> Incident:
+    """Create a new incident and store it."""
     t = _now()
 
     inc = Incident(
@@ -25,6 +33,7 @@ def create(details: str) -> Incident:
         details=details,
         state=IncidentState.PENDING,
         started_at=t,
+        unique_id=secrets.token_urlsafe(16),
     )
 
     store.add_incident(inc)
@@ -33,10 +42,11 @@ def create(details: str) -> Incident:
 
 
 def run(inc: Incident) -> None:
+    """Run the incident management loop in a durable workflow."""
     # Subscribe to incident dashboard webhooks for this incident id.
     webhook_response_subscription = subscribe(
         "incident_dashboard_webhook",
-        filter=f"data.method == 'POST' && data.url.query.incident_id == '{inc.id}'",
+        filter=f"data.method == 'POST' && data.url.query.unique_id == '{inc.unique_id}'",
     )
 
     # Escalation loop.

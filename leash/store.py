@@ -1,4 +1,9 @@
-"""Sheets access."""
+"""Google Sheets storage backend for Leash data.
+
+This module provides data persistence using Google Sheets as the storage layer.
+It manages worksheets for incidents, schedules, contacts, and internal state,
+providing CRUD operations for incidents and queries for schedules and contacts.
+"""
 
 from datetime import datetime
 from os import getenv
@@ -82,8 +87,8 @@ def add_incident(inc: Incident) -> None:
     _incidents.append_row(inc.row, value_input_option=ValueInputOption.user_entered)
 
 
-def get_incident(id: str) -> Incident | None:
-    cell = _incidents.find(id, in_column=1)
+def get_incident_by_unique_id(unique_id: str) -> Incident | None:
+    cell = _incidents.find(unique_id, in_column=9)
     if not cell:
         return None
 

@@ -1,4 +1,10 @@
-"""Leash models."""
+"""Data models for the Leash incident management system.
+
+This module defines the core data structures used throughout the system including
+Contact (person to notify), ScheduleRow (on-call rotation schedule), Incident
+(event being tracked), and IncidentState (lifecycle state). Models include
+serialization methods for Google Sheets storage.
+"""
 
 from dataclasses import dataclass
 from datetime import datetime
@@ -149,6 +155,9 @@ class Incident:
     comment: str | None = None
     """Optional comment about the incident."""
 
+    unique_id: str
+    """A unique identifier for the incident, used to prevent scraping."""
+
     labels: ClassVar = [
         "id",
         "started_at",
@@ -158,13 +167,14 @@ class Incident:
         "comment",
         "details",
         "action",
+        "unique_id",
     ]
 
     @property
     def dashboard_url(self) -> str:
         """Return the URL of the incident dashboard, if configured."""
         if url := config.INCIDENT_DASHBOARD_WEBHOOK_URL:
-            return f"{url}?incident_id={self.id}"
+            return f"{url}?unique_id={self.unique_id}"
         return ""
 
     @property
@@ -179,6 +189,7 @@ class Incident:
             self.comment or "",
             self.details,
             f'=HYPERLINK("{self.dashboard_url}", "ACT")' if self.dashboard_url else "",
+            self.unique_id,
         ]
 
     @staticmethod
@@ -192,4 +203,5 @@ class Incident:
             assigned_at=parse_ts(row[4]) if row[4] else None,
             comment=row[5] or None,
             details=row[6],
+            unique_id=row[8],
         )
