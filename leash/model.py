@@ -12,10 +12,9 @@ from enum import auto
 from enum import StrEnum
 from typing import ClassVar
 
+import config
 from utils import format_ts
 from utils import parse_ts
-
-import config
 
 
 def _col(row: list, i: int, default=None):
