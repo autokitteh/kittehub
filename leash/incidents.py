@@ -11,13 +11,14 @@ from datetime import datetime, timedelta
 import secrets
 from typing import cast
 
-from autokitteh import next_event, subscribe
-import config
 from model import Incident
 from model import IncidentState
 from model import ScheduleRow
 from notifications import notify
 import store
+
+from autokitteh import next_event, subscribe
+import config
 
 
 def _now() -> datetime:

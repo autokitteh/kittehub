@@ -8,10 +8,11 @@ management workflow.
 
 from dataclasses import replace
 
-from autokitteh import Event, http_outcome
 import incidents
 from model import IncidentState
 import store
+
+from autokitteh import Event, http_outcome
 
 
 def on_new_incident_webhook(event: Event):
