@@ -1,24 +1,32 @@
-# The Makefile is for local development only.
+# All of these packages are builtin into autokitteh SDK.
+UVX=uvx --with autokitteh \
+		--with gspread \
+		--with google-api-python-client \
+		--with google-generativeai \
+		--with twilio \
+		--with pytest \
+		--with slack-sdk
+		
 
 .PHONY: all
 all: lint typecheck test format
 
 .PHONY: lint
 lint:
-	uvx ruff check
+	$(UVX) ruff check
 
 .PHONY: format
 format:
-	uvx ruff format --check
+	$(UVX) ruff format --check
 
 .PHONY: typecheck
 typecheck:
-	uvx --with autokitteh --with gspread --with google-api-python-client --with twilio --with pytest --with slack-sdk mypy --follow-untyped-imports .
+	$(UVX) mypy --follow-untyped-imports  .
 
 .PHONY: test
 test:
-	uvx pytest
+	$(UVX) pytest
 
 .PHONY: deploy
 deploy:
-	akl deploy --manifest autokitteh.yaml
+	ak deploy --manifest autokitteh.yaml

@@ -46,7 +46,9 @@ def run(inc: Incident) -> None:
     # Subscribe to incident dashboard webhooks for this incident id.
     webhook_response_subscription = subscribe(
         "incident_dashboard_webhook",
-        filter=f"data.method == 'POST' && data.url.query.unique_id == '{inc.unique_id}'",
+        filter=(
+            f"data.method == 'POST' && data.url.query.unique_id == '{inc.unique_id}'"
+        ),
     )
 
     # Escalation loop.
