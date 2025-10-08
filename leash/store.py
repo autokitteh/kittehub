@@ -8,11 +8,10 @@ providing CRUD operations for incidents and queries for schedules and contacts.
 from datetime import datetime
 from os import getenv
 
+from autokitteh.google import gspread_client
 from gspread.exceptions import WorksheetNotFound
 from gspread.utils import ValueInputOption
 from gspread.worksheet import Worksheet
-
-from autokitteh.google import gspread_client
 from model import Contact
 from model import Incident
 from model import ScheduleRow

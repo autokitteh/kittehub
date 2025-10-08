@@ -8,17 +8,17 @@ contacts about incidents.
 
 import base64
 
-from googleapiclient.errors import HttpError
-from twilio.base.exceptions import TwilioRestException
-
 from autokitteh.errors import ConnectionInitError
 from autokitteh.google import gmail_client
 from autokitteh.slack import slack_client
 from autokitteh.twilio import twilio_client
-import config
+from googleapiclient.errors import HttpError
 from model import Contact
-from slack_sdk.errors import SlackApiError
 from slack_sdk.web.client import WebClient as SlackWebClient
+from twilio.base.exceptions import TwilioRestException
+
+import config
+from slack_sdk.errors import SlackApiError
 from twilio.rest import Client as TwilioClient
 
 

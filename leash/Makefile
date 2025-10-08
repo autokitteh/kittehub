@@ -13,11 +13,11 @@ all: lint typecheck test format
 
 .PHONY: lint
 lint:
-	$(UVX) ruff check
+	$(UVX) ruff check --config ../pyproject.toml
 
 .PHONY: format
 format:
-	$(UVX) ruff format --check
+	$(UVX) ruff format --check --config ../pyproject.toml
 
 .PHONY: typecheck
 typecheck:
