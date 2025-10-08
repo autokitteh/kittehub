@@ -1,0 +1,55 @@
+version: v2
+
+project:
+  name: leash
+
+  vars:
+    - name: GOOGLE_SPREADSHEET_ID
+      value: "1o8MzkYzbl_YO6mvmZUFrOVz5phgXvF3W9kPhdsh8fGw"
+      description: "The ID of the Google Spreadsheet managing this automation."
+    - name: ESCALATION_DELAY_MINUTES
+      value: "15"
+      description: "The delay between escalation steps, in minutes."
+    - name: TZ
+      value: "America/Los_Angeles"
+      description: "The timezone to use for schedules and time calculations."
+    - name: FAIL_ON_NO_ASSIGNEE
+      value: "false"
+      description: "Whether to fail creating an incident if there is no assignee."
+    - name: TS_FORMAT
+      value: "%m-%d-%Y %H:%M"
+      description: "The datetime format to use for parsing and formatting timestamps."
+    - name: TWILIO_PHONE_NUMBER
+      value: "+17756006369"
+      description: "If using Twilio, the phone number to send SMS messages from."
+
+  connections:
+    - name: gsheets
+      integration: googlesheets
+    - # optional, init if you want to use Slack for notifications.
+      name: slack
+      integration: slack
+    - # optional, init if you want to use Twilio for SMS notifications.
+      name: twilio
+      integration: twilio
+    - # optional, init if you want to use Gmail for email notifications.
+      name: gmail
+      integration: gmail
+
+  triggers:
+    - # New incident webhook, creates a new incident from the webhook data.
+      name: new_incident_webhook
+      type: webhook
+      call: handlers.py:on_new_incident_webhook
+      # This is long running, so need to run as a durable session.
+      is_durable: true
+      # Will respond with the new incident id.
+      is_sync: true
+    - # Incident dashboard response webhook:
+      # - POST: consumed by the escalation loop to handle ack/resolve/escalate actions.
+      # - GET: returns the current incident status and actions.
+      name: incident_dashboard_webhook
+      type: webhook
+      call: handlers.py:on_incident_dashboard_webhook
+      # Responds with an HTML page showing the incident status and possible actions.
+      is_sync: true
