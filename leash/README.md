@@ -23,6 +23,20 @@ tags:
 
 Leash is an automated incident management system that handles incident creation, assignment, escalation, and resolution. It uses Google Sheets as a storage backend for incidents, schedules, and contacts, and delivers notifications through Slack, email (Gmail), and SMS (Twilio).
 
+## Why Build Your Own Instead of Using Existing Commercial Solutions?
+
+Unlike off-the-shelf incident management platforms, Leash gives you complete control and simplicity:
+
+- **Much Cheaper**: Avoid expensive per-user pricing. Run on AutoKitteh's infrastructure at a fraction of the cost of enterprise incident management platforms.
+- **Simpler Management**: Edit schedules and contacts directly in Google Sheets - no fiddling with complex UI forms, schedule layers, or manual assignment workflows. Just update a spreadsheet cell.
+- **Easy Customization**: Need to change escalation logic, notification format, or add custom actions? Just modify the code - no need to navigate complex UI settings or contact support.
+- **Transparent Logic**: The entire workflow is visible in straightforward Python code, making it easy to understand, debug, and audit.
+- **No Vendor Lock-in**: Own your data and workflows completely. Extend integrations without API limitations or pricing tiers.
+- **Lightweight**: Use only what you need. No paying for unused features or dealing with overwhelming enterprise-focused interfaces.
+- **Quick Iterations**: Deploy changes instantly without waiting for vendor roadmaps or feature requests.
+
+Perfect for teams that value flexibility and want incident management that adapts to their workflow, not the other way around.
+
 ## How It Works
 
 1. **Incident Creation**: Incidents are created via webhook (POST request with incident details)
@@ -41,6 +55,16 @@ Leash is an automated incident management system that handles incident creation,
 - **Automatic Escalation**: Configurable escalation delays with rotation through assignee list
 - **Google Sheets Backend**: All data (incidents, schedules, contacts) stored in Google Sheets for easy management
 
+### Workflow Durability
+
+Leash uses AutoKitteh's durability feature in the `new_incident` function to ensure incident workflows are reliable and persistent. When an incident is created, the workflow can:
+
+- **Survive restarts**: If the system restarts during an escalation delay, the workflow resumes exactly where it left off
+- **Wait indefinitely**: Escalation loops can wait for configured delays (minutes, hours, or days) without blocking resources
+- **Maintain state**: All incident context and history is preserved throughout the lifecycle
+
+This means you can confidently deploy updates or handle infrastructure changes without losing track of active incidents or interrupting escalation workflows.
+
 ## Usage
 
 ### Creating Incidents
@@ -48,7 +72,7 @@ Leash is an automated incident management system that handles incident creation,
 Send a POST request to the `new_incident_webhook` URL with incident details:
 
 ```bash
-curl -X POST https://api.autokitteh.cloud/webhooks/new_incident_webhook \
+curl -X POST https://api.autokitteh.cloud/webhooks/<WEBHOOK_SLUG> \
   -H "Content-Type: text/plain" \
   -d "Production database connection timeout - error rate spiking to 15%"
 ```
@@ -92,6 +116,38 @@ Each incident has a unique dashboard URL sent with notifications. Available acti
 - **Escalate**: Manually escalate to the next person in rotation
 - **Notify**: Re-send notifications to the current assignee
 
+## Initial Setup
+
+### Creating the Google Spreadsheet
+
+Before deploying Leash, you need to create a Google Spreadsheet with three worksheets:
+
+1. **Create a new Google Spreadsheet** in your Google Drive
+2. **Create three worksheets** with these exact names:
+   - `schedule` - Defines on-call schedules
+   - `contacts` - Contains contact information
+3. **Set up the `contacts` worksheet** with these column headers:
+
+   ```
+   name | email | phone
+   ```
+
+   Then add your contacts (see "Managing Contacts" section for details)
+
+4. **Set up the `schedule` worksheet** with these column headers:
+
+   ```
+   start_time | end_time | assignees
+   ```
+
+   Then add your schedule rows (see "Managing Schedules" section for details)
+
+5. **Copy the Spreadsheet ID** from the URL:
+   ```
+   https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
+   ```
+   You'll need this ID for the `GOOGLE_SPREADSHEET_ID` configuration variable.
+
 ## Configuration
 
 Configure the system using project variables in `autokitteh.yaml`:
@@ -106,9 +162,11 @@ Configure the system using project variables in `autokitteh.yaml`:
 ## Connections
 
 - **gsheets** (required): Google Sheets for data storage
-- **slack** (optional): Slack for DM notifications
-- **gmail** (optional): Gmail for email notifications
-- **twilio** (optional): Twilio for SMS notifications
+- **slack** (optional): Slack for DM notifications. Ignored if not initialized.
+- **gmail** (optional): Gmail for email notifications. Ignored if not initialized.
+- **twilio** (optional): Twilio for SMS notifications. Ignored if not initialized.
+
+Only the Google Sheets connection is mandatory. All other connections are optional - if not initialized, they will simply not be used for notifications.
 
 ## Incident States
 
@@ -117,3 +175,14 @@ Configure the system using project variables in `autokitteh.yaml`:
 - **IN_PROGRESS**: Someone acknowledged and is working on it
 - **RESOLVED**: Incident resolved and closed
 - **ERROR**: Error occurred during processing
+
+## Development
+
+Just run `make` to test locally.
+
+To deploy to AutoKitteh, either hit the "Start With AutoKitteh" button above, or use the CLI:
+
+1. Install the CLI https://docs.autokitteh.com/get_started/install
+2. Authenticate: `ak auth login`
+3. Deploy: `make deploy`
+4. Login to https://autokitteh.cloud and initialize the connections and variables.
