@@ -47,7 +47,7 @@ def on_incident_dashboard_webhook(event: Event):
 
     inc = store.get_incident_by_unique_id(unique_id)
     if not inc:
-        print(f"incident not found: {id}")
+        print(f"incident not found: {unique_id}")
         http_outcome(status_code=404, json={"error": "not found"})
         return
 

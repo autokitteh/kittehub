@@ -175,7 +175,7 @@ def _handle_webhook_response(
                 _now(),
                 inc,
                 cast(str, user.get("email")),
-                "taken via webhook{by}",
+                f"taken via webhook{by}",
             )
 
         case "assign" | "g":

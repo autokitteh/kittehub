@@ -75,9 +75,11 @@ def _read_values(id):
 
     ufv = "UNFORMATTED_VALUE"
     resp = sheet.get(spreadsheetId=id, range="A1:B6", valueRenderOption=ufv).execute()
-    unform_col_b = [v for _, v in resp.get("values", [])]
+    unformatted_col_b = [v for _, v in resp.get("values", [])]
 
-    for i, row in enumerate(zip(col_a, formatted_col_b, unform_col_b, strict=True)):
+    for i, row in enumerate(
+        zip(col_a, formatted_col_b, unformatted_col_b, strict=True)
+    ):
         data_type, formatted, unformatted = row
         text = f"Row {i + 1}: {data_type} = formatted "
         text += f"`{formatted!r}`, unformatted `{unformatted!r}`"
