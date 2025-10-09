@@ -76,7 +76,7 @@ async def handle_translate_command(text: str, chat_id):
 async def handle_detect_command(text: str, chat_id):
     """Handle /detect command.
 
-    Note: Expected format is "/detect <target_lang> <text>
+    Note: Expected format is "/detect <target_lang> <text>"
     Example: /detect English Hola, ¿cómo estás?
     """
     parts = text.split(maxsplit=2)
