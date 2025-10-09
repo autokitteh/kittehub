@@ -1,3 +1,6 @@
+# This YAML file is a declarative manifest that describes the setup of
+# an AutoKitteh project that creates a Telegram bot for AI-powered translation
+
 version: v1
 
 project:
@@ -13,4 +16,4 @@ project:
     - name: on_message
       connection: telegram_conn
       event_type: message
-      call: program.py:on_telegram_message
+      call: program.py:on_message_trigger
