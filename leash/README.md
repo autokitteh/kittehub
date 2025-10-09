@@ -23,19 +23,90 @@ tags:
 
 Leash is an automated incident management system that handles incident creation, assignment, escalation, and resolution. It uses Google Sheets as a storage backend for incidents, schedules, and contacts, and delivers notifications through Slack, email (Gmail), and SMS (Twilio).
 
-## Why Build Your Own Instead of Using Existing Commercial Solutions?
+## Why Build Your Own?
 
-Unlike off-the-shelf incident management platforms, Leash gives you complete control and simplicity:
+The entire incident management system is ~200 lines of Python. The hardest part - handling long-running workflows that survive restarts - is straightforward with AutoKitteh:
 
-- **Much Cheaper**: Avoid expensive per-user pricing. Run on AutoKitteh's infrastructure at a fraction of the cost of enterprise incident management platforms.
-- **Simpler Management**: Edit schedules and contacts directly in Google Sheets - no fiddling with complex UI forms, schedule layers, or manual assignment workflows. Just update a spreadsheet cell.
-- **Easy Customization**: Need to change escalation logic, notification format, or add custom actions? Just modify the code - no need to navigate complex UI settings or contact support.
-- **Transparent Logic**: The entire workflow is visible in straightforward Python code, making it easy to understand, debug, and audit.
-- **No Vendor Lock-in**: Own your data and workflows completely. Extend integrations without API limitations or pricing tiers.
-- **Lightweight**: Use only what you need. No paying for unused features or dealing with overwhelming enterprise-focused interfaces.
-- **Quick Iterations**: Deploy changes instantly without waiting for vendor roadmaps or feature requests.
+```python
+from autokitteh import next_event, subscribe
 
-Perfect for teams that value flexibility and want incident management that adapts to their workflow, not the other way around.
+# Subscribe to dashboard webhook responses
+webhook_subscription = subscribe(
+    "incident_dashboard_webhook",
+    filter=f"data.method == 'POST' && data.url.query.unique_id == '{inc.unique_id}'"
+)
+
+# Wait for user action with automatic escalation
+while inc.state.is_active:
+    # This wait survives restarts. No external queue or state machine needed.
+    data = next_event(webhook_subscription, timeout=timedelta(minutes=15))
+
+    if data:
+        # User clicked a button - handle it
+        inc = handle_action(data.body.form, inc)
+    else:
+        # Timeout - escalate to next person
+        inc = escalate_to_next_assignee(inc)
+```
+
+No message queues, no state machines, no orchestration frameworks. The workflow automatically resumes after restarts, preserving all state.
+
+### What AutoKitteh Provides
+
+- Durable workflows that can wait hours or days without consuming resources
+- Built-in integrations (Slack, Gmail, Twilio, Google Sheets) with no configuration code
+- Webhook endpoints with filtering and routing
+- Event subscriptions without polling or queue management
+- No infrastructure to set up or maintain
+
+### vs. Commercial Platforms
+
+- No per-user pricing
+- Edit schedules directly in Google Sheets instead of navigating UI forms
+- Change escalation logic by editing Python code
+- See exactly how it works (check `incidents.py:45`)
+- Own your data and code
+- Deploy changes instantly
+
+## How It Uses AutoKitteh
+
+The system uses 4 AutoKitteh features:
+
+```python
+from autokitteh import next_event, subscribe, http_outcome, Event
+```
+
+1. **Durable Triggers** (`autokitteh.yaml`): Webhook triggers that create long-running sessions
+
+   ```yaml
+   triggers:
+     - name: new_incident_webhook
+       type: webhook
+       call: handlers.py:on_new_incident_webhook
+       is_durable: true
+   ```
+
+2. **Event Subscriptions** (`incidents.py:48`): Subscribe to filtered events
+
+   ```python
+   webhook_response_subscription = subscribe(
+       "incident_dashboard_webhook",
+       filter=f"data.method == 'POST' && data.url.query.unique_id == '{inc.unique_id}'"
+   )
+   ```
+
+3. **Durable Waits** (`incidents.py:69`): Wait for events with timeouts
+
+   ```python
+   data = next_event(webhook_response_subscription, timeout=timedelta(minutes=15))
+   ```
+
+4. **HTTP Responses** (`handlers.py:25`): Return HTTP responses from workflows
+   ```python
+   http_outcome(status_code=201, json={"incident_id": inc.id})
+   ```
+
+The rest is regular Python business logic.
 
 ## How It Works
 
