@@ -2,7 +2,7 @@
 title: Leash - Incident Management & On-Call Escalation
 description: Automated incident management system with on-call rotation, escalation workflows, and multi-channel notifications
 integrations: ["googlesheets", "slack", "twilio", "gmail"]
-categories: ["DevOps", "Monitoring"]
+categories: ["DevOps"]
 tags:
   [
     "webhook_handling",
