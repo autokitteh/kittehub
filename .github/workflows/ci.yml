@@ -30,7 +30,7 @@ jobs:
           ruff format --check .
 
       - name: Test with pytest
-        run: pytest -v .
+        run: pytest -v tests
 
       - name: Verify README.md is up to date
         run: |
