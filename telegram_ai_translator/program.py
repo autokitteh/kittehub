@@ -16,8 +16,7 @@ from prompts import HELP_TEXT
 from prompts import TRANSLATE_USAGE
 
 
-MODEL = "gemini-2.5-flash-lite"
-gemini = gemini_client("gemini_conn", model_name=MODEL)
+gemini = gemini_client("gemini_conn", model_name="gemini-2.5-flash-lite")
 telegram = telegram_client("telegram_conn")
 
 
@@ -66,11 +65,8 @@ async def handle_translate_command(text: str, chat_id):
     text_to_translate = parts[2]
     prompt = get_translate_prompt(target_lang, text_to_translate)
 
-    try:
-        response = gemini.generate_content(prompt)
-        await telegram.send_message(chat_id=chat_id, text=response.text)
-    except (RuntimeError, ValueError) as e:
-        print(f"Translation error: {e!s}")
+    response = gemini.generate_content(prompt)
+    await telegram.send_message(chat_id=chat_id, text=response.text)
 
 
 async def handle_detect_command(text: str, chat_id):
@@ -88,11 +84,8 @@ async def handle_detect_command(text: str, chat_id):
     text_to_translate = parts[2]
     prompt = get_detect_prompt(target_lang, text_to_translate)
 
-    try:
-        response = gemini.generate_content(prompt)
-        await telegram.send_message(chat_id=chat_id, text=response.text)
-    except (RuntimeError, ValueError) as e:
-        print(f"Detection error: {e!s}")
+    response = gemini.generate_content(prompt)
+    await telegram.send_message(chat_id=chat_id, text=response.text)
 
 
 async def handle_help_command(chat_id):
