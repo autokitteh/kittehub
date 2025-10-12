@@ -24,6 +24,7 @@ ALLOWED_INTEGRATIONS = (
     "jira",
     "linear",
     "slack",
+    "telegram",
     "twilio",
     "zoom",
 )
