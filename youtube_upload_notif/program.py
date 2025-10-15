@@ -5,13 +5,11 @@ import os
 
 import autokitteh
 from autokitteh.google import youtube_client
-from autokitteh.openai import openai_client
 from autokitteh.slack import slack_client
 
 
 youtube = youtube_client("youtube_conn")
 slack = slack_client("slack_conn")
-chatgpt = openai_client("chatgpt_conn")
 
 
 YT_CHANNEL_NAME = os.getenv("YOUTUBE_CHANNEL_NAME")
