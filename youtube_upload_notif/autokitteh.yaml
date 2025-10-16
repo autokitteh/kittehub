@@ -15,12 +15,11 @@ project:
 
   triggers:
     - name: poll_for_new_videos
-      type: schedule
-      cron_expression: "*/5 * * * *"
+      schedule: "*/5 * * * *"
       call: program.py:poll_for_new_videos
 
   vars:
     - name: YOUTUBE_CHANNEL_NAME
-      value:
+      value: ""
     - name: SLACK_CHANNEL
-      value:
+      value: ""
