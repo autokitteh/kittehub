@@ -1,0 +1,3 @@
+anthropic==0.71.0
+autokitteh
+rapidfuzz
