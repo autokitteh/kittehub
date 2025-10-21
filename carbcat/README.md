@@ -1,3 +1,11 @@
+---
+title: CarbCat - AI WhatsApp Carb Tracker
+description: AI-powered WhatsApp chatbot that tracks carbohydrate content in food using USDA database
+integrations: ["twilio"]
+categories: ["AI", "Productivity"]
+tags: ["user_interactions", "webhook_handling", "data_processing", "notifications"]
+---
+
 # CarbCat 🐱
 
 An AI-powered WhatsApp chatbot that helps users track carbohydrate content in their food. Simply message the bot with what you're eating, and it will tell you how many carbs are in your meal using the comprehensive USDA food database.
