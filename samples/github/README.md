@@ -1,6 +1,6 @@
 # GitHub
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/github)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/github)
 
 There are various AutoKitteh projects in the Kittehub repository that demonstrate different aspects of integration with [GitHub](https://github.com).
 

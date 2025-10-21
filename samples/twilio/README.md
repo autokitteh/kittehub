@@ -7,7 +7,7 @@ categories: ["Samples"]
 
 # Twilio Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/twilio)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/twilio)
 
 This sample project demonstrates AutoKitteh's integration with
 [Twilio](https://www.twilio.com).

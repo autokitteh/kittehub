@@ -8,7 +8,7 @@ tags: ["webhook_handling", "notifications", "data_processing"]
 
 # GitHub Issue Alert
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=devops/github_issue_alert)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=devops/github_issue_alert)
 
 This project automates notifications for GitHub issue activity by monitoring issue creation and comments. It sends real-time updates to a designated Slack channel to keep teams informed.
 

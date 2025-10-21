@@ -8,7 +8,7 @@ tags: ["interactive_workflows", "user_interactions", "AttrDict", "webhook_handli
 
 # Slack Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/slack)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/slack)
 
 This sample project demonstrates AutoKitteh's 2-way integration with
 [Slack](https://slack.com).

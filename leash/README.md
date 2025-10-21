@@ -19,7 +19,7 @@ tags:
 
 # Leash - Incident Management System
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=leash)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=leash)
 
 Leash is an automated incident management system that handles incident creation, assignment, escalation, and resolution. It uses Google Sheets as a storage backend for incidents, schedules, and contacts, and delivers notifications through Slack, email (Gmail), and SMS (Twilio).
 

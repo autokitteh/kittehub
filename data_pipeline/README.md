@@ -15,7 +15,7 @@ tags:
 
 # ETL Pipeline From S3 to SQLite
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=data_pipeline)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=data_pipeline)
 
 This project downloads and parses GPX files from an S3 bucket and inserts the resulting structured records into a SQLite database. It leverages AWS notifications to trigger an HTTP endpoint when new GPX files are available.
 

@@ -8,7 +8,7 @@ tags: ["webhook_handling", "notifications", "data_processing"]
 
 # GitHub Marketplace to Slack
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=github_marketplace_to_slack)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=github_marketplace_to_slack)
 
 Forward [GitHub Marketplace notifications](https://docs.github.com/en/apps/github-marketplace/listing-an-app-on-github-marketplace/configuring-a-webhook-to-notify-you-of-plan-changes) to Slack.
 

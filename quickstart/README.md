@@ -8,6 +8,6 @@ tags: ["essential"]
 
 # Quickstart
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=quickstart)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=quickstart)
 
 Basic tutorial workflow.

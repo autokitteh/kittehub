@@ -8,7 +8,7 @@ tags: ["webhook_handling", "data_processing", "notifications"]
 
 # Jira Assignee From Google Calendar
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=jira_google_calendar/assignee_from_schedule)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=jira_google_calendar/assignee_from_schedule)
 
 This project automates the process of assigning Jira issues based on a shared Google Calendar. The workflow checks the current on-call person from the Google Calendar and assigns newly created Jira issues to them.
 

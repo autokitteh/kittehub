@@ -8,7 +8,7 @@ tags: ["monitoring", "notifications", "scheduled_tasks", "event_filtering"]
 
 # Missing Jira Events Monitor
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=reliability/missing_jira_events_monitor)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=reliability/missing_jira_events_monitor)
 
 Send alerts when AutoKitteh doesn't receive certain Jira events in time.
 

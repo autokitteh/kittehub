@@ -15,7 +15,7 @@ tags:
 
 # Auth0 to HubSpot
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=auth0_to_hubspot)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=auth0_to_hubspot)
 
 This project adds new Auth0 users to HubSpot as contacts, on a recurring basis.
 

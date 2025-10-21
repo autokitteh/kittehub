@@ -8,7 +8,7 @@ tags: ["user_interactions", "notifications", "webhook_handling"]
 
 # Anthropic Slack Thread TLDR
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=anthropic_slack_thread_tldr)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=anthropic_slack_thread_tldr)
 
 Allows Slack users to summarize a Slack thread by posting `!tldr` in a thread.
 

@@ -8,7 +8,7 @@ tags: ["subscribe", "next_event", "event_loops", "long_running", "interactive_wo
 
 # AI Chat Assistant
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=ai-chat-assistant)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=ai-chat-assistant)
 
 This project automates the process of managing and responding to messages through Slack. By integrating with ChatGPT, GitHub, Google Sheets, and Slack, it can interpret plain-English commands into structured actions. The assistant can perform key functions like listing tasks stored in Google Sheets or scanning GitHub repositories for unanswered comments, making it easier to keep track of open issues and follow-ups.
 

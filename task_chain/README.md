@@ -1,6 +1,6 @@
 # Task Chain
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=task_chain)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=task_chain)
 
 This project runs a sequence of tasks with fault tolerance.
 

@@ -8,7 +8,7 @@ tags: ["webhook_handling", "data_processing", "notifications"]
 
 # Jira to Google Calendar Workflow
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=jira_google_calendar/deadline_to_event)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=jira_google_calendar/deadline_to_event)
 
 This project automates the process of creating Google Calendar events based on Jira issue creation. When a new Jira issue is created, the workflow automatically generates a Google Calendar event with a deadline to ensure that the required tasks are completed on time.
 

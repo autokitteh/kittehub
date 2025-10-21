@@ -8,7 +8,7 @@ tags: ["user_interactions", "notifications", "webhook_handling", "data_processin
 
 # LangGraph Bot with Tavily, and Google Sheets
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=ai_agents/langgraph_bot)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=ai_agents/langgraph_bot)
 
 This [AutoKitteh](https://github.com/autokitteh/autokitteh) project integrates Slack messaging with the power of [Google Gemini LLM](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/models), [Tavily Search API](https://tavily.com), and [LangGraph](https://github.com/langchain-ai/langgraph), enabling a bot that can answer user queries and update Google Sheets dynamically.
 

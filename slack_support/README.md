@@ -8,7 +8,7 @@ tags: ["next_event", "subscribe", "interactive_workflows", "user_interactions", 
 
 # AI Driven Slack Support
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=slack_support)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=slack_support)
 
 This project automates help request management by assigning experts based on AI-inferred topics and predefined expertise. It tracks requests, allows experts to claim and resolve them, and sends reminders if unclaimed.
 

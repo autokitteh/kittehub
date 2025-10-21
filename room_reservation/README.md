@@ -8,7 +8,7 @@ tags: ["user_interactions", "webhook_handling", "data_processing", "error_handli
 
 # Room Reservarion
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=room_reservation)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=room_reservation)
 
 This project automates the process of room reservations through Slack by integrating Google Calendar, Google Sheets, and Slack. It is not meant to be a 100% complete project, but rather a solid starting point.
 
