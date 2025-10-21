@@ -5,7 +5,9 @@ from pathlib import Path
 import re
 
 
-BADGE_URL = os.getenv("BADGE_URL", "https://app.autokitteh.cloud/template?template-name=")
+BADGE_URL = os.getenv(
+    "BADGE_URL", "https://app.autokitteh.cloud/template?template-name="
+)
 BADGE_ALT = os.getenv("BADGE_ALT", "Start with AutoKitteh")
 BADGE_IMG = "https://autokitteh.com/assets/autokitteh-badge.svg"
 
