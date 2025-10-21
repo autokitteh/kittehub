@@ -8,7 +8,7 @@ tags: ["webhook_handling", "data_processing", "notifications"]
 
 # Discord to Spreadsheet Workflow
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=discord_to_spreadsheet)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=discord_to_spreadsheet)
 
 This project automates the process of logging Discord messages to a Google Sheets document. It captures message events from a Discord server and appends the author's username and message content into the specified spreadsheet. This is intended as a starting point rather than a complete solution.
 

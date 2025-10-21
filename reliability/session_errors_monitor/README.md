@@ -8,7 +8,7 @@ tags: ["monitoring", "notifications", "scheduled_tasks", "error_handling"]
 
 # AutoKitteh Session Errors Monitor
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=reliability/session_errors_monitor)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=reliability/session_errors_monitor)
 
 Send Slack alerts when AutoKitteh sessions end due to errors.
 

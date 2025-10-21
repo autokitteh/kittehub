@@ -8,7 +8,7 @@ tags: ["child_sessions", "interactive_workflows", "user_interactions", "start", 
 
 # GitHub Copilot Seat Pruning
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=github_copilot_seats)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=github_copilot_seats)
 
 This automation runs daily to list all the users in the GitHub organization
 who have access to [Copilot](https://github.com/features/copilot). If any of

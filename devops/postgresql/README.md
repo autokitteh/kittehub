@@ -8,7 +8,7 @@ tags: ["database"]
 
 # PostgreSQL Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/postgresql)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/postgresql)
 
 This AutoKitteh project demonstrates how to connect to a PostgreSQL database using the `psycopg2` library.
 

@@ -8,7 +8,7 @@ tags: ["activity", "scheduled_tasks", "monitoring", "notifications", "data_proce
 
 # AWS Health Monitor
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=reliability/aws_health_monitor)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=reliability/aws_health_monitor)
 
 Announce AWS health events in Slack channels, based on resource ownership data in a Google Sheet.
 

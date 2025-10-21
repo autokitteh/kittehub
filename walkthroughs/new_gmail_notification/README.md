@@ -7,7 +7,7 @@ categories: ["Productivity"]
 
 # Gmail New Email Notification
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=walkthroughs/new_gmail_notification)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=walkthroughs/new_gmail_notification)
 
 This AutoKitteh project demonstrates how to create a custom Gmail event system that triggers when new emails arrive. It uses polling to detect new messages and processes them with custom logic.
 

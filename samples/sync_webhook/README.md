@@ -8,7 +8,7 @@ tags: ["webhook", "sync", "subscribe", "next_event", "http_outcome", "outcome", 
 
 # Sync Webhook Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/sync_webhook)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/sync_webhook)
 
 This AutoKitteh project demonstrates how to handle synchronous webhooks with multiple triggers, showing how to wait for a second webhook before responding to the first one.
 

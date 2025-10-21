@@ -8,7 +8,7 @@ tags: ["subscribe", "next_event", "unsubscribe", "event_filtering", "timeout_han
 
 # Runtime Event Handling Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/runtime_events)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/runtime_events)
 
 [The workflow](./program.py) is triggered by an HTTP GET request with a URL
 path that ends with `/meow`.

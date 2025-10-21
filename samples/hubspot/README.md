@@ -7,7 +7,7 @@ categories: ["CRM", "Samples"]
 
 # HubSpot Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/hubspot)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/hubspot)
 
 This [AutoKitteh](https://github.com/autokitteh/autokitteh) project
 demonstrates integration with [HubSpot](https://www.hubspot.com).

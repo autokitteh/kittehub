@@ -8,7 +8,7 @@ tags: ["webhook_handling", "data_processing", "notifications"]
 
 # Google Calendar To Asana
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=google_cal_to_asana)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=google_cal_to_asana)
 
 This project automates task creation by integrating Google Calendar and Asana.
 

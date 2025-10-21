@@ -8,7 +8,7 @@ tags: ["event_loops", "long_running", "subscribe", "unsubscribe", "next_event", 
 
 # Pull Request Review Reminder (Purrr)
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=devops/purrr)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=devops/purrr)
 
 > [!NOTE]
 > This project is currently under construction.

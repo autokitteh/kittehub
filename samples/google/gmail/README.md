@@ -8,7 +8,7 @@ tags: ["webhook_handling", "store", "state_management", "data_processing", "esse
 
 # Gmail Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/google/gmail)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/google/gmail)
 
 This AutoKitteh project demonstrates 2-way integration with
 [Gmail](https://www.google.com/gmail/about/).

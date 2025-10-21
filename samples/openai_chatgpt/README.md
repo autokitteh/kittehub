@@ -7,7 +7,7 @@ categories: ["AI", "Samples"]
 
 # OpenAI ChatGPT Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/openai_chatgpt)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/openai_chatgpt)
 
 This project demonstrates integration with ChatGPT for text generation and response analysis. It showcases how to make API calls to ChatGPT and track token usage statistics.
 

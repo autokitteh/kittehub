@@ -8,7 +8,7 @@ tags: ["translation", "ai", "chatbot", "multilingual"]
 
 # Telegram AI Translator Bot
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=telegram_ai_translator)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=telegram_ai_translator)
 
 An intelligent Telegram bot that provides contextual translations powered by Gemini AI. Unlike basic word-for-word translators, this bot understands context, preserves tone, and explains cultural nuances.
 

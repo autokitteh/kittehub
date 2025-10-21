@@ -7,7 +7,7 @@ categories: ["Samples"]
 
 # Google Calendar Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/google/calendar)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/google/calendar)
 
 This AutoKitteh project demonstrates 2-way integration with
 [Google Calendar](https://workspace.google.com/products/calendar/).

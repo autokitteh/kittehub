@@ -7,7 +7,7 @@ categories: ["Samples"]
 
 # HTTP Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/http)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/http)
 
 This AutoKitteh project demonstrates 2-way usage of HTTP, with AutoKitteh
 webhooks and the Python [requests](https://requests.readthedocs.io/) library.

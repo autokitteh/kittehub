@@ -8,7 +8,7 @@ tags: ["scheduler"]
 
 # Scheduler (Cron) Sample
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=samples/scheduler)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=samples/scheduler)
 
 This project demonstrates
 [AutoKitteh](https://github.com/autokitteh/autokitteh)'s

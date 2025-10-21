@@ -8,7 +8,7 @@ tags: ["next_event", "subscribe", "webhook_handling", "long_running", "data_proc
 
 # Invoice Processing System
 
-[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=invoice_processing)
+[![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=invoice_processing)
 
 Automate the detection and extraction of invoices from emails using Gmail and ChatGPT. This system scans incoming emails, identifies invoices, extracts key details, and generates structured reports.
 
