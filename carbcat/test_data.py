@@ -1,4 +1,4 @@
-"""Tests"""
+"""Tests for data module food database loading and search functionality."""
 
 import data
 

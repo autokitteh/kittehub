@@ -67,7 +67,7 @@ def _load() -> list[Food]:
             if prev and prev.name == curr.name:
                 if prev.carbs != curr.carbs:
                     raise ValueError(
-                        f"line #{i}: duplicate food with different carbs: {prev} != {curr}"  # noqa: E501
+                        f"line #{i + 1}: duplicate food with different carbs: {prev} != {curr}"  # noqa: E501
                     )
 
                 _foods[-1] = replace(

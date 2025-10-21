@@ -1,4 +1,4 @@
-"""Aiaiai"""
+"""AI interaction module for food id and carbohydrate calculation using Claude."""
 
 from dataclasses import asdict
 from dataclasses import dataclass
