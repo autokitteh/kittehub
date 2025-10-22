@@ -10,7 +10,17 @@ tags: ["webhook_handling", "sync_responses"]
 
 [![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=gocat)
 
-Gocat is a simple URL shortener and redirector that uses Google Sheets as its data store. It maps short keys to full URLs via webhook, providing an easy way to manage and share shortened links.
+Gocat is a simple "go links" URL shortener and redirector that uses Google Sheets as its data store. It maps short keys to full URLs via webhook, providing an easy way to manage and share shortened links.
+
+## What are Go Links?
+
+Go links (also known as "go/" links) are short, memorable internal URLs that redirect to longer, harder-to-remember URLs. They're commonly used within organizations to make it easier to access frequently-used resources.
+
+Instead of remembering something like:
+https://docs.google.com/document/d/1a2b3c4d5e6f7g8h9i0j/edit
+
+You can create a go link like:
+`go/team-onboarding`
 
 ## Features
 
@@ -30,35 +40,22 @@ The entire URL shortener is ~200 lines of Python. With AutoKitteh, you get:
 - **Full control**: Customize the logic by editing Python code
 - **Easy sharing**: Share the Google Sheet with your team to collaboratively manage URLs
 
-### What AutoKitteh Provides
+### What [AutoKitteh](https://autokitteh.com) Provides
 
-```python
-from autokitteh import Event, http_outcome
-
-def on_webhook(event: Event):
-    # Extract the path suffix from the webhook URL
-    suffix = _extract_suffix(event.data.url.path)
-
-    # Look up the URL in Google Sheets
-    results = store.find(suffix)
-
-    # Return a 302 redirect
-    http_outcome(302, headers={"Location": results[0]})
-```
-
-- Webhook endpoints with automatic routing
-- Built-in Google Sheets integration
-- Synchronous HTTP responses with `http_outcome()`
+- Production ready without the complexity
+- Webhook endpoints
+- Built-in Google Sheets integration (and others)
+- Synchronous HTTP responses
 - No web server configuration needed
 
-### vs. Commercial Shorteners
+### GoCat vs. Commercial Shorteners
 
+- Dead simple
 - No link expiration
 - No tracking or analytics collection
 - Own your data - it's just a Google Sheet
 - Free to run (no per-link or per-click pricing)
 - Customize behavior (e.g., add authentication, logging, custom responses)
-- Free: 0$/mo.
 
 ## How It Works
 
@@ -67,12 +64,27 @@ def on_webhook(event: Event):
    - Column 1: Short keys (e.g., "docs", "api")
    - Column 2: Full URLs (e.g., "https://example.com/documentation")
 
-2. **Deploy to AutoKitteh**: Get a webhook URL like `https://api.autokitteh.cloud/webhooks/<slug>`
+2. **Deploy to AutoKitteh**: [![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?name=gocat) get a webhook URL like `https://api.autokitteh.cloud/webhooks/<slug>`
 
 3. **Access shortened URLs**: Visit `https://api.autokitteh.cloud/webhooks/<slug>/docs`
    - Redirects to the URL mapped to "docs" in your spreadsheet
 
-## Browser Extension
+## Making the Browser understand Go links
+
+The following methods are the simplest to make Chrome to understand go links.
+
+## 1. Chrome Search Engine
+
+**What it does:** Treats `go` as a search keyword that redirects
+
+**Setup:**
+
+Chrome Settings → Search engines → Add custom search engine
+
+- Keyword: `go`
+- URL: `https://api.autokitteh.cloud/webhooks/<slug>/%s`
+
+## 2. Browser Extension
 
 For a better user experience, you can use the included Chrome extension in the `_extension` directory. This allows you to use short go links directly in your browser:
 
@@ -90,8 +102,6 @@ See `_extension/README.md` for detailed setup and configuration instructions.
 
 ## Usage
 
-### Creating the Google Spreadsheet
-
 1. **Create a new Google Spreadsheet** in your Google Drive
 2. **Set up two columns**:
 
@@ -107,8 +117,6 @@ See `_extension/README.md` for detailed setup and configuration instructions.
    ```
    https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
    ```
-
-### Basic Usage
 
 Once deployed, you'll have a webhook URL like `https://api.autokitteh.cloud/webhooks/<slug>`. Here's how to use it:
 
