@@ -1,0 +1,27 @@
+version: v2
+
+project:
+  name: gocat
+
+  vars:
+    - name: GOOGLE_SPREADSHEET_ID
+      value: ""
+      description: >
+        The ID of the Google Spreadsheet to read the directory data from.
+        You can find this ID in the URL of the spreadsheet.
+    - name: DIRECTORY_SHEET_NAME
+      value: ""
+      description: >
+        The name of the sheet within the Google Spreadsheet that contains the directory data.
+        If empty, the first sheet will be used.
+
+  connections:
+    - name: gsheets
+      integration: googlesheets
+
+  triggers:
+    - name: webhook
+      type: webhook
+      call: handlers.py:on_webhook
+      event_type: get
+      is_sync: true
