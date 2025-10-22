@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "GoCat Links",
+  "version": "1.0",
+  "description": "Personal go links for quick navigation",
+  "permissions": ["storage", "declarativeNetRequest", "notifications"],
+  "host_permissions": ["http://go/*", "https://go/*"],
+  "omnibox": { "keyword": "go" },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {},
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "go_links_rules",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  }
+}
