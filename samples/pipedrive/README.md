@@ -54,7 +54,7 @@ curl "${WEBHOOK_URL}"
 This will retrieve and display all deals from your Pipedrive account.
 
 > [!TIP]
-> function `fetch_all_deals` can also be triggered manually by clicking the "Run" button in the UI.
+> Function `fetch_all_deals` can also be triggered manually by clicking the "Run" button in the UI.
 
 ## Self-Hosted Deployment
 
