@@ -44,7 +44,7 @@ API documentation:
 ## Trigger Workflow
 
 > [!IMPORTANT]
-> Ensure the Anthropic integration is initialized with a valid API key; otherwise, The Anthropic connection won't be saved.
+> Ensure the Anthropic integration is initialized with a valid API key; otherwise, the Anthropic connection won't be saved.
 
 ### Option 1: Custom Prompt (POST)
 
