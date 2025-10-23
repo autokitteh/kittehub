@@ -1,0 +1,23 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates integration with
+# Anthropic Claude.
+
+version: v1
+
+project:
+  name: anthropic_sample
+
+  connections:
+    - name: anthropic_conn
+      integration: anthropic
+
+  triggers:
+    - name: on_http_post_with_prompt
+      type: webhook
+      event_type: post
+      call: program.py:on_http_post_with_prompt
+
+    - name: on_http_get_demo
+      type: webhook
+      event_type: get
+      call: program.py:on_http_get_demo

@@ -3,6 +3,7 @@
 METADATA = ("title", "description", "integrations", "categories")
 
 ALLOWED_INTEGRATIONS = (
+    "anthropic",
     "asana",
     "auth0",
     "autokitteh",
@@ -23,6 +24,8 @@ ALLOWED_INTEGRATIONS = (
     "youtube",
     "jira",
     "linear",
+    "notion",
+    "pipedrive",
     "slack",
     "telegram",
     "twilio",
