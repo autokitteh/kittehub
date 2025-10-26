@@ -15,6 +15,7 @@ project:
       type: webhook
       event_type: post
       call: program.py:create_deal
+      is_sync: true
 
     - name: fetch_all_deals_webhook
       type: webhook
