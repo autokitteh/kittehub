@@ -26,6 +26,7 @@ ALLOWED_INTEGRATIONS = (
     "linear",
     "notion",
     "pipedrive",
+    "reddit",
     "slack",
     "telegram",
     "twilio",
