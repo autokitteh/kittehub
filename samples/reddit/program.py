@@ -38,12 +38,6 @@ def create_post(event):
         print(f"Post URL: {submission.url}")
         print(f"Permalink: https://reddit.com{submission.permalink}")
     except RedditAPIException as e:
-        print("Failed to create post due to Reddit API error.")
-        for subexception in e.items:
-            print(f"Error code: {subexception.error_type}")
-            print(f"Error message: {subexception.message}")
-            print(f"Field: {subexception.field}")
-    except Exception as e:
         print("Failed to create post.")
         print("Error:", str(e))
 
@@ -64,9 +58,13 @@ def add_comment(event):
         print("Error: post_id parameter is required")
         return
 
-    submission = reddit.submission(id=post_id)
-    comment = submission.reply(comment_text)
+    try:
+        submission = reddit.submission(id=post_id)
+        comment = submission.reply(comment_text)
 
-    print(f"Comment added successfully to post {post_id}")
-    print(f"Comment ID: {comment.id}")
-    print(f"Comment URL: https://reddit.com{comment.permalink}")
+        print(f"Comment added successfully to post {post_id}")
+        print(f"Comment ID: {comment.id}")
+        print(f"Comment URL: https://reddit.com{comment.permalink}")
+    except RedditAPIException as e:
+        print("Failed to add comment.")
+        print("Error:", str(e))
