@@ -23,7 +23,7 @@ NOTIFICATION_EMAIL = os.getenv("NOTIFICATION_EMAIL", "")
 
 # Clients
 jira = jira_client("jira_conn")
-confluence = confluence_client("conf_conn")
+confluence = confluence_client("confluence_conn")
 chatgpt = openai_client("chatgpt_conn")
 gmail = gmail_client("gmail_conn").users()
 
