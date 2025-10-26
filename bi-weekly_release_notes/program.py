@@ -1,6 +1,6 @@
 """Automated bi-weekly release notes generation workflow."""
 
-from datetime import datetime
+from datetime import datetime, UTC
 import os
 import html
 import base64
@@ -43,9 +43,7 @@ def generate_release_notes(_):
     processed_features = [process_ticket(t) for t in features]
     processed_bug_fixes = [process_ticket(t) for t in bug_fixes]
 
-    title = "Release Notes - " + datetime.now(tz=datetime.timezone.utc).strftime(
-        "%B - %d - %Y - %H:%M"
-    )
+    title = "Release Notes - " + datetime.now(tz=UTC).strftime("%B - %d - %Y - %H:%M")
     page = create_confluence_page(title, processed_features, processed_bug_fixes)
 
     if NOTIFICATION_EMAIL and page:
@@ -195,7 +193,7 @@ def get_page_url(page):
 
 def build_content(features, bug_fixes):
     """Build HTML content for Confluence page."""
-    now = datetime.now(tz=datetime.timezone.utc)
+    now = datetime.now(tz=UTC)
     content = f"""<h1>Release Notes - {now.strftime("%B %d, %Y")}</h1>
 <p>This release includes the following updates and improvements:</p>"""
 
@@ -247,9 +245,7 @@ Best regards,
 Automated Release Notes System
 
 ---
-Generated on {
-        datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d at %H:%M UTC")
-    }"""
+Generated on {datetime.now(tz=UTC).strftime("%Y-%m-%d at %H:%M UTC")}"""
 
     message = f"""From: {profile["emailAddress"]}
 To: {NOTIFICATION_EMAIL}
