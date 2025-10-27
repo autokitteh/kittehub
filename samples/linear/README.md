@@ -48,7 +48,7 @@ curl -X POST "${WEBHOOK_URL}" \
 ```
 
 - Replace `WEBHOOK_URL` with the URL of `create_issue_webhook` webhook in the triggers section.
-- provide a title and a description.
+- Provide a title and a description.
 
 > [!NOTE]
 > Both `title` and `description` parameters are optional. If not provided, they default to `'AutoKitteh Issue'` and `'Created by AutoKitteh'`.
