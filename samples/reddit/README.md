@@ -24,7 +24,7 @@ API details:
 ## How It Works
 
 - Create a new post in a specified subreddit
-- Add a comment to an existing post by using the the post id from the webhook
+- Add a comment to an existing post by using the post id from the webhook
 
 ## Cloud Usage
 
