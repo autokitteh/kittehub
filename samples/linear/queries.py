@@ -5,21 +5,21 @@ This module contains query strings for creating and managing issues via the Line
 
 CREATE_ISSUE_QUERY = """
 mutation CreateIssue($teamId: String!, $title: String!, $description: String) {
-        issueCreate(
-            input: {
-                teamId: $teamId
-                title: $title
-                description: $description
-            }
-        ) {
-            success
-            issue {
-                id
-                url
-            }
+    issueCreate(
+        input: {
+            teamId: $teamId
+            title: $title
+            description: $description
+        }
+    ) {
+        success
+        issue {
+            id
+            url
         }
     }
-    """
+}
+"""
 
 
 GET_ISSUE_QUERY = """
