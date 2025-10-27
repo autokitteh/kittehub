@@ -55,7 +55,7 @@ curl -i -X POST "${WEBHOOK_URL_POST}" -H "Content-Type: text/plain" -d "Why do c
 ```
 
 - Replace `WEBHOOK_URL` with the URL of `on_http_post_with_prompt` webhook in the triggers section.
-- Provide a prompt
+- Provide a prompt.
 
 ### Option 2: Demo Mode (GET)
 
