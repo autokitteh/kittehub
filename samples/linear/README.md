@@ -11,18 +11,21 @@ categories: ["Samples"]
 
 The Linear sample demonstrates how to manage issues using AutoKitteh's Linear integration.
 
-It features functionality to create new issues within a Linear team, retrieve information about existing issues, and update issue properties.
+The sample includes three separate workflows:
+
+1. **Create Issue** - Create new issues within a Linear team
+2. **Get Issue** - Retrieve information about existing issues
+3. **Update Issue** - Update issue properties like title or state
 
 API details:
 
 - [Linear API](https://developers.linear.app/docs)
-- [Python client library](https://github.com/linear/linear-client-python)
 
 ## How It Works
 
-1. Create a new issue in Linear with a custom title and description
-2. Retrieve information about an existing issue using its issue ID
-3. Update an issue's title or state
+- Create a new issue in Linear with a custom title and description
+- Retrieve information about an existing issue using its issue ID
+- Update an issue's title or state
 
 ## Cloud Usage
 

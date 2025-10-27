@@ -11,7 +11,10 @@ categories: ["Samples"]
 
 The Reddit sample demonstrates how to interact with Reddit using AutoKitteh's Reddit integration.
 
-It features functionality to create posts and submit comments.
+The sample includes three separate workflows:
+
+1. **Create Post** - Create a reddit post
+2. **Add a comment** - Add a comment on a reddit post
 
 API details:
 
@@ -20,8 +23,8 @@ API details:
 
 ## How It Works
 
-1. Create a new post in a specified subreddit
-2. Add a comment to an existing post
+- Create a new post in a specified subreddit
+- Add a comment to an existing post by using the the post id from the webhook
 
 ## Cloud Usage
 
@@ -42,12 +45,6 @@ curl -X POST "${WEBHOOK_URL}" \
   -d "content=This is a test post created with AutoKitteh" \
   -d "flair=<FLAIR_ID>"
 ```
-
-> [!NOTE]
-> All parameters are optional:
-> - `title`: defaults to `'AutoKitteh Post'`
-> - `content`: defaults to `'Created by AutoKitteh'`
-> - `flair`: defaults to `'default'` (use your subreddit's flair ID if you want to set a specific flair)
 
 ### Add a Comment
 

@@ -14,7 +14,7 @@ import queries
 
 linear = linear_client("linear_conn")
 
-TEAM_ID = os.getenv("TEAM_ID", "")  # Must be UUID type
+TEAM_ID = os.getenv("TEAM_ID", "")  # Must be UUID type.
 
 
 def create_issue(event):
@@ -115,7 +115,7 @@ def update_issue(event):
         print("Error: issue_id parameter is required")
         return
 
-    # Build update payload
+    # Build update payload.
     update_data = {}
     if new_title:
         update_data["title"] = new_title
