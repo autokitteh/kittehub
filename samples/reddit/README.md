@@ -11,7 +11,7 @@ categories: ["Samples"]
 
 The Reddit sample demonstrates how to interact with Reddit using AutoKitteh's Reddit integration.
 
-The sample includes three separate workflows:
+The sample includes two separate workflows:
 
 1. **Create Post** - Create a reddit post
 2. **Add a comment** - Add a comment on a reddit post
@@ -46,6 +46,9 @@ curl -X POST "${WEBHOOK_URL}" \
   -d "flair=<FLAIR_ID>"
 ```
 
+- Replace `WEBHOOK_URL` with the URL of `create_post_webhook` webhook in the triggers section.
+- provide a flair ID , a title and content.
+
 ### Add a Comment
 
 ```shell
@@ -54,7 +57,8 @@ curl -X POST "${WEBHOOK_URL}" \
   -d "comment=Great post!"
 ```
 
-Replace `<POST_ID>` with the ID of the Reddit post you want to comment on.
+- Replace `WEBHOOK_URL` with the URL of `add_comment_webhook` webhook in the triggers section.
+- Replace `<POST_ID>` with the ID of the Reddit post you want to comment on, and provide the comment.
 
 ## Self-Hosted Deployment
 

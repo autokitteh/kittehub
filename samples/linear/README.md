@@ -43,9 +43,12 @@ API details:
 
 ```shell
 curl -X POST "${WEBHOOK_URL}" \
-  -d "title=Fix login bug" \
-  -d "description=Users are unable to login with SSO"
+  -d "title=<Replace with the title of the issue>" \
+  -d "description=<Replace with the description of the issue>"
 ```
+
+- Replace `WEBHOOK_URL` with the URL of `create_issue_webhook` webhook in the triggers section.
+- provide a title and a description.
 
 > [!NOTE]
 > Both `title` and `description` parameters are optional. If not provided, they default to `'AutoKitteh Issue'` and `'Created by AutoKitteh'`.
@@ -56,7 +59,8 @@ curl -X POST "${WEBHOOK_URL}" \
 curl "${WEBHOOK_URL}?issue_id=<ISSUE_ID>"
 ```
 
-Replace `<ISSUE_ID>` with the ID of the Linear issue you want to retrieve.
+- Replace `WEBHOOK_URL` with the URL of `get_issue_webhook` webhook in the triggers section.
+- Replace `<ISSUE_ID>` with the ID of the Linear issue you want to retrieve.
 
 ### Update an Issue
 
@@ -67,7 +71,8 @@ curl -X POST "${WEBHOOK_URL}" \
   -d "state_id=<STATE_ID>"
 ```
 
-Replace `<ISSUE_ID>` with the issue ID and optionally provide a new `title` or `state_id`.
+- Replace `WEBHOOK_URL` with the URL of `update_issue_webhook` webhook in the triggers section.
+- Replace `<ISSUE_ID>` with the issue ID, provide a new `title` and optionally provide a `state_id`.
 
 ## Self-Hosted Deployment
 
