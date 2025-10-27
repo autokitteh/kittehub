@@ -12,6 +12,8 @@ tags: ["webhook_handling", "sync_responses"]
 
 Gocat is a simple "go links" URL shortener and redirector that uses Google Sheets as its data store. It maps short keys to full URLs via webhook, providing an easy way to manage and share shortened links.
 
+![demo](https://raw.githubusercontent.com/autokitteh/kittehub/main/gocat/demo.gif)
+
 ## What are Go Links?
 
 Go links (also known as "go/" links) are short, memorable internal URLs that redirect to longer, harder-to-remember URLs. They're commonly used within organizations to make it easier to access frequently-used resources.
