@@ -47,7 +47,7 @@ curl -X POST "${WEBHOOK_URL}" \
 ```
 
 - Replace `WEBHOOK_URL` with the URL of `create_post_webhook` webhook in the triggers section.
-- provide a flair ID , a title and content.
+- provide a flair ID, a title and content.
 
 ### Add a Comment
 
