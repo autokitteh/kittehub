@@ -12,16 +12,14 @@ tags: ["user_interactions", "notifications", "webhook_handling"]
 
 Allows Slack users to summarize a Slack thread by posting `!tldr` in a thread.
 
-API documentation:
-
-- Anthropic Python SDK: https://github.com/anthropics/anthropic-sdk-python
+![demo](https://raw.githubusercontent.com/autokitteh/kittehub/main/anthropic_slack_thread_tldr/demo.png)
 
 ## How It Works
 
 1. In any Slack thread in a channel where the bot is present, use the command:
 
    ```
-   !tldr
+   !tldr [optional topic to focus on]
    ```
 
 2. The bot will reply with a concise thread summary.
@@ -44,7 +42,3 @@ In any Slack thread in a channel where the bot is present, use the command:
 ```
 !tldr
 ```
-
-## Self-Hosted Deployment
-
-Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
