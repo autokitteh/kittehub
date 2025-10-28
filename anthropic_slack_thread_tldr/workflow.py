@@ -10,7 +10,7 @@ slack_client = slack_client("slack")
 
 anthropic_client = Anthropic(api_key=getenv("ANTHROPIC_API_KEY"))
 
-_MAX_TOKENS = int(getenv("MAX_TOKENS", 100))
+_MAX_TOKENS = int(getenv("MAX_TOKENS", 1000))
 
 
 def on_slack_thread_message(event):
@@ -42,7 +42,7 @@ def on_slack_thread_message(event):
                 {
                     "role": "user",
                     "content": f"""
-Compose a summary of the Slack conversation in this thread."
+Compose a summary of the Slack conversation in this thread.
 {focus}
 
 Use Slack mentions.

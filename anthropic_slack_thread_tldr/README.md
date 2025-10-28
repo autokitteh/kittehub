@@ -21,7 +21,7 @@ API documentation:
 1. In any Slack thread in a channel where the bot is present, use the command:
 
    ```
-   !tldr
+   !tldr [optional topic to focus on]
    ```
 
 2. The bot will reply with a concise thread summary.
@@ -44,7 +44,3 @@ In any Slack thread in a channel where the bot is present, use the command:
 ```
 !tldr
 ```
-
-## Self-Hosted Deployment
-
-Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
