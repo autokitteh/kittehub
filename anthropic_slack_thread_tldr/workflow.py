@@ -1,3 +1,5 @@
+"""Workflow to summarize Slack threads using Anthropic's API."""
+
 from os import getenv
 
 from anthropic import Anthropic
