@@ -1,0 +1,19 @@
+version: v2
+
+project:
+  name: carbcat
+
+  vars:
+    - name: TWILIO_PHONE_NUMBER
+      value: "+14155238886"
+
+  connections:
+    - name: twilio
+      integration: twilio
+    - name: anthropic
+      integration: anthropic
+
+  triggers:
+    - name: whatsapp_message
+      type: webhook
+      call: handlers.py:on_whatsapp_message
