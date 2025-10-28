@@ -12,9 +12,7 @@ tags: ["user_interactions", "notifications", "webhook_handling"]
 
 Allows Slack users to summarize a Slack thread by posting `!tldr` in a thread.
 
-API documentation:
-
-- Anthropic Python SDK: https://github.com/anthropics/anthropic-sdk-python
+![demo](https://raw.githubusercontent.com/autokitteh/kittehub/main/anthropic_slack_thread_tldr/demo.png)
 
 ## How It Works
 
