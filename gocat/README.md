@@ -205,9 +205,7 @@ Run checks locally:
 make
 ```
 
-## Deployment
-
-To deploy to AutoKitteh:
+Deploying from the command line is convenient when deploying locally:
 
 1. **Install the CLI**: https://docs.autokitteh.com/get_started/install
 2. **Authenticate**: `ak auth login`
