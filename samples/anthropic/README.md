@@ -54,6 +54,9 @@ Send an HTTP POST request with your custom prompt:
 curl -i -X POST "${WEBHOOK_URL_POST}" -H "Content-Type: text/plain" -d "Why do cats purr?"
 ```
 
+- Replace `WEBHOOK_URL` with the URL of `on_http_post_with_prompt` webhook in the triggers section.
+- Provide a prompt.
+
 ### Option 2: Demo Mode (GET)
 
 Send an HTTP GET request with no body:
@@ -61,6 +64,8 @@ Send an HTTP GET request with no body:
 ```shell
 curl -i -X GET "${WEBHOOK_URL_GET}"
 ```
+
+Replace `WEBHOOK_URL` with the URL of `on_http_get_demo` webhook in the triggers section.
 
 > [!TIP]
 > Function `on_http_get_demo` can also be triggered manually by clicking the "Run" button in the UI.

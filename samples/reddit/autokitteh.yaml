@@ -1,0 +1,26 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates integration with Reddit.
+
+version: v2
+
+project:
+  name: reddit_sample
+
+  vars:
+    - name: SUBREDDIT
+      value:
+
+  connections:
+    - name: reddit_conn
+      integration: reddit
+
+  triggers:
+    - name: create_post_webhook
+      type: webhook
+      event_type: post
+      call: program.py:create_post
+
+    - name: add_comment_webhook
+      type: webhook
+      event_type: post
+      call: program.py:add_comment

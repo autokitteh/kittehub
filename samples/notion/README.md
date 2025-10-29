@@ -11,7 +11,10 @@ categories: ["Samples"]
 
 The Notion sample demonstrates how to manage pages and databases using AutoKitteh's Notion integration.
 
-It features functionality to create new pages within a Notion database and retrieve information about existing pages.
+The sample includes two separate workflows:
+
+1. **Create page** - create a notion page
+2. **Get Page info** - get the information about a certain page
 
 API details:
 
@@ -43,6 +46,8 @@ API details:
 curl -X POST "${WEBHOOK_URL}" -d "title=My New Page"
 ```
 
+Replace `WEBHOOK_URL` with the URL of `create_page_webhook` webhook in the triggers section.
+
 > [!NOTE]
 > The `title` parameter is optional. If not provided, it defaults to `'AutoKitteh Page'`.
 
@@ -52,7 +57,8 @@ curl -X POST "${WEBHOOK_URL}" -d "title=My New Page"
 curl "${WEBHOOK_URL}?page_id=<PAGE_ID>"
 ```
 
-Replace `<PAGE_ID>` with the ID of the Notion page you want to retrieve.
+- Replace `WEBHOOK_URL` with the URL of `get_page_webhook` webhook in the triggers section.
+- Replace `<PAGE_ID>` with the ID of the Notion page you want to retrieve.
 
 ## Self-Hosted Deployment
 

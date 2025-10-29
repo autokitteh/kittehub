@@ -2,7 +2,7 @@
 # of an AutoKitteh project that demonstrates integration with
 # Anthropic Claude.
 
-version: v1
+version: v2
 
 project:
   name: anthropic_sample
@@ -16,6 +16,7 @@ project:
       type: webhook
       event_type: post
       call: program.py:on_http_post_with_prompt
+      is_sync: true
 
     - name: on_http_get_demo
       type: webhook

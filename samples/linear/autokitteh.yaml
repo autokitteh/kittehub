@@ -1,0 +1,31 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates integration with Linear.
+
+version: v2
+
+project:
+  name: linear_sample
+
+  vars:
+    - name: TEAM_ID
+      value:
+
+  connections:
+    - name: linear_conn
+      integration: linear
+
+  triggers:
+    - name: create_issue_webhook
+      type: webhook
+      event_type: post
+      call: program.py:create_issue
+
+    - name: get_issue_webhook
+      type: webhook
+      event_type: get
+      call: program.py:get_issue
+
+    - name: update_issue_webhook
+      type: webhook
+      event_type: post
+      call: program.py:update_issue
