@@ -1,7 +1,7 @@
 # This YAML file is a declarative manifest that describes the setup
 # of an AutoKitteh project that demonstrates integration with Pipedrive.
 
-version: v1
+version: v2
 
 project:
   name: pipedrive_sample
@@ -15,7 +15,6 @@ project:
       type: webhook
       event_type: post
       call: program.py:create_deal
-      is_sync: true
 
     - name: fetch_all_deals_webhook
       type: webhook

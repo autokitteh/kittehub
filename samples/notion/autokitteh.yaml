@@ -1,7 +1,7 @@
 # This YAML file is a declarative manifest that describes the setup
 # of an AutoKitteh project that demonstrates integration with Notion.
 
-version: v1
+version: v2
 
 project:
   name: notion_sample
@@ -19,7 +19,6 @@ project:
       type: webhook
       event_type: post
       call: program.py:create_page
-      is_sync: true
 
     - name: get_page_webhook
       type: webhook

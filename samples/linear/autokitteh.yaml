@@ -1,7 +1,7 @@
 # This YAML file is a declarative manifest that describes the setup
 # of an AutoKitteh project that demonstrates integration with Linear.
 
-version: v1
+version: v2
 
 project:
   name: linear_sample
@@ -19,7 +19,6 @@ project:
       type: webhook
       event_type: post
       call: program.py:create_issue
-      is_sync: true
 
     - name: get_issue_webhook
       type: webhook
@@ -30,4 +29,3 @@ project:
       type: webhook
       event_type: post
       call: program.py:update_issue
-      is_sync: true
