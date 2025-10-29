@@ -24,11 +24,6 @@ def create_issue(event):
 
     Args:
         event: The HTTP event containing request data.
-
-    Trigger:
-        curl -X POST "${WEBHOOK_URL}" \
-          -d "title=<Replace with the title of the issue>" \
-          -d "description=<Replace with the description of the issue>"
     """
     if not TEAM_ID:
         print("Error: TEAM_ID environment variable is not set")
