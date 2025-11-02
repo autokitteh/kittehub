@@ -52,3 +52,7 @@ The bot will respond with a news digest containing the top 5 articles from your 
 ## Self-Hosted Deployment
 
 Follow these [detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
+
+## Known Limitations
+
+Not all URLs may work. Some websites may return errors or be inaccessible during scraping attempts.
