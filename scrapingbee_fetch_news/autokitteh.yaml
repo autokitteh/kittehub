@@ -7,8 +7,6 @@ version: v2
 project:
   name: ScrapingBee
   connections:
-    - name: openai_conn
-      integration: chatgpt
     - name: slack_conn
       integration: slack
   triggers:
