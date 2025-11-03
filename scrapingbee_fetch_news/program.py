@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from autokitteh.slack import slack_client
 
 SB_API_KEY = os.getenv("SB_API_KEY")
-NEWS_URL = os.getenv("NEWS_URL", "https://www.theguardian.com/international/rss")
+NEWS_WEBSITE_URL = os.getenv("NEWS_WEBSITE_URL")
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#news")
 
 client = ScrapingBeeClient(api_key=SB_API_KEY)
@@ -14,13 +14,32 @@ slack = slack_client("slack_conn")
 
 
 def on_app_mention(event):
-    feed = client.get(NEWS_URL, params={"render_js": False, "block_resources": True})
+    """Fetch news articles and post summaries to Slack."""
+    if not NEWS_WEBSITE_URL:
+        print("NEWS_WEBSITE_URL not set")
+        return
+
+    feed = client.get(
+        NEWS_WEBSITE_URL, params={"render_js": False, "block_resources": True}
+    )
     if feed.status_code != 200:
-        print("Feed fetch failed:", feed.status_code, feed.text[:300])
+        slack.chat_postMessage(
+            channel=SLACK_CHANNEL,
+            text=f"Failed to fetch news feed: HTTP {feed.status_code}",
+        )
+        print("Feed fetch failed:", feed.status_code)
         return
 
     soup = BeautifulSoup(feed.content, "xml")
     items = soup.select("item")[:5]
+
+    if not items:
+        slack.chat_postMessage(
+            channel=SLACK_CHANNEL,
+            text="No news items found in the feed.",
+        )
+        print("No items found in feed.")
+        return
 
     slack.chat_postMessage(
         channel=SLACK_CHANNEL,
@@ -46,7 +65,9 @@ def build_blocks(items):
         {"type": "header", "text": {"type": "plain_text", "text": "Top Headlines"}},
         {
             "type": "context",
-            "elements": [{"type": "mrkdwn", "text": f"Source: <{NEWS_URL}|RSS>"}],
+            "elements": [
+                {"type": "mrkdwn", "text": f"Source: <{NEWS_WEBSITE_URL}|RSS>"}
+            ],
         },
         {"type": "divider"},
     ]
