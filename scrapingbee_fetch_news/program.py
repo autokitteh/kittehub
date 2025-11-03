@@ -6,7 +6,9 @@ from bs4 import BeautifulSoup
 from autokitteh.slack import slack_client
 
 SB_API_KEY = os.getenv("SB_API_KEY")
-NEWS_URL = os.getenv("NEWS_URL", "https://www.theguardian.com/international/rss")
+NEWS_WEBSITE_URL = os.getenv(
+    "NEWS_WEBSITE_URL", "https://www.theguardian.com/international/rss"
+)
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#news")
 
 client = ScrapingBeeClient(api_key=SB_API_KEY)
@@ -14,7 +16,9 @@ slack = slack_client("slack_conn")
 
 
 def on_app_mention(event):
-    feed = client.get(NEWS_URL, params={"render_js": False, "block_resources": True})
+    feed = client.get(
+        NEWS_WEBSITE_URL, params={"render_js": False, "block_resources": True}
+    )
     if feed.status_code != 200:
         print("Feed fetch failed:", feed.status_code, feed.text[:300])
         return
@@ -46,7 +50,9 @@ def build_blocks(items):
         {"type": "header", "text": {"type": "plain_text", "text": "Top Headlines"}},
         {
             "type": "context",
-            "elements": [{"type": "mrkdwn", "text": f"Source: <{NEWS_URL}|RSS>"}],
+            "elements": [
+                {"type": "mrkdwn", "text": f"Source: <{NEWS_WEBSITE_URL}|RSS>"}
+            ],
         },
         {"type": "divider"},
     ]
