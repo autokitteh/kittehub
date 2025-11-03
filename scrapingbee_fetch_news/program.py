@@ -19,16 +19,24 @@ def on_app_mention(event):
     feed = client.get(
         NEWS_WEBSITE_URL, params={"render_js": False, "block_resources": True}
     )
-if feed.status_code != 200:
-      slack.chat_postMessage(
-          channel=SLACK_CHANNEL,
-          text=f"Failed to fetch news feed: HTTP {feed.status_code}"
-      )
-      print("Feed fetch failed:", feed.status_code, feed.text[:300])
-      return
+    if feed.status_code != 200:
+        slack.chat_postMessage(
+            channel=SLACK_CHANNEL,
+            text=f"Failed to fetch news feed: HTTP {feed.status_code}",
+        )
+        print("Feed fetch failed:", feed.status_code)
+        return
 
     soup = BeautifulSoup(feed.content, "xml")
     items = soup.select("item")[:5]
+
+    if not items:
+        slack.chat_postMessage(
+            channel=SLACK_CHANNEL,
+            text="No news items found in the feed.",
+        )
+        print("No items found in feed.")
+        return
 
     slack.chat_postMessage(
         channel=SLACK_CHANNEL,
