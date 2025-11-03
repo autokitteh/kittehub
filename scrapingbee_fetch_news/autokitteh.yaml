@@ -18,6 +18,7 @@ project:
   vars:
     - name: SB_API_KEY
       value: ""
+      description: "scrapingbee api key"
     - name: NEWS_URL
       value: ""
     - name: SLACK_CHANNEL
