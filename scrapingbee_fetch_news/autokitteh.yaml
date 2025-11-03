@@ -20,7 +20,7 @@ project:
       value: ""
       description: "scrapingbee api key"
     - name: NEWS_WEBSITE_URL
-      value: ""
+      value: "https://www.theguardian.com/international/rss"
       description: "news website url"
     - name: SLACK_CHANNEL
       value: ""

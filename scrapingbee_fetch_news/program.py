@@ -6,9 +6,7 @@ from bs4 import BeautifulSoup
 from autokitteh.slack import slack_client
 
 SB_API_KEY = os.getenv("SB_API_KEY")
-NEWS_WEBSITE_URL = os.getenv(
-    "NEWS_WEBSITE_URL", "https://www.theguardian.com/international/rss"
-)
+NEWS_WEBSITE_URL = os.getenv("NEWS_WEBSITE_URL")
 SLACK_CHANNEL = os.getenv("SLACK_CHANNEL", "#news")
 
 client = ScrapingBeeClient(api_key=SB_API_KEY)
@@ -16,6 +14,11 @@ slack = slack_client("slack_conn")
 
 
 def on_app_mention(event):
+    """Fetch news articles and post summaries to Slack."""
+    if not NEWS_WEBSITE_URL:
+        print("NEWS_WEBSITE_URL not set")
+        return
+
     feed = client.get(
         NEWS_WEBSITE_URL, params={"render_js": False, "block_resources": True}
     )
