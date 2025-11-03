@@ -19,7 +19,9 @@ project:
     - name: SB_API_KEY
       value: ""
       description: "scrapingbee api key"
-    - name: NEWS_URL
+    - name: NEWS_WEBSITE_URL
       value: ""
+      description: "news website url"
     - name: SLACK_CHANNEL
       value: ""
+      description: "slack channel name or ID"
