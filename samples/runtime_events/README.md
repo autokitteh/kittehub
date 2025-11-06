@@ -1,7 +1,7 @@
 ---
 title: Runtime Events sample
 description: Samples using events in AutoKitteh - subscribe(), next_event(), unsubscribe()
-integrations: [""]
+integrations: []
 categories: ["Samples"]
 tags:
   [
