@@ -12,22 +12,26 @@ project:
       secret: true
       # Put here your Anthropic API key.
       value: <your_anthropic_api_key_here>
-    - # Maximum number of tokens to use per invocation.
-      name: MAX_TOKENS
-      value: "1000"
-    - # The model to use for the Anthropic API.
-      name: MODEL
+      description: "Anthropic API Key for accessing Claude models."
+    - name: MODEL
       value: "claude-3-5-haiku-20241022"
+      description: "The Anthropic model to use."
+    - name: MAX_TOKENS
+      value: "1000"
+      description: "Maximum number of tokens to use per invocation."
 
   connections:
-    # We use Slack to interact with the users.
-    - name: slack
+    - # We use Slack to interact with the users.
+      name: slack
       integration: slack
+    - # We use Anthropic to summarize Slack threads.
+      name: anthropic
+      integration: anthropic
 
   triggers:
-    # Triggered when a Slack message event is a reply in a thread and begins with an exclamation mark (!).
-    - name: slack_message
+    - # Triggered when a Slack message event is a reply in a thread and begins with an exclamation mark (!).
+      name: slack_message
       connection: slack
       event_type: message
-      filter: "data.thread_ts != '' && data.text == '!tldr'"
+      filter: "data.thread_ts != '' && data.text.startsWith('!tldr')"
       call: workflow.py:on_slack_thread_message
