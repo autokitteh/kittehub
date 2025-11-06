@@ -15,7 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: build
-        run: zip -r dist .
+        run: |
+          zip -r dist . \
+            -x "carbcat/_raw.zip" \
+            -x ".git/*"
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: release
