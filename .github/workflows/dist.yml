@@ -14,11 +14,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: build
-        run: zip -r dist .
-      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: release
-          branch: release
-          push_options: "--force"
-          create_branch: true
+          fetch-depth: 1
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{secrets.AWS_GITHUB_ROLE}}
+          role-session-name: Github_Action_Release_Autokitteh
+          aws-region: us-east-1
+
+      - name: build
+        run: >
+          find . -name '_*' -or -name '.*' -exec rm -rf {} \;
+          find . -type f -size +20M -exec rm -rf {} \;
+          zip -r dist.zip .
+
+      - name: Upload files to S3
+        run: |
+          aws s3 cp dist.zip s3://${{ secrets.AWS_S3_BUCKET }}/kittehub.zip
