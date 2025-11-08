@@ -19,6 +19,8 @@ tags:
 
 A simple web-based TicTacToe game that demonstrates AutoKitteh's state management and webhook handling capabilities. Play with a friend by sharing game URLs, with automatic refresh when it's your turn.
 
+![TicTacToe Demo](demo.png)
+
 ### What AutoKitteh Provides
 
 - State persistence without a database
