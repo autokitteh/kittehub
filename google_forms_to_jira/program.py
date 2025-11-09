@@ -29,7 +29,15 @@ def on_form_response(event):
 
     # Check if a Jira issue already exists for this response (i.e. response edited).
     query = f"project = {JIRA_PROJECT_KEY} AND description ~ {response_id}"
-    issues = jira.jql(query + " ORDER BY created DESC")
+
+    # Use the new helper instead of jira.enhanced_jql
+    issues = search_jql(
+        jira,
+        jql=f"{query} ORDER BY created DESC",
+        fields=["summary", "status", "description", "created"],
+        max_results=1,
+    )
+
     if issues.get("total", 0) == 0:
         _create_jira_issue(answers, response_id)
     else:
@@ -67,3 +75,18 @@ def _update_jira_issue(issue, answers, response_id):
     description = "\n\n".join(answers) + f"\n\n(Response ID: {response_id})"
     jira.update_issue_field(issue["key"], fields={"description": description})
     print("Updated Jira issue:", issue["key"])
+
+
+def search_jql(jira, jql, fields=None, max_results=50):
+    """SDK-level wrapper for Jira Cloud JQL search using /rest/api/3/search/jql.
+
+    Works on atlassian-python-api 3.41+.
+    """
+    endpoint = "/rest/api/3/search/jql"
+    payload = {
+        "jql": jql,
+        "maxResults": max_results,
+        "fields": fields or ["summary", "status", "description", "created"],
+    }
+
+    return jira.post(endpoint, data=payload)
