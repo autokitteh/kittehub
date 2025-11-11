@@ -10,7 +10,6 @@ from anthropic.types.beta import BetaMessageParam
 
 from anthropic import Anthropic
 from anthropic import beta_tool
-import autokitteh
 from autokitteh.anthropic import anthropic_client
 from autokitteh.errors import ConnectionInitError
 from data import find_foods_by_name
@@ -110,7 +109,6 @@ def _find_foods_by_name_tool(name: str) -> str:
     )
 
 
-@autokitteh.activity
 def interact(
     q0: str | None,
     get_next: typing.Callable[[], str],
