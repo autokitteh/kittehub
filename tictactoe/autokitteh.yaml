@@ -1,0 +1,10 @@
+version: v2
+
+project:
+  name: tictactoe
+
+  triggers:
+    - name: webhook
+      type: webhook
+      call: handlers.py:on_webhook
+      is_sync: true
