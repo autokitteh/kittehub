@@ -17,7 +17,6 @@ ALLOWED_INTEGRATIONS = (
     "googleforms",
     "googlegemini",
     "googlesheets",
-    "height",
     "hubspot",
     "youtube",
     "jira",
