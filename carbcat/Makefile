@@ -1,4 +1,4 @@
-UVX=uvx --with-requirements requirements.txt --with pytest
+UVX=uvx --with autokitteh --with pytest --with anthropic==0.71.0 --with rapidfuzz
 
 .PHONY: all
 all: lint typecheck test format
