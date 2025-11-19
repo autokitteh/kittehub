@@ -3,11 +3,11 @@ title: Slack notify on Confluence page created
 description: When Confluence page is created the user will be notified on Slack
 integrations: ["confluence", "slack"]
 categories: ["DevOps"]
-tags: ["webhook_handling", "notifications", "data_processing", "event_filtering"]
+tags:
+  ["webhook_handling", "notifications", "data_processing", "event_filtering"]
 ---
 
-
-# Confluence To Slack Workflow 
+# Confluence To Slack Workflow
 
 [![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=confluence_to_slack)
 
@@ -45,40 +45,4 @@ Once the project has been properly installed, configured and deployed, the workf
 
 ## Self-Hosted Deployment
 
-### Prerequisites
-
-- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
-- Set up required integrations:
-  - [Atlassian Confluence](https://docs.autokitteh.com/integrations/atlassian)
-  - [Slack](https://docs.autokitteh.com/integrations/slack)
-
-### Installation Steps
-
-1. Clone the repository:
-   ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   cd kittehub/confluence_to_slack
-   ```
-
-2. Start the AutoKitteh server:
-   ```shell
-   ak up --mode dev
-   ```
-
-3. Deploy the project:
-   ```shell
-   ak deploy --manifest autokitteh.yaml
-   ```
-
-   The output will show your connection IDs, which you'll need for the next step. Look for lines like:
-   ```shell
-   [exec] create_connection "confluence_to_slack/slack_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
-   ```
-   
-   In this example, `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
-
-4. Initialize your connections using the CLI:
-   ```shell
-   ak connection init slack_connection <connection ID>
-   ak connection init confluence_connection <connection ID>
-   ```
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
