@@ -48,46 +48,4 @@ The workflow is triggered automatically every `HOURS` hours.
 
 ## Self-Hosted Deployment
 
-- [Install AutoKitteh](https://docs.autokitteh.com/get_started/install)
-- Set up required integrations:
-  - [Auth0](https://docs.autokitteh.com/integrations/auth0)
-  - [HubSpot](https://docs.autokitteh.com/integrations/hubspot)
-
-#### Installation Steps
-
-1. Clone the repository:
-
-   ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   cd kittehub/auth0_to_hubspot
-   ```
-
-2. Start the AutoKitteh server:
-
-   ```shell
-   ak up --mode dev
-   ```
-
-3. Deploy the project:
-
-   ```shell
-   ak deploy --manifest autokitteh.yaml
-   ```
-
-   The output will show your connection IDs, which you'll need for the next step. Look for lines like:
-
-   ```shell
-   [exec] create_connection "auth0_to_hubspot/auth0_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
-   [exec] create_connection "auth0_to_hubspot/hubspot_connection": con_01j36p9gj6e2nt87p9vap6rbmz created
-   ```
-
-   In this example, `con_01j36p9gj6e2nt87p9vap6rbmz` is the connection ID.
-
-4. Initialize your connections using the CLI:
-   ```shell
-   ak connection init auth0_connection <connection ID>
-   ak connection init hubspot_connection <connection ID>
-   ```
-
-> [!TIP]
-> You can also initialize your connections through the UI.
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.

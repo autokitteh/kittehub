@@ -3,7 +3,15 @@ title: Hacker News alerts in Slack
 description: Track Hacker News articles by topic and send updates to Slack
 integrations: ["slack"]
 categories: ["Productivity"]
-tags: ["user_interactions", "long_running", "data_processing", "notifications", "monitoring", "webhook_handling"]
+tags:
+  [
+    "user_interactions",
+    "long_running",
+    "data_processing",
+    "notifications",
+    "monitoring",
+    "webhook_handling",
+  ]
 ---
 
 # Hacker News Alerts in Slack
@@ -30,41 +38,11 @@ This project monitors Hacker News for new articles matching a specific topic, fe
 - Set up required integrations:
   - [Slack](https://docs.autokitteh.com/integrations/slack)
 
-#### Installation Steps
-
-1. Clone the repository:
-
-   ```shell
-   git clone https://github.com/autokitteh/kittehub.git
-   cd kittehub/hackernews
-   ```
-
-2. Start the AutoKitteh server:
-
-   ```shell
-   ak up --mode dev
-   ```
-
-3. Deploy the project:
-
-   ```shell
-   ak deploy --manifest autokitteh.yaml
-   ```
-
-   The output will show your connection IDs, which you'll need for the next step. Look for lines like:
-
-   ```shell
-   [exec] create_connection "hackernews_alert/slack_connection": con_01je39d6frfdtshstfg5qpk8sz created
-   ```
-
-   In this example, `con_01je39d6frfdtshstfg5qpk8sz` is the connection ID.
-
-4. Initialize your connections using the CLI:
-   ```shell
-   ak connection init slack_connection <connection ID>
-   ```
-
 ## Trigger Workflow
 
 - Type `@your-slack-app topic` in the Slack channel you set in the environment variable, replacing `topic` with what you want to search for, to start tracking articles
 - The workflow runs automatically every two minutes after deployment
+
+## Self-Hosted Deployment
+
+Follow [these detailed instructions](https://docs.autokitteh.com/get_started/deployment) to deploy the project on a self-hosted server.
