@@ -24,9 +24,7 @@ def on_webhook(event: Event) -> None:
         return
 
     suffix = data.url.path_suffix
-    if suffix.startswith("/"):
-        suffix = suffix[1:]
-    print(f"path: {suffix}")
+    print(f"path suffix: {suffix}")
     match suffix.split("/"):
         case [""]:
             _help()
@@ -55,7 +53,7 @@ def _help() -> None:
     <body>
         <h1>TicTacToe</h1>
         <ul>
-            <li><a href="/{_BASE_URL}/new">/new</a> - Start a new game</li>
+            <li><a href="{_BASE_URL}/new">/new</a> - Start a new game</li>
             <li>/game/&lt;game_id&gt; - Observe an existing game</li>
             <li>/game/&lt;game_id&gt;/&lt;who&gt; - Join an existing game as 'X' or 'O'</li>
         </ul>
@@ -67,7 +65,7 @@ def _help() -> None:
 def _redirect(game_id: str, who: str) -> None:
     http_outcome(
         302,
-        headers={"Location": f"/{_BASE_URL}/game/{game_id}/{who}"},
+        headers={"Location": f"{_BASE_URL}/game/{game_id}/{who}"},
     )
 
 
@@ -145,7 +143,7 @@ def _render(game_id: str, who: str | None) -> None:
     def cell(row: int, col: int) -> str:
         on_click, clickable = "", ""
         if who == who_next and game["board"][row][col] is None:
-            on_click = f" onclick=\"location.href='/{_BASE_URL}/game/{game_id}/{who}/{turn}/{row}{col}'\""  # noqa: E501
+            on_click = f" onclick=\"location.href='{_BASE_URL}/game/{game_id}/{who}/{turn}/{row}{col}'\""  # noqa: E501
             clickable = "clickable-cell"
 
         val = game["board"][row][col] or "&nbsp;"
