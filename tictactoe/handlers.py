@@ -60,7 +60,7 @@ def _help() -> None:
             <li>/game/&lt;game_id&gt;/&lt;who&gt; - Join an existing game as 'X' or 'O'</li>
         </ul>
     </body>
-</html>""",
+</html>""",  # noqa: E501
     )
 
 
@@ -79,7 +79,7 @@ def _new() -> None:
     set_value(
         game_id,
         {
-            "board": [[None] * 3] * 3,
+            "board": [[None] * 3 for _ in range(3)],
             "turn": 0,
         },
     )
@@ -128,8 +128,6 @@ def _move(game_id: str, who: str, turn: str, xy: str) -> None:
 
 
 def _render(game_id: str, who: str | None) -> None:
-    who = who or None
-
     if who not in ("X", "O", None):
         http_outcome(400, "who must be 'X' or 'O' or none")
         return
@@ -147,7 +145,7 @@ def _render(game_id: str, who: str | None) -> None:
     def cell(row: int, col: int) -> str:
         on_click, clickable = "", ""
         if who == who_next and game["board"][row][col] is None:
-            on_click = f" onclick=\"location.href='/{_BASE_URL}/{game_id}/{who}/{turn}/{row}{col}'\""  # noqa: E501
+            on_click = f" onclick=\"location.href='/{_BASE_URL}/game/{game_id}/{who}/{turn}/{row}{col}'\""  # noqa: E501
             clickable = "clickable-cell"
 
         val = game["board"][row][col] or "&nbsp;"
