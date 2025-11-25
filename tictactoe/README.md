@@ -2,7 +2,7 @@
 title: TicTacToe - Multiplayer Browser Game
 description: Simple web-based TicTacToe game with multiplayer support and state persistence
 integrations: []
-categories: ["Demo"]
+categories: ["Samples"]
 tags:
   [
     "webhook_handling",
