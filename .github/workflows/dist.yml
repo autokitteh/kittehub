@@ -14,8 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: build
-        run: zip -r dist .
+        run: zip -r dist . -x .git/\*
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: release
