@@ -2,7 +2,7 @@
 title: GitHub Assign - Issue Assignment Bot
 description: Slash command bot for assigning and unassigning GitHub issues via comments
 integrations: ["github"]
-categories: ["Productivity", "Developer Tools"]
+categories: ["Productivity", "DevOps"]
 tags: ["github", "issue_management", "slash_commands"]
 ---
 
