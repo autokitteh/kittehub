@@ -16,7 +16,7 @@ def on_assign_issue_comment(event: Event) -> None:
 
     print(f"command: {cmd!r}")
 
-    if cmd[0] != "/assign":
+    if not cmd[0].startswith("/assign"):
         print("irrelevant command")
         return
 
@@ -31,7 +31,7 @@ def on_assign_issue_comment(event: Event) -> None:
             issue,
             comment,
             "confused",
-            f"user @{who} is not allowed to be an assignee",
+            f"user @{who} is not allowed to assign issues",
         )
         return
 
@@ -68,7 +68,7 @@ def on_unassign_issue_comment(event: Event) -> None:
 
     print(f"command: {cmd!r}")
 
-    if cmd[0] != "/unassign":
+    if not cmd[0].startswith("/unassign"):
         print("irrelevant command")
         return
 
