@@ -80,5 +80,4 @@ Follow [these detailed instructions](https://docs.autokitteh.com/get_started/dep
 
 - Maximum 100 tickets per JIRA filter request
 - AI summaries are limited to 150 tokens
-- Requires JIRA filter to be pre-configured
-- Email notifications require Gmail connection
+- This code does not handle failures when calling external services (JIRA, Confluence, ChatGPT, Gmail). If you need to add retry logic, rate limit handling, or other error recovery mechanisms, you can ask the AI assistant to enhance the code with these features.
