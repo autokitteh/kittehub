@@ -5,3 +5,8 @@ version: v1
 
 project:
   name: quickstart
+
+  triggers:
+    - name: webhook_trigger
+      type: webhook
+      call: program.py:on_trigger
