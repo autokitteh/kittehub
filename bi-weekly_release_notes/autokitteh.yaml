@@ -1,0 +1,31 @@
+version: v2
+
+project:
+  name: Product
+  connections:
+    - name: chatgpt_conn
+      integration: chatgpt
+    - name: jira_conn
+      integration: jira
+    - name: conf_conn
+      integration: confluence
+    - name: gmail_conn
+      integration: gmail
+  triggers:
+    - name: biweekly_schedule
+      is_durable: true
+      schedule: 0 6 * * 0
+      call: program.py:generate_release_notes
+  vars:
+    - name: JIRA_FILTER_ID
+      value: ""
+    - name: CONFLUENCE_SPACE_KEY
+      value: ""
+    - name: CONFLUENCE_PARENT_PAGE_ID
+      value: ""
+    - name: NOTIFICATION_EMAIL
+      value: ""
+    - name: CONFLUENCE_SERVER_URL
+      value: ""
+    - name: JIRA_SERVER_URL
+      value: ""
