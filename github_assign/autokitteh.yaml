@@ -1,0 +1,21 @@
+version: v2
+
+project:
+  name: github_assign
+
+  connections:
+    - name: github
+      integration: github
+
+  triggers:
+    - name: assign_issue_comment
+      connection: github
+      event_type: issue_comment
+      call: handlers.py:on_assign_issue_comment
+      filter: "data.comment.body.startsWith('/assign') && (data.action in ['created', 'opened'])"
+
+    - name: unassign_issue_comment
+      connection: github
+      event_type: issue_comment
+      call: handlers.py:on_unassign_issue_comment
+      filter: "data.comment.body.startsWith('/unassign') && (data.action in ['created', 'opened'])"
