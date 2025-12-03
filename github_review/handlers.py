@@ -43,6 +43,7 @@ def on_review_issue_comment(event: Event) -> None:
             "confused",
             "no reviewers specified",
         )
+        return
 
     nopes = [a for a in reviewers if not repo.has_in_collaborators(a)]
     if nopes:
