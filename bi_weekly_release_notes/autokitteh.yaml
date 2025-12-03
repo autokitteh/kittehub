@@ -1,7 +1,7 @@
 version: v2
 
 project:
-  name: Product
+  name: bi_weekly_release_notes
   connections:
     - name: chatgpt_conn
       integration: chatgpt
