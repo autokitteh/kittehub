@@ -1,0 +1,21 @@
+version: v2
+
+project:
+  name: github_review
+
+  connections:
+    - name: github
+      integration: github
+
+  triggers:
+    - name: review_issue_comment
+      connection: github
+      event_type: issue_comment
+      call: handlers.py:on_review_issue_comment
+      filter: "data.comment.body.startsWith('/review') && (data.action in ['created', 'edited'])"
+
+    - name: unreview_issue_comment
+      connection: github
+      event_type: issue_comment
+      call: handlers.py:on_unreview_issue_comment
+      filter: "data.comment.body.startsWith('/unreview') && (data.action in ['created', 'edited'])"
