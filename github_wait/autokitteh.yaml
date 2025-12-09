@@ -1,0 +1,44 @@
+version: v2
+
+project:
+  name: github_wait
+
+  connections:
+    - name: github
+      integration: github
+
+  triggers:
+    - # On slash command /wait or /wait-any, add appropriate labels.
+      name: command
+      connection: github
+      event_type: slash_command
+      call: handlers.py:on_command
+      filter: "data.command.name in ['wait', 'wait-any'] && (data.actual_event_type in ['issue_comment', 'pull_request_review_comment', 'pull_request_review'])"
+
+    - # On a new issue comment, remove wait-any labels unless the comment is a command.
+      name: issue_comment
+      connection: github
+      event_type: issue_comment
+      call: handlers.py:on_issue_comment
+      filter: "data.action == 'created'"
+
+    - # On a new review comment, remove wait-any labels unless the comment is a command.
+      name: review_comment
+      connection: github
+      event_type: pull_request_review_comment
+      call: handlers.py:on_pull_request_review_comment
+      filter: "data.action == 'created'"
+
+    - # On a new review , remove wait-any labels unless the comment is a command.
+      name: review_submitted
+      connection: github
+      event_type: pull_request_review
+      call: handlers.py:on_pull_request_review
+      filter: "data.action == 'submitted'"
+
+    - # On PR sync, remove all waiting labels.
+      name: pull_request
+      connection: github
+      event_type: pull_request
+      call: handlers.py:on_pull_request_sync
+      filter: "data.action == 'synchronize'"
