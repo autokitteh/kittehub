@@ -9,18 +9,9 @@ github = github_client("github")
 
 def on_review_issue_comment(event: Event) -> None:
     """Handle /review commands in issue comments"""
-    data = event.data
-
+    reviewers = [a.removeprefix("@") for a in event.data.command.args]
+    data = event.data.actual_data
     comment = data["comment"]
-    cmd = comment["body"].strip().split()
-
-    print(f"command: {cmd!r}")
-
-    if not cmd[0].startswith("/review"):
-        print("irrelevant command")
-        return
-
-    reviewers = [a.removeprefix("@") for a in cmd[1:]]
 
     repo = github.get_repo(data["repository"]["full_name"])
     n = data["issue"]["number"]
@@ -68,18 +59,9 @@ def on_review_issue_comment(event: Event) -> None:
 
 def on_unreview_issue_comment(event: Event) -> None:
     """Handle /unreview commands in issue comments"""
-    data = event.data
-
+    reviewers = [a.removeprefix("@") for a in event.data.command.args]
+    data = event.data.actual_data
     comment = data["comment"]
-    cmd = comment["body"].strip().split()
-
-    print(f"command: {cmd!r}")
-
-    if not cmd[0].startswith("/unreview"):
-        print("irrelevant command")
-        return
-
-    reviewers = [a.removeprefix("@") for a in cmd[1:]]
 
     repo = github.get_repo(data["repository"]["full_name"])
     n = data["issue"]["number"]
