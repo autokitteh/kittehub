@@ -1,0 +1,22 @@
+version: v2
+
+project:
+  name: pydantic_chat
+
+  vars:
+    - name: ANTHROPIC_API_KEY
+      value: ""
+    - name: MODEL_NAME
+      value: "anthropic:claude-sonnet-4-0"
+
+  connections:
+    - name: slack
+      integration: slack
+
+  triggers:
+    - name: slack_message
+      connection: slack
+      event_type: message
+      filter: "data.thread_ts == '' && data.text.startsWith('!chat')"
+      call: handlers.py:on_slack_message
+      is_durable: true
