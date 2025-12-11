@@ -1,8 +1,9 @@
-"""Simple Q&A using AI."""
+"""Pydantic AI gambling."""
 
 from os import getenv
 from random import randint
 
+import logfire
 from pydantic_ai import Agent
 
 from autokitteh import Event, next_event, subscribe
@@ -12,6 +13,9 @@ from autokitteh.slack import slack_client
 _slack = slack_client("slack")
 
 _MODEL_NAME = getenv("MODEL_NAME", "anthropic:claude-sonnet-4-0")
+
+logfire.configure()
+logfire.instrument_pydantic_ai()
 
 roulette_agent = Agent(
     _MODEL_NAME,
