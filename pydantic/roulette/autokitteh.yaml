@@ -1,7 +1,7 @@
 version: v2
 
 project:
-  name: pydantic_ask
+  name: pydantic_roulette
 
   vars:
     - name: ANTHROPIC_API_KEY
@@ -18,5 +18,6 @@ project:
     - name: slack_message
       connection: slack
       event_type: message
-      filter: "data.thread_ts == '' && data.text.startsWith('!ask')"
+      filter: "data.thread_ts == '' && data.text.startsWith('!roulette')"
       call: handlers.py:on_slack_message
+      is_durable: true

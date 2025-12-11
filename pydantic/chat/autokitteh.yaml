@@ -6,6 +6,7 @@ project:
   vars:
     - name: ANTHROPIC_API_KEY
       value: ""
+      secret: true
     - name: MODEL_NAME
       value: "anthropic:claude-sonnet-4-0"
 
