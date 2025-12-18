@@ -1,3 +1,4 @@
+.PHONY: all
 all: data
 
 .PHONY: data
