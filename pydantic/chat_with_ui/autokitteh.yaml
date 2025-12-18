@@ -1,0 +1,24 @@
+version: v2
+
+project:
+  name: pydantic_chat_with_ui
+
+  vars:
+    - name: ANTHROPIC_API_KEY
+      value: ""
+      secret: true
+    - name: MODEL_NAME
+      value: "anthropic:claude-sonnet-4-0"
+
+  triggers:
+    - name: start
+      webhook: {}
+      event_type: get
+      call: handlers.py:on_start
+      is_durable: true
+      is_sync: true
+
+    - name: ask
+      webhook: {}
+      event_type: post
+      is_sync: true
