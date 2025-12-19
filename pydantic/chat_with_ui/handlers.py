@@ -26,7 +26,7 @@ def on_start(_: Event, session_id: str) -> None:
         body=_CHAT_HTML.replace("{{API_ENDPOINT}}", f"{_WEBHOOK_URL}/{session_id}"),
     )
 
-    s = subscribe("ask", f"data.url.path_suffix == '{session_id}'")
+    s = subscribe("chat", f"data.url.path_suffix == '{session_id}'")
 
     history: list = []
 

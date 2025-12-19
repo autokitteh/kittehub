@@ -18,7 +18,7 @@ project:
       is_durable: true
       is_sync: true
 
-    - name: ask
+    - name: chat
       webhook: {}
       event_type: post
       is_sync: true
