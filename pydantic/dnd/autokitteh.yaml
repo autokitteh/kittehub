@@ -1,0 +1,27 @@
+version: v2
+
+project:
+  name: pydantic_dnd
+
+  vars:
+    - name: DM_MODEL_NAME
+      value: "claude-sonnet-4-5"
+    - name: PLAYER_MODEL_NAME
+      value: "claude-sonnet-4-5"
+
+  connections:
+    - name: anthropic
+      integration: anthropic
+
+  triggers:
+    - name: game
+      webhook: {}
+      event_type: get
+      call: handlers.py:on_game
+      is_durable: true
+      is_sync: true
+
+    - name: turn
+      webhook: {}
+      event_type: post
+      is_sync: true

@@ -9,7 +9,7 @@ from pydantic_ai import Agent
 
 _CHAT_HTML = Path("chat.html").read_text()
 
-_WEBHOOK_URL = get_webhook_url("ask")
+_WEBHOOK_URL = get_webhook_url("chat")
 
 _MODEL_NAME = getenv("MODEL_NAME", "anthropic:claude-sonnet-4-0")
 
