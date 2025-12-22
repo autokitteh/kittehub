@@ -4,8 +4,7 @@ All message types for the streaming HTTP protocol, with automatic serialization.
 Each message has a .serialized property that returns the SSE-formatted string.
 """
 
-from datetime import datetime, UTC
-from typing import Any, Literal
+from typing import Literal
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -72,20 +71,6 @@ class Player(BaseModel):
 # ============================================================================
 
 
-class ActionConfirmedEvent(SSEEvent):
-    """Confirms the player's action was received.
-
-    For dice rolls, includes the server-generated roll result.
-    """
-
-    player_id: int = Field(..., serialization_alias="playerId")
-    action: dict[str, Any]
-
-    @property
-    def event_type(self) -> str:
-        return "action_confirmed"
-
-
 class PlayerJoinedEvent(SSEEvent):
     """A new player has joined the game.
 
@@ -100,40 +85,22 @@ class PlayerJoinedEvent(SSEEvent):
         return "player_joined"
 
 
-class TurnStartEvent(SSEEvent):
-    """Indicates whose turn is starting"""
-
-    player_id: int = Field(..., serialization_alias="playerId")
-    player_name: str = Field(..., serialization_alias="playerName")
-    color: str
-
-    @property
-    def event_type(self) -> str:
-        return "turn_start"
-
-
 class MessageEvent(SSEEvent):
     """A player sends a chat message"""
 
-    player_id: int = Field(..., serialization_alias="playerId")
-    player_name: str = Field(..., serialization_alias="playerName")
-    player_color: str = Field(..., serialization_alias="playerColor")
+    player_id: int = Field(0, serialization_alias="playerId")
     text: str
-    timestamp: str
 
     @property
     def event_type(self) -> str:
         return "message"
 
     @classmethod
-    def create(cls, player_id: int, player_name: str, player_color: str, text: str):
-        """Convenience constructor that auto-generates timestamp"""
+    def create(cls, player_id: int, text: str):
+        """Convenience constructor"""
         return cls(
             player_id=player_id,
-            player_name=player_name,
-            player_color=player_color,
             text=text,
-            timestamp=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         )
 
 
@@ -141,14 +108,11 @@ class DiceEvent(SSEEvent):
     """A player rolls dice. Roll result is generated server-side."""
 
     player_id: int = Field(..., serialization_alias="playerId")
-    player_name: str = Field(..., serialization_alias="playerName")
-    player_color: str = Field(..., serialization_alias="playerColor")
     sides: int
     roll: int  # Server-generated result
     modifier: int | None = None
     total: int | None = None
     reason: str | None = None
-    timestamp: str | None = None
 
     @property
     def event_type(self) -> str:
@@ -158,25 +122,20 @@ class DiceEvent(SSEEvent):
     def create(
         cls,
         player_id: int,
-        player_name: str,
-        player_color: str,
         sides: int,
         roll: int,
         modifier: int | None = None,
         reason: str | None = None,
     ):
-        """Convenience constructor that auto-generates timestamp and total"""
+        """Convenience constructor that auto-generates total"""
         total = roll + (modifier or 0) if modifier else None
         return cls(
             player_id=player_id,
-            player_name=player_name,
-            player_color=player_color,
             sides=sides,
             roll=roll,
             modifier=modifier,
             total=total,
             reason=reason,
-            timestamp=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         )
 
 
@@ -199,7 +158,6 @@ class DMMessageEvent(SSEEvent):
     """
 
     text: str
-    timestamp: str
 
     @property
     def event_type(self) -> str:
@@ -207,11 +165,8 @@ class DMMessageEvent(SSEEvent):
 
     @classmethod
     def create(cls, text: str):
-        """Convenience constructor that auto-generates timestamp"""
-        return cls(
-            text=text,
-            timestamp=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
-        )
+        """Convenience constructor"""
+        return cls(text=text)
 
 
 class YourTurnEvent(SSEEvent):
@@ -220,25 +175,19 @@ class YourTurnEvent(SSEEvent):
     Triggers connection close on client side.
     """
 
-    player_id: int = Field(..., serialization_alias="playerId")
-    player_name: str = Field(..., serialization_alias="playerName")
-
     @property
     def event_type(self) -> str:
         return "your_turn"
 
 
-class CloseEvent(SSEEvent):
-    """Signals the stream is ending"""
+class ThinkingEvent(SSEEvent):
+    """Indicates the server is processing something (e.g., AI generating stats)"""
+
+    message: str = "Thinking..."
 
     @property
     def event_type(self) -> str:
-        return "close"
-
-    @property
-    def serialized(self) -> str:
-        """Close event has empty data"""
-        return "event: close\ndata: {}\n\n"
+        return "thinking"
 
 
 # ============================================================================
@@ -265,28 +214,10 @@ class MessageAction(BaseModel):
     text: str
 
 
-class DiceAction(BaseModel):
-    """Roll dice action (client sends, server generates roll)"""
-
-    type: Literal["dice"] = "dice"
-    sides: int
-    modifier: int | None = None
-    reason: str | None = None
-
-
-class StatUpdateAction(BaseModel):
-    """Update stats action"""
-
-    type: Literal["stat_update"] = "stat_update"
-    stats: dict[str, int]
-
-
 class TurnRequest(BaseModel):
     """Request body for /api/game/:gameId/turn endpoint"""
 
     player_id: int | None = Field(None, alias="playerId")
-    action: JoinAction | MessageAction | DiceAction | StatUpdateAction = Field(
-        ..., discriminator="type"
-    )
+    action: JoinAction | MessageAction = Field(..., discriminator="type")
 
     model_config = {"populate_by_name": True}

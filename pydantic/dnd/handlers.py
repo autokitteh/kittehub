@@ -65,6 +65,4 @@ def _new_game(session_id: str) -> None:
             print(f"-> {body}")
             http_outcome(body=body, more=True, event_id=event.event_id)
 
-        print("CLOSE")
-
-        http_outcome(body=protocol.CloseEvent().serialized, event_id=event.event_id)
+        http_outcome(body=protocol.YourTurnEvent().serialized, event_id=event.event_id)

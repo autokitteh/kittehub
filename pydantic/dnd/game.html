@@ -357,19 +357,6 @@
             transform: none;
         }
 
-        .dice-buttons {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .dice-btn {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            min-width: 60px;
-        }
-
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 10px;
@@ -386,6 +373,30 @@
 
         ::-webkit-scrollbar-thumb:hover {
             background: #a87e18;
+        }
+
+        .thinking-indicator {
+            text-align: center;
+            padding: 1rem;
+            color: #a89968;
+            font-style: italic;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .thinking-dots::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
         }
 
         @media (max-width: 768px) {
@@ -420,73 +431,11 @@
                     ></textarea>
                     <button onclick="sendMessage()">Send</button>
                 </div>
-
-                <div class="dice-buttons">
-                    <button class="dice-btn" onclick="rollDice(4)">d4</button>
-                    <button class="dice-btn" onclick="rollDice(6)">d6</button>
-                    <button class="dice-btn" onclick="rollDice(8)">d8</button>
-                    <button class="dice-btn" onclick="rollDice(10)">d10</button>
-                    <button class="dice-btn" onclick="rollDice(12)">d12</button>
-                    <button class="dice-btn" onclick="rollDice(20)">d20</button>
-                    <button class="dice-btn" onclick="rollDice(100)">d100</button>
-                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Player templates (examples - server can send any number of players with any configuration)
-        const playerTemplates = [
-            {
-                id: 1,
-                name: "Thorin",
-                race: "Human",
-                class: "Warrior",
-                color: "#c0392b",
-                stats: { hp: 45, maxHp: 45, ac: 18, str: 16, dex: 12, con: 15, int: 10, wis: 11, cha: 9 }
-            },
-            {
-                id: 2,
-                name: "Elara",
-                race: "Elf",
-                class: "Mage",
-                color: "#2980b9",
-                stats: { hp: 28, maxHp: 28, ac: 12, str: 8, dex: 14, con: 12, int: 18, wis: 13, cha: 10 }
-            },
-            {
-                id: 3,
-                name: "Finn",
-                race: "Halfling",
-                class: "Rogue",
-                color: "#27ae60",
-                stats: { hp: 32, maxHp: 32, ac: 15, str: 10, dex: 18, con: 13, int: 12, wis: 14, cha: 11 }
-            },
-            {
-                id: 4,
-                name: "Lyra",
-                race: "Human",
-                class: "Cleric",
-                color: "#f39c12",
-                stats: { hp: 38, maxHp: 38, ac: 16, str: 14, dex: 10, con: 14, int: 11, wis: 17, cha: 13 }
-            },
-            {
-                id: 5,
-                name: "Zara",
-                race: "Half-Elf",
-                class: "Ranger",
-                color: "#16a085",
-                stats: { hp: 35, maxHp: 35, ac: 14, str: 13, dex: 16, con: 14, int: 11, wis: 15, cha: 10 }
-            },
-            {
-                id: 6,
-                name: "Korg",
-                race: "Half-Orc",
-                class: "Barbarian",
-                color: "#8e44ad",
-                stats: { hp: 50, maxHp: 50, ac: 15, str: 18, dex: 11, con: 16, int: 8, wis: 12, cha: 9 }
-            }
-        ];
-
         // Game state - starts empty, supports any number of players
         let players = []; // Will be populated as players join
         let myPlayerId = null; // Will be assigned when we join
@@ -496,10 +445,6 @@
         let isMyTurn = false; // Start false until we join and get our turn
         let streamActive = false;
         let hasJoined = false;
-        
-        // Check if demo mode is enabled via query string
-        const urlParams = new URLSearchParams(window.location.search);
-        const isDemoMode = urlParams.get('demo') === '1';
 
         function initializeUI() {
             // Create player selector buttons (will be populated as players join)
@@ -631,13 +576,7 @@
             joinBtn.textContent = 'Joining...';
 
             try {
-                // Demo mode: use simulation instead of real server
-                if (isDemoMode) {
-                    await simulateJoinGame(playerName, playerCount);
-                    return;
-                }
-
-                // Real implementation: POST to server with streaming response
+                // POST to server with streaming response
                 const response = await fetch(apiEndpoint, {
                     method: 'POST',
                     headers: {
@@ -674,11 +613,6 @@
                 playerCountSelect.disabled = false;
 
                 addSystemMessage(`Failed to join game: ${error.message}`);
-                
-                // Don't auto-fallback - show instructions instead
-                if (error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
-                    addSystemMessage('💡 Tip: Add ?demo=1 to the URL to try demo mode');
-                }
             }
         }
 
@@ -727,9 +661,9 @@
                         
                         if (eventType && eventData) {
                             handleStreamEvent(eventType, eventData);
-                            
-                            // Exit stream when it's our turn or stream closes
-                            if (eventType === 'your_turn' || eventType === 'close') {
+
+                            // Exit stream when it's our turn
+                            if (eventType === 'your_turn') {
                                 isMyTurn = true;
                                 streamActive = false;
                                 updateInputState();
@@ -744,59 +678,6 @@
                 updateInputState();
                 throw error;
             }
-        }
-
-        async function simulateJoinGame(playerName, playerCount) {
-            // Simulate joining and getting first turn
-            hasJoined = true;
-            
-            // Start the streaming connection which will send player_joined events
-            isMyTurn = false;
-            streamActive = true;
-            updateInputState();
-
-            // Simulate initial stream with player_joined events
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // First player joins (us) - use custom name
-            const myPlayerTemplate = playerTemplates[0];
-            const myPlayer = {
-                ...myPlayerTemplate,
-                name: playerName // Use custom name instead of template name
-            };
-            
-            // Set myPlayerId BEFORE handling the event so the UI updates correctly
-            myPlayerId = myPlayer.id;
-            currentPlayer = myPlayer;
-            
-            handleStreamEvent('player_joined', {
-                player: myPlayer,
-                isYou: true
-            });
-
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            // Add other players based on playerCount (playerCount - 1 since we already added ourselves)
-            const numOtherPlayers = playerCount - 1;
-            for (let i = 1; i <= numOtherPlayers && i < playerTemplates.length; i++) {
-                handleStreamEvent('player_joined', {
-                    player: playerTemplates[i],
-                    isYou: false
-                });
-                await new Promise(resolve => setTimeout(resolve, 800));
-            }
-
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // Start first turn
-            handleStreamEvent('your_turn', {
-                playerId: myPlayerId,
-                playerName: myPlayer.name
-            });
-
-            isMyTurn = true;
-            streamActive = false;
-            updateInputState();
         }
 
         function addPlayerToGame(playerData) {
@@ -910,17 +791,14 @@
         function updateInputState() {
             const input = document.getElementById('messageInput');
             const sendBtn = document.querySelector('button[onclick="sendMessage()"]');
-            const diceButtons = document.querySelectorAll('.dice-btn');
-            
+
             if (isMyTurn && !streamActive && hasJoined) {
                 input.disabled = false;
                 sendBtn.disabled = false;
-                diceButtons.forEach(btn => btn.disabled = false);
                 input.placeholder = "Your turn! Speak your mind, adventurer...";
             } else {
                 input.disabled = true;
                 sendBtn.disabled = true;
-                diceButtons.forEach(btn => btn.disabled = true);
                 if (!hasJoined) {
                     input.placeholder = "Join the game to begin your adventure...";
                 } else if (streamActive) {
@@ -942,13 +820,7 @@
             updateInputState();
 
             try {
-                // Demo mode: use simulation
-                if (isDemoMode) {
-                    await simulateStreamingResponse(action);
-                    return;
-                }
-                
-                // Real implementation: stream response from server
+                // Stream response from server
                 await streamTurnToServer(action);
             } catch (error) {
                 console.error('Turn failed:', error);
@@ -1017,9 +889,9 @@
                         
                         if (eventType && eventData) {
                             handleStreamEvent(eventType, eventData);
-                            
+
                             // Connection closes when it's our turn again
-                            if (eventType === 'your_turn' || eventType === 'close') {
+                            if (eventType === 'your_turn') {
                                 isMyTurn = true;
                                 streamActive = false;
                                 updateInputState();
@@ -1038,11 +910,6 @@
 
         function handleStreamEvent(eventType, data) {
             switch(eventType) {
-                case 'action_confirmed':
-                    console.log('Action confirmed:', data);
-                    addSystemMessage(`Your ${data.action.type} was sent!`);
-                    break;
-                
                 case 'player_joined':
                     if (data.isYou) {
                         myPlayerId = data.player.id;
@@ -1055,12 +922,7 @@
                         addSystemMessage(`${data.player.name} the ${data.player.race} ${data.player.class} joined the party!`);
                     }
                     break;
-                    
-                case 'turn_start':
-                    addSystemMessage(`${data.playerName}'s turn begins`);
-                    highlightPlayerTurn(data.playerId);
-                    break;
-                    
+
                 case 'message':
                     addMessageToChat(data);
                     break;
@@ -1081,104 +943,11 @@
                     addSystemMessage("It's your turn!");
                     highlightPlayerTurn(myPlayerId);
                     break;
+
+                case 'thinking':
+                    showThinkingIndicator(data.message || 'Thinking');
+                    break;
             }
-        }
-
-        // Demo simulation (remove when connecting to real server)
-        async function simulateStreamingResponse(action) {
-            // Server generates dice roll if action is dice
-            let processedAction = { ...action };
-            if (action.type === 'dice') {
-                processedAction.roll = Math.floor(Math.random() * action.sides) + 1;
-            }
-
-            // Confirm player's action (with roll result if dice)
-            handleStreamEvent('action_confirmed', { action: processedAction });
-
-            // Add player's own action to chat
-            if (processedAction.type === 'message') {
-                const player = players.find(p => p.id === myPlayerId);
-                addMessageToChat({
-                    playerId: myPlayerId,
-                    playerName: player.name,
-                    playerColor: player.color,
-                    text: processedAction.text,
-                    timestamp: new Date().toISOString()
-                });
-            } else if (processedAction.type === 'dice') {
-                const player = players.find(p => p.id === myPlayerId);
-                addDiceRollToChat({
-                    playerId: myPlayerId,
-                    playerName: player.name,
-                    playerColor: player.color,
-                    sides: processedAction.sides,
-                    roll: processedAction.roll, // Server-generated roll
-                    timestamp: new Date().toISOString()
-                });
-            }
-
-            // Simulate other players' turns (only for players that exist)
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // Find other players in the game
-            const otherPlayers = players.filter(p => p.id !== myPlayerId);
-            
-            for (const otherPlayer of otherPlayers) {
-                handleStreamEvent('turn_start', {
-                    playerId: otherPlayer.id,
-                    playerName: otherPlayer.name,
-                    playerColor: otherPlayer.color
-                });
-                
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // Simulate random action
-                if (Math.random() > 0.5) {
-                    handleStreamEvent('message', {
-                        playerId: otherPlayer.id,
-                        playerName: otherPlayer.name,
-                        playerColor: otherPlayer.color,
-                        text: ["I investigate the room", "Let me check for traps", "I ready my weapon"][Math.floor(Math.random() * 3)],
-                        timestamp: new Date().toISOString()
-                    });
-                } else {
-                    const roll = Math.floor(Math.random() * 20) + 1;
-                    handleStreamEvent('dice', {
-                        playerId: otherPlayer.id,
-                        playerName: otherPlayer.name,
-                        playerColor: otherPlayer.color,
-                        sides: 20,
-                        roll: roll, // Server-generated for other players too
-                        timestamp: new Date().toISOString()
-                    });
-                }
-                
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
-
-            // Randomly add a new player if there are more available
-            if (players.length < playerTemplates.length && Math.random() > 0.6) {
-                await new Promise(resolve => setTimeout(resolve, 500));
-                const nextPlayer = playerTemplates.find(t => !players.some(p => p.id === t.id));
-                if (nextPlayer) {
-                    handleStreamEvent('player_joined', {
-                        player: nextPlayer,
-                        isYou: false
-                    });
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-            }
-
-            // Back to player's turn
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            handleStreamEvent('your_turn', {
-                playerId: myPlayerId,
-                playerName: players.find(p => p.id === myPlayerId).name
-            });
-            
-            isMyTurn = true;
-            streamActive = false;
-            updateInputState();
         }
 
         function sendMessage() {
@@ -1196,25 +965,21 @@
             input.value = '';
         }
 
-        function rollDice(sides) {
-            if (!isMyTurn || streamActive) return;
-
-            // Send only the dice type to server - server will roll and return result
-            takeTurn({
-                type: 'dice',
-                sides: sides
-                // NO roll value - server generates this
-            });
-        }
-
         function addMessageToChat(data) {
+            removeThinkingIndicator(); // Remove thinking indicator when new message arrives
+            const player = players.find(p => p.id === data.playerId);
+            if (!player) {
+                console.error('Player not found:', data.playerId);
+                return;
+            }
+
             const message = {
                 id: Date.now(),
                 playerId: data.playerId,
-                playerName: data.playerName,
-                playerColor: data.playerColor,
+                playerName: player.name,
+                playerColor: player.color,
                 text: data.text,
-                timestamp: new Date(data.timestamp),
+                timestamp: new Date(),
                 type: 'message'
             };
 
@@ -1224,15 +989,22 @@
         }
 
         function addDiceRollToChat(data) {
+            removeThinkingIndicator(); // Remove thinking indicator when new message arrives
+            const player = players.find(p => p.id === data.playerId);
+            if (!player) {
+                console.error('Player not found:', data.playerId);
+                return;
+            }
+
             const message = {
                 id: Date.now(),
                 playerId: data.playerId,
-                playerName: data.playerName,
-                playerColor: data.playerColor,
+                playerName: player.name,
+                playerColor: player.color,
                 text: `Rolled a d${data.sides}`,
                 roll: data.roll,
                 sides: data.sides,
-                timestamp: new Date(data.timestamp),
+                timestamp: new Date(),
                 type: 'dice'
             };
 
@@ -1242,6 +1014,7 @@
         }
 
         function addSystemMessage(text) {
+            removeThinkingIndicator(); // Remove thinking indicator when new message arrives
             const messagesDiv = document.getElementById('messages');
             const messageEl = document.createElement('div');
             messageEl.style.textAlign = 'center';
@@ -1254,7 +1027,26 @@
             scrollToBottom();
         }
 
+        function showThinkingIndicator(message = 'Thinking') {
+            removeThinkingIndicator(); // Remove any existing indicator
+            const messagesDiv = document.getElementById('messages');
+            const thinkingEl = document.createElement('div');
+            thinkingEl.id = 'thinking-indicator';
+            thinkingEl.className = 'thinking-indicator';
+            thinkingEl.innerHTML = `<span>${message}</span><span class="thinking-dots"></span>`;
+            messagesDiv.appendChild(thinkingEl);
+            scrollToBottom();
+        }
+
+        function removeThinkingIndicator() {
+            const existing = document.getElementById('thinking-indicator');
+            if (existing) {
+                existing.remove();
+            }
+        }
+
         function addDMMessage(text) {
+            removeThinkingIndicator(); // Remove thinking indicator when new message arrives
             const messagesDiv = document.getElementById('messages');
             const messageEl = document.createElement('div');
             messageEl.className = 'message';
@@ -1298,18 +1090,55 @@
 
             // Update UI
             const card = document.getElementById(`player-card-${playerId}`);
-            const hpPercent = (player.stats.hp / player.stats.maxHp) * 100;
-            
-            // Update HP display
-            const hpValue = card.querySelector('.stat-primary .stat-value');
-            if (hpValue) {
-                hpValue.textContent = `${player.stats.hp}/${player.stats.maxHp}`;
+            if (!card) return;
+
+            // Update HP if changed
+            if ('hp' in stats || 'maxHp' in stats) {
+                const hpPercent = (player.stats.hp / player.stats.maxHp) * 100;
+
+                const hpValue = card.querySelector('.stat-primary .stat-value');
+                if (hpValue) {
+                    hpValue.textContent = `${player.stats.hp}/${player.stats.maxHp}`;
+                }
+
+                const hpFill = card.querySelector('.hp-fill');
+                if (hpFill) {
+                    hpFill.style.width = `${hpPercent}%`;
+                }
             }
-            
-            // Update HP bar
-            const hpFill = card.querySelector('.hp-fill');
-            if (hpFill) {
-                hpFill.style.width = `${hpPercent}%`;
+
+            // Update AC if changed
+            if ('ac' in stats) {
+                const acValue = card.querySelectorAll('.stat-primary .stat-value')[1];
+                if (acValue) {
+                    acValue.textContent = player.stats.ac;
+                }
+            }
+
+            // Update ability scores if changed
+            const abilityMap = {
+                'str': 'STR',
+                'dex': 'DEX',
+                'con': 'CON',
+                'int': 'INT',
+                'wis': 'WIS',
+                'cha': 'CHA'
+            };
+
+            for (const [key, label] of Object.entries(abilityMap)) {
+                if (key in stats) {
+                    const abilityScores = card.querySelectorAll('.ability-score');
+                    for (const scoreEl of abilityScores) {
+                        const labelEl = scoreEl.querySelector('.stat-label');
+                        if (labelEl && labelEl.textContent === label) {
+                            const valueEl = scoreEl.querySelector('.stat-value');
+                            if (valueEl) {
+                                valueEl.textContent = player.stats[key];
+                            }
+                            break;
+                        }
+                    }
+                }
             }
         }
 
