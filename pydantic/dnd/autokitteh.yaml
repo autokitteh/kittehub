@@ -8,6 +8,9 @@ project:
       value: "claude-sonnet-4-5"
     - name: PLAYER_MODEL_NAME
       value: "claude-sonnet-4-5"
+    - name: LOGFIRE_TOKEN
+      value: ""
+      secret: true
 
   connections:
     - name: anthropic

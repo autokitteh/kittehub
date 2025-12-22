@@ -40,13 +40,13 @@ class Game:
 
         yield protocol.ThinkingEvent()
 
-        event, self._dm_history = ai.next_dm_event(
+        result, self._dm_history = ai.next_dm_event(
             [protocol.PlayerJoinedEvent(player=p, is_you=False) for p in self._players],
             self._players,
             self._dm_history,
         )
 
-        yield event
+        yield result.event
 
     def _create_players(self, a: protocol.JoinAction) -> _SSEEventGenerator:
         for i in range(a.player_count):
@@ -78,13 +78,20 @@ class Game:
 
     def _on_message(self, a: protocol.MessageAction) -> _SSEEventGenerator:
         yield protocol.MessageEvent(text=a.text, player_id=0)
+        yield from self._dm([a])
 
-        yield protocol.ThinkingEvent()
+    def _dm(self, acts: Sequence) -> _SSEEventGenerator:
+        more = True
 
-        event, self._dm_history = ai.next_dm_event(
-            [a],
-            self._players,
-            self._dm_history,
-        )
+        while more:
+            yield protocol.ThinkingEvent()
 
-        yield event
+            result, self._dm_history = ai.next_dm_event(
+                acts,
+                self._players,
+                self._dm_history,
+            )
+
+            yield result.event
+
+            more = result.more
