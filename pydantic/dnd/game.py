@@ -39,6 +39,9 @@ class Game:
                 yield protocol.DMMessageEvent(text="Action not implemented yet.")
 
         for event in h or []:
+            if type(event).event_type == protocol.ThinkingEvent.event_type:
+                continue
+
             self._events.append(event)
             yield event
 
@@ -87,6 +90,9 @@ class Game:
     def _on_message(self, a: protocol.MessageAction) -> _SSEEventGenerator:
         yield protocol.MessageEvent(text=a.text, player_id=0)
         yield from self._dm()
+        for i in range(1, len(self._players)):
+            yield from self._player(i)
+            yield from self._dm()
 
     def _dm(self) -> _SSEEventGenerator:
         more = True
@@ -113,3 +119,16 @@ class Game:
                         self._players[player_id].stats = protocol.PlayerStats(**stats)
 
             yield event
+
+    def _player(self, id: int) -> _SSEEventGenerator:
+        yield protocol.ThinkingEvent(who=self._players[id].name)
+
+        msg, self._ai_histories[id] = ai.next_player_event(
+            self._events[self._ai_last_seen_event_index[id] :],
+            self._players[id],
+            self._ai_histories[id],
+        )
+
+        self._ai_last_seen_event_index[id] = len(self._events)
+
+        yield protocol.MessageEvent(text=msg, player_id=id)

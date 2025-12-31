@@ -28,6 +28,16 @@ _player_model = AnthropicModel(
     _PLAYER_MODEL_NAME, provider=anthropic_pydantic_ai_provider("anthropic")
 )
 
+_player_agent = Agent(
+    _player_model,
+    output_type=str,
+    system_prompt="""
+You are a D&D player participating in a game.
+Respond to the Dungeon Master's messages and other events appropriately.
+Keep your responses concise and in character.
+""",
+)
+
 _player_stats_agent = Agent(_player_model, output_type=protocol.PlayerStats)
 
 _dm_model = AnthropicModel(
@@ -91,15 +101,34 @@ def create_player_stats(cls: str, race: str) -> protocol.PlayerStats:
 
 
 def next_dm_event(
-    events: Sequence[protocol.SSEEvent],
+    recent_events: Sequence[protocol.SSEEvent],
     players: Sequence[protocol.Player],
     history: Sequence,
 ) -> tuple[DMResult, list]:
     result = _dm_agent.run_sync(
-        f"Latest events: {json.dumps([e.dict() for e in events])}"
+        f"Recent events: {json.dumps([e.dict() for e in recent_events])}"
         if history
         else "This is the beginning of the game.",
         deps=list(players),
+        message_history=history,
+    )
+    return result.output, result.all_messages()
+
+
+def next_player_event(
+    recent_events: Sequence[protocol.SSEEvent],
+    player: protocol.Player,
+    history: Sequence,
+) -> tuple[str, list]:
+    result = _player_agent.run_sync(
+        f"""
+You are player {player.name}. Here is your full information:
+{json.dumps(player.dict())}
+
+Recent events: {json.dumps([e.dict() for e in recent_events])}.
+
+It's your turn to respond.
+        """,
         message_history=history,
     )
     return result.output, result.all_messages()

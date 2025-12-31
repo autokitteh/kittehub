@@ -4,7 +4,7 @@ All message types for the streaming HTTP protocol, with automatic serialization.
 Each message has a .serialized property that returns the SSE-formatted string.
 """
 
-from typing import Literal
+from typing import ClassVar, Literal
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -16,12 +16,10 @@ from pydantic import Field
 
 
 class SSEEvent(BaseModel):
-    """Base class for all Server-Sent Events"""
+    """Base class for all Server-Sent Events
 
-    @property
-    def event_type(self) -> str:
-        """Override in subclasses to specify event type"""
-        raise NotImplementedError
+    Subclasses should define event_type as a ClassVar[str].
+    """
 
     @property
     def serialized(self) -> str:
@@ -29,7 +27,7 @@ class SSEEvent(BaseModel):
 
         Format: event: type\ndata: json\n\n
         """
-        event_str = f"event: {self.event_type}\n"
+        event_str = f"event: {type(self).event_type}\n"
         event_str += f"data: {self.model_dump_json(exclude_none=True, by_alias=True)}\n"
         event_str += "\n"  # Blank line signals end of event
         return event_str
@@ -77,27 +75,25 @@ class PlayerJoinedEvent(SSEEvent):
     is_you indicates if this is the connecting player.
     """
 
+    event_type: ClassVar[str] = "player_joined"
+
     player: Player
     is_you: bool = Field(..., serialization_alias="isYou")
-
-    @property
-    def event_type(self) -> str:
-        return "player_joined"
 
 
 class MessageEvent(SSEEvent):
     """A player sends a chat message"""
 
+    event_type: ClassVar[str] = "message"
+
     player_id: int = Field(0, serialization_alias="playerId")
     text: str
-
-    @property
-    def event_type(self) -> str:
-        return "message"
 
 
 class DiceEvent(SSEEvent):
     """A player rolls dice. Roll result is generated server-side."""
+
+    event_type: ClassVar[str] = "dice"
 
     player_id: int = Field(..., serialization_alias="playerId")
     sides: int
@@ -106,21 +102,15 @@ class DiceEvent(SSEEvent):
     total: int | None = None
     reason: str | None = None
 
-    @property
-    def event_type(self) -> str:
-        return "dice"
-
 
 class StatUpdateEvent(SSEEvent):
     """Player stats change (e.g., HP, AC)"""
 
+    event_type: ClassVar[str] = "stat_update"
+
     player_id: int = Field(..., serialization_alias="playerId")
     player_name: str = Field(..., serialization_alias="playerName")
     stats: dict[str, int]  # Partial stats update
-
-    @property
-    def event_type(self) -> str:
-        return "stat_update"
 
 
 class DMMessageEvent(SSEEvent):
@@ -129,12 +119,10 @@ class DMMessageEvent(SSEEvent):
     Can be from server AI or a fifth player acting as DM.
     """
 
+    event_type: ClassVar[str] = "dm_message"
+
     text: str
     """Text of the DM message. Can use markdown formatting."""
-
-    @property
-    def event_type(self) -> str:
-        return "dm_message"
 
 
 class YourTurnEvent(SSEEvent):
@@ -143,20 +131,16 @@ class YourTurnEvent(SSEEvent):
     Triggers connection close on client side.
     """
 
-    @property
-    def event_type(self) -> str:
-        return "your_turn"
+    event_type: ClassVar[str] = "your_turn"
 
 
 class ThinkingEvent(SSEEvent):
     """Indicates the server is processing something (e.g., AI generating stats)"""
 
+    event_type: ClassVar[str] = "thinking"
+
     message: str = "thinking"
     who: str
-
-    @property
-    def event_type(self) -> str:
-        return "thinking"
 
 
 # ============================================================================
