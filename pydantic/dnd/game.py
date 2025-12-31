@@ -39,10 +39,9 @@ class Game:
                 yield protocol.DMMessageEvent(text="Action not implemented yet.")
 
         for event in h or []:
-            if type(event).event_type == protocol.ThinkingEvent.event_type:
-                continue
+            if type(event).event_type != protocol.ThinkingEvent.event_type:
+                self._events.append(event)
 
-            self._events.append(event)
             yield event
 
     def _on_join(self, a: protocol.JoinAction) -> _SSEEventGenerator:
@@ -88,8 +87,13 @@ class Game:
             yield protocol.PlayerJoinedEvent(player=player, is_you=i == 0)
 
     def _on_message(self, a: protocol.MessageAction) -> _SSEEventGenerator:
+        # Put player's message in the log.
         yield protocol.MessageEvent(text=a.text, player_id=0)
+
+        # DM responds first.
         yield from self._dm()
+
+        # Other players respond in order.
         for i in range(1, len(self._players)):
             yield from self._player(i)
             yield from self._dm()

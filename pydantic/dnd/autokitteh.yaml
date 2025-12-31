@@ -9,6 +9,7 @@ project:
     - name: PLAYER_MODEL_NAME
       value: "claude-sonnet-4-5"
     - name: LOGFIRE_TOKEN
+      description: "optional pydantic logfire token"
       value: ""
       secret: true
 

@@ -10,16 +10,13 @@ from pydantic import BaseModel
 from pydantic import Field
 
 
-# ============================================================================
-# Base Classes
-# ============================================================================
-
-
 class SSEEvent(BaseModel):
     """Base class for all Server-Sent Events
 
     Subclasses should define event_type as a ClassVar[str].
     """
+
+    event_type: ClassVar[str]
 
     @property
     def serialized(self) -> str:
@@ -64,9 +61,9 @@ class Player(BaseModel):
     model_config = {"populate_by_name": True}
 
 
-# ============================================================================
-# Event Messages
-# ============================================================================
+#
+# Event Models (for server-sent events)
+#
 
 
 class PlayerJoinedEvent(SSEEvent):
@@ -143,9 +140,9 @@ class ThinkingEvent(SSEEvent):
     who: str
 
 
-# ============================================================================
+#
 # Request Models (for parsing incoming requests)
-# ============================================================================
+#
 
 
 class JoinAction(BaseModel):

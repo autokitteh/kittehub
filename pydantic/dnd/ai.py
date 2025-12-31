@@ -20,25 +20,11 @@ if getenv("LOGFIRE_TOKEN"):
     logfire.instrument_anthropic()
     print("logfire configured.")
 
+#
+# DM
+#
 
 _DM_MODEL_NAME = getenv("DM_MODEL_NAME", "claude-sonnet-4-5")
-_PLAYER_MODEL_NAME = getenv("PLAYER_MODEL_NAME", "claude-sonnet-4-5")
-
-_player_model = AnthropicModel(
-    _PLAYER_MODEL_NAME, provider=anthropic_pydantic_ai_provider("anthropic")
-)
-
-_player_agent = Agent(
-    _player_model,
-    output_type=str,
-    system_prompt="""
-You are a D&D player participating in a game.
-Respond to the Dungeon Master's messages and other events appropriately.
-Keep your responses concise and in character.
-""",
-)
-
-_player_stats_agent = Agent(_player_model, output_type=protocol.PlayerStats)
 
 _dm_model = AnthropicModel(
     _DM_MODEL_NAME,
@@ -52,6 +38,9 @@ class DMResult(BaseModel):
     event: protocol.DMMessageEvent | protocol.DiceEvent | protocol.StatUpdateEvent
     """The event the DM decided to take this turn."""
 
+    next_player_id: int | None
+    """If set, indicates which player should go next. If None, players go in order."""
+
     more: bool
     """True if the DM needs another turn immediately.
     For example - if the DM rolled a dice and now wants to send a message based on
@@ -64,8 +53,6 @@ _dm_agent = Agent(
     deps_type=list[protocol.Player],
     system_prompt="""
 You are the Dungeon Master running a D&D game.
-
-It's your turn as DM.
 
 In each invocation, you must take one of the following actions:
 1. Send a message to the players. Return a DMMessageEvent with the text of your message.
@@ -106,13 +93,40 @@ def next_dm_event(
     history: Sequence,
 ) -> tuple[DMResult, list]:
     result = _dm_agent.run_sync(
-        f"Recent events: {json.dumps([e.dict() for e in recent_events])}"
-        if history
-        else "This is the beginning of the game.",
+        (
+            f"Recent events: {json.dumps([e.dict() for e in recent_events])}"
+            if history
+            else "This is the beginning of the game."
+        )
+        + "\nIt's your turn as DM.",
         deps=list(players),
         message_history=history,
     )
     return result.output, result.all_messages()
+
+
+#
+# Player
+#
+
+_PLAYER_MODEL_NAME = getenv("PLAYER_MODEL_NAME", "claude-sonnet-4-5")
+
+_player_model = AnthropicModel(
+    _PLAYER_MODEL_NAME, provider=anthropic_pydantic_ai_provider("anthropic")
+)
+
+_player_agent = Agent(
+    _player_model,
+    output_type=str,
+    system_prompt="""
+You are a D&D player participating in a game.
+Respond to the Dungeon Master's messages and other events appropriately.
+Keep your responses concise and in character.
+NEVER roll a dice yourself - only the DM can do that, ask the DM to roll dice for you.
+""",
+)
+
+_player_stats_agent = Agent(_player_model, output_type=protocol.PlayerStats)
 
 
 def next_player_event(
