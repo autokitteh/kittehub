@@ -23,7 +23,7 @@ def on_game(event: Event, session_id: str) -> None:
 
 
 def _existing_game(session_id: str) -> None:
-    http_outcome(404, "Not implemented yet.")
+    http_outcome(404, body="Not implemented yet.")
 
 
 def _new_game(session_id: str) -> None:
@@ -43,6 +43,8 @@ def _new_game(session_id: str) -> None:
     while True:
         print("Waiting for next request...")
         event = next_event(s, full=True)
+        if not event:
+            continue
 
         body = event.data.body.json
 
@@ -52,12 +54,16 @@ def _new_game(session_id: str) -> None:
             req = protocol.TurnRequest.model_validate(body)
         except ValidationError as e:
             print(f"Invalid request: {e}")
-            http_outcome(400, f"Invalid request: {e}", event_id=event.id)
+            http_outcome(400, body=f"Invalid request: {e}", event_id=event.event_id)
             continue
 
         if req.player_id:  # must be either None or 0.
             print(f"Only player ID 0 is supported, got: {req.player_id}")
-            http_outcome(400, "Only player ID 0 is supported.", event_id=event.id)
+            http_outcome(
+                400,
+                body="Only player ID 0 is supported.",
+                event_id=event.event_id,
+            )
             continue
 
         for update in g.turn(req):

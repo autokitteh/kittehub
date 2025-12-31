@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&D Party Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -235,6 +236,86 @@
             word-wrap: break-word;
         }
 
+        /* Markdown styling */
+        .message-text h1, .message-text h2, .message-text h3 {
+            color: #d4af37;
+            margin: 0.5rem 0 0.3rem 0;
+        }
+
+        .message-text h1 { font-size: 1.3rem; }
+        .message-text h2 { font-size: 1.2rem; }
+        .message-text h3 { font-size: 1.1rem; }
+
+        .message-text strong {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .message-text em {
+            font-style: italic;
+            color: #c9b88d;
+        }
+
+        .message-text code {
+            background: rgba(26, 14, 14, 0.6);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #d4af37;
+        }
+
+        .message-text pre {
+            background: rgba(26, 14, 14, 0.6);
+            border: 1px solid #8b6914;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            overflow-x: auto;
+        }
+
+        .message-text pre code {
+            background: none;
+            padding: 0;
+            color: #e8d5b7;
+        }
+
+        .message-text ul, .message-text ol {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .message-text li {
+            margin: 0.25rem 0;
+        }
+
+        .message-text blockquote {
+            border-left: 3px solid #8b6914;
+            padding-left: 1rem;
+            margin: 0.5rem 0;
+            color: #c9b88d;
+            font-style: italic;
+        }
+
+        .message-text a {
+            color: #d4af37;
+            text-decoration: underline;
+        }
+
+        .message-text a:hover {
+            color: #a87e18;
+        }
+
+        .message-text p {
+            margin: 0.3rem 0;
+        }
+
+        .message-text hr {
+            border: none;
+            border-top: 1px solid #8b6914;
+            margin: 0.75rem 0;
+        }
+
         .dice-roll {
             background: linear-gradient(135deg, #8b6914 0%, #6b5010 100%);
             border: 2px solid #d4af37;
@@ -445,6 +526,14 @@
         let isMyTurn = false; // Start false until we join and get our turn
         let streamActive = false;
         let hasJoined = false;
+
+        // Configure marked.js
+        marked.setOptions({
+            breaks: true,  // Convert \n to <br>
+            gfm: true,     // GitHub Flavored Markdown
+            headerIds: false,
+            mangle: false
+        });
 
         function initializeUI() {
             // Create player selector buttons (will be populated as players join)
@@ -945,7 +1034,7 @@
                     break;
 
                 case 'thinking':
-                    showThinkingIndicator(data.message || 'Thinking');
+                    showThinkingIndicator(data);
                     break;
             }
         }
@@ -1004,6 +1093,9 @@
                 text: `Rolled a d${data.sides}`,
                 roll: data.roll,
                 sides: data.sides,
+                modifier: data.modifier,
+                total: data.total,
+                reason: data.reason,
                 timestamp: new Date(),
                 type: 'dice'
             };
@@ -1027,12 +1119,15 @@
             scrollToBottom();
         }
 
-        function showThinkingIndicator(message = 'Thinking') {
+        function showThinkingIndicator(data) {
             removeThinkingIndicator(); // Remove any existing indicator
             const messagesDiv = document.getElementById('messages');
             const thinkingEl = document.createElement('div');
             thinkingEl.id = 'thinking-indicator';
             thinkingEl.className = 'thinking-indicator';
+
+            const message = `${data.who} is ${data.message || 'thinking'}`;
+
             thinkingEl.innerHTML = `<span>${message}</span><span class="thinking-dots"></span>`;
             messagesDiv.appendChild(thinkingEl);
             scrollToBottom();
@@ -1059,7 +1154,7 @@
                         <span class="message-name" style="color: #d4af37;">Dungeon Master</span>
                         <span class="message-time">${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
-                    <div class="message-text">${escapeHtml(text)}</div>
+                    <div class="message-text">${marked.parse(text)}</div>
                 </div>
             `;
             messagesDiv.appendChild(messageEl);
@@ -1164,15 +1259,36 @@
                         </span>
                         <span class="message-time">${time}</span>
                     </div>
-                    <div class="message-text">${escapeHtml(message.text)}</div>
+                    <div class="message-text">${marked.parse(message.text)}</div>
             `;
 
             if (message.type === 'dice') {
-                content += `
-                    <div class="dice-roll">
-                        🎲 <span class="dice-result">${message.roll}</span> 🎲
-                    </div>
-                `;
+                let diceContent = `<div class="dice-roll">`;
+
+                // Show reason if provided
+                if (message.reason) {
+                    diceContent += `<div style="font-size: 0.9rem; margin-bottom: 0.5rem; opacity: 0.9;">${escapeHtml(message.reason)}</div>`;
+                }
+
+                // Show the roll result
+                diceContent += `<div style="font-size: 1.2rem; margin: 0.3rem 0;">`;
+                diceContent += `🎲 Roll: <span class="dice-result">${message.roll}</span>`;
+
+                // Show modifier if provided
+                if (message.modifier !== null && message.modifier !== undefined) {
+                    const modifierSign = message.modifier >= 0 ? '+' : '';
+                    diceContent += ` ${modifierSign}${message.modifier}`;
+                }
+
+                diceContent += ` 🎲</div>`;
+
+                // Show total if different from roll
+                if (message.total !== null && message.total !== undefined && message.total !== message.roll) {
+                    diceContent += `<div style="font-size: 1.4rem; margin-top: 0.3rem; font-weight: bold;">Total: <span class="dice-result">${message.total}</span></div>`;
+                }
+
+                diceContent += `</div>`;
+                content += diceContent;
             }
 
             content += '</div>';

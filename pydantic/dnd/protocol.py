@@ -95,14 +95,6 @@ class MessageEvent(SSEEvent):
     def event_type(self) -> str:
         return "message"
 
-    @classmethod
-    def create(cls, player_id: int, text: str):
-        """Convenience constructor"""
-        return cls(
-            player_id=player_id,
-            text=text,
-        )
-
 
 class DiceEvent(SSEEvent):
     """A player rolls dice. Roll result is generated server-side."""
@@ -117,26 +109,6 @@ class DiceEvent(SSEEvent):
     @property
     def event_type(self) -> str:
         return "dice"
-
-    @classmethod
-    def create(
-        cls,
-        player_id: int,
-        sides: int,
-        roll: int,
-        modifier: int | None = None,
-        reason: str | None = None,
-    ):
-        """Convenience constructor that auto-generates total"""
-        total = roll + (modifier or 0) if modifier else None
-        return cls(
-            player_id=player_id,
-            sides=sides,
-            roll=roll,
-            modifier=modifier,
-            total=total,
-            reason=reason,
-        )
 
 
 class StatUpdateEvent(SSEEvent):
@@ -158,15 +130,11 @@ class DMMessageEvent(SSEEvent):
     """
 
     text: str
+    """Text of the DM message. Can use markdown formatting."""
 
     @property
     def event_type(self) -> str:
         return "dm_message"
-
-    @classmethod
-    def create(cls, text: str):
-        """Convenience constructor"""
-        return cls(text=text)
 
 
 class YourTurnEvent(SSEEvent):
@@ -183,7 +151,8 @@ class YourTurnEvent(SSEEvent):
 class ThinkingEvent(SSEEvent):
     """Indicates the server is processing something (e.g., AI generating stats)"""
 
-    message: str = "Thinking..."
+    message: str = "thinking"
+    who: str
 
     @property
     def event_type(self) -> str:
@@ -212,6 +181,7 @@ class MessageAction(BaseModel):
 
     type: Literal["message"] = "message"
     text: str
+    """Text of the message to send. Can use markdown formatting."""
 
 
 class TurnRequest(BaseModel):

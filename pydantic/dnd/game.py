@@ -16,37 +16,43 @@ class Game:
     """Game context"""
 
     _players: list[protocol.Player] = []
-    _dm_history: Sequence = []
-    _players_histories: dict[int, Sequence] = {}
+    """A list of players in the game, indexed by player ID."""
+
+    _ai_histories: dict[int | None, Sequence] = {None: []}
+    """History of AI interactions per player ID. None is for the DM."""
+
+    _ai_last_seen_event_index: dict[int | None, int] = {None: 0}
+    """The last event index seen by each AI participant."""
+
+    _events: list[protocol.SSEEvent] = []
+    """All events that have occurred in the game."""
 
     def turn(self, req: protocol.TurnRequest) -> _SSEEventGenerator:
+        h: _SSEEventGenerator | None = None
+
         match a := req.action:
             case protocol.JoinAction():
-                yield from self._on_join(a)
+                h = self._on_join(a)
             case protocol.MessageAction():
-                yield from self._on_message(a)
+                h = self._on_message(a)
             case _:
-                yield protocol.MessageEvent(text="Action not implemented yet.")
+                yield protocol.DMMessageEvent(text="Action not implemented yet.")
+
+        for event in h or []:
+            self._events.append(event)
+            yield event
 
     def _on_join(self, a: protocol.JoinAction) -> _SSEEventGenerator:
         """Effectively starts the game."""
         if self._players:
-            yield protocol.MessageEvent(
-                text="Game already started, cannot join.", player_id=None
-            )
+            yield protocol.DMMessageEvent(text="Game already started, cannot join.")
             return
 
         yield from self._create_players(a)
 
-        yield protocol.ThinkingEvent()
+        yield protocol.ThinkingEvent(who="DM")
 
-        result, self._dm_history = ai.next_dm_event(
-            [protocol.PlayerJoinedEvent(player=p, is_you=False) for p in self._players],
-            self._players,
-            self._dm_history,
-        )
-
-        yield result.event
+        yield from self._dm()
 
     def _create_players(self, a: protocol.JoinAction) -> _SSEEventGenerator:
         for i in range(a.player_count):
@@ -57,7 +63,7 @@ class Game:
             else:
                 cls, race, name = data.random_character_attrs()
 
-            yield protocol.ThinkingEvent()
+            yield protocol.ThinkingEvent(who="DM", message="generating stats")
 
             stats = ai.create_player_stats(cls, race)
 
@@ -73,25 +79,37 @@ class Game:
             print("Created player:", player)
 
             self._players.append(player)
+            self._ai_histories[i] = []
+            self._ai_last_seen_event_index[i] = 0
 
             yield protocol.PlayerJoinedEvent(player=player, is_you=i == 0)
 
     def _on_message(self, a: protocol.MessageAction) -> _SSEEventGenerator:
         yield protocol.MessageEvent(text=a.text, player_id=0)
-        yield from self._dm([a])
+        yield from self._dm()
 
-    def _dm(self, acts: Sequence) -> _SSEEventGenerator:
+    def _dm(self) -> _SSEEventGenerator:
         more = True
 
         while more:
-            yield protocol.ThinkingEvent()
+            yield protocol.ThinkingEvent(who="DM")
 
-            result, self._dm_history = ai.next_dm_event(
-                acts,
+            result, self._ai_histories[None] = ai.next_dm_event(
+                self._events[self._ai_last_seen_event_index[None] :],
                 self._players,
-                self._dm_history,
+                self._ai_histories[None],
             )
 
-            yield result.event
+            self._ai_last_seen_event_index[None] = len(self._events)
 
-            more = result.more
+            event, more = result.event, result.more
+
+            match event:
+                case protocol.StatUpdateEvent(player_id=player_id, stats=stats):
+                    if player_id >= len(self._players):
+                        print("ERROR: StatUpdateEvent for unknown player", player_id)
+                        continue
+                    else:
+                        self._players[player_id].stats = protocol.PlayerStats(**stats)
+
+            yield event
