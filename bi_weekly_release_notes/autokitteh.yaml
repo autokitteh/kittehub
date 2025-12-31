@@ -7,7 +7,7 @@ project:
       integration: chatgpt
     - name: jira_conn
       integration: jira
-    - name: conf_conn
+    - name: confluence_conn
       integration: confluence
     - name: gmail_conn
       integration: gmail
