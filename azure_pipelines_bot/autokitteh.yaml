@@ -1,0 +1,26 @@
+# This YAML file is a declarative manifest that describes the setup
+# of an AutoKitteh project that demonstrates how to poll for new emails
+version: v1
+
+project:
+  name: azure_pipelines_bot
+
+  vars:
+    - name: CHANNEL_CONVO_ID
+      value: ""
+    - name: AZURE_DEVOPS_PAT
+      value: ""
+      secret: true
+    - name: AZURE_DEVOPS_ORG
+      value: ""
+
+  connections:
+    - name: bot
+      integration: azurebot
+
+  triggers:
+    - name: azuredev_webhook
+      type: webhook
+      call: program.py:on_azuredev_webhook
+      event_type: POST
+      filter: data.body.json.eventType='build.complete'
