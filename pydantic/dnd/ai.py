@@ -38,9 +38,6 @@ class DMResult(BaseModel):
     event: protocol.DMMessageEvent | protocol.DiceEvent | protocol.StatUpdateEvent
     """The event the DM decided to take this turn."""
 
-    next_player_id: int | None
-    """If set, indicates which player should go next. If None, players go in order."""
-
     more: bool
     """True if the DM needs another turn immediately.
     For example - if the DM rolled a dice and now wants to send a message based on
@@ -112,7 +109,8 @@ def next_dm_event(
 _PLAYER_MODEL_NAME = getenv("PLAYER_MODEL_NAME", "claude-sonnet-4-5")
 
 _player_model = AnthropicModel(
-    _PLAYER_MODEL_NAME, provider=anthropic_pydantic_ai_provider("anthropic")
+    _PLAYER_MODEL_NAME,
+    provider=anthropic_pydantic_ai_provider("anthropic"),
 )
 
 _player_agent = Agent(

@@ -19,7 +19,10 @@ class Game:
     """A list of players in the game, indexed by player ID."""
 
     _ai_histories: dict[int | None, Sequence] = {None: []}
-    """History of AI interactions per player ID. None is for the DM."""
+    """History of AI interactions per player ID. None is for the DM.
+    
+    This is used to maintain context for the AI agents in a way that is
+    compatible with prompt caching."""
 
     _ai_last_seen_event_index: dict[int | None, int] = {None: 0}
     """The last event index seen by each AI participant."""
@@ -90,13 +93,12 @@ class Game:
         # Put player's message in the log.
         yield protocol.MessageEvent(text=a.text, player_id=0)
 
-        # DM responds first.
-        yield from self._dm()
-
         # Other players respond in order.
         for i in range(1, len(self._players)):
             yield from self._player(i)
-            yield from self._dm()
+
+        # DM responds to all.
+        yield from self._dm()
 
     def _dm(self) -> _SSEEventGenerator:
         more = True

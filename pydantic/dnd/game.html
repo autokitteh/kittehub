@@ -706,6 +706,7 @@
         }
 
         async function processJoinStream(response) {
+            console.log('[JOIN STREAM] Starting join stream processing');
             hasJoined = true;
             isMyTurn = false;
             streamActive = true;
@@ -718,8 +719,11 @@
             try {
                 while (true) {
                     const { done, value } = await reader.read();
-                    
-                    if (done) break;
+
+                    if (done) {
+                        console.log('[JOIN STREAM] Stream done, exiting');
+                        break;
+                    }
                     
                     buffer += decoder.decode(value, { stream: true });
                     
@@ -729,12 +733,14 @@
                     
                     for (const eventText of events) {
                         if (!eventText.trim()) continue;
-                        
+
+                        console.log('[JOIN STREAM] Parsing event text:', eventText);
+
                         // Parse SSE format: "event: type\ndata: json"
                         const lines = eventText.split('\n');
                         let eventType = null;
                         let eventData = null;
-                        
+
                         for (const line of lines) {
                             if (line.startsWith('event:')) {
                                 eventType = line.substring(6).trim();
@@ -743,29 +749,35 @@
                                 try {
                                     eventData = JSON.parse(dataStr);
                                 } catch (e) {
-                                    console.error('Failed to parse event data:', dataStr, e);
+                                    console.error('[JOIN STREAM] Failed to parse event data:', dataStr, e);
                                 }
                             }
                         }
-                        
+
                         if (eventType && eventData) {
+                            console.log('[JOIN STREAM] Received event:', eventType, eventData);
                             handleStreamEvent(eventType, eventData);
 
                             // Exit stream when it's our turn
                             if (eventType === 'your_turn') {
+                                console.log('[JOIN STREAM] Got your_turn, exiting stream');
                                 isMyTurn = true;
                                 streamActive = false;
                                 updateInputState();
                                 return;
                             }
+                        } else {
+                            console.warn('[JOIN STREAM] Failed to parse event - eventType:', eventType, 'eventData:', eventData);
                         }
                     }
                 }
             } catch (error) {
-                console.error('Stream error:', error);
+                console.error('[JOIN STREAM] Stream error:', error);
                 streamActive = false;
                 updateInputState();
                 throw error;
+            } finally {
+                console.log('[JOIN STREAM] Stream ended - isMyTurn:', isMyTurn, 'streamActive:', streamActive);
             }
         }
 
@@ -878,14 +890,17 @@
         }
 
         function updateInputState() {
+            console.log('[UI STATE] Updating input state - isMyTurn:', isMyTurn, 'streamActive:', streamActive, 'hasJoined:', hasJoined);
             const input = document.getElementById('messageInput');
             const sendBtn = document.querySelector('button[onclick="sendMessage()"]');
 
             if (isMyTurn && !streamActive && hasJoined) {
+                console.log('[UI STATE] Enabling input - your turn');
                 input.disabled = false;
                 sendBtn.disabled = false;
                 input.placeholder = "Your turn! Speak your mind, adventurer...";
             } else {
+                console.log('[UI STATE] Disabling input');
                 input.disabled = true;
                 sendBtn.disabled = true;
                 if (!hasJoined) {
@@ -923,6 +938,7 @@
         }
 
         async function streamTurnToServer(action) {
+            console.log('[TURN STREAM] Starting turn stream with action:', action);
             const response = await fetch(apiEndpoint, {
                 method: 'POST',
                 headers: {
@@ -946,8 +962,11 @@
             try {
                 while (true) {
                     const { done, value } = await reader.read();
-                    
-                    if (done) break;
+
+                    if (done) {
+                        console.log('[TURN STREAM] Stream done, exiting');
+                        break;
+                    }
                     
                     buffer += decoder.decode(value, { stream: true });
                     
@@ -957,12 +976,14 @@
                     
                     for (const eventText of events) {
                         if (!eventText.trim()) continue;
-                        
+
+                        console.log('[TURN STREAM] Parsing event text:', eventText);
+
                         // Parse SSE format: "event: type\ndata: json"
                         const lines = eventText.split('\n');
                         let eventType = null;
                         let eventData = null;
-                        
+
                         for (const line of lines) {
                             if (line.startsWith('event:')) {
                                 eventType = line.substring(6).trim();
@@ -971,33 +992,40 @@
                                 try {
                                     eventData = JSON.parse(dataStr);
                                 } catch (e) {
-                                    console.error('Failed to parse event data:', dataStr, e);
+                                    console.error('[TURN STREAM] Failed to parse event data:', dataStr, e);
                                 }
                             }
                         }
-                        
+
                         if (eventType && eventData) {
+                            console.log('[TURN STREAM] Received event:', eventType, eventData);
                             handleStreamEvent(eventType, eventData);
 
                             // Connection closes when it's our turn again
                             if (eventType === 'your_turn') {
+                                console.log('[TURN STREAM] Got your_turn, exiting stream');
                                 isMyTurn = true;
                                 streamActive = false;
                                 updateInputState();
                                 return;
                             }
+                        } else {
+                            console.warn('[TURN STREAM] Failed to parse event - eventType:', eventType, 'eventData:', eventData);
                         }
                     }
                 }
             } catch (error) {
-                console.error('Stream error:', error);
+                console.error('[TURN STREAM] Stream error:', error);
                 streamActive = false;
                 updateInputState();
                 throw error;
+            } finally {
+                console.log('[TURN STREAM] Stream ended - isMyTurn:', isMyTurn, 'streamActive:', streamActive);
             }
         }
 
         function handleStreamEvent(eventType, data) {
+            console.log('[EVENT HANDLER] Handling event:', eventType, data);
             switch(eventType) {
                 case 'player_joined':
                     if (data.isYou) {
