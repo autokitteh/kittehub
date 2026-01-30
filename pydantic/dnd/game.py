@@ -2,6 +2,8 @@
 
 from collections.abc import Generator
 from collections.abc import Sequence
+from dataclasses import dataclass
+from dataclasses import field
 import random
 
 import ai
@@ -15,20 +17,51 @@ _SSEEventGenerator = Generator[protocol.SSEEvent, None, None]
 class Game:
     """Game context"""
 
-    _players: list[protocol.Player] = []
-    """A list of players in the game, indexed by player ID."""
+    @dataclass
+    class Participant:
+        """Manages AI context for a single participant (DM or player).
 
-    _ai_histories: dict[int | None, Sequence] = {None: []}
-    """History of AI interactions per player ID. None is for the DM.
-    
-    This is used to maintain context for the AI agents in a way that is
-    compatible with prompt caching."""
+        Encapsulates message history, event tracking, and player data.
+        """
 
-    _ai_last_seen_event_index: dict[int | None, int] = {None: 0}
-    """The last event index seen by each AI participant."""
+        player: protocol.Player | None = None
+        """Player data. None for the DM."""
+
+        message_history: Sequence = field(default_factory=list)
+        """AI message history for prompt caching."""
+
+        last_processed_event_index: int = 0
+        """Index of the last event this participant has processed."""
+
+        def get_new_events(
+            self, all_events: list[protocol.SSEEvent]
+        ) -> list[protocol.SSEEvent]:
+            """Returns events that haven't been processed yet."""
+            return all_events[self.last_processed_event_index :]
+
+        def update_after_processing(
+            self,
+            new_history: Sequence,
+            total_events: int,
+        ) -> None:
+            """Updates state after processing a turn."""
+            self.message_history = new_history
+            self.last_processed_event_index = total_events
+
+    _participants: dict[int | None, Participant] = {None: Participant()}
+    """Participants in the game. None is for the DM, integers for players."""
 
     _events: list[protocol.SSEEvent] = []
     """All events that have occurred in the game."""
+
+    @property
+    def _players(self) -> list[protocol.Player]:
+        """Returns list of all players (excludes DM)."""
+        return [
+            p.player
+            for key, p in sorted(self._participants.items(), key=lambda p: p[0] or -1)
+            if key is not None and p.player is not None
+        ]
 
     def turn(self, req: protocol.TurnRequest) -> _SSEEventGenerator:
         h: _SSEEventGenerator | None = None
@@ -83,9 +116,7 @@ class Game:
 
             print("Created player:", player)
 
-            self._players.append(player)
-            self._ai_histories[i] = []
-            self._ai_last_seen_event_index[i] = 0
+            self._participants[i] = Game.Participant(player)
 
             yield protocol.PlayerJoinedEvent(player=player, is_you=i == 0)
 
@@ -102,39 +133,45 @@ class Game:
 
     def _dm(self) -> _SSEEventGenerator:
         more = True
+        dm_participant = self._participants[None]
 
         while more:
             yield protocol.ThinkingEvent(who="DM")
 
-            result, self._ai_histories[None] = ai.next_dm_event(
-                self._events[self._ai_last_seen_event_index[None] :],
+            result, new_history = ai.next_dm_event(
+                dm_participant.get_new_events(self._events),
                 self._players,
-                self._ai_histories[None],
+                dm_participant.message_history,
             )
 
-            self._ai_last_seen_event_index[None] = len(self._events)
+            dm_participant.update_after_processing(new_history, len(self._events))
 
             event, more = result.event, result.more
 
             match event:
                 case protocol.StatUpdateEvent(player_id=player_id, stats=stats):
-                    if player_id >= len(self._players):
+                    participant = self._participants.get(player_id)
+                    if not participant or not participant.player:
                         print("ERROR: StatUpdateEvent for unknown player", player_id)
                         continue
                     else:
-                        self._players[player_id].stats = protocol.PlayerStats(**stats)
+                        participant.player.stats = protocol.PlayerStats(**stats)
 
             yield event
 
     def _player(self, id: int) -> _SSEEventGenerator:
-        yield protocol.ThinkingEvent(who=self._players[id].name)
+        participant = self._participants[id]
 
-        msg, self._ai_histories[id] = ai.next_player_event(
-            self._events[self._ai_last_seen_event_index[id] :],
-            self._players[id],
-            self._ai_histories[id],
+        assert participant.player
+
+        yield protocol.ThinkingEvent(who=participant.player.name)
+
+        msg, new_history = ai.next_player_event(
+            participant.get_new_events(self._events),
+            participant.player,
+            participant.message_history,
         )
 
-        self._ai_last_seen_event_index[id] = len(self._events)
+        participant.update_after_processing(new_history, len(self._events))
 
         yield protocol.MessageEvent(text=msg, player_id=id)
