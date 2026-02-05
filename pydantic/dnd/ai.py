@@ -7,18 +7,11 @@ from random import randint
 
 from pydantic_ai.models.anthropic import AnthropicModel
 
-from autokitteh.anthropic import anthropic_pydantic_ai_provider
-import logfire
+from autokitteh.pydantic import pydantic_gateway_provider
 import protocol
 from pydantic import BaseModel
 from pydantic_ai import Agent
 from pydantic_ai import RunContext
-
-
-if getenv("LOGFIRE_TOKEN"):
-    logfire.configure()
-    logfire.instrument_anthropic()
-    print("logfire configured.")
 
 #
 # DM
@@ -28,7 +21,7 @@ _DM_MODEL_NAME = getenv("DM_MODEL_NAME", "claude-sonnet-4-5")
 
 _dm_model = AnthropicModel(
     _DM_MODEL_NAME,
-    provider=anthropic_pydantic_ai_provider("anthropic"),
+    provider=pydantic_gateway_provider("pydanticgw", "anthropic"),
 )
 
 
@@ -110,7 +103,7 @@ _PLAYER_MODEL_NAME = getenv("PLAYER_MODEL_NAME", "claude-sonnet-4-5")
 
 _player_model = AnthropicModel(
     _PLAYER_MODEL_NAME,
-    provider=anthropic_pydantic_ai_provider("anthropic"),
+    provider=pydantic_gateway_provider("pydanticgw", "anthropic"),
 )
 
 _player_agent = Agent(
