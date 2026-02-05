@@ -6,11 +6,14 @@ from autokitteh import Event, get_webhook_url, http_outcome, next_event, subscri
 import game
 import protocol
 from pydantic import ValidationError
+from os import getenv
 
 
 _GAME_HTML = Path("game.html").read_text()
 
 _API_ENDPOINT_URL = get_webhook_url("turn")
+
+_GAME_TIMEOUT_SECONDS = int(getenv("GAME_TIMEOUT_SECONDS", "0"))
 
 
 def on_game(event: Event, session_id: str) -> None:
@@ -42,9 +45,10 @@ def _new_game(session_id: str) -> None:
 
     while True:
         print("Waiting for next request...")
-        event = next_event(s, full=True)
+        event = next_event(s, timeout=_GAME_TIMEOUT_SECONDS, full=True)
         if not event:
-            continue
+            print("Game timed out due to inactivity.")
+            return
 
         body = event.data.body.json
 
