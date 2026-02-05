@@ -6,6 +6,7 @@ from os import getenv
 from random import randint
 
 from pydantic_ai.models.anthropic import AnthropicModel
+from pydantic_ai.models.openai import OpenAIModel
 
 from autokitteh.pydantic import pydantic_gateway_provider
 import protocol
@@ -13,16 +14,28 @@ from pydantic import BaseModel
 from pydantic_ai import Agent
 from pydantic_ai import RunContext
 
+
+def _model(name: str):
+    family = name.split("-")[0]
+
+    model = {
+        "gpt": ("openai", OpenAIModel),
+        "claude": ("anthropic", AnthropicModel),
+    }.get(family)
+
+    if not model:
+        raise ValueError(f"Unsupported model name: {name}")
+
+    return model[1](
+        name,
+        provider=pydantic_gateway_provider("pydanticgw", model[0]),
+    )
+
 #
 # DM
 #
 
-_DM_MODEL_NAME = getenv("DM_MODEL_NAME", "claude-sonnet-4-5")
-
-_dm_model = AnthropicModel(
-    _DM_MODEL_NAME,
-    provider=pydantic_gateway_provider("pydanticgw", "anthropic"),
-)
+_dm_model = _model(getenv("DM_MODEL_NAME", "claude-sonnet-4-5"))
 
 
 class DMResult(BaseModel):
@@ -99,12 +112,7 @@ def next_dm_event(
 # Player
 #
 
-_PLAYER_MODEL_NAME = getenv("PLAYER_MODEL_NAME", "claude-sonnet-4-5")
-
-_player_model = AnthropicModel(
-    _PLAYER_MODEL_NAME,
-    provider=pydantic_gateway_provider("pydanticgw", "anthropic"),
-)
+_player_model = _model(getenv("PLAYER_MODEL_NAME", "claude-sonnet-4-5"))
 
 _player_agent = Agent(
     _player_model,
