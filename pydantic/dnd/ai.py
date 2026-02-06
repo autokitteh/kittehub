@@ -5,6 +5,7 @@ import json
 from os import getenv
 from random import randint
 
+from autokitteh import activity
 from pydantic_ai.models.anthropic import AnthropicModel
 from pydantic_ai.models.openai import OpenAIModel
 
@@ -16,6 +17,10 @@ from pydantic_ai import RunContext
 
 
 def _model(name: str):
+    """Return an AI model instance based on the given name.
+
+    Return value is not picklable, so the caller should call this inside an explicit activity.    
+    """
     family = name.split("-")[0]
 
     model = {
@@ -31,11 +36,10 @@ def _model(name: str):
         provider=pydantic_gateway_provider("pydanticgw", model[0]),
     )
 
+
 #
 # DM
 #
-
-_dm_model = _model(getenv("DM_MODEL_NAME", "claude-sonnet-4-5"))
 
 
 class DMResult(BaseModel):
@@ -50,11 +54,32 @@ class DMResult(BaseModel):
     the result."""
 
 
-_dm_agent = Agent(
-    _dm_model,
-    output_type=DMResult,
-    deps_type=list[protocol.Player],
-    system_prompt="""
+def _list_players(ctx: RunContext[list[protocol.Player]]) -> str:
+    return ",".join(json.dumps(d.dict()) for d in ctx.deps)
+
+
+def _roll_dice(sides: int) -> int:
+    return randint(1, sides)
+
+
+# Global agent storage (avoid pickling by AutoKitteh)
+_dm_agent: Agent | None = None
+_player_agents: dict[int, Agent] = {}
+
+
+@activity
+def init_dm_agent(model_name: str) -> None:
+    """Initialize the DM agent with the specified model."""
+    global _dm_agent
+    _dm_agent = Agent(
+        _model(model_name),
+        output_type=DMResult,
+        deps_type=list[protocol.Player],
+        tools=[
+            _list_players,
+            _roll_dice,
+        ],
+        system_prompt="""
 You are the Dungeon Master running a D&D game.
 
 In each invocation, you must take one of the following actions:
@@ -71,21 +96,14 @@ Tool available to you:
 
 If this is the start of the game, introduce the setting and scenario to the players.
 """,
-)
+    )
 
 
-@_dm_agent.tool(name="list_players")
-def _list_players(ctx: RunContext[list[protocol.Player]]) -> str:
-    return ",".join(json.dumps(d.dict()) for d in ctx.deps)
-
-
-@_dm_agent.tool_plain(name="roll_dice")
-def _roll_dice(sides: int) -> int:
-    return randint(1, sides)
-
-
-def create_player_stats(cls: str, race: str) -> protocol.PlayerStats:
-    return _player_stats_agent.run_sync(
+@activity
+def create_player_stats(cls: str, race: str, model_name: str) -> protocol.PlayerStats:
+    """Generate player stats using the specified model."""
+    stats_agent = Agent(_model(model_name), output_type=protocol.PlayerStats)
+    return stats_agent.run_sync(
         f"Create a D&D player of class {cls} and race {race}."
     ).output
 
@@ -112,28 +130,31 @@ def next_dm_event(
 # Player
 #
 
-_player_model = _model(getenv("PLAYER_MODEL_NAME", "claude-sonnet-4-5"))
 
-_player_agent = Agent(
-    _player_model,
-    output_type=str,
-    system_prompt="""
+@activity
+def init_player_agent(player_id: int, model_name: str) -> None:
+    """Initialize a player agent with the specified model."""
+    _player_agents[player_id] = Agent(
+        _model(model_name),
+        output_type=str,
+        system_prompt="""
 You are a D&D player participating in a game.
 Respond to the Dungeon Master's messages and other events appropriately.
 Keep your responses concise and in character.
 NEVER roll a dice yourself - only the DM can do that, ask the DM to roll dice for you.
 """,
-)
-
-_player_stats_agent = Agent(_player_model, output_type=protocol.PlayerStats)
+    )
 
 
 def next_player_event(
+    player_id: int,
     recent_events: Sequence[protocol.SSEEvent],
     player: protocol.Player,
     history: Sequence,
 ) -> tuple[str, list]:
-    result = _player_agent.run_sync(
+    agent = _player_agents.get(player_id)
+
+    result = agent.run_sync(
         f"""
 You are player {player.name}. Here is your full information:
 {json.dumps(player.dict())}

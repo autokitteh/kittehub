@@ -57,6 +57,8 @@ class Player(BaseModel):
     class_name: str = Field(..., serialization_alias="class")
     color: str
     stats: PlayerStats
+    model_name: str | None = Field(None, serialization_alias="modelName")
+    """AI model name for this player. None for human players."""
 
     model_config = {"populate_by_name": True}
 
@@ -150,11 +152,20 @@ class JoinAction(BaseModel):
 
     type: Literal["join"] = "join"
     player_name: str = Field(..., alias="playerName")
-    player_count: int = Field(..., alias="playerCount")
     race: str
     class_name: str = Field(..., alias="class")
+    dm_model: str = Field(..., alias="dmModel")
+    """AI model name for the Dungeon Master"""
+    player_models: list[str] | None = Field(default_factory=list, alias="playerModels")
+    """List of AI model names for each AI player (excluding the human player).
+    Can be empty for human vs DM only. Total players = len(player_models) + 1"""
 
     model_config = {"populate_by_name": True}
+
+    def model_post_init(self, __context):
+        """Convert None to empty list after validation"""
+        if self.player_models is None:
+            self.player_models = []
 
 
 class MessageAction(BaseModel):

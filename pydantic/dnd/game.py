@@ -88,22 +88,34 @@ class Game:
 
         yield from self._create_players(a)
 
+        # Initialize all AI agents after players are created
+        ai.init_dm_agent(a.dm_model)
+        for player_id, participant in self._participants.items():
+            if player_id is not None and participant.player and participant.player.model_name:
+                ai.init_player_agent(player_id, participant.player.model_name)
+
         yield protocol.ThinkingEvent(who="DM")
 
         yield from self._dm()
 
     def _create_players(self, a: protocol.JoinAction) -> _SSEEventGenerator:
-        for i in range(a.player_count):
+        player_count = len(a.player_models) + 1  # Human + AI players
+
+        for i in range(player_count):
             print("Creating player", i)
 
             if i == 0:
                 cls, race, name = a.class_name, a.race, a.player_name
+                model_name = None  # Human player
+                stats_model = a.dm_model  # Use DM's model for human player stats
             else:
                 cls, race, name = data.random_character_attrs()
+                model_name = a.player_models[i - 1]  # AI player model
+                stats_model = model_name  # Use player's model for their stats
 
             yield protocol.ThinkingEvent(who="DM", message="generating stats")
 
-            stats = ai.create_player_stats(cls, race)
+            stats = ai.create_player_stats(cls, race, stats_model)
 
             player = protocol.Player(
                 id=i,
@@ -112,6 +124,7 @@ class Game:
                 race=race,
                 stats=stats,
                 color=f"#{random.randint(0, 0xFFFFFF):06x}",
+                model_name=model_name,
             )
 
             print("Created player:", player)
@@ -167,6 +180,7 @@ class Game:
         yield protocol.ThinkingEvent(who=participant.player.name)
 
         msg, new_history = ai.next_player_event(
+            id,
             participant.get_new_events(self._events),
             participant.player,
             participant.message_history,
