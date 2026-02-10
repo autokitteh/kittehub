@@ -12,6 +12,7 @@ from os import getenv
 _GAME_HTML = Path("game.html").read_text()
 
 _API_ENDPOINT_URL = get_webhook_url("turn")
+_UI_ENDPOINT_URL = get_webhook_url("game")
 
 _GAME_TIMEOUT_SECONDS = int(getenv("GAME_TIMEOUT_SECONDS", "0"))
 
@@ -26,17 +27,23 @@ def on_game(event: Event, session_id: str) -> None:
 
 
 def _existing_game(session_id: str) -> None:
-    http_outcome(404, body="Not implemented yet.")
-
-
-def _new_game(session_id: str) -> None:
-    print(f"Starting new game with session ID: {session_id}")
-
+    print(f"Existing game: {session_id}")
+    
     http_outcome(
         200,
         body=_GAME_HTML.replace(
             "{{API_ENDPOINT}}", f"{_API_ENDPOINT_URL}/{session_id}"
         ),
+    )
+
+def _new_game(session_id: str) -> None:
+    print(f"Starting new game with session ID: {session_id}")
+
+    http_outcome(
+        302,
+        headers={
+            "Location": f"{_UI_ENDPOINT_URL}/{session_id}"
+        }
     )
 
     g = game.Game()
