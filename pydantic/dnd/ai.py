@@ -8,6 +8,7 @@ from random import randint
 from autokitteh import activity
 from pydantic_ai.models.anthropic import AnthropicModel
 from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.models.gemini import GeminiModel
 
 from autokitteh.pydantic import pydantic_gateway_provider
 import protocol
@@ -26,6 +27,7 @@ def _model(name: str):
     model = {
         "gpt": ("openai", OpenAIModel),
         "claude": ("anthropic", AnthropicModel),
+        "gemini": ("gemini", GeminiModel)
     }.get(family)
 
     if not model:

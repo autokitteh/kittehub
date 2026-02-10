@@ -109,7 +109,7 @@ class StatUpdateEvent(SSEEvent):
 
     player_id: int = Field(..., serialization_alias="playerId")
     player_name: str = Field(..., serialization_alias="playerName")
-    stats: dict[str, int]  # Partial stats update
+    stats: PlayerStats
 
 
 class DMMessageEvent(SSEEvent):

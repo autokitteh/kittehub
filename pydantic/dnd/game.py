@@ -168,7 +168,7 @@ class Game:
                         print("ERROR: StatUpdateEvent for unknown player", player_id)
                         continue
                     else:
-                        participant.player.stats = protocol.PlayerStats(**stats)
+                        participant.player.stats = stats
 
             yield event
 
