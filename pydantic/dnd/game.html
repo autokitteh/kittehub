@@ -545,8 +545,6 @@
 
             const modelOptions = [
                 { value: 'claude-sonnet-4-5', label: 'Claude Sonnet 4.5' },
-                { value: 'claude-sonnet-3-5', label: 'Claude Sonnet 3.5' },
-                { value: 'claude-haiku-4', label: 'Claude Haiku 4' },
                 { value: 'gpt-4o', label: 'GPT-4o' },
                 { value: 'gpt-4o-mini', label: 'GPT-4o Mini' }
             ];
@@ -890,14 +888,33 @@
             card.id = `player-card-${playerData.id}`;
             
             const hpPercent = (playerData.stats.hp / playerData.stats.maxHp) * 100;
-            
+
+            // Format model name for display
+            let modelDisplay = '';
+            if (playerData.modelName) {
+                // AI player - format the model name nicely
+                let formattedModel = playerData.modelName
+                    .replace('claude-', 'Claude ')
+                    .replace('gpt-', 'GPT-')
+                    .replace('sonnet-', 'Sonnet ')
+                    .replace('haiku-', 'Haiku ')
+                    .replace(/-/g, '.')  // Convert remaining hyphens to dots for version numbers
+                    .replace('mini', 'Mini');
+
+                modelDisplay = `<div class="player-model" style="font-size: 0.75rem; color: #a89968; margin-top: 0.25rem;">🤖 ${formattedModel}</div>`;
+            } else {
+                // Human player
+                modelDisplay = `<div class="player-model" style="font-size: 0.75rem; color: #a89968; margin-top: 0.25rem;">👤 Human</div>`;
+            }
+
             card.innerHTML = `
                 <div class="player-name">
                     <span class="player-color" style="background: ${playerData.color};"></span>
                     ${playerData.name}
                 </div>
                 <div class="player-class">${playerData.race} ${playerData.class}</div>
-                
+                ${modelDisplay}
+
                 <div class="player-stats">
                     <div class="stat-primary">
                         <span><span class="stat-label">HP</span> <span class="stat-value">${playerData.stats.hp}/${playerData.stats.maxHp}</span></span>
