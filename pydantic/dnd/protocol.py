@@ -142,6 +142,38 @@ class ThinkingEvent(SSEEvent):
     who: str
 
 
+class GameNotStartedEvent(SSEEvent):
+    """Indicates the game hasn't started yet (no players have joined)"""
+
+    event_type: ClassVar[str] = "game_not_started"
+
+
+class HistoryItem(BaseModel):
+    """A single history item representing a past event"""
+
+    type: Literal["message", "dm_message", "dice", "stat_update"]
+    player_id: int | None = Field(None, serialization_alias="playerId")
+    text: str | None = None
+    sides: int | None = None
+    roll: int | None = None
+    modifier: int | None = None
+    total: int | None = None
+    reason: str | None = None
+    player_name: str | None = Field(None, serialization_alias="playerName")
+    stats: PlayerStats | None = None
+
+
+class GameStateEvent(SSEEvent):
+    """Current game state for reconnecting clients"""
+
+    event_type: ClassVar[str] = "game_state"
+
+    players: list[Player]
+    history: list[HistoryItem]
+    your_player_id: int | None = Field(None, serialization_alias="yourPlayerId")
+    is_your_turn: bool = Field(..., serialization_alias="isYourTurn")
+
+
 #
 # Request Models (for parsing incoming requests)
 #
@@ -176,10 +208,16 @@ class MessageAction(BaseModel):
     """Text of the message to send. Can use markdown formatting."""
 
 
+class SyncAction(BaseModel):
+    """Sync game state action - sent on page load to get current state"""
+
+    type: Literal["sync"] = "sync"
+
+
 class TurnRequest(BaseModel):
     """Request body for /api/game/:gameId/turn endpoint"""
 
     player_id: int | None = Field(None, alias="playerId")
-    action: JoinAction | MessageAction = Field(..., discriminator="type")
+    action: JoinAction | MessageAction | SyncAction = Field(..., discriminator="type")
 
     model_config = {"populate_by_name": True}

@@ -583,6 +583,151 @@
             }
         }
 
+        async function syncGameState() {
+            console.log('[SYNC] Sending sync request');
+
+            try {
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream'
+                    },
+                    body: JSON.stringify({
+                        action: {
+                            type: 'sync'
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Process the sync response
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+
+                    if (done) {
+                        console.log('[SYNC] Stream done');
+                        break;
+                    }
+
+                    buffer += decoder.decode(value, { stream: true });
+
+                    const events = buffer.split('\n\n');
+                    buffer = events.pop() || '';
+
+                    for (const eventText of events) {
+                        if (!eventText.trim()) continue;
+
+                        const lines = eventText.split('\n');
+                        let eventType = null;
+                        let eventData = null;
+
+                        for (const line of lines) {
+                            if (line.startsWith('event:')) {
+                                eventType = line.substring(6).trim();
+                            } else if (line.startsWith('data:')) {
+                                const dataStr = line.substring(5).trim();
+                                try {
+                                    eventData = JSON.parse(dataStr);
+                                } catch (e) {
+                                    console.error('[SYNC] Failed to parse event data:', dataStr, e);
+                                }
+                            }
+                        }
+
+                        if (eventType && eventData) {
+                            console.log('[SYNC] Received event:', eventType, eventData);
+                            handleSyncEvent(eventType, eventData);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('[SYNC] Sync failed:', error);
+            }
+        }
+
+        function handleSyncEvent(eventType, data) {
+            console.log('[SYNC HANDLER] Handling:', eventType);
+
+            if (eventType === 'game_not_started') {
+                console.log('[SYNC] Game not started yet, showing join UI');
+                // Do nothing - join UI is already shown
+                return;
+            }
+
+            if (eventType === 'game_state') {
+                console.log('[SYNC] Restoring game state');
+
+                // Mark as joined
+                hasJoined = true;
+                myPlayerId = data.yourPlayerId;
+                isMyTurn = data.isYourTurn;
+
+                // Add all players (without animations)
+                data.players.forEach(player => {
+                    addPlayerToGame(player);
+                });
+
+                // Select our player
+                if (myPlayerId !== null) {
+                    selectPlayer(myPlayerId);
+
+                    // Update player selector to show we've joined
+                    const selector = document.getElementById('playerSelector');
+                    selector.innerHTML = '';
+
+                    const btn = document.createElement('button');
+                    btn.className = 'player-btn active';
+                    btn.textContent = `You: ${data.players[myPlayerId].name}`;
+                    btn.id = `player-btn-${myPlayerId}`;
+                    btn.disabled = true;
+                    selector.appendChild(btn);
+                }
+
+                // Render all history items
+                data.history.forEach(item => {
+                    renderHistoryItem(item);
+                });
+
+                // Update input state
+                streamActive = false;
+                updateInputState();
+
+                scrollToBottom();
+            }
+        }
+
+        function renderHistoryItem(item) {
+            switch (item.type) {
+                case 'message':
+                    addMessageToChat({ playerId: item.playerId, text: item.text });
+                    break;
+                case 'dm_message':
+                    addDMMessage(item.text);
+                    break;
+                case 'dice':
+                    addDiceRollToChat({
+                        playerId: item.playerId,
+                        sides: item.sides,
+                        roll: item.roll,
+                        modifier: item.modifier,
+                        total: item.total,
+                        reason: item.reason
+                    });
+                    break;
+                case 'stat_update':
+                    updatePlayerStats(item.playerId, item.stats);
+                    break;
+            }
+        }
+
         function initializeUI() {
             // Create player selector buttons (will be populated as players join)
             const selector = document.getElementById('playerSelector');
@@ -1165,19 +1310,19 @@
                 case 'message':
                     addMessageToChat(data);
                     break;
-                    
+
                 case 'dice':
                     addDiceRollToChat(data);
                     break;
-                    
+
                 case 'stat_update':
                     updatePlayerStats(data.playerId, data.stats);
                     break;
-                    
+
                 case 'dm_message':
                     addDMMessage(data.text);
                     break;
-                    
+
                 case 'your_turn':
                     addSystemMessage("It's your turn!");
                     highlightPlayerTurn(myPlayerId);
@@ -1185,6 +1330,12 @@
 
                 case 'thinking':
                     showThinkingIndicator(data);
+                    break;
+
+                case 'game_not_started':
+                case 'game_state':
+                    // These are handled by handleSyncEvent during sync
+                    handleSyncEvent(eventType, data);
                     break;
             }
         }
@@ -1460,7 +1611,10 @@
         // Handle Enter key to send message
         document.addEventListener('DOMContentLoaded', () => {
             initializeUI();
-            
+
+            // Sync game state on page load
+            syncGameState();
+
             const input = document.getElementById('messageInput');
             input.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {

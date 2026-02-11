@@ -71,6 +71,8 @@ class Game:
                 h = self._on_join(a)
             case protocol.MessageAction():
                 h = self._on_message(a)
+            case protocol.SyncAction():
+                h = self._on_sync()
             case _:
                 yield protocol.DMMessageEvent(text="Action not implemented yet.")
 
@@ -143,6 +145,56 @@ class Game:
 
         # DM responds to all.
         yield from self._dm()
+
+    def _on_sync(self) -> _SSEEventGenerator:
+        """Handle sync request - return current game state or not started."""
+        if not self._players:
+            yield protocol.GameNotStartedEvent()
+            return
+
+        # Convert events to history items
+        history = [self._event_to_history_item(event) for event in self._events]
+
+        # Return game state
+        yield protocol.GameStateEvent(
+            players=self._players,
+            history=[h for h in history if h],
+            your_player_id=0,  # Always player 0 for now (human player)
+            is_your_turn=True,  # Always their turn after sync
+        )
+
+    @staticmethod
+    def _event_to_history_item(event: protocol.SSEEvent) -> protocol.HistoryItem | None:
+        """Convert an SSE event to a history item."""
+        match event:
+            case protocol.MessageEvent(player_id=pid, text=text):
+                return protocol.HistoryItem(type="message", player_id=pid, text=text)
+            case protocol.DMMessageEvent(text=text):
+                return protocol.HistoryItem(type="dm_message", text=text)
+            case protocol.DiceEvent(
+                player_id=pid,
+                sides=sides,
+                roll=roll,
+                modifier=modifier,
+                total=total,
+                reason=reason,
+            ):
+                return protocol.HistoryItem(
+                    type="dice",
+                    player_id=pid,
+                    sides=sides,
+                    roll=roll,
+                    modifier=modifier,
+                    total=total,
+                    reason=reason,
+                )
+            case protocol.StatUpdateEvent(player_id=pid, player_name=name, stats=stats):
+                return protocol.HistoryItem(
+                    type="stat_update", player_id=pid, player_name=name, stats=stats
+                )
+            case _:
+                # Skip events that aren't part of history (thinking, player_joined, etc.)
+                return None
 
     def _dm(self) -> _SSEEventGenerator:
         more = True
