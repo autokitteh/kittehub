@@ -93,7 +93,9 @@ class Game:
         # Initialize all AI agents after players are created
         ai.init_dm_agent(a.dm_model)
         for player_id, participant in self._participants.items():
-            if player_id is not None and participant.player and participant.player.model_name:
+            if (player_id is not None
+                and participant.player
+                and participant.player.model_name):
                 ai.init_player_agent(player_id, participant.player.model_name)
 
         yield protocol.ThinkingEvent(who="DM")
@@ -101,6 +103,8 @@ class Game:
         yield from self._dm()
 
     def _create_players(self, a: protocol.JoinAction) -> _SSEEventGenerator:
+        assert a.player_models
+
         player_count = len(a.player_models) + 1  # Human + AI players
 
         for i in range(player_count):
@@ -193,7 +197,8 @@ class Game:
                     type="stat_update", player_id=pid, player_name=name, stats=stats
                 )
             case _:
-                # Skip events that aren't part of history (thinking, player_joined, etc.)
+                # Skip events that aren't part of history
+                # (thinking, player_joined, etc.)
                 return None
 
     def _dm(self) -> _SSEEventGenerator:

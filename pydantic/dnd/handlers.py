@@ -28,7 +28,7 @@ def on_game(event: Event, session_id: str) -> None:
 
 def _existing_game(session_id: str) -> None:
     print(f"Existing game: {session_id}")
-    
+
     http_outcome(
         200,
         body=_GAME_HTML.replace(

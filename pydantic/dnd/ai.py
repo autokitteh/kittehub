@@ -2,7 +2,6 @@
 
 from collections.abc import Sequence
 import json
-from os import getenv
 from random import randint
 
 from autokitteh import activity
@@ -20,7 +19,8 @@ from pydantic_ai import RunContext
 def _model(name: str):
     """Return an AI model instance based on the given name.
 
-    Return value is not picklable, so the caller should call this inside an explicit activity.    
+    Return value is not picklable, so the caller should call this inside
+    an explicit activity.
     """
     family = name.split("-")[0]
 
@@ -115,6 +115,8 @@ def next_dm_event(
     players: Sequence[protocol.Player],
     history: Sequence,
 ) -> tuple[DMResult, list]:
+    assert _dm_agent
+
     result = _dm_agent.run_sync(
         (
             f"Recent events: {json.dumps([e.dict() for e in recent_events])}"
@@ -155,6 +157,7 @@ def next_player_event(
     history: Sequence,
 ) -> tuple[str, list]:
     agent = _player_agents.get(player_id)
+    assert agent
 
     result = agent.run_sync(
         f"""
