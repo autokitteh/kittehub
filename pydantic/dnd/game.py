@@ -64,6 +64,12 @@ class Game:
         ]
 
     def turn(self, req: protocol.TurnRequest) -> _SSEEventGenerator:
+        """Process a turn request and yield resulting events.
+
+        This is the main entry point for processing game actions. It handles different
+        types of actions (join, message, sync) and yields events that should
+        be sent to clients.
+        """
         h: _SSEEventGenerator | None = None
 
         match a := req.action:
@@ -151,7 +157,14 @@ class Game:
         yield from self._dm()
 
     def _on_sync(self) -> _SSEEventGenerator:
-        """Handle sync request - return current game state or not started."""
+        """Handle sync request - return current game state or not started.
+
+        Sync requests are used by clients to get the current game state when
+        they connect or refresh.
+
+        If the game hasn't started (no players), we return a GameNotStartedEvent.
+        Otherwise, we return the full game state including players and history.
+        """
         if not self._players:
             yield protocol.GameNotStartedEvent()
             return
@@ -202,6 +215,7 @@ class Game:
                 return None
 
     def _dm(self) -> _SSEEventGenerator:
+        """DM processes all player messages and responds once at the end of the turn."""
         more = True
         dm_participant = self._participants[None]
 
@@ -230,6 +244,7 @@ class Game:
             yield event
 
     def _player(self, id: int) -> _SSEEventGenerator:
+        """Player processes DM and other player messages, then responds."""
         participant = self._participants[id]
 
         assert participant.player

@@ -137,6 +137,10 @@ _NAMES = {
 
 
 def random_character_attrs() -> tuple[str, str, str]:
+    """Return random character attributes
+
+    Returns a tuple of (class, race, name).
+    """
     cls = random.choice(_CLASS_NAMES)
     race = random.choice(_RACE_NAMES)
     name = random.choice(_NAMES[race])

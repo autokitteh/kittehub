@@ -16,8 +16,17 @@ from pydantic_ai import Agent
 from pydantic_ai import RunContext
 
 
+# Global agent storage (avoid pickling by AutoKitteh)
+_dm_agent: Agent | None = None
+_player_agents: dict[int, Agent] = {}
+
+
 def _model(name: str):
     """Return an AI model instance based on the given name.
+
+    This method is used instead of just passing the name to the agent
+    so we could initialize it with a proper api key using AutoKitteh's
+    pydantic_gateway_provider.
 
     Return value is not picklable, so the caller should call this inside
     an explicit activity.
@@ -45,7 +54,7 @@ def _model(name: str):
 
 
 class DMResult(BaseModel):
-    """Event returned by the DM agent and if it needs another turn immediately."""
+    """Data returned by the DM agent and if it needs another turn immediately."""
 
     event: protocol.DMMessageEvent | protocol.DiceEvent | protocol.StatUpdateEvent
     """The event the DM decided to take this turn."""
@@ -53,23 +62,27 @@ class DMResult(BaseModel):
     more: bool
     """True if the DM needs another turn immediately.
     For example - if the DM rolled a dice and now wants to send a message based on
-    the result."""
+    the result.
+    """
 
 
 def _list_players(ctx: RunContext[list[protocol.Player]]) -> str:
+    """List all players and their stats in the game.
+
+    Used as a tool for the DM agent.
+    """
     return ",".join(json.dumps(d.dict()) for d in ctx.deps)
 
 
 def _roll_dice(sides: int) -> int:
+    """Roll a dice with the given number of sides and return the result.
+
+    Used as a tool for the DM agent.
+    """
     return randint(1, sides)
 
 
-# Global agent storage (avoid pickling by AutoKitteh)
-_dm_agent: Agent | None = None
-_player_agents: dict[int, Agent] = {}
-
-
-@activity
+@activity # _model result is not picklable, so we need to call this in an activity.
 def init_dm_agent(model_name: str) -> None:
     """Initialize the DM agent with the specified model."""
     global _dm_agent
@@ -101,7 +114,7 @@ If this is the start of the game, introduce the setting and scenario to the play
     )
 
 
-@activity
+@activity # _model result is not picklable, so we need to call this in an activity.
 def create_player_stats(cls: str, race: str, model_name: str) -> protocol.PlayerStats:
     """Generate player stats using the specified model."""
     stats_agent = Agent(_model(model_name), output_type=protocol.PlayerStats)
@@ -115,6 +128,7 @@ def next_dm_event(
     players: Sequence[protocol.Player],
     history: Sequence,
 ) -> tuple[DMResult, list]:
+    """Return the next DM event based on the recent events and players' states."""
     assert _dm_agent
 
     result = _dm_agent.run_sync(
@@ -135,7 +149,7 @@ def next_dm_event(
 #
 
 
-@activity
+@activity # _model result is not picklable, so we need to call this in an activity.
 def init_player_agent(player_id: int, model_name: str) -> None:
     """Initialize a player agent with the specified model."""
     _player_agents[player_id] = Agent(
@@ -156,6 +170,10 @@ def next_player_event(
     player: protocol.Player,
     history: Sequence,
 ) -> tuple[str, list]:
+    """Return the next player event based on the recent events and player's state.
+
+    Returns the player's response and the message history of the agent.
+    """
     agent = _player_agents.get(player_id)
     assert agent
 

@@ -4,27 +4,26 @@ project:
   name: pydantic_dnd
 
   vars:
-    - name: DM_MODEL_NAME
-      value: "claude-sonnet-4-5"
-    - name: PLAYER_MODEL_NAME
-      value: "claude-sonnet-4-5"
     - name: GAME_TIMEOUT_SECONDS
       description: "Number of seconds of inactivity before a game session times out."
       value: "3600"
 
   connections:
-    - name: pydanticgw
+    - # Pydantic Gateway connection for webhooks.
+      name: pydanticgw
       integration: pydanticgw
 
   triggers:
-    - name: game
+    - # Trigger for starting a new game session.
+      name: game
       webhook: {}
       event_type: get
       call: handlers.py:on_game
-      is_durable: true
-      is_sync: true
+      is_durable: true # Durable to ensure that workflow remains even if server restarts.
+      is_sync: true # Returns a redirect response to the client immediately to the turn handler.
 
-    - name: turn
+    - # Trigger for handling a player's turn.
+      name: turn
       webhook: {}
       event_type: post
-      is_sync: true
+      is_sync: true # Serves API responses directly to the client.

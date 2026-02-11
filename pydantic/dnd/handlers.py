@@ -18,9 +18,12 @@ _GAME_TIMEOUT_SECONDS = int(getenv("GAME_TIMEOUT_SECONDS", "0"))
 
 
 def on_game(event: Event, session_id: str) -> None:
+    """Handle incoming game events. Serves the UI."""
+
     data = event.data
 
     if sid := data.url.path_suffix:
+        # We got a path suffix, which is the game id.
         _existing_game(sid)
     else:
         _new_game(session_id)
