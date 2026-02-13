@@ -2,7 +2,7 @@
 title: Gamble - AI Casino Bot
 description: Interactive roulette and blackjack games powered by AI tool calling with Pydantic AI
 integrations: ["slack"]
-categories: ["AI", "Samples", "Games"]
+categories: ["AI", "Samples"]
 tags:
   [
     "slack_bot",
@@ -42,6 +42,7 @@ An AI-powered casino bot for Slack that plays roulette and blackjack with you. T
 ## How It Works
 
 ### Roulette
+
 1. **Start game**: `!gamble I want to play roulette`
 2. **AI asks for bet**: "Which number would you like to bet on (1-38)?"
 3. **Place bet**: "I bet on 17"
@@ -49,6 +50,7 @@ An AI-powered casino bot for Slack that plays roulette and blackjack with you. T
 5. **Win/Lose**: AI announces the result and determines if you won
 
 ### Blackjack
+
 1. **Start game**: `!gamble Let's play blackjack`
 2. **AI deals cards**: Uses `draw_card()` tool to deal initial hands
 3. **AI shows cards**: "You have a 7 and a King. I'm showing a 9. Hit or stand?"
@@ -177,7 +179,7 @@ Update the `MODEL_NAME` variable in `autokitteh.yaml`:
 ```yaml
 vars:
   - name: MODEL_NAME
-    value: "anthropic:claude-sonnet-4-0"  # or "openai:gpt-4o", etc.
+    value: "anthropic:claude-sonnet-4-0" # or "openai:gpt-4o", etc.
 ```
 
 ## Technical Details
@@ -208,6 +210,7 @@ async def draw_card() -> int:
 ```
 
 The AI agent:
+
 1. Understands tool descriptions and purposes
 2. Decides when to call tools based on conversation
 3. Uses tool results to formulate responses
@@ -216,6 +219,7 @@ The AI agent:
 ### Logfire Observability
 
 Logfire integration provides visibility into:
+
 - AI agent decisions and reasoning
 - Tool calls with arguments and results
 - Message history and conversation flow
@@ -237,10 +241,11 @@ AutoKitteh's durable workflows enable persistent game sessions:
 ```yaml
 triggers:
   - name: slack_message
-    is_durable: true  # Game state survives server restarts
+    is_durable: true # Game state survives server restarts
 ```
 
 Benefits:
+
 - Game state persists across AutoKitteh restarts
 - No database needed for game history
 - Automatic state management
@@ -257,13 +262,13 @@ The AI uses its understanding of game rules combined with tool calling to create
 
 ## Comparison with Other Samples
 
-| Sample | Conversation History | Tools | Use Case |
-|--------|---------------------|-------|----------|
-| **ask** | ❌ No | ❌ No | Quick one-off questions |
-| **chat** | ✅ Yes | ❌ No | Multi-turn conversations |
-| **chat_with_ui** | ✅ Yes | ❌ No | Browser-based chat |
-| **gamble** | ✅ Yes | ✅ Yes | Interactive AI games with tools |
-| **dnd** | ✅ Yes | ✅ Yes | Complex multiplayer RPG |
+| Sample           | Conversation History | Tools  | Use Case                        |
+| ---------------- | -------------------- | ------ | ------------------------------- |
+| **ask**          | ❌ No                | ❌ No  | Quick one-off questions         |
+| **chat**         | ✅ Yes               | ❌ No  | Multi-turn conversations        |
+| **chat_with_ui** | ✅ Yes               | ❌ No  | Browser-based chat              |
+| **gamble**       | ✅ Yes               | ✅ Yes | Interactive AI games with tools |
+| **dnd**          | ✅ Yes               | ✅ Yes | Complex multiplayer RPG         |
 
 ## Development
 
@@ -284,12 +289,14 @@ Deploy from the command line:
 ## Customization Ideas
 
 ### Additional Games
+
 - **Poker**: Multi-player with betting rounds
 - **Dice games**: Craps, Yahtzee
 - **Card games**: War, Go Fish
 - **Slots**: Virtual slot machine simulation
 
 ### Enhanced Features
+
 - **Betting system**: Track virtual currency across games
 - **Statistics**: Win/loss records, high scores
 - **Multiplayer**: Allow multiple users in same game
@@ -297,6 +304,7 @@ Deploy from the command line:
 - **Leaderboards**: Track top players across workspace
 
 ### Tool Enhancements
+
 - **Deck management**: Track remaining cards in blackjack
 - **Betting validation**: Ensure bets are within limits
 - **Game history**: Export game results to spreadsheet
@@ -314,21 +322,25 @@ Deploy from the command line:
 ## Troubleshooting
 
 **Bot doesn't start game:**
+
 - Ensure message starts with `!gamble`
 - Check that bot has permission to read messages in channel
 - Verify trigger is deployed and active in AutoKitteh UI
 
 **Tools not being called:**
+
 - Check Logfire logs for tool call attempts
 - Verify model supports tool calling (most modern models do)
 - Ensure prompts clearly request game actions
 
 **Game state lost:**
+
 - Check that `is_durable: true` is set in trigger configuration
 - Verify workflow hasn't timed out
 - Look for errors in AutoKitteh logs
 
 **Inconsistent game rules:**
+
 - Different AI models may interpret rules differently
 - Consider adding more explicit rule details in system prompt
 - Check tool call logs to debug AI reasoning
@@ -338,6 +350,7 @@ Deploy from the command line:
 To add a new game:
 
 1. **Define tools** for game mechanics:
+
    ```python
    @roulette_agent.tool_plain
    async def roll_dice(sides: int) -> int:
@@ -346,6 +359,7 @@ To add a new game:
    ```
 
 2. **Update system prompt** with game rules:
+
    ```python
    system_prompt=(
        "..."
