@@ -16,22 +16,29 @@ Key Features:
 from os import getenv
 
 from pydantic_ai import Agent
+from pydantic_ai.models.anthropic import AnthropicModel
 
 from autokitteh import Event
+from autokitteh.pydantic import anthropic_pydantic_ai_provider
 from autokitteh.slack import slack_client
 
 
 # Initialize Slack client using AutoKitteh connection
 _slack = slack_client("slack")
 
-# AI model configuration - supports any Pydantic AI compatible model
-# Format: "provider:model-name" (e.g., "anthropic:claude-sonnet-4-0")
-_MODEL_NAME = getenv("MODEL_NAME", "anthropic:claude-sonnet-4-0")
+# AI model configuration
+_MODEL_NAME = getenv("MODEL_NAME", "claude-sonnet-4-0")
 
-# Create Pydantic AI agent with concise response instructions
+# Create Anthropic model with AutoKitteh provider
+model = AnthropicModel(
+    _MODEL_NAME,
+    provider=anthropic_pydantic_ai_provider("anthropic")
+)
+
+# Create Pydantic AI agent with the configured model
 # This agent is stateless - each run is independent
 agent = Agent(
-    _MODEL_NAME,
+    model=model,
     instructions="Be concise, reply with one sentence.",
 )
 
@@ -68,6 +75,6 @@ def on_slack_message(event: Event) -> None:
     # Post response in a thread attached to the original message
     _slack.chat_postMessage(
         channel=event.data.channel,
-        text=f"`{_MODEL_NAME}` says:\n```{a}```",
+        text=f"```{a}```",
         thread_ts=event.data.ts,  # Creates a thread reply
     )

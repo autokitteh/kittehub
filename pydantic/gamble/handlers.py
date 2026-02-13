@@ -21,27 +21,35 @@ from random import randint
 
 import logfire
 from pydantic_ai import Agent
+from pydantic_ai.models.anthropic import AnthropicModel
 
 from autokitteh import Event, next_event, subscribe
+from autokitteh.pydantic import anthropic_pydantic_ai_provider
 from autokitteh.slack import slack_client
 
 
 # Initialize Slack client using AutoKitteh connection
 _slack = slack_client("slack")
 
-# AI model configuration - supports any Pydantic AI compatible model
-_MODEL_NAME = getenv("MODEL_NAME", "anthropic:claude-sonnet-4-0")
+# AI model configuration
+_MODEL_NAME = getenv("MODEL_NAME", "claude-sonnet-4-0")
 
 # Configure Logfire for observability and monitoring
 # Logfire tracks AI agent interactions, tool calls, and performance
 logfire.configure()
 logfire.instrument_pydantic_ai()
 
-# Create AI agent with casino game capabilities
+# Create Anthropic model with AutoKitteh provider
+model = AnthropicModel(
+    _MODEL_NAME,
+    provider=anthropic_pydantic_ai_provider("anthropic")
+)
+
+# Create AI agent with casino game capabilities using the configured model
 # The agent acts as a dealer for both roulette and blackjack
 # It uses tools to interact with game mechanics (wheel spins, card draws)
 roulette_agent = Agent(
-    _MODEL_NAME,
+    model=model,
     system_prompt=(
         "Be concise, reply with one sentence."
         "\n"
@@ -172,7 +180,7 @@ def on_slack_message(event: Event) -> None:
         _slack.chat_postMessage(
             channel=ch,
             thread_ts=ts,
-            text=f"`{_MODEL_NAME}` says:\n```{a}```",
+            text=f"```{a}```",
         )
 
         # Wait for next message in the thread

@@ -8,11 +8,13 @@ project:
       value: ""
       secret: true
     - name: MODEL_NAME
-      value: "anthropic:claude-sonnet-4-0"
+      value: "claude-sonnet-4-0"
 
   connections:
     - name: slack
       integration: slack
+    - name: anthropic
+      integration: anthropic
 
   triggers:
     - name: slack_message

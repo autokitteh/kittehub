@@ -19,7 +19,9 @@ from os import getenv
 from pathlib import Path
 
 from autokitteh import Event, get_webhook_url, http_outcome, next_event, subscribe
+from autokitteh.pydantic import anthropic_pydantic_ai_provider
 from pydantic_ai import Agent
+from pydantic_ai.models.anthropic import AnthropicModel
 
 
 # Load HTML template for the chat interface
@@ -28,14 +30,19 @@ _CHAT_HTML = Path("chat.html").read_text()
 # Get webhook URL for the chat endpoint (used by browser to send messages)
 _WEBHOOK_URL = get_webhook_url("chat")
 
-# AI model configuration - supports any Pydantic AI compatible model
-_MODEL_NAME = getenv("MODEL_NAME", "anthropic:claude-sonnet-4-0")
+# AI model configuration
+_MODEL_NAME = getenv("MODEL_NAME", "claude-sonnet-4-0")
 
+# Create Anthropic model with AutoKitteh provider
+model = AnthropicModel(
+    _MODEL_NAME,
+    provider=anthropic_pydantic_ai_provider("anthropic")
+)
 
-# Create Pydantic AI agent with message history support
+# Create Pydantic AI agent with the configured model
 # This agent maintains conversation context across HTTP requests
 agent = Agent(
-    _MODEL_NAME,
+    model=model,
     instructions="Be concise, reply with one sentence.",
 )
 
