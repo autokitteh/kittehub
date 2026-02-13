@@ -31,7 +31,7 @@ An AI-powered Dungeons & Dragons adventure where you play alongside AI teammates
 
 ## Features
 
-- **Multiplayer Party System**: Play as the human hero with 0-3 AI-controlled teammates
+- **AI Friends**: Play as the human hero with 0-3 AI-controlled teammates
 - **AI Dungeon Master**: Dynamic storytelling and game management powered by AI
 - **Model Selection**: Choose from multiple AI providers (Claude Sonnet 4.5, GPT-4o, Gemini, etc.)
 - **Rich Character System**: Full D&D stats (HP, AC, STR, DEX, CON, INT, WIS, CHA)
@@ -73,10 +73,7 @@ Browser → AutoKitteh Webhook → Game Session (Durable)
 ### Prerequisites
 
 - AutoKitteh account (cloud or self-hosted)
-- API keys for your chosen AI providers:
-  - Anthropic API key (for Claude models)
-  - OpenAI API key (for GPT models)
-  - Google AI API key (for Gemini models)
+- API key for [Pydantic Gateway](https://pydantic.dev/ai-gateway)
 
 ### Installation
 
@@ -85,14 +82,12 @@ Browser → AutoKitteh Webhook → Game Session (Durable)
    [![Start with AutoKitteh](https://autokitteh.com/assets/autokitteh-badge.svg)](https://app.autokitteh.cloud/template?template-name=pydantic-dnd)
 
 2. Initialize the `pydanticgw` connection:
-
-   - Navigate to your deployed project in AutoKitteh UI
+   - Navigate to the project configuration in AutoKitteh UI
    - Go to the **Connections** tab
-   - Initialize the `pydanticgw` connection with your API keys for Anthropic, OpenAI, and/or Google AI
+   - Initialize the `pydanticgw` connection with your API key
    - The Pydantic Gateway connection allows the game to use multiple AI providers seamlessly
 
 3. Get your game webhook URL:
-
    - In AutoKitteh, go to your project's **Triggers** tab
    - Copy the `game` webhook URL
    - Visit this URL in your browser to start playing
@@ -134,20 +129,6 @@ Browser → AutoKitteh Webhook → Game Session (Durable)
 - Bookmark your game URL to return anytime
 - The game automatically syncs state when you reload
 - Your position, character stats, and full message history are preserved
-
-## Available AI Models
-
-The game supports multiple AI providers through Pydantic Gateway:
-
-- **Claude Sonnet 4.5** (Recommended): Best for creative storytelling
-- **Claude Sonnet 3.5**: Faster, good balance of quality and speed
-- **GPT-4o**: OpenAI's multimodal model
-- **GPT-4o Mini**: Faster, cost-effective option
-- **GPT-5 Mini**: Latest OpenAI model
-- **Gemini 3 Flash Preview**: Google's fast preview model
-- **Gemini 3 Pro**: Google's production model
-
-Each AI agent (DM and players) can use a different model, allowing you to experiment with combinations.
 
 ## Technical Details
 
@@ -194,6 +175,7 @@ class SyncAction(BaseModel):
 ```
 
 The server responds with either:
+
 - `GameNotStartedEvent`: Show join UI
 - `GameStateEvent`: Full game state with players and history
 
@@ -201,17 +183,17 @@ This allows seamless reconnection without losing context.
 
 ## Development
 
-Run type checking and validation locally:
+Run type checking and validation locally, using the AK CLI embedded makefile:
 
 ```bash
-make
+ak make
 ```
 
 Deploy from the command line:
 
 1. **Install the CLI**: https://docs.autokitteh.com/get_started/install
 2. **Authenticate**: `ak auth login`
-3. **Deploy**: `make deploy`
+3. **Deploy**: `ak deploy`
 4. **Initialize connections**: Log in to https://autokitteh.cloud and initialize the `pydanticgw` connection
 5. **Visit webhook URL**: Start your adventure
 
@@ -230,6 +212,7 @@ vars:
 ### Supported Models
 
 The game automatically detects model families from names:
+
 - Names starting with `claude-` use Anthropic
 - Names starting with `gpt-` use OpenAI
 - Names starting with `gemini-` use Google AI
@@ -241,14 +224,3 @@ Add new models by updating `modelOptions` in `game.html`.
 - Single human player per game session
 - Turn-based gameplay (no simultaneous actions)
 - Session timeout after inactivity (configurable)
-- No dice rolling UI (DM controls all rolls)
-
-## Future Enhancements
-
-- Multiple human players
-- Custom character creation with point-buy system
-- Dice rolling interface for players
-- Combat encounter management
-- Inventory and equipment system
-- Save/load game snapshots
-- Game master override controls
