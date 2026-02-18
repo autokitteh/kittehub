@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Party Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Garamond', 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0e0e 0%, #2d1810 100%);
+            color: #e8d5b7;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(45, 24, 16, 0.9);
+            border-right: 2px solid #8b6914;
+            padding: 1.5rem;
+            overflow-y: auto;
+            box-shadow: 4px 0 8px rgba(0,0,0,0.3);
+        }
+
+        .sidebar h2 {
+            color: #d4af37;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-bottom: 2px solid #8b6914;
+            padding-bottom: 0.5rem;
+        }
+
+        .player-card {
+            background: linear-gradient(135deg, #4a3526 0%, #3d2517 100%);
+            border: 2px solid #8b6914;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
+        }
+
+        .player-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.5);
+        }
+
+        .player-card.active {
+            border-color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .player-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 0.3rem;
+        }
+
+        .player-class {
+            font-size: 0.9rem;
+            color: #c9b88d;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .player-stats {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #8b6914;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+        }
+
+        .stat-primary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #a89968;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            color: #e8d5b7;
+            font-weight: bold;
+        }
+
+        .hp-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(26, 14, 14, 0.6);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.3rem;
+            border: 1px solid #8b6914;
+        }
+
+        .hp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c0392b 0%, #e74c3c 100%);
+            transition: width 0.3s ease;
+        }
+
+        .ability-scores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+
+        .ability-score {
+            text-align: center;
+            padding: 0.3rem;
+            background: rgba(26, 14, 14, 0.4);
+            border-radius: 4px;
+            border: 1px solid #6b5010;
+        }
+
+        .player-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #8b6914;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(26, 14, 14, 0.7);
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #4a3526 0%, #3d2517 100%);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+        }
+
+        .message-content {
+            flex: 1;
+            background: rgba(61, 37, 23, 0.8);
+            border: 1px solid #8b6914;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-name {
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .message-time {
+            font-size: 0.85rem;
+            color: #a89968;
+            margin-left: auto;
+        }
+
+        .message-text {
+            color: #e8d5b7;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        /* Markdown styling */
+        .message-text h1, .message-text h2, .message-text h3 {
+            color: #d4af37;
+            margin: 0.5rem 0 0.3rem 0;
+        }
+
+        .message-text h1 { font-size: 1.3rem; }
+        .message-text h2 { font-size: 1.2rem; }
+        .message-text h3 { font-size: 1.1rem; }
+
+        .message-text strong {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .message-text em {
+            font-style: italic;
+            color: #c9b88d;
+        }
+
+        .message-text code {
+            background: rgba(26, 14, 14, 0.6);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #d4af37;
+        }
+
+        .message-text pre {
+            background: rgba(26, 14, 14, 0.6);
+            border: 1px solid #8b6914;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            overflow-x: auto;
+        }
+
+        .message-text pre code {
+            background: none;
+            padding: 0;
+            color: #e8d5b7;
+        }
+
+        .message-text ul, .message-text ol {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .message-text li {
+            margin: 0.25rem 0;
+        }
+
+        .message-text blockquote {
+            border-left: 3px solid #8b6914;
+            padding-left: 1rem;
+            margin: 0.5rem 0;
+            color: #c9b88d;
+            font-style: italic;
+        }
+
+        .message-text a {
+            color: #d4af37;
+            text-decoration: underline;
+        }
+
+        .message-text a:hover {
+            color: #a87e18;
+        }
+
+        .message-text p {
+            margin: 0.3rem 0;
+        }
+
+        .message-text hr {
+            border: none;
+            border-top: 1px solid #8b6914;
+            margin: 0.75rem 0;
+        }
+
+        .dice-roll {
+            background: linear-gradient(135deg, #8b6914 0%, #6b5010 100%);
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            font-weight: bold;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+        }
+
+        .dice-result {
+            font-size: 1.5rem;
+            color: #d4af37;
+        }
+
+        .input-area {
+            background: rgba(45, 24, 16, 0.95);
+            border-top: 2px solid #8b6914;
+            padding: 1.5rem;
+            box-shadow: 0 -4px 8px rgba(0,0,0,0.3);
+        }
+
+        .player-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .player-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.75rem;
+            border: 2px solid #8b6914;
+            background: rgba(61, 37, 23, 0.8);
+            color: #e8d5b7;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .player-btn:hover {
+            background: rgba(77, 47, 29, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .player-btn.active {
+            background: linear-gradient(135deg, #8b6914 0%, #6b5010 100%);
+            border-color: #d4af37;
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .input-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #8b6914;
+            background: rgba(26, 14, 14, 0.8);
+            color: #e8d5b7;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: none;
+        }
+
+        #messageInput:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+        }
+
+        #messageInput:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button {
+            padding: 1rem 1.5rem;
+            border: 2px solid #8b6914;
+            background: linear-gradient(135deg, #8b6914 0%, #6b5010 100%);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #a87e18 0%, #8b6914 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button:disabled:hover {
+            background: linear-gradient(135deg, #8b6914 0%, #6b5010 100%);
+            transform: none;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(26, 14, 14, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8b6914;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a87e18;
+        }
+
+        .thinking-indicator {
+            text-align: center;
+            padding: 1rem;
+            color: #a89968;
+            font-style: italic;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .thinking-dots::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <aside class="sidebar">
+            <h2>Party Members</h2>
+            <div id="playerCards"></div>
+        </aside>
+
+        <div class="chat-container">
+            <div class="messages" id="messages"></div>
+
+            <div class="input-area">
+                <div class="player-selector" id="playerSelector"></div>
+                
+                <div class="input-row">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Speak your mind, adventurer..."
+                        rows="2"
+                    ></textarea>
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state - starts empty, supports any number of players
+        let players = []; // Will be populated as players join
+        let myPlayerId = null; // Will be assigned when we join
+        let apiEndpoint = "{{API_ENDPOINT}}"; // replaced by server side rendering.
+        let currentPlayer = null;
+        let messages = [];
+        let isMyTurn = false; // Start false until we join and get our turn
+        let streamActive = false;
+        let hasJoined = false;
+
+        // Available AI models for both DM and players
+        const modelOptions = [
+            { value: 'claude-sonnet-4-5', label: 'Claude Sonnet 4.5' },
+            { value: 'gpt-5-mini', label: 'GPT-5 Mini' },
+            { value: 'gpt-4o-mini', label: 'GPT-4o Mini' },
+            { value: 'gpt-4o', label: 'GPT-4o' },
+            { value: "gemini-3-flash-preview", label: "Gemini 3 Flash Preview" },
+            { value: "gemini-3-pro", label: "Gemini 3 Pro" },
+        ];
+
+        // Configure marked.js
+        marked.setOptions({
+            breaks: true,  // Convert \n to <br>
+            gfm: true,     // GitHub Flavored Markdown
+            headerIds: false,
+            mangle: false
+        });
+
+        function updateModelSelectors() {
+            const aiPlayerCount = parseInt(document.getElementById('ai-player-count-select').value);
+            const container = document.getElementById('ai-model-selectors');
+
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            for (let i = 0; i < aiPlayerCount; i++) {
+                const playerNum = i + 2; // Player 2, 3, 4...
+                const selectorDiv = document.createElement('div');
+                selectorDiv.style.cssText = 'display: flex; gap: 0.5rem; align-items: center;';
+
+                const label = document.createElement('label');
+                label.style.cssText = 'color: #a89968; font-size: 0.9rem; white-space: nowrap;';
+                label.textContent = `Player ${playerNum}:`;
+
+                const select = document.createElement('select');
+                select.id = `ai-model-select-${i}`;
+                select.className = 'ai-model-select';
+                select.style.cssText = 'flex: 1; padding: 0.75rem; border: 2px solid #8b6914; background: rgba(26, 14, 14, 0.8); color: #e8d5b7; border-radius: 6px; font-family: inherit; font-size: 1rem; cursor: pointer;';
+
+                modelOptions.forEach(opt => {
+                    const option = document.createElement('option');
+                    option.value = opt.value;
+                    option.textContent = opt.label;
+                    if (opt.value === 'claude-sonnet-4-5') {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+
+                selectorDiv.appendChild(label);
+                selectorDiv.appendChild(select);
+                container.appendChild(selectorDiv);
+            }
+        }
+
+        async function syncGameState() {
+            console.log('[SYNC] Sending sync request');
+
+            try {
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream'
+                    },
+                    body: JSON.stringify({
+                        action: {
+                            type: 'sync'
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Process the sync response
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+
+                    if (done) {
+                        console.log('[SYNC] Stream done');
+                        break;
+                    }
+
+                    buffer += decoder.decode(value, { stream: true });
+
+                    const events = buffer.split('\n\n');
+                    buffer = events.pop() || '';
+
+                    for (const eventText of events) {
+                        if (!eventText.trim()) continue;
+
+                        const lines = eventText.split('\n');
+                        let eventType = null;
+                        let eventData = null;
+
+                        for (const line of lines) {
+                            if (line.startsWith('event:')) {
+                                eventType = line.substring(6).trim();
+                            } else if (line.startsWith('data:')) {
+                                const dataStr = line.substring(5).trim();
+                                try {
+                                    eventData = JSON.parse(dataStr);
+                                } catch (e) {
+                                    console.error('[SYNC] Failed to parse event data:', dataStr, e);
+                                }
+                            }
+                        }
+
+                        if (eventType && eventData) {
+                            console.log('[SYNC] Received event:', eventType, eventData);
+                            handleSyncEvent(eventType, eventData);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('[SYNC] Sync failed:', error);
+            }
+        }
+
+        function handleSyncEvent(eventType, data) {
+            console.log('[SYNC HANDLER] Handling:', eventType);
+
+            if (eventType === 'game_not_started') {
+                console.log('[SYNC] Game not started yet, showing join UI');
+                // Do nothing - join UI is already shown
+                return;
+            }
+
+            if (eventType === 'game_state') {
+                console.log('[SYNC] Restoring game state');
+
+                // Mark as joined
+                hasJoined = true;
+                myPlayerId = data.yourPlayerId;
+                isMyTurn = data.isYourTurn;
+
+                // Add all players (without animations)
+                data.players.forEach(player => {
+                    addPlayerToGame(player);
+                });
+
+                // Select our player
+                if (myPlayerId !== null) {
+                    selectPlayer(myPlayerId);
+
+                    // Update player selector to show we've joined
+                    const selector = document.getElementById('playerSelector');
+                    selector.innerHTML = '';
+
+                    const btn = document.createElement('button');
+                    btn.className = 'player-btn active';
+                    btn.textContent = `You: ${data.players[myPlayerId].name}`;
+                    btn.id = `player-btn-${myPlayerId}`;
+                    btn.disabled = true;
+                    selector.appendChild(btn);
+                }
+
+                // Render all history items
+                data.history.forEach(item => {
+                    renderHistoryItem(item);
+                });
+
+                // Update input state
+                streamActive = false;
+                updateInputState();
+
+                scrollToBottom();
+            }
+        }
+
+        function renderHistoryItem(item) {
+            switch (item.type) {
+                case 'message':
+                    addMessageToChat({ playerId: item.playerId, text: item.text });
+                    break;
+                case 'dm_message':
+                    addDMMessage(item.text);
+                    break;
+                case 'dice':
+                    addDiceRollToChat({
+                        playerId: item.playerId,
+                        sides: item.sides,
+                        roll: item.roll,
+                        modifier: item.modifier,
+                        total: item.total,
+                        reason: item.reason
+                    });
+                    break;
+                case 'stat_update':
+                    updatePlayerStats(item.playerId, item.stats);
+                    break;
+            }
+        }
+
+        function initializeUI() {
+            // Create player selector buttons (will be populated as players join)
+            const selector = document.getElementById('playerSelector');
+
+            // Add a "Join Game" interface initially
+            if (!hasJoined) {
+                selector.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%;">
+                        <input
+                            type="text"
+                            id="player-name-input"
+                            placeholder="Enter your name..."
+                            style="flex: 1; padding: 0.75rem; border: 2px solid #8b6914; background: rgba(26, 14, 14, 0.8); color: #e8d5b7; border-radius: 6px; font-family: inherit; font-size: 1rem;"
+                            maxlength="20"
+                        />
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <label style="color: #a89968; font-size: 0.9rem; white-space: nowrap;">Race:</label>
+                            <select
+                                id="player-race-select"
+                                style="flex: 1; padding: 0.75rem; border: 2px solid #8b6914; background: rgba(26, 14, 14, 0.8); color: #e8d5b7; border-radius: 6px; font-family: inherit; font-size: 1rem; cursor: pointer;"
+                            >
+                                <option value="Human" selected>Human</option>
+                                <option value="Elf">Elf</option>
+                                <option value="Dwarf">Dwarf</option>
+                                <option value="Halfling">Halfling</option>
+                                <option value="Half-Elf">Half-Elf</option>
+                                <option value="Half-Orc">Half-Orc</option>
+                                <option value="Tiefling">Tiefling</option>
+                                <option value="Dragonborn">Dragonborn</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <label style="color: #a89968; font-size: 0.9rem; white-space: nowrap;">Class:</label>
+                            <select
+                                id="player-class-select"
+                                style="flex: 1; padding: 0.75rem; border: 2px solid #8b6914; background: rgba(26, 14, 14, 0.8); color: #e8d5b7; border-radius: 6px; font-family: inherit; font-size: 1rem; cursor: pointer;"
+                            >
+                                <option value="Warrior" selected>Warrior</option>
+                                <option value="Mage">Mage</option>
+                                <option value="Rogue">Rogue</option>
+                                <option value="Cleric">Cleric</option>
+                                <option value="Ranger">Ranger</option>
+                                <option value="Barbarian">Barbarian</option>
+                                <option value="Paladin">Paladin</option>
+                                <option value="Bard">Bard</option>
+                                <option value="Druid">Druid</option>
+                                <option value="Monk">Monk</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <label style="color: #a89968; font-size: 0.9rem; white-space: nowrap;">DM Model:</label>
+                            <select
+                                id="dm-model-select"
+                                style="flex: 1; padding: 0.75rem; border: 2px solid #8b6914; background: rgba(26, 14, 14, 0.8); color: #e8d5b7; border-radius: 6px; font-family: inherit; font-size: 1rem; cursor: pointer;"
+                            >
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <label style="color: #a89968; font-size: 0.9rem; white-space: nowrap;">AI Players:</label>
+                            <select
+                                id="ai-player-count-select"
+                                style="flex: 1; padding: 0.75rem; border: 2px solid #8b6914; background: rgba(26, 14, 14, 0.8); color: #e8d5b7; border-radius: 6px; font-family: inherit; font-size: 1rem; cursor: pointer;"
+                            >
+                                <option value="0">0 (None - You vs DM)</option>
+                                <option value="1">1 AI Teammate</option>
+                                <option value="2" selected>2 AI Teammates</option>
+                                <option value="3">3 AI Teammates</option>
+                            </select>
+                        </div>
+                        <div id="ai-model-selectors"></div>
+                        <button id="join-btn" style="padding: 0.75rem 1.5rem; width: 100%;">
+                            🎲 Join Game
+                        </button>
+                    </div>
+                `;
+
+                // Focus the name input and attach event listeners
+                setTimeout(() => {
+                    const nameInput = document.getElementById('player-name-input');
+                    const joinBtn = document.getElementById('join-btn');
+                    const aiPlayerCountSelect = document.getElementById('ai-player-count-select');
+                    const dmModelSelect = document.getElementById('dm-model-select');
+
+                    // Populate DM model selector
+                    if (dmModelSelect) {
+                        modelOptions.forEach(opt => {
+                            const option = document.createElement('option');
+                            option.value = opt.value;
+                            option.textContent = opt.label;
+                            if (opt.value === 'claude-sonnet-4-5') {
+                                option.selected = true;
+                            }
+                            dmModelSelect.appendChild(option);
+                        });
+                    }
+
+                    if (nameInput) {
+                        nameInput.focus();
+                        // Allow Enter key to join
+                        nameInput.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                joinGame();
+                            }
+                        });
+                    }
+
+                    if (joinBtn) {
+                        joinBtn.addEventListener('click', joinGame);
+                    }
+
+                    if (aiPlayerCountSelect) {
+                        aiPlayerCountSelect.addEventListener('change', updateModelSelectors);
+                        // Initialize model selectors
+                        updateModelSelectors();
+                    }
+                }, 0);
+            }
+
+            // Sidebar starts empty
+            const cardsContainer = document.getElementById('playerCards');
+            if (players.length === 0) {
+                cardsContainer.innerHTML = `
+                    <div style="text-align: center; color: #a89968; padding: 2rem;">
+                        <p style="font-style: italic;">No adventurers yet...</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Join the game to begin!</p>
+                    </div>
+                `;
+            }
+
+            updateInputState();
+        }
+
+        async function joinGame() {
+            const nameInput = document.getElementById('player-name-input');
+            const raceSelect = document.getElementById('player-race-select');
+            const classSelect = document.getElementById('player-class-select');
+            const dmModelSelect = document.getElementById('dm-model-select');
+            const aiPlayerCountSelect = document.getElementById('ai-player-count-select');
+            const joinBtn = document.getElementById('join-btn');
+            const playerName = nameInput ? nameInput.value.trim() : '';
+            const playerRace = raceSelect ? raceSelect.value : 'Human';
+            const playerClass = classSelect ? classSelect.value : 'Warrior';
+            const dmModel = dmModelSelect ? dmModelSelect.value : 'claude-sonnet-4-5';
+
+            if (!playerName) {
+                nameInput.style.borderColor = '#c0392b';
+                nameInput.placeholder = 'Name required!';
+                setTimeout(() => {
+                    nameInput.style.borderColor = '#8b6914';
+                }, 1000);
+                return;
+            }
+
+            // Collect AI player models
+            const aiPlayerCount = parseInt(aiPlayerCountSelect.value) || 0;
+            const playerModels = [];
+            for (let i = 0; i < aiPlayerCount; i++) {
+                const modelSelect = document.getElementById(`ai-model-select-${i}`);
+                if (modelSelect && modelSelect.value) {
+                    playerModels.push(modelSelect.value);
+                }
+            }
+
+            console.log('Joining with:', { aiPlayerCount, playerModels, dmModel });
+
+            joinBtn.disabled = true;
+            nameInput.disabled = true;
+            raceSelect.disabled = true;
+            classSelect.disabled = true;
+            dmModelSelect.disabled = true;
+            aiPlayerCountSelect.disabled = true;
+
+            // Disable all model selectors
+            const modelSelects = document.querySelectorAll('.ai-model-select');
+            modelSelects.forEach(select => select.disabled = true);
+
+            joinBtn.textContent = 'Joining...';
+
+            try {
+                // POST to server with streaming response
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream'
+                    },
+                    body: JSON.stringify({
+                        action: {
+                            type: 'join',
+                            playerName: playerName,
+                            dmModel: dmModel,
+                            playerModels: playerModels,
+                            race: playerRace,
+                            class: playerClass
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Process the streaming response
+                await processJoinStream(response);
+
+            } catch (error) {
+                console.error('Join failed:', error);
+
+                // Show error to user
+                joinBtn.textContent = '❌ Join Failed';
+                joinBtn.disabled = false;
+                nameInput.disabled = false;
+                raceSelect.disabled = false;
+                classSelect.disabled = false;
+                dmModelSelect.disabled = false;
+                aiPlayerCountSelect.disabled = false;
+
+                // Re-enable model selectors
+                modelSelects.forEach(select => select.disabled = false);
+
+                addSystemMessage(`Failed to join game: ${error.message}`);
+            }
+        }
+
+        async function processJoinStream(response) {
+            console.log('[JOIN STREAM] Starting join stream processing');
+            hasJoined = true;
+            isMyTurn = false;
+            streamActive = true;
+            updateInputState();
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            try {
+                while (true) {
+                    const { done, value } = await reader.read();
+
+                    if (done) {
+                        console.log('[JOIN STREAM] Stream done, exiting');
+                        break;
+                    }
+                    
+                    buffer += decoder.decode(value, { stream: true });
+                    
+                    // Split by double newline (SSE format)
+                    const events = buffer.split('\n\n');
+                    buffer = events.pop() || ''; // Keep incomplete event
+                    
+                    for (const eventText of events) {
+                        if (!eventText.trim()) continue;
+
+                        console.log('[JOIN STREAM] Parsing event text:', eventText);
+
+                        // Parse SSE format: "event: type\ndata: json"
+                        const lines = eventText.split('\n');
+                        let eventType = null;
+                        let eventData = null;
+
+                        for (const line of lines) {
+                            if (line.startsWith('event:')) {
+                                eventType = line.substring(6).trim();
+                            } else if (line.startsWith('data:')) {
+                                const dataStr = line.substring(5).trim();
+                                try {
+                                    eventData = JSON.parse(dataStr);
+                                } catch (e) {
+                                    console.error('[JOIN STREAM] Failed to parse event data:', dataStr, e);
+                                }
+                            }
+                        }
+
+                        if (eventType && eventData) {
+                            console.log('[JOIN STREAM] Received event:', eventType, eventData);
+                            handleStreamEvent(eventType, eventData);
+
+                            // Exit stream when it's our turn
+                            if (eventType === 'your_turn') {
+                                console.log('[JOIN STREAM] Got your_turn, exiting stream');
+                                isMyTurn = true;
+                                streamActive = false;
+                                updateInputState();
+                                return;
+                            }
+                        } else {
+                            console.warn('[JOIN STREAM] Failed to parse event - eventType:', eventType, 'eventData:', eventData);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('[JOIN STREAM] Stream error:', error);
+                streamActive = false;
+                updateInputState();
+                throw error;
+            } finally {
+                console.log('[JOIN STREAM] Stream ended - isMyTurn:', isMyTurn, 'streamActive:', streamActive);
+            }
+        }
+
+        function addPlayerToGame(playerData) {
+            // Add player to array
+            players.push(playerData);
+
+            // Update sidebar
+            const cardsContainer = document.getElementById('playerCards');
+            
+            // Remove empty state if present
+            if (cardsContainer.innerHTML.includes('No adventurers yet')) {
+                cardsContainer.innerHTML = '';
+            }
+
+            // Create player card
+            const card = document.createElement('div');
+            card.className = 'player-card';
+            card.id = `player-card-${playerData.id}`;
+            
+            const hpPercent = (playerData.stats.hp / playerData.stats.maxHp) * 100;
+
+            // Format model name for display
+            let modelDisplay = '';
+            if (playerData.modelName) {
+                // AI player - format the model name nicely
+                let formattedModel = playerData.modelName
+                    .replace('claude-', 'Claude ')
+                    .replace('gpt-', 'GPT-')
+                    .replace('sonnet-', 'Sonnet ')
+                    .replace('haiku-', 'Haiku ')
+                    .replace('gemini-', 'Gemini ')
+                    .replace(/-/g, '.')  // Convert remaining hyphens to dots for version numbers
+                    .replace('mini', 'Mini');
+
+                modelDisplay = `<div class="player-model" style="font-size: 0.75rem; color: #a89968; margin-top: 0.25rem;">🤖 ${formattedModel}</div>`;
+            } else {
+                // Human player
+                modelDisplay = `<div class="player-model" style="font-size: 0.75rem; color: #a89968; margin-top: 0.25rem;">👤 Human</div>`;
+            }
+
+            card.innerHTML = `
+                <div class="player-name">
+                    <span class="player-color" style="background: ${playerData.color};"></span>
+                    ${playerData.name}
+                </div>
+                <div class="player-class">${playerData.race} ${playerData.class}</div>
+                ${modelDisplay}
+
+                <div class="player-stats">
+                    <div class="stat-primary">
+                        <span><span class="stat-label">HP</span> <span class="stat-value">${playerData.stats.hp}/${playerData.stats.maxHp}</span></span>
+                        <span><span class="stat-label">AC</span> <span class="stat-value">${playerData.stats.ac}</span></span>
+                    </div>
+                    <div class="hp-bar">
+                        <div class="hp-fill" style="width: ${hpPercent}%"></div>
+                    </div>
+                    
+                    <div class="ability-scores">
+                        <div class="ability-score">
+                            <div class="stat-label">STR</div>
+                            <div class="stat-value">${playerData.stats.str}</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="stat-label">DEX</div>
+                            <div class="stat-value">${playerData.stats.dex}</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="stat-label">CON</div>
+                            <div class="stat-value">${playerData.stats.con}</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="stat-label">INT</div>
+                            <div class="stat-value">${playerData.stats.int}</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="stat-label">WIS</div>
+                            <div class="stat-value">${playerData.stats.wis}</div>
+                        </div>
+                        <div class="ability-score">
+                            <div class="stat-label">CHA</div>
+                            <div class="stat-value">${playerData.stats.cha}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            cardsContainer.appendChild(card);
+
+            // Update player selector if this is our player
+            if (playerData.id === myPlayerId) {
+                const selector = document.getElementById('playerSelector');
+                selector.innerHTML = ''; // Clear join button/form
+                
+                const btn = document.createElement('button');
+                btn.className = 'player-btn active';
+                btn.textContent = `You: ${playerData.name}`;
+                btn.id = `player-btn-${playerData.id}`;
+                btn.disabled = true; // Can't switch characters
+                selector.appendChild(btn);
+            }
+        }
+
+        function selectPlayer(playerId) {
+            if (!playerId || players.length === 0) return;
+            
+            currentPlayer = players.find(p => p.id === playerId);
+            if (!currentPlayer) return;
+            
+            // Update button states (only visual, selection locked to myPlayerId)
+            players.forEach(player => {
+                const btn = document.getElementById(`player-btn-${player.id}`);
+                const card = document.getElementById(`player-card-${player.id}`);
+                
+                if (btn && card) {
+                    if (player.id === playerId) {
+                        btn.classList.add('active');
+                        card.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                        card.classList.remove('active');
+                    }
+                }
+            });
+
+            const input = document.getElementById('messageInput');
+            if (input && !input.disabled) {
+                input.focus();
+            }
+        }
+
+        function updateInputState() {
+            console.log('[UI STATE] Updating input state - isMyTurn:', isMyTurn, 'streamActive:', streamActive, 'hasJoined:', hasJoined);
+            const input = document.getElementById('messageInput');
+            const sendBtn = document.querySelector('button[onclick="sendMessage()"]');
+
+            if (isMyTurn && !streamActive && hasJoined) {
+                console.log('[UI STATE] Enabling input - your turn');
+                input.disabled = false;
+                sendBtn.disabled = false;
+                input.placeholder = "Your turn! Speak your mind, adventurer...";
+            } else {
+                console.log('[UI STATE] Disabling input');
+                input.disabled = true;
+                sendBtn.disabled = true;
+                if (!hasJoined) {
+                    input.placeholder = "Join the game to begin your adventure...";
+                } else if (streamActive) {
+                    input.placeholder = "Waiting for other players...";
+                } else {
+                    input.placeholder = "Wait for your turn...";
+                }
+            }
+        }
+
+        async function takeTurn(action) {
+            if (!isMyTurn || streamActive) {
+                console.log('Not your turn or stream already active');
+                return;
+            }
+
+            isMyTurn = false;
+            streamActive = true;
+            updateInputState();
+
+            try {
+                // Stream response from server
+                await streamTurnToServer(action);
+            } catch (error) {
+                console.error('Turn failed:', error);
+                
+                // Re-enable turn and show error
+                isMyTurn = true;
+                streamActive = false;
+                updateInputState();
+                addSystemMessage(`❌ Error: ${error.message}`);
+            }
+        }
+
+        async function streamTurnToServer(action) {
+            console.log('[TURN STREAM] Starting turn stream with action:', action);
+            const response = await fetch(apiEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream'
+                },
+                body: JSON.stringify({
+                    playerId: myPlayerId,
+                    action: action
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            try {
+                while (true) {
+                    const { done, value } = await reader.read();
+
+                    if (done) {
+                        console.log('[TURN STREAM] Stream done, exiting');
+                        break;
+                    }
+                    
+                    buffer += decoder.decode(value, { stream: true });
+                    
+                    // Split by double newline (SSE format)
+                    const events = buffer.split('\n\n');
+                    buffer = events.pop() || ''; // Keep incomplete event
+                    
+                    for (const eventText of events) {
+                        if (!eventText.trim()) continue;
+
+                        console.log('[TURN STREAM] Parsing event text:', eventText);
+
+                        // Parse SSE format: "event: type\ndata: json"
+                        const lines = eventText.split('\n');
+                        let eventType = null;
+                        let eventData = null;
+
+                        for (const line of lines) {
+                            if (line.startsWith('event:')) {
+                                eventType = line.substring(6).trim();
+                            } else if (line.startsWith('data:')) {
+                                const dataStr = line.substring(5).trim();
+                                try {
+                                    eventData = JSON.parse(dataStr);
+                                } catch (e) {
+                                    console.error('[TURN STREAM] Failed to parse event data:', dataStr, e);
+                                }
+                            }
+                        }
+
+                        if (eventType && eventData) {
+                            console.log('[TURN STREAM] Received event:', eventType, eventData);
+                            handleStreamEvent(eventType, eventData);
+
+                            // Connection closes when it's our turn again
+                            if (eventType === 'your_turn') {
+                                console.log('[TURN STREAM] Got your_turn, exiting stream');
+                                isMyTurn = true;
+                                streamActive = false;
+                                updateInputState();
+                                return;
+                            }
+                        } else {
+                            console.warn('[TURN STREAM] Failed to parse event - eventType:', eventType, 'eventData:', eventData);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('[TURN STREAM] Stream error:', error);
+                streamActive = false;
+                updateInputState();
+                throw error;
+            } finally {
+                console.log('[TURN STREAM] Stream ended - isMyTurn:', isMyTurn, 'streamActive:', streamActive);
+            }
+        }
+
+        function handleStreamEvent(eventType, data) {
+            console.log('[EVENT HANDLER] Handling event:', eventType, data);
+            switch(eventType) {
+                case 'player_joined':
+                    if (data.isYou) {
+                        myPlayerId = data.player.id;
+                    }
+                    addPlayerToGame(data.player);
+                    if (data.isYou) {
+                        addSystemMessage(`You joined as ${data.player.name} the ${data.player.race} ${data.player.class}!`);
+                        selectPlayer(data.player.id);
+                    } else {
+                        addSystemMessage(`${data.player.name} the ${data.player.race} ${data.player.class} joined the party!`);
+                    }
+                    break;
+
+                case 'message':
+                    addMessageToChat(data);
+                    break;
+
+                case 'dice':
+                    addDiceRollToChat(data);
+                    break;
+
+                case 'stat_update':
+                    updatePlayerStats(data.playerId, data.stats);
+                    break;
+
+                case 'dm_message':
+                    addDMMessage(data.text);
+                    break;
+
+                case 'your_turn':
+                    addSystemMessage("It's your turn!");
+                    highlightPlayerTurn(myPlayerId);
+                    break;
+
+                case 'thinking':
+                    showThinkingIndicator(data);
+                    break;
+
+                case 'game_not_started':
+                case 'game_state':
+                    // These are handled by handleSyncEvent during sync
+                    handleSyncEvent(eventType, data);
+                    break;
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+            if (!isMyTurn || streamActive) return;
+
+            takeTurn({
+                type: 'message',
+                text: text
+            });
+
+            input.value = '';
+        }
+
+        function addMessageToChat(data) {
+            removeThinkingIndicator(); // Remove thinking indicator when new message arrives
+            const player = players.find(p => p.id === data.playerId);
+            if (!player) {
+                console.error('Player not found:', data.playerId);
+                return;
+            }
+
+            const message = {
+                id: Date.now(),
+                playerId: data.playerId,
+                playerName: player.name,
+                playerColor: player.color,
+                text: data.text,
+                timestamp: new Date(),
+                type: 'message'
+            };
+
+            messages.push(message);
+            renderMessage(message);
+            scrollToBottom();
+        }
+
+        function addDiceRollToChat(data) {
+            removeThinkingIndicator(); // Remove thinking indicator when new message arrives
+            const player = players.find(p => p.id === data.playerId);
+            if (!player) {
+                console.error('Player not found:', data.playerId);
+                return;
+            }
+
+            const message = {
+                id: Date.now(),
+                playerId: data.playerId,
+                playerName: player.name,
+                playerColor: player.color,
+                text: `Rolled a d${data.sides}`,
+                roll: data.roll,
+                sides: data.sides,
+                modifier: data.modifier,
+                total: data.total,
+                reason: data.reason,
+                timestamp: new Date(),
+                type: 'dice'
+            };
+
+            messages.push(message);
+            renderMessage(message);
+            scrollToBottom();
+        }
+
+        function addSystemMessage(text) {
+            removeThinkingIndicator(); // Remove thinking indicator when new message arrives
+            const messagesDiv = document.getElementById('messages');
+            const messageEl = document.createElement('div');
+            messageEl.style.textAlign = 'center';
+            messageEl.style.padding = '0.5rem';
+            messageEl.style.color = '#a89968';
+            messageEl.style.fontStyle = 'italic';
+            messageEl.style.fontSize = '0.9rem';
+            messageEl.textContent = `⚔️ ${text} ⚔️`;
+            messagesDiv.appendChild(messageEl);
+            scrollToBottom();
+        }
+
+        function showThinkingIndicator(data) {
+            removeThinkingIndicator(); // Remove any existing indicator
+            const messagesDiv = document.getElementById('messages');
+            const thinkingEl = document.createElement('div');
+            thinkingEl.id = 'thinking-indicator';
+            thinkingEl.className = 'thinking-indicator';
+
+            const message = `${data.who} is ${data.message || 'thinking'}`;
+
+            thinkingEl.innerHTML = `<span>${message}</span><span class="thinking-dots"></span>`;
+            messagesDiv.appendChild(thinkingEl);
+            scrollToBottom();
+        }
+
+        function removeThinkingIndicator() {
+            const existing = document.getElementById('thinking-indicator');
+            if (existing) {
+                existing.remove();
+            }
+        }
+
+        function addDMMessage(text) {
+            removeThinkingIndicator(); // Remove thinking indicator when new message arrives
+            const messagesDiv = document.getElementById('messages');
+            const messageEl = document.createElement('div');
+            messageEl.className = 'message';
+            messageEl.innerHTML = `
+                <div class="message-avatar" style="border-color: #8b6914; color: #d4af37;">
+                    DM
+                </div>
+                <div class="message-content" style="background: linear-gradient(135deg, #8b6914 0%, #6b5010 100%);">
+                    <div class="message-header">
+                        <span class="message-name" style="color: #d4af37;">Dungeon Master</span>
+                        <span class="message-time">${new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</span>
+                    </div>
+                    <div class="message-text">${marked.parse(text)}</div>
+                </div>
+            `;
+            messagesDiv.appendChild(messageEl);
+            scrollToBottom();
+        }
+
+        function highlightPlayerTurn(playerId) {
+            players.forEach(player => {
+                const card = document.getElementById(`player-card-${player.id}`);
+                if (card) {
+                    if (player.id === playerId) {
+                        card.style.border = '3px solid #d4af37';
+                        card.style.boxShadow = '0 0 20px rgba(212, 175, 55, 0.6)';
+                    } else {
+                        card.style.border = '2px solid #8b6914';
+                        card.style.boxShadow = '0 4px 6px rgba(0,0,0,0.4)';
+                    }
+                }
+            });
+        }
+
+        function updatePlayerStats(playerId, stats) {
+            const player = players.find(p => p.id === playerId);
+            if (!player) return;
+
+            // Update player stats
+            Object.assign(player.stats, stats);
+
+            // Update UI
+            const card = document.getElementById(`player-card-${playerId}`);
+            if (!card) return;
+
+            // Update HP if changed
+            if ('hp' in stats || 'maxHp' in stats) {
+                const hpPercent = (player.stats.hp / player.stats.maxHp) * 100;
+
+                const hpValue = card.querySelector('.stat-primary .stat-value');
+                if (hpValue) {
+                    hpValue.textContent = `${player.stats.hp}/${player.stats.maxHp}`;
+                }
+
+                const hpFill = card.querySelector('.hp-fill');
+                if (hpFill) {
+                    hpFill.style.width = `${hpPercent}%`;
+                }
+            }
+
+            // Update AC if changed
+            if ('ac' in stats) {
+                const acValue = card.querySelectorAll('.stat-primary .stat-value')[1];
+                if (acValue) {
+                    acValue.textContent = player.stats.ac;
+                }
+            }
+
+            // Update ability scores if changed
+            const abilityMap = {
+                'str': 'STR',
+                'dex': 'DEX',
+                'con': 'CON',
+                'int': 'INT',
+                'wis': 'WIS',
+                'cha': 'CHA'
+            };
+
+            for (const [key, label] of Object.entries(abilityMap)) {
+                if (key in stats) {
+                    const abilityScores = card.querySelectorAll('.ability-score');
+                    for (const scoreEl of abilityScores) {
+                        const labelEl = scoreEl.querySelector('.stat-label');
+                        if (labelEl && labelEl.textContent === label) {
+                            const valueEl = scoreEl.querySelector('.stat-value');
+                            if (valueEl) {
+                                valueEl.textContent = player.stats[key];
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        function renderMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const messageEl = document.createElement('div');
+            messageEl.className = 'message';
+
+            const initials = message.playerName.substring(0, 2).toUpperCase();
+            const time = message.timestamp.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+
+            let content = `
+                <div class="message-avatar" style="border-color: ${message.playerColor}; color: ${message.playerColor};">
+                    ${initials}
+                </div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="message-name" style="color: ${message.playerColor};">
+                            ${message.playerName}
+                        </span>
+                        <span class="message-time">${time}</span>
+                    </div>
+                    <div class="message-text">${marked.parse(message.text)}</div>
+            `;
+
+            if (message.type === 'dice') {
+                let diceContent = `<div class="dice-roll">`;
+
+                // Show reason if provided
+                if (message.reason) {
+                    diceContent += `<div style="font-size: 0.9rem; margin-bottom: 0.5rem; opacity: 0.9;">${escapeHtml(message.reason)}</div>`;
+                }
+
+                // Show the roll result
+                diceContent += `<div style="font-size: 1.2rem; margin: 0.3rem 0;">`;
+                diceContent += `🎲 Roll: <span class="dice-result">${message.roll}</span>`;
+
+                // Show modifier if provided
+                if (message.modifier !== null && message.modifier !== undefined) {
+                    const modifierSign = message.modifier >= 0 ? '+' : '';
+                    diceContent += ` ${modifierSign}${message.modifier}`;
+                }
+
+                diceContent += ` 🎲</div>`;
+
+                // Show total if different from roll
+                if (message.total !== null && message.total !== undefined && message.total !== message.roll) {
+                    diceContent += `<div style="font-size: 1.4rem; margin-top: 0.3rem; font-weight: bold;">Total: <span class="dice-result">${message.total}</span></div>`;
+                }
+
+                diceContent += `</div>`;
+                content += diceContent;
+            }
+
+            content += '</div>';
+            messageEl.innerHTML = content;
+            messagesDiv.appendChild(messageEl);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function scrollToBottom() {
+            const messages = document.getElementById('messages');
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Handle Enter key to send message
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUI();
+
+            // Sync game state on page load
+            syncGameState();
+
+            const input = document.getElementById('messageInput');
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
